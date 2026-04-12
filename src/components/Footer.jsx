@@ -1,0 +1,91 @@
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { base44 } from "@/api/base44Client";
+
+export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    await base44.entities.Inquiry.create({
+      full_name: "Newsletter Subscriber",
+      email,
+      inquiry_type: "General",
+      message: "Newsletter subscription",
+    });
+    setSubscribed(true);
+    setEmail("");
+  };
+
+  return (
+    <footer className="bg-foreground text-background">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="py-20 md:py-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+            <div>
+              <h2 className="font-display text-display-lg font-light mb-6">
+                Market Insights,<br />
+                <span className="italic">Delivered</span>
+              </h2>
+              <p className="font-body text-background/60 text-sm leading-relaxed max-w-md mb-8">
+                Curated intelligence on luxury real estate trends, 
+                neighborhood analyses, and exclusive pre-market opportunities.
+              </p>
+              {subscribed ? (
+                <p className="font-body text-sm tracking-label uppercase text-background/80">
+                  Thank you for subscribing
+                </p>
+              ) : (
+                <form onSubmit={handleSubscribe} className="flex items-center border-b border-background/20 pb-2 max-w-md">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email address"
+                    className="flex-1 bg-transparent font-body text-sm text-background placeholder:text-background/40 focus:outline-none"
+                    required
+                  />
+                  <button type="submit" className="ml-4 text-background/60 hover:text-background transition-colors">
+                    <ArrowRight size={18} />
+                  </button>
+                </form>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-12">
+              <div>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Navigate</h3>
+                <nav className="flex flex-col gap-4">
+                  <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">Home</Link>
+                  <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Collection</Link>
+                  <Link to="/about" className="font-body text-sm text-background/70 hover:text-background transition-colors">About</Link>
+                </nav>
+              </div>
+              <div>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Categories</h3>
+                <nav className="flex flex-col gap-4">
+                  <Link to="/properties?type=Penthouse" className="font-body text-sm text-background/70 hover:text-background transition-colors">Penthouses</Link>
+                  <Link to="/properties?type=Waterfront" className="font-body text-sm text-background/70 hover:text-background transition-colors">Waterfront</Link>
+                  <Link to="/properties?type=Modernist" className="font-body text-sm text-background/70 hover:text-background transition-colors">Modernist</Link>
+                  <Link to="/properties?type=Estate" className="font-body text-sm text-background/70 hover:text-background transition-colors">Estates</Link>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-background/10 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="font-display text-xl font-light tracking-editorial">
+            MAISON <span className="text-background/50">ESTATE</span>
+          </span>
+          <span className="font-body text-xs text-background/40">
+            © {new Date().getFullYear()} Maison Estate. All rights reserved.
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
