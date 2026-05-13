@@ -17,10 +17,10 @@ export default function Home() {
   useEffect(() => {
     const load = async () => {
       const [p, a, t] = await Promise.all([
-        base44.entities.Property.filter({ is_high_priority: true }, "-created_date", 6),
-        base44.entities.Agent.filter({ is_featured: true }, "-created_date", 3),
-        base44.entities.Testimonial.list("-created_date", 5),
-      ]);
+      base44.entities.Property.filter({ is_high_priority: true }, "-created_date", 6),
+      base44.entities.Agent.filter({ is_featured: true }, "-created_date", 3),
+      base44.entities.Testimonial.list("-created_date", 5)]
+      );
       setProperties(p);
       setAgents(a);
       setTestimonials(t);
@@ -33,8 +33,8 @@ export default function Home() {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-border border-t-accent rounded-full animate-spin" />
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -47,13 +47,13 @@ export default function Home() {
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
       <section className="w-full h-[500px] md:h-[600px] overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&h=800&fit=crop"
-          alt="Modern kitchen design"
-          className="w-full h-full object-cover"
-        />
+        <img src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/804bf0db3_generated_a7f7e647.png"
+
+        alt="Modern kitchen design"
+        className="w-full h-full object-cover" />
+        
       </section>
       <ClientStories testimonials={testimonials} />
-    </div>
-  );
+    </div>);
+
 }
