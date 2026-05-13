@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import SectionLabel from "../components/SectionLabel";
@@ -38,14 +39,14 @@ export default function Blog() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {posts.map((post, i) => (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="group cursor-pointer"
-              >
+              <Link key={post.id} to={`/blog/${post.slug}`}>
+                <motion.article
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.15 }}
+                  className="group cursor-pointer"
+                >
                 {post.featured_image && (
                   <div className="aspect-[16/10] overflow-hidden mb-6">
                     <img
@@ -69,6 +70,7 @@ export default function Blog() {
                   Read More <ArrowRight size={12} />
                 </span>
               </motion.article>
+              </Link>
             ))}
           </div>
         )}
