@@ -26,24 +26,24 @@ export default function Header() {
   }, [location]);
 
   const navLinks = [
-  { label: "Collection", path: "/properties" },
-  { label: "Insights", path: "/blog" },
-  { label: "About", path: "/about" }];
-
+    { label: "Collection", path: "/properties" },
+    { label: "Insights", path: "/blog" },
+    { label: "About", path: "/about" },
+  ];
 
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        hidden ? "-translate-y-full" : "translate-y-0"} ${
-
-        scrolled ?
-        "bg-background/80 backdrop-blur-xl border-b border-border/50" :
-        "bg-transparent"}`
-        }>
-        
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 text-[hsl(var(--background))]">
-          <div className="flex items-center justify-between h-20 md:h-24 text-[hsl(var(--background))]">
+          hidden ? "-translate-y-full" : "translate-y-0"
+        } ${
+          scrolled
+            ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <div className="flex items-center justify-between h-20 md:h-24">
             <Link to="/" className="relative z-10">
               <span className="font-display text-2xl md:text-3xl font-light tracking-editorial">
                 MAISON
@@ -54,21 +54,21 @@ export default function Header() {
             </Link>
 
             <nav className="hidden md:flex items-center gap-12">
-              {navLinks.map((link) =>
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`font-body text-xs tracking-label uppercase transition-colors duration-300 hover:text-accent ${
-                location.pathname === link.path ? "text-accent" : "text-foreground/90"}`
-                }>
-                
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`font-body text-xs tracking-label uppercase transition-colors duration-300 hover:text-accent ${
+                    location.pathname === link.path ? "text-accent" : "text-foreground/70"
+                  }`}
+                >
                   {link.label}
                 </Link>
-              )}
+              ))}
               <Link
                 to="/properties"
-                className="ghost-btn text-xs">
-                
+                className="ghost-btn text-xs"
+              >
                 View Collection
               </Link>
             </nav>
@@ -76,8 +76,8 @@ export default function Header() {
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="md:hidden relative z-10 p-2"
-              aria-label="Toggle menu">
-              
+              aria-label="Toggle menu"
+            >
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -85,46 +85,46 @@ export default function Header() {
       </header>
 
       <AnimatePresence>
-        {menuOpen &&
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center">
-          
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center"
+          >
             <nav className="flex flex-col items-center gap-10">
-              {navLinks.map((link, i) =>
-            <motion.div
-              key={link.path}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 + 0.2 }}>
-              
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.path}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 + 0.2 }}
+                >
                   <Link
-                to={link.path}
-                className="font-display text-display-md text-foreground hover:text-accent transition-colors">
-                
+                    to={link.path}
+                    className="font-display text-display-md text-foreground hover:text-accent transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </motion.div>
-            )}
+              ))}
               <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}>
-              
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
                 <Link to="/properties" className="ghost-btn text-sm mt-6">
                   View Collection
                 </Link>
               </motion.div>
 
               <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-12 flex flex-col items-center gap-2 text-muted-foreground font-body text-xs tracking-label uppercase">
-              
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="mt-12 flex flex-col items-center gap-2 text-muted-foreground font-body text-xs tracking-label uppercase"
+              >
                 <span>Penthouses</span>
                 <span>Waterfront</span>
                 <span>Modernist Retreats</span>
@@ -132,8 +132,8 @@ export default function Header() {
               </motion.div>
             </nav>
           </motion.div>
-        }
+        )}
       </AnimatePresence>
-    </>);
-
+    </>
+  );
 }
