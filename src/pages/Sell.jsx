@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import SectionLabel from "../components/SectionLabel";
+
 import { CheckCircle2 } from "lucide-react";
 
 export default function Sell() {
@@ -21,7 +21,6 @@ export default function Sell() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <SectionLabel text="Selling Your Property" />
           <h1 className="font-display text-display-lg font-light mt-3 mb-6">
             Ready to sell?
           </h1>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import SectionLabel from "../SectionLabel";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 export default function ClientStories({ testimonials }) {
@@ -22,7 +21,7 @@ export default function ClientStories({ testimonials }) {
   return (
     <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
       <div className="text-center mb-16">
-        <SectionLabel text="Client Stories" />
+
         <h2 className="font-display text-display-lg font-light mt-3">
           Success <span className="italic">Stories</span>
         </h2>

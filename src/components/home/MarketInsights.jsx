@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import SectionLabel from "../SectionLabel";
+
 import { ArrowRight } from "lucide-react";
 
 export default function MarketInsights({ posts }) {
@@ -9,7 +9,6 @@ export default function MarketInsights({ posts }) {
     <section className="py-24 md:py-40 bg-secondary/30">
       <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="text-center mb-16 md:mb-24">
-          <SectionLabel text="Market Intelligence" />
           <h2 className="font-display text-display-lg font-light mt-3">
             Insights & <span className="italic">Analysis</span>
           </h2>

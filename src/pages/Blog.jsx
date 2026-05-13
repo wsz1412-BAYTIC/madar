@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import SectionLabel from "../components/SectionLabel";
+
 import { ArrowRight } from "lucide-react";
 
 export default function Blog() {
@@ -26,7 +26,6 @@ export default function Blog() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <SectionLabel text="Market Intelligence" />
           <h1 className="font-display text-display-lg font-light mt-3 mb-12">
             Insights & <span className="italic">Analysis</span>
           </h1>

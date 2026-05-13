@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import PropertyCard from "../PropertyCard";
-import SectionLabel from "../SectionLabel";
 import { Link } from "react-router-dom";
 
 export default function HighPriorityListings({ properties }) {
@@ -10,7 +9,6 @@ export default function HighPriorityListings({ properties }) {
     <section id="listings" className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
       <div className="flex items-end justify-between mb-16">
         <div>
-          <SectionLabel text="Featured Properties" />
           <h2 className="font-display text-display-lg font-light mt-3">
             Featured Properties
           </h2>

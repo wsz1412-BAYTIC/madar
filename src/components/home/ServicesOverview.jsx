@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import SectionLabel from "../SectionLabel";
 import { Home, TrendingUp, Key, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -31,7 +30,6 @@ export default function ServicesOverview() {
     <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
         <div>
-          <SectionLabel text="Our Services" />
           <h2 className="font-display text-display-lg font-light mt-3">
             Buyer & Seller<br />
             <span className="italic">Services</span>

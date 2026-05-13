@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { ArrowLeft, Bed, Bath, Maximize, Calendar, Car, MapPin } from "lucide-react";
 import InquiryForm from "../components/InquiryForm";
-import SectionLabel from "../components/SectionLabel";
+
 
 export default function PropertyDetail() {
   const { id } = useParams();
@@ -97,7 +97,6 @@ export default function PropertyDetail() {
 
             {/* Title & Price */}
             <div className="mt-10 mb-8">
-              <SectionLabel text={`${property.property_type} · ${property.status}`} />
               <h1 className="font-display text-display-md font-light mt-2">{property.title}</h1>
               <div className="flex items-center gap-2 mt-3 text-muted-foreground">
                 <MapPin size={14} />

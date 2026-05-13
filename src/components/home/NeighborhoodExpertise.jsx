@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import SectionLabel from "../SectionLabel";
 import { Link } from "react-router-dom";
 
 const neighborhoods = [
@@ -28,7 +27,6 @@ export default function NeighborhoodExpertise() {
     <section className="py-24 md:py-40 bg-secondary/30">
       <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="text-center mb-16 md:mb-24">
-          <SectionLabel text="Local Authority" />
           <h2 className="font-display text-display-lg font-light mt-3">
             Neighborhood <span className="italic">Expertise</span>
           </h2>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import SectionLabel from "../components/SectionLabel";
+
 import InquiryForm from "../components/InquiryForm";
 import { Award, Users, MapPin, Heart } from "lucide-react";
 
@@ -41,7 +41,6 @@ export default function About() {
           transition={{ duration: 0.8 }}
           className="max-w-3xl"
         >
-          <SectionLabel text="Our Story" />
           <h1 className="font-display text-display-xl font-light mt-4 mb-8">
             A Legacy of<br />
             <span className="italic">Distinction</span>
@@ -65,7 +64,6 @@ export default function About() {
       {/* Team Directory */}
       <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="text-center mb-16 md:mb-24">
-          <SectionLabel text="The Team" />
           <h2 className="font-display text-display-lg font-light mt-3">
             Meet the <span className="italic">Advisors</span>
           </h2>
@@ -137,7 +135,6 @@ export default function About() {
       <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           <div>
-            <SectionLabel text="Recognition" />
             <h2 className="font-display text-display-lg font-light mt-3">
               Credentials &<br />
               <span className="italic">Awards</span>
@@ -172,7 +169,6 @@ export default function About() {
       <section className="py-24 md:py-40 bg-secondary/30">
         <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
           <div className="text-center mb-16">
-            <SectionLabel text="Giving Back" />
             <h2 className="font-display text-display-lg font-light mt-3">
               Community <span className="italic">Impact</span>
             </h2>
@@ -200,7 +196,6 @@ export default function About() {
       <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           <div>
-            <SectionLabel text="Get in Touch" />
             <h2 className="font-display text-display-lg font-light mt-3 mb-6">
               Begin Your<br />
               <span className="italic">Journey</span>

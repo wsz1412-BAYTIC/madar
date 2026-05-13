@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import SectionLabel from "../components/SectionLabel";
+
 
 export default function BlogDetail() {
   const { slug } = useParams();
@@ -61,7 +61,6 @@ export default function BlogDetail() {
             Back to Insights
           </Link>
 
-          <SectionLabel text={post.category} />
           <h1 className="font-display text-display-md font-light mt-3 mb-6">
             {post.title}
           </h1>

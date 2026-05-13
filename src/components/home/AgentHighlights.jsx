@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import SectionLabel from "../SectionLabel";
 import { Link } from "react-router-dom";
 
 export default function AgentHighlights({ agents }) {
@@ -10,8 +9,7 @@ export default function AgentHighlights({ agents }) {
       <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="flex items-end justify-between mb-16">
           <div>
-            <SectionLabel text="Our Team" />
-            <h2 className="font-display text-display-lg font-light mt-3">
+              <h2 className="font-display text-display-lg font-light mt-3">
               Meet the <span className="italic">Advisors</span>
             </h2>
           </div>

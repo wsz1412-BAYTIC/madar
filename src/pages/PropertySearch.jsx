@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import PropertyCard from "../components/PropertyCard";
 import PropertyFilters, { priceRanges } from "../components/PropertyFilters";
-import SectionLabel from "../components/SectionLabel";
+
 import { motion } from "framer-motion";
 
 export default function PropertySearch() {
@@ -63,7 +63,6 @@ export default function PropertySearch() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <SectionLabel text="Property Collection" />
         <h1 className="font-display text-display-lg font-light mt-3 mb-12">
           The <span className="italic">Collection</span>
         </h1>
