@@ -59,7 +59,7 @@ export default function Header() {
                   key={link.path}
                   to={link.path}
                   className={`font-body text-xs tracking-label uppercase transition-colors duration-300 hover:text-accent ${
-                    location.pathname === link.path ? "text-accent" : "text-foreground/70"
+                    location.pathname === link.path ? "text-accent" : "text-foreground/90"
                   }`}
                 >
                   {link.label}
