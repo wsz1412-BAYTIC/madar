@@ -49,7 +49,7 @@ export default function Home() {
       <section className="w-full h-[500px] md:h-[600px] overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600&h=800&fit=crop"
-          alt="Property interior"
+          alt="Modern kitchen design"
           className="w-full h-full object-cover"
         />
       </section>
