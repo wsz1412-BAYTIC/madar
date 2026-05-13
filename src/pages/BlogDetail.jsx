@@ -96,7 +96,7 @@ export default function BlogDetail() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="font-body text-foreground leading-relaxed space-y-6"
+          className="font-display text-foreground leading-relaxed space-y-6"
         >
           {post.content && (
             <div className="whitespace-pre-wrap text-base">{post.content}</div>
