@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import PropertySearch from './pages/PropertySearch';
 import PropertyDetail from './pages/PropertyDetail';
 import About from './pages/About';
+import Blog from './pages/Blog';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -42,6 +43,7 @@ const AuthenticatedApp = () => {
         <Route path="/properties" element={<PropertySearch />} />
         <Route path="/property/:id" element={<PropertyDetail />} />
         <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

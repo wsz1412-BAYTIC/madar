@@ -6,27 +6,24 @@ import NeighborhoodExpertise from "../components/home/NeighborhoodExpertise";
 import ServicesOverview from "../components/home/ServicesOverview";
 import AgentHighlights from "../components/home/AgentHighlights";
 import ClientStories from "../components/home/ClientStories";
-import MarketInsights from "../components/home/MarketInsights";
+
 
 export default function Home() {
   const [properties, setProperties] = useState([]);
   const [agents, setAgents] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
-      const [p, a, t, b] = await Promise.all([
+      const [p, a, t] = await Promise.all([
         base44.entities.Property.filter({ is_high_priority: true }, "-created_date", 6),
         base44.entities.Agent.filter({ is_featured: true }, "-created_date", 3),
         base44.entities.Testimonial.list("-created_date", 5),
-        base44.entities.BlogPost.list("-created_date", 3),
       ]);
       setProperties(p);
       setAgents(a);
       setTestimonials(t);
-      setPosts(b);
       setLoading(false);
     };
     load();
@@ -50,8 +47,6 @@ export default function Home() {
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
       <ClientStories testimonials={testimonials} />
-      <div className="hairline max-w-[1400px] mx-auto" />
-      <MarketInsights posts={posts} />
     </div>
   );
 }
