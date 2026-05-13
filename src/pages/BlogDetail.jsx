@@ -9,12 +9,23 @@ export default function BlogDetail() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [generatedContent, setGeneratedContent] = useState(null);
 
   useEffect(() => {
     const load = async () => {
       const posts = await base44.entities.BlogPost.filter({ slug }, 1);
       if (posts.length > 0) {
-        setPost(posts[0]);
+        const postData = posts[0];
+        setPost(postData);
+        
+        // Generate content if not available
+        if (!postData.content) {
+          const { base44: sdk } = await import("@/api/base44Client");
+          const response = await sdk.integrations.Core.InvokeLLM({
+            prompt: `Write 2 long, detailed paragraphs about: "${postData.title}". Each paragraph should be substantial and informative, suitable for a luxury real estate market insights blog. Focus on market trends, insights, and professional analysis.`
+          });
+          setGeneratedContent(response);
+        }
       }
       setLoading(false);
     };
@@ -85,13 +96,13 @@ export default function BlogDetail() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="prose prose-invert max-w-none font-body text-foreground leading-relaxed space-y-6"
+          className="font-body text-foreground leading-relaxed space-y-6"
         >
           {post.content && (
             <div className="whitespace-pre-wrap text-base">{post.content}</div>
           )}
-          {!post.content && post.excerpt && (
-            <p className="text-lg text-muted-foreground">{post.excerpt}</p>
+          {!post.content && generatedContent && (
+            <div className="whitespace-pre-wrap text-base">{generatedContent}</div>
           )}
         </motion.div>
       </section>
