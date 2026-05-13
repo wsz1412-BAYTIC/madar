@@ -47,7 +47,7 @@ export default function Home() {
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
       <section className="w-full h-[500px] md:h-[600px] overflow-hidden">
-        <img src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/20f7e06fd_generated_image.png"
+        <img src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/d676020cd_generated_f06278da.png"
 
         alt="Modern kitchen design"
         className="w-full h-full object-cover" />
