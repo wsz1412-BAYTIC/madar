@@ -88,14 +88,9 @@ export default function HeroSection({ heroImage }) {
             <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            <button onClick={handleSearch} className="ghost-btn border-white/30 text-white hover:bg-white hover:text-foreground hover:border-white">
-              Search Properties
-            </button>
-            <button onClick={scrollToListings} className="ghost-btn border-white/20 text-white/70 hover:text-white hover:border-white/40 hover:bg-transparent">
-              View Collection
-            </button>
-          </div>
+          <button onClick={handleSearch} className="ghost-btn border-white/30 text-white hover:bg-white hover:text-foreground hover:border-white">
+            Search Properties
+          </button>
         </motion.div>
       </div>
     </section>
