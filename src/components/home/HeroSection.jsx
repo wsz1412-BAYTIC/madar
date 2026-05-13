@@ -71,9 +71,6 @@ export default function HeroSection({ heroImage }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          <p className="font-body text-xs tracking-label uppercase text-white/60 mb-4">
-            Curated Luxury Real Estate
-          </p>
           <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl">
             Where Architecture<br />
             Meets <span className="italic">Legacy</span>
