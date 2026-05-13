@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionLabel from "../SectionLabel";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 export default function ClientStories({ testimonials }) {
   const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!testimonials || testimonials.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrent((c) => (c === testimonials.length - 1 ? 0 : c + 1));
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [testimonials]);
 
   if (!testimonials || testimonials.length === 0) return null;
 
