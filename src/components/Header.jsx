@@ -43,7 +43,7 @@ export default function Header() {
         }>
         
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 text-[hsl(var(--background))]">
-          <div className="flex items-center justify-between h-20 md:h-24">
+          <div className="flex items-center justify-between h-20 md:h-24 text-[hsl(var(--background))]">
             <Link to="/" className="relative z-10">
               <span className="font-display text-2xl md:text-3xl font-light tracking-editorial">
                 MAISON
