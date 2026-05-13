@@ -12,7 +12,7 @@ export default function HighPriorityListings({ properties }) {
         <div>
           <SectionLabel text="Featured Properties" />
           <h2 className="font-display text-display-lg font-light mt-3">
-            The <span className="italic">Collection</span>
+            Featured Properties
           </h2>
         </div>
         <Link
