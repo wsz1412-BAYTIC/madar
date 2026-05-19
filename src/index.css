@@ -112,20 +112,20 @@
   background: hsl(var(--border));
 }
 
-/* Ghost button — dark text for bright backgrounds */
+/* Ghost button — black stroke/text for bright backgrounds */
 .ghost-btn {
-  @apply border border-foreground/30 bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-foreground/30;
+  @apply border border-black bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-black;
 }
 .ghost-btn:hover {
-  @apply border-foreground bg-foreground text-background;
+  @apply bg-black text-white;
 }
 
-/* Ghost button — white text for dark/image backgrounds */
+/* Ghost button — white stroke/text for dark/image backgrounds */
 .ghost-btn-light {
-  @apply border border-white/40 bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-white/40;
+  @apply border border-white bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-white;
 }
 .ghost-btn-light:hover {
-  @apply border-white bg-white text-foreground;
+  @apply bg-white text-black;
 }
 
 /* Editorial smooth scroll */
