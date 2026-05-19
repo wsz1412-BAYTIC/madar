@@ -33,7 +33,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0px;
+    --radius: 9999px;
     --sidebar-background: 30 20% 97%;
     --sidebar-foreground: 0 0% 10%;
     --sidebar-primary: 0 0% 10%;
@@ -114,10 +114,10 @@
 
 /* Ghost button */
 .ghost-btn {
-  @apply border border-foreground/30 bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500;
+  @apply border border-foreground/30 bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-foreground/30;
 }
 .ghost-btn:hover {
-  @apply border-accent bg-accent text-accent-foreground;
+  @apply border-accent bg-accent text-accent;
 }
 
 /* Editorial smooth scroll */
