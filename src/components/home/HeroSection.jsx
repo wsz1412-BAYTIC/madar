@@ -77,11 +77,11 @@ export default function HeroSection({ heroImage }) {
           </h1>
 
           <div className="flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm mb-10">
-            <span className="text-white/70">I am looking for a</span>
+            <span className="text-white">I am looking for a</span>
             <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
-            <span className="text-white/70">in</span>
+            <span className="text-white">in</span>
             <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
-            <span className="text-white/70">at the price of</span>
+            <span className="text-white">at the price of</span>
             <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
           </div>
 
