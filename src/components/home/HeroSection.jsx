@@ -56,14 +56,11 @@ export default function HeroSection({ heroImage }) {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Luxury estate at golden hour"
-          className="w-full h-full object-cover object-center"
-          style={{ imageRendering: 'auto', willChange: 'auto' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/20 to-foreground/60" />
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
       </div>
 
       <div className="relative z-10 h-full flex flex-col justify-end pb-20 md:pb-32 px-6 md:px-12 max-w-[1400px] mx-auto">
