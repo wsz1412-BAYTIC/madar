@@ -117,7 +117,7 @@
   @apply border border-foreground/30 bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-foreground/30;
 }
 .ghost-btn:hover {
-  @apply border-accent bg-accent text-accent;
+  @apply border-foreground bg-foreground text-background;
 }
 
 /* Ghost button — white text for dark/image backgrounds */
@@ -125,7 +125,7 @@
   @apply border border-white/40 bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-white/40;
 }
 .ghost-btn-light:hover {
-  @apply border-white bg-white/10 text-white;
+  @apply border-white bg-white text-foreground;
 }
 
 /* Editorial smooth scroll */
