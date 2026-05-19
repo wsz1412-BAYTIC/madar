@@ -56,7 +56,7 @@ export default function ServicesOverview() {
               <div className="flex items-start gap-5">
                 <service.icon size={20} className="text-accent mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="font-display text-xl font-light mb-2">{service.title}</h3>
+                  <h3 className="font-display text-22px font-light mb-2">{service.title}</h3>
                   <p className="font-body text-sm text-muted-foreground leading-relaxed">
                     {service.description}
                   </p>
