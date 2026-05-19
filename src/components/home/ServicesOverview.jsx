@@ -3,27 +3,27 @@ import { Home, TrendingUp, Key, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
-  {
-    icon: Home,
-    title: "Buyer Representation",
-    description: "From discovery to closing, our agents provide end-to-end guidance with access to pre-market and exclusive listings.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Seller Strategy",
-    description: "Maximize your property's value with our data-driven pricing, architectural staging, and targeted marketing.",
-  },
-  {
-    icon: Key,
-    title: "Property Management",
-    description: "Preserve and grow your investment with our concierge-level management services for luxury properties.",
-  },
-  {
-    icon: FileText,
-    title: "Market Advisory",
-    description: "Leverage our deep market intelligence for informed investment decisions and portfolio optimization.",
-  },
-];
+{
+  icon: Home,
+  title: "Buyer Representation",
+  description: "From discovery to closing, our agents provide end-to-end guidance with access to pre-market and exclusive listings."
+},
+{
+  icon: TrendingUp,
+  title: "Seller Strategy",
+  description: "Maximize your property's value with our data-driven pricing, architectural staging, and targeted marketing."
+},
+{
+  icon: Key,
+  title: "Property Management",
+  description: "Preserve and grow your investment with our concierge-level management services for luxury properties."
+},
+{
+  icon: FileText,
+  title: "Market Advisory",
+  description: "Leverage our deep market intelligence for informed investment decisions and portfolio optimization."
+}];
+
 
 export default function ServicesOverview() {
   return (
@@ -38,21 +38,21 @@ export default function ServicesOverview() {
             Whether acquiring your legacy residence or positioning your property 
             for the discerning market, our approach is both artful and analytical.
           </p>
-          <Link to="/about" className="ghost-btn inline-block mt-8">
-            Learn More
+          <Link to="/about" className="ghost-btn inline-block mt-8 text-sm">LEARN MORE
+
           </Link>
         </div>
 
         <div className="space-y-0">
-          {services.map((service, i) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="py-8 border-b border-border/50 first:border-t"
-            >
+          {services.map((service, i) =>
+          <motion.div
+            key={service.title}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="py-8 border-b border-border/50 first:border-t">
+            
               <div className="flex items-start gap-5">
                 <service.icon size={20} className="text-accent mt-1 flex-shrink-0" />
                 <div>
@@ -63,9 +63,9 @@ export default function ServicesOverview() {
                 </div>
               </div>
             </motion.div>
-          ))}
+          )}
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
