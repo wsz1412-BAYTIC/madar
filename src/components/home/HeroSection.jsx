@@ -74,18 +74,20 @@ export default function HeroSection({ heroImage }) {
             <span className="italic">Next Home</span>
           </h1>
 
-          <div className="inline-flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm mb-6 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
-            <span className="text-white">I am looking for a</span>
-            <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
-            <span className="text-white">in</span>
-            <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
-            <span className="text-white">at the price of</span>
-            <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
-          </div>
+          <div className="flex flex-col items-start gap-4">
+            <div className="inline-flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
+              <span className="text-white">I am looking for a</span>
+              <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
+              <span className="text-white">in</span>
+              <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
+              <span className="text-white">at the price of</span>
+              <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
+            </div>
 
-          <button onClick={handleSearch} className="ghost-btn-light">
-            Search Properties
-          </button>
+            <button onClick={handleSearch} className="ghost-btn-light">
+              Search Properties
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>
