@@ -41,8 +41,8 @@ export default function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
         hidden ? "-translate-y-full" : "translate-y-0"} ${
 
-        scrolled && !isHomepage ?
-        "bg-background/95 backdrop-blur-xl border-b border-border/50" :
+        scrolled ?
+        (isHomepage ? "bg-foreground/60 backdrop-blur-xl" : "bg-background/95 backdrop-blur-xl border-b border-border/50") :
         "bg-transparent"}`
         }>
         
