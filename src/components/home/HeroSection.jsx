@@ -60,7 +60,8 @@ export default function HeroSection({ heroImage }) {
         <img
           src={heroImage}
           alt="Luxury estate at golden hour"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center"
+          style={{ imageRendering: 'auto', willChange: 'auto' }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/20 to-foreground/60" />
       </div>
