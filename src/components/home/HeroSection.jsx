@@ -72,7 +72,8 @@ export default function HeroSection({ heroImage }) {
           transition={{ duration: 1, delay: 0.3 }}
         >
           <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl">
-            Welcome to Your <span className="italic">Next Home</span>
+            Welcome to Your<br />
+            <span className="italic">Next Home</span>
           </h1>
 
           <div className="flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm mb-10">
