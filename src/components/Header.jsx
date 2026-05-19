@@ -71,7 +71,7 @@ export default function Header() {
               )}
               <Link
                 to="/properties"
-                className="ghost-btn text-xs">
+                className={`text-xs ${isHomepage ? "ghost-btn-light" : "ghost-btn"}`}>
                 
                 View Collection
               </Link>

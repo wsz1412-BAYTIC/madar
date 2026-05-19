@@ -85,7 +85,7 @@ export default function HeroSection({ heroImage }) {
             <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
           </div>
 
-          <button onClick={handleSearch} className="ghost-btn border-white/30 text-white hover:bg-white hover:text-foreground hover:border-white">
+          <button onClick={handleSearch} className="ghost-btn-light">
             Search Properties
           </button>
         </motion.div>
