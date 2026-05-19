@@ -26,11 +26,14 @@ export default function Header() {
   }, [location]);
 
   const navLinks = [
-  { label: "Collection", path: "/properties" },
-  { label: "Sell", path: "/sell" },
-  { label: "Insights", path: "/blog" },
-  { label: "About", path: "/about" }];
+   { label: "Collection", path: "/properties" },
+   { label: "Sell", path: "/sell" },
+   { label: "Insights", path: "/blog" },
+   { label: "About", path: "/about" }];
 
+  const isHomepage = location.pathname === "/";
+  const textColor = isHomepage ? "text-white" : scrolled ? "text-foreground" : "text-foreground";
+  const linkColor = isHomepage ? "text-white/70" : "text-foreground/70";
 
   return (
     <>
@@ -38,18 +41,18 @@ export default function Header() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
         hidden ? "-translate-y-full" : "translate-y-0"} ${
 
-        scrolled ?
-        "bg-black/60 backdrop-blur-xl border-b border-white/10" :
+        scrolled && !isHomepage ?
+        "bg-background/95 backdrop-blur-xl border-b border-border/50" :
         "bg-transparent"}`
         }>
         
         <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="flex items-center justify-between h-20 md:h-24">
             <Link to="/" className="relative z-10">
-              <span className="font-display text-2xl md:text-3xl font-light tracking-editorial text-[hsl(var(--background))]">MAISON
+              <span className={`font-display text-2xl md:text-3xl font-light tracking-editorial ${textColor}`}>MAISON
 
               </span>
-              <span className="hidden md:inline font-display text-2xl md:text-3xl font-light tracking-editorial text-[#facca3]"> ESTATE
+              <span className={`hidden md:inline font-display text-2xl md:text-3xl font-light tracking-editorial ${isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
 
               </span>
             </Link>
@@ -59,11 +62,11 @@ export default function Header() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`font-body text-xs tracking-label uppercase transition-colors duration-300 hover:text-accent ${
-                location.pathname === link.path ? "text-accent" : "text-foreground/70"}`
-                }>
-                
-                  {link.label}
+                className={`font-body text-xs tracking-label uppercase transition-colors duration-300 ${
+                location.pathname === link.path ? "text-accent" : isHomepage ? "text-white/70" : "text-foreground/70"}`}
+                >
+
+                   {link.label}
                 </Link>
               )}
               <Link
@@ -76,9 +79,9 @@ export default function Header() {
 
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden relative z-10 p-2"
+              className={`md:hidden relative z-10 p-2 ${textColor}`}
               aria-label="Toggle menu">
-              
+
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
