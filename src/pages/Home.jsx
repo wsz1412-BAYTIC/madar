@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div>
-      <HeroSection heroImage="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/aedf3beaf_generated_8932e4c7.png" />
+      <HeroSection heroImage="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/7b8998abf_Base44Templates_ChatGPTImages20_2026-05-19_14-46-25.png" />
       <HighPriorityListings properties={properties} />
       <div className="hairline max-w-[1400px] mx-auto" />
       <NeighborhoodExpertise />
