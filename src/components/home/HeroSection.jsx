@@ -14,26 +14,26 @@ function SearchDropdown({ label, options, value, onChange }) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors border-b border-white/30 pb-1">
-        
+        className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors border-b border-white/30 pb-1"
+      >
         <span className="font-display text-lg md:text-xl italic">{value || label}</span>
         <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open &&
-      <div className="absolute top-full left-0 mt-2 bg-background/95 backdrop-blur-xl border border-border shadow-lg min-w-[200px] z-10">
-          {options.map((opt) =>
-        <button
-          key={opt}
-          onClick={() => {onChange(opt);setOpen(false);}}
-          className="block w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-accent/10 transition-colors">
-          
+      {open && (
+        <div className="absolute top-full left-0 mt-2 bg-background/95 backdrop-blur-xl border border-border shadow-lg min-w-[200px] z-10">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => { onChange(opt); setOpen(false); }}
+              className="block w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-accent/10 transition-colors"
+            >
               {opt}
             </button>
-        )}
+          ))}
         </div>
-      }
-    </div>);
-
+      )}
+    </div>
+  );
 }
 
 export default function HeroSection({ heroImage }) {
@@ -60,8 +60,8 @@ export default function HeroSection({ heroImage }) {
         <img
           src={heroImage}
           alt="Luxury estate at golden hour"
-          className="w-full h-full object-cover" />
-        
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/20 to-foreground/60" />
       </div>
 
@@ -69,19 +69,19 @@ export default function HeroSection({ heroImage }) {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}>
-          
+          transition={{ duration: 1, delay: 0.3 }}
+        >
           <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.8]">
             Welcome to Your<br />
             <span className="italic">Next Home</span>
           </h1>
 
           <div className="flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm mb-10">
-            <span className="text-[hsl(var(--background))]">I am looking for a</span>
+            <span className="text-white/70">I am looking for a</span>
             <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
-            <span className="text-[hsl(var(--background))]">in</span>
+            <span className="text-white/70">in</span>
             <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
-            <span className="text-[hsl(var(--background))]">at the price of</span>
+            <span className="text-white/70">at the price of</span>
             <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
           </div>
 
@@ -90,6 +90,6 @@ export default function HeroSection({ heroImage }) {
           </button>
         </motion.div>
       </div>
-    </section>);
-
+    </section>
+  );
 }
