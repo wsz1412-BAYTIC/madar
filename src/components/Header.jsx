@@ -39,7 +39,7 @@ export default function Header() {
           hidden ? "-translate-y-full" : "translate-y-0"
         } ${
           scrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
+            ? "bg-black/60 backdrop-blur-xl border-b border-white/10"
             : "bg-transparent"
         }`}
       >
