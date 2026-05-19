@@ -62,7 +62,7 @@ export default function HeroSection({ heroImage }) {
           alt="Luxury estate at golden hour"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/20 to-foreground/60" />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       </div>
 
       <div className="relative z-10 h-full flex flex-col justify-end pb-20 md:pb-32 px-6 md:px-12 max-w-[1400px] mx-auto">
