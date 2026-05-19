@@ -74,7 +74,7 @@ export default function HeroSection({ heroImage }) {
             <span className="italic">Next Home</span>
           </h1>
 
-          <div className="flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm mb-10">
+          <div className="inline-flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm mb-10 bg-black/40 backdrop-blur-md px-6 py-3 rounded-full">
             <span className="text-white">I am looking for a</span>
             <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
             <span className="text-white">in</span>
