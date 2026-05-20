@@ -82,6 +82,15 @@ export default function Footer() {
                   <Link to="/properties?type=Estate" className="font-body text-sm text-background/70 hover:text-background transition-colors">Estates</Link>
                 </nav>
               </div>
+              <div>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Follow</h3>
+                <nav className="flex flex-col gap-4">
+                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Instagram</a>
+                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Facebook</a>
+                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">YouTube</a>
+                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Pinterest</a>
+                </nav>
+              </div>
             </div>
           </div>
         </div>
