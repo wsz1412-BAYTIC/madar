@@ -53,14 +53,14 @@ export default function PropertyDetail() {
   return (
     <div className="pt-24">
       {/* Back navigation */}
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto mb-8">
+      <div className="px-6 md:px-12 3xl:px-16 max-w-[1600px] mx-auto mb-8">
         <Link to="/properties" className="inline-flex items-center gap-2 font-body text-xs tracking-label uppercase text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft size={14} /> Back to Collection
         </Link>
       </div>
 
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+      <div className="px-6 md:px-12 3xl:px-16 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 3xl:gap-20">
           {/* Left: Content */}
           <div className="lg:col-span-2">
             {/* Visual showcase filmstrip */}

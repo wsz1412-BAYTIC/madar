@@ -4,6 +4,9 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
+      screens: {
+        '3xl': '1920px',
+      },
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],

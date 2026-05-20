@@ -45,13 +45,13 @@ export default function Header() {
         "bg-transparent"}`
         }>
         
-        <div className="w-full px-6 md:px-12">
+        <div className="w-full px-6 md:px-12 3xl:px-16">
           <div className="flex items-center justify-between h-20 md:h-24">
             <Link to="/" className="relative z-10">
-              <span className={`font-display text-2xl md:text-3xl font-light tracking-editorial ${textColor}`}>MAISON
+              <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${textColor}`}>MAISON
 
               </span>
-              <span className={`hidden md:inline font-display text-2xl md:text-3xl font-light tracking-editorial ${isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
+              <span className={`hidden md:inline font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
 
               </span>
             </Link>
