@@ -105,8 +105,8 @@ export default function Header() {
               transition={{ delay: i * 0.1 + 0.2 }}>
               
                   <Link
-                to={link.path}
-                className="font-display text-display-md text-foreground hover:text-accent transition-colors">
+                  to={link.path}
+                  className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors">
                 
                     {link.label}
                   </Link>
