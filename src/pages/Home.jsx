@@ -32,7 +32,7 @@ export default function Home() {
 
   const parallaxRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: parallaxRef, offset: ["start end", "end start"] });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
   if (loading) {
     return (
@@ -51,13 +51,18 @@ export default function Home() {
       <ServicesOverview />
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
-      <section ref={parallaxRef} className="w-full h-[500px] md:h-[600px] overflow-hidden">
-        <motion.img
-          src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/20f7e06fd_generated_image.png"
-          alt="Modern kitchen design"
-          className="w-full h-[130%] object-cover"
+      <section className="w-full h-[500px] md:h-[600px] overflow-hidden relative">
+        <motion.div
+          ref={parallaxRef}
+          className="absolute inset-0 w-full h-[130%] top-[-15%]"
           style={{ y: parallaxY }}
-        />
+        >
+          <img
+            src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/20f7e06fd_generated_image.png"
+            alt="Modern kitchen design"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
       </section>
       <ClientStories testimonials={testimonials} />
     </div>);
