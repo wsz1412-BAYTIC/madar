@@ -166,11 +166,15 @@ export default function PropertyDetail() {
             {(property.latitude && property.longitude) && (
               <div className="mb-10">
                 <h2 className="font-display text-display-sm font-light mb-6">Location & Amenities</h2>
-                <div className="aspect-[16/9] bg-secondary flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin size={32} className="mx-auto text-muted-foreground mb-3" />
-                    <p className="font-body text-sm text-muted-foreground">{property.address}, {property.city}</p>
-                  </div>
+                <div className="aspect-[16/9] overflow-hidden">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    src={`https://www.google.com/maps?q=${property.latitude},${property.longitude}&z=15&output=embed`}
+                  />
                 </div>
               </div>
             )}
