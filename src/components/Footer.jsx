@@ -23,7 +23,7 @@ export default function Footer() {
   return (
     <footer className="bg-foreground text-background w-full">
       <div className="px-6 md:px-12 3xl:px-16 max-w-6xl mx-auto">
-        <div className="py-20 md:py-32">
+        <div className="py-24 md:py-40">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
             <div>
               <h2 className="font-display text-display-lg font-light mb-6">
