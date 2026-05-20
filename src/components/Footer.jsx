@@ -101,11 +101,11 @@ export default function Footer() {
 
       <div className="border-t border-background/10 py-8 bg-foreground">
         <div className="px-[2%]">
-          <div className="flex flex-col gap-4">
-            <span className="font-display text-xl font-light tracking-editorial">
+          <div className="flex flex-col md:flex-row items-center justify-start gap-4">
+            <span className="font-display text-xl font-light tracking-editorial order-first">
               MAISON <span className="text-background/50">ESTATE</span>
             </span>
-            <span className="font-body text-xs text-background/40">
+            <span className="font-body text-xs text-background/40 ml-auto">
               © {new Date().getFullYear()} Maison Estate. All rights reserved.
             </span>
           </div>
