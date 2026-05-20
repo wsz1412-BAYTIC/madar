@@ -100,7 +100,7 @@ export default function Footer() {
       </div>
 
       <div className="w-full border-t border-background/10 py-8">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 3xl:px-16 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="font-display text-xl font-light tracking-editorial">
             MAISON <span className="text-background/50">ESTATE</span>
           </span>
