@@ -105,7 +105,7 @@ export default function Footer() {
             <span className="font-display text-xl font-light tracking-editorial order-first">
               MAISON <span className="text-background/50">ESTATE</span>
             </span>
-            <span className="font-body text-xs text-background/40 ml-auto">
+            <span className="font-body text-xs text-background/40">
               © {new Date().getFullYear()} Maison Estate. All rights reserved.
             </span>
           </div>
