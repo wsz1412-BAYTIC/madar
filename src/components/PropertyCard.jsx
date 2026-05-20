@@ -29,9 +29,9 @@ export default function PropertyCard({ property, size = "default" }) {
             alt={property.title}
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
           />
-          {isLarge && (
+          {property.title === "Marina District Waterfront Estate" && (
             <motion.img
-              src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
+              src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/808df4276_Badge_1.svg"
               alt="Badge"
               className="absolute top-6 right-6 w-24 h-24 md:w-32 md:h-32"
               {...rotateAnimation}
