@@ -32,7 +32,7 @@ export default function Home() {
 
   const parallaxRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: parallaxRef, offset: ["start end", "end start"] });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
 
   if (loading) {
     return (
@@ -55,7 +55,7 @@ export default function Home() {
       <section className="w-full h-[500px] md:h-[600px] overflow-hidden relative">
         <motion.div
           ref={parallaxRef}
-          className="absolute inset-0 w-full h-[130%] top-[-15%]"
+          className="absolute inset-0 w-full h-[140%] top-[-20%]"
           style={{ y: parallaxY }}
         >
           <img
