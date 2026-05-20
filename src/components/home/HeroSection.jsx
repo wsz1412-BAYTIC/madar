@@ -20,7 +20,7 @@ function SearchDropdown({ label, options, value, onChange }) {
         <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-2 bg-white/60 backdrop-blur-xl border border-border shadow-lg min-w-[200px] z-10 rounded">
+        <div className="absolute top-full left-0 mt-2 bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg min-w-[200px] z-10 rounded">
           {options.map((opt) => (
             <button
               key={opt}
