@@ -51,6 +51,7 @@ export default function Home() {
       <ServicesOverview />
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
+      <ClientStories testimonials={testimonials} />
       <section className="w-full h-[500px] md:h-[600px] overflow-hidden relative">
         <motion.div
           ref={parallaxRef}
@@ -64,7 +65,6 @@ export default function Home() {
           />
         </motion.div>
       </section>
-      <ClientStories testimonials={testimonials} />
     </div>);
 
 }
