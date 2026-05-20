@@ -61,11 +61,11 @@ export default function Header() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`font-body text-xs tracking-label uppercase transition-colors duration-300 hover:text-[#976620] ${
+                className={`font-body text-xs tracking-label uppercase relative group pb-1 ${
                 location.pathname === link.path ? "text-accent" : isHomepage ? "text-white/70" : "text-foreground/70"}`}
                 >
-
                    {link.label}
+                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </Link>
               )}
               <Link
