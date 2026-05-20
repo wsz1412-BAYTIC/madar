@@ -15,7 +15,7 @@ export default function Sell() {
   return (
     <div className="min-h-screen">
       {/* Intro Section */}
-      <section className="pt-40 pb-24 md:pb-32 px-6 md:px-12 max-w-[1400px] mx-auto">
+      <section className="pt-40 pb-24 md:pb-32 px-[2%] max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ export default function Sell() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
+      <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

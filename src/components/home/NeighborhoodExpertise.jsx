@@ -25,7 +25,7 @@ const neighborhoods = [
 export default function NeighborhoodExpertise() {
   return (
     <section className="py-24 md:py-40 bg-secondary/30">
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
+      <div className="px-[2%] max-w-[1400px] mx-auto">
         <div className="text-center mb-16 md:mb-24">
           <h2 className="font-display text-display-lg font-light mt-3">
             Neighborhood <span className="italic">Expertise</span>

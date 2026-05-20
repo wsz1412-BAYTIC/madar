@@ -34,7 +34,7 @@ export default function About() {
   return (
     <div className="pt-32 pb-24">
       {/* Company Mission */}
-      <section className="px-6 md:px-12 max-w-[1400px] mx-auto mb-24 md:mb-40">
+      <section className="px-[2%] max-w-[1400px] mx-auto mb-24 md:mb-40">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ export default function About() {
       <div className="hairline max-w-[1400px] mx-auto" />
 
       {/* Team Directory */}
-      <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
+      <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
         <div className="text-center mb-16 md:mb-24">
           <h2 className="font-display text-display-lg font-light mt-3">
             Meet the <span className="italic">Advisors</span>
@@ -132,7 +132,7 @@ export default function About() {
       <div className="hairline max-w-[1400px] mx-auto" />
 
       {/* Credentials & Awards */}
-      <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
+      <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           <div>
             <h2 className="font-display text-display-lg font-light mt-3">
@@ -167,7 +167,7 @@ export default function About() {
 
       {/* Community Impact */}
       <section className="py-24 md:py-40 bg-secondary/30">
-        <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="px-[2%] max-w-[1400px] mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-display text-display-lg font-light mt-3">
               Community <span className="italic">Impact</span>
@@ -193,7 +193,7 @@ export default function About() {
       </section>
 
       {/* Contact / Inquiry */}
-      <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
+      <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           <div>
             <h2 className="font-display text-display-lg font-light mt-3 mb-6">

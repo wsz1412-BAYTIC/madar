@@ -6,7 +6,7 @@ export default function HighPriorityListings({ properties }) {
   if (!properties || properties.length === 0) return null;
 
   return (
-    <section id="listings" className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
+    <section id="listings" className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
       <div className="flex items-end justify-between mb-16">
         <div>
           <h2 className="font-display text-display-lg font-light mt-3">
