@@ -59,7 +59,7 @@ export default function Home() {
           style={{ y: parallaxY }}
         >
           <img
-            src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/010a99009_generated_image.png"
+            src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/6dda216cf_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-19_14-53-44.jpg"
             alt="Luxury brutalist modern home"
             className="w-full h-full object-cover"
           />
