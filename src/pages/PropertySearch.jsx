@@ -26,6 +26,7 @@ export default function PropertySearch() {
 
   useEffect(() => {
     setFilters(getFiltersFromUrl());
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.search]);
 
   useEffect(() => {
