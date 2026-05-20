@@ -14,26 +14,26 @@ function SearchDropdown({ label, options, value, onChange }) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors border-b border-white/30 pb-1"
-      >
+        className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors border-b border-white/30 pb-1">
+        
         <span className="font-display text-lg md:text-xl italic">{value || label}</span>
         <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && (
-        <div className="absolute top-full left-0 mt-2 bg-white backdrop-blur-xl border border-white/20 shadow-lg min-w-[200px] z-10 rounded">
-          {options.map((opt) => (
-            <button
-              key={opt}
-              onClick={() => { onChange(opt); setOpen(false); }}
-              className="block w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-accent/10 transition-colors"
-            >
+      {open &&
+      <div className="absolute top-full left-0 mt-2 bg-white backdrop-blur-xl border border-white/20 shadow-lg min-w-[200px] z-10 rounded">
+          {options.map((opt) =>
+        <button
+          key={opt}
+          onClick={() => {onChange(opt);setOpen(false);}}
+          className="block w-full text-left px-4 py-3 font-body text-sm text-foreground hover:bg-accent/10 transition-colors">
+          
               {opt}
             </button>
-          ))}
+        )}
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 export default function HeroSection({ heroImage }) {
@@ -58,8 +58,8 @@ export default function HeroSection({ heroImage }) {
     <section className="relative h-screen w-full overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      >
+        style={{ backgroundImage: `url(${heroImage})` }}>
+        
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
       </div>
 
@@ -67,13 +67,13 @@ export default function HeroSection({ heroImage }) {
         <img
           src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
           alt="Badge"
-          className="absolute top-8 right-8 w-24 h-24 md:w-32 md:h-32"
-        />
+          className="absolute top-8 right-8 w-24 h-24 md:w-32 md:h-32 hidden" />
+        
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
+          transition={{ duration: 1, delay: 0.3 }}>
+          
           <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.9]">
             Welcome to Your<br />
             <span className="italic">Next <span className="not-italic font-normal">Home</span></span>
@@ -95,6 +95,6 @@ export default function HeroSection({ heroImage }) {
           </div>
         </motion.div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
