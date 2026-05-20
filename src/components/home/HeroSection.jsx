@@ -64,6 +64,11 @@ export default function HeroSection({ heroImage }) {
       </div>
 
       <div className="relative z-10 h-full flex flex-col justify-start pt-[35vh] px-6 md:px-12 max-w-[1400px] mx-auto">
+        <img
+          src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
+          alt="Badge"
+          className="absolute top-8 right-8 w-24 h-24 md:w-32 md:h-32"
+        />
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
