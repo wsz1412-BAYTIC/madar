@@ -58,7 +58,7 @@ export default function Footer() {
             <div className="grid grid-cols-2 gap-x-12 gap-y-12">
               {/* Row 1: Navigate (left) + Categories (right) */}
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Navigate</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-6">Navigate</h3>
                 <nav className="flex flex-col gap-2">
                   <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">Home</Link>
                   <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Collection</Link>
@@ -66,7 +66,7 @@ export default function Footer() {
                 </nav>
               </div>
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Categories</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-6">Categories</h3>
                 <nav className="flex flex-col gap-2">
                   <Link to="/properties?type=Penthouse" className="font-body text-sm text-background/70 hover:text-background transition-colors">Penthouses</Link>
                   <Link to="/properties?type=Waterfront" className="font-body text-sm text-background/70 hover:text-background transition-colors">Waterfront</Link>
@@ -76,7 +76,7 @@ export default function Footer() {
               </div>
               {/* Row 2: Contact (left) + Follow (right) */}
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-4">Contact</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">Contact</h3>
                 <address className="not-italic flex flex-col gap-2 font-body text-sm text-background/70">
                   <span>500 Terry Francine St.</span>
                   <span>San Francisco, CA 94158</span>
@@ -85,7 +85,7 @@ export default function Footer() {
                 </address>
               </div>
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Follow</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-6">Follow</h3>
                 <nav className="flex flex-col gap-2">
                   <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Instagram</a>
                   <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Facebook</a>
