@@ -182,7 +182,7 @@ export default function PropertyDetail() {
 
           {/* Right: Sticky Inquiry */}
           <div className="lg:col-span-1">
-            <div className="lg:sticky lg:top-28">
+            <div className="lg:sticky lg:top-6">
               <div className="border border-border/50 p-8">
                 <h3 className="font-display text-2xl font-light mb-2">Schedule a Viewing</h3>
                 <p className="font-body text-xs text-muted-foreground mb-6">
