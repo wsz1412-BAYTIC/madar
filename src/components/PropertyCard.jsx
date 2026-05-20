@@ -3,9 +3,7 @@ import { motion } from "framer-motion";
 
 const rotateAnimation = {
   animate: { rotate: 360 },
-  transition: { 
-    rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-  },
+  transition: { duration: 20, repeat: Infinity, ease: "linear" },
 };
 
 export default function PropertyCard({ property, size = "default" }) {
