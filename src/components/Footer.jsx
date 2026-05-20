@@ -59,7 +59,7 @@ export default function Footer() {
               {/* Row 1: Navigate (left) + Categories (right) */}
               <div>
                 <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Navigate</h3>
-                <nav className="flex flex-col gap-4">
+                <nav className="flex flex-col gap-2">
                   <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">Home</Link>
                   <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Collection</Link>
                   <Link to="/about" className="font-body text-sm text-background/70 hover:text-background transition-colors">About</Link>
@@ -67,7 +67,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Categories</h3>
-                <nav className="flex flex-col gap-4">
+                <nav className="flex flex-col gap-2">
                   <Link to="/properties?type=Penthouse" className="font-body text-sm text-background/70 hover:text-background transition-colors">Penthouses</Link>
                   <Link to="/properties?type=Waterfront" className="font-body text-sm text-background/70 hover:text-background transition-colors">Waterfront</Link>
                   <Link to="/properties?type=Modernist" className="font-body text-sm text-background/70 hover:text-background transition-colors">Modernist</Link>
@@ -86,7 +86,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Follow</h3>
-                <nav className="flex flex-col gap-4">
+                <nav className="flex flex-col gap-2">
                   <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Instagram</a>
                   <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Facebook</a>
                   <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">YouTube</a>
