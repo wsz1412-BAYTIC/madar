@@ -26,7 +26,7 @@ export default function Header() {
   }, [location]);
 
   const navLinks = [
-   { label: "Collection", path: "/properties" },
+   { label: "Properties", path: "/properties" },
    { label: "Sell", path: "/sell" },
    { label: "About", path: "/about" }];
 

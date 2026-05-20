@@ -61,7 +61,7 @@ export default function Footer() {
                 <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-6">Navigate</h3>
                 <nav className="flex flex-col gap-2">
                   <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">Home</Link>
-                  <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Collection</Link>
+                  <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Properties</Link>
                   <Link to="/sell" className="font-body text-sm text-background/70 hover:text-background transition-colors">Sell</Link>
                   <Link to="/about" className="font-body text-sm text-background/70 hover:text-background transition-colors">About</Link>
                 </nav>
