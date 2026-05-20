@@ -3,25 +3,30 @@ import { base44 } from "@/api/base44Client";
 import PropertyCard from "../components/PropertyCard";
 import FeaturedCard from "../components/FeaturedCard";
 import PropertyFilters, { priceRanges } from "../components/PropertyFilters";
-
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function PropertySearch() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const initType = urlParams.get("type") || "All Types";
-  const initLocation = urlParams.get("location") || "All Locations";
-  const initPrice = urlParams.get("price") || "Any Price";
+  const getFiltersFromUrl = () => {
+    const urlParams = new URLSearchParams(location.search);
+    return {
+      type: urlParams.get("type") || "All Types",
+      price: urlParams.get("price") || "Any Price",
+      beds: "Any Beds",
+      location: urlParams.get("location") || "All Locations",
+      search: "",
+    };
+  };
 
-  const [filters, setFilters] = useState({
-    type: initType,
-    price: initPrice,
-    beds: "Any Beds",
-    location: initLocation,
-    search: "",
-  });
+  const [filters, setFilters] = useState(getFiltersFromUrl);
+
+  useEffect(() => {
+    setFilters(getFiltersFromUrl());
+  }, [location.search]);
 
   useEffect(() => {
     const load = async () => {
