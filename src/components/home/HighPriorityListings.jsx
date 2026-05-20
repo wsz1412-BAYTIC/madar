@@ -21,13 +21,21 @@ export default function HighPriorityListings({ properties }) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        {properties.slice(0, 4).map((property, i) => (
-          <div key={property.id} className={i === 0 ? "md:col-span-2 md:row-span-2" : ""}>
-            <PropertyCard property={property} size={i === 0 ? "large" : "default"} />
-          </div>
-        ))}
-      </div>
+      {/* Big featured card on top */}
+      {properties[0] && (
+        <div className="mb-6 md:mb-8">
+          <PropertyCard property={properties[0]} size="large" />
+        </div>
+      )}
+
+      {/* 3 smaller cards below */}
+      {properties.length > 1 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {properties.slice(1, 4).map((property) => (
+            <PropertyCard key={property.id} property={property} />
+          ))}
+        </div>
+      )}
 
       <div className="mt-12 md:hidden text-center">
         <Link to="/properties" className="ghost-btn inline-block">
