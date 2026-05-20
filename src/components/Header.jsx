@@ -45,7 +45,7 @@ export default function Header() {
         "bg-transparent"}`
         }>
         
-        <div className="px-[30px]">
+        <div className="px-[30px] max-w-none">
           <div className="flex items-center justify-between h-20 md:h-24">
             <Link to="/" className="relative z-10">
               <span className={`font-display text-2xl md:text-3xl font-light tracking-editorial ${textColor}`}>MAISON
