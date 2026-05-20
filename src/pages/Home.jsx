@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import HeroSection from "../components/home/HeroSection";
 import HighPriorityListings from "../components/home/HighPriorityListings";
@@ -30,18 +31,8 @@ export default function Home() {
   }, []);
 
   const parallaxRef = useRef(null);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!parallaxRef.current) return;
-      const rect = parallaxRef.current.getBoundingClientRect();
-      const offset = (rect.top / window.innerHeight) * 40;
-      setParallaxOffset(offset);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollYProgress } = useScroll({ target: parallaxRef, offset: ["start end", "end start"] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   if (loading) {
     return (
@@ -61,11 +52,11 @@ export default function Home() {
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
       <section ref={parallaxRef} className="w-full h-[500px] md:h-[600px] overflow-hidden">
-        <img
+        <motion.img
           src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/20f7e06fd_generated_image.png"
           alt="Modern kitchen design"
-          className="w-full h-[120%] object-cover"
-          style={{ transform: `translateY(${parallaxOffset}px)` }}
+          className="w-full h-[130%] object-cover"
+          style={{ y: parallaxY }}
         />
       </section>
       <ClientStories testimonials={testimonials} />
