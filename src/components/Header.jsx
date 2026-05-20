@@ -65,7 +65,7 @@ export default function Header() {
                 location.pathname === link.path ? "text-accent" : isHomepage ? "text-white/70" : "text-foreground/70"}`}
                 >
                    {link.label}
-                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                   <span className="absolute bottom-0 left-0 w-full h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                 </Link>
               )}
               <Link
