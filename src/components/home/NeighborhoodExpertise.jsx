@@ -1,28 +1,41 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { base44 } from "@/api/base44Client";
 
 const neighborhoods = [
   {
     name: "Pacific Heights",
     tagline: "Grand estates and panoramic bay views",
     image: "https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/549d642e5_generated_c90ff458.png",
-    properties: 24,
   },
   {
     name: "Marina District",
     tagline: "Waterfront living at its finest",
     image: "https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/1e5e447e3_generated_bd2f305c.png",
-    properties: 18,
   },
   {
     name: "Nob Hill",
     tagline: "Historic elegance meets modern luxury",
     image: "https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/6d063e766_generated_bc4b1d6d.png",
-    properties: 15,
   },
 ];
 
 export default function NeighborhoodExpertise() {
+  const [neighborhoodCounts, setNeighborhoodCounts] = useState({});
+
+  useEffect(() => {
+    const load = async () => {
+      const properties = await base44.entities.Property.list("-created_date", 1000);
+      const counts = {};
+      neighborhoods.forEach((n) => {
+        counts[n.name] = properties.filter((p) => p.neighborhood === n.name).length;
+      });
+      setNeighborhoodCounts(counts);
+    };
+    load();
+  }, []);
+
   return (
     <section className="py-24 md:py-40 bg-secondary/30">
       <div className="px-[2%] max-w-[1400px] mx-auto">
@@ -58,7 +71,7 @@ export default function NeighborhoodExpertise() {
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                     <p className="font-body text-xs tracking-label uppercase text-white/60 mb-2">
-                      {n.properties} Properties
+                      {neighborhoodCounts[n.name] || 0} Properties
                     </p>
                     <h3 className="font-display text-2xl md:text-3xl text-white font-light">
                       {n.name}
