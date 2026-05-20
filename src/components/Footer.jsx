@@ -56,6 +56,15 @@ export default function Footer() {
             </div>
 
             <div className="grid grid-cols-2 gap-12">
+              <div className="col-span-2 mb-4">
+                <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-4">Contact</h3>
+                <address className="not-italic flex flex-col gap-2 font-body text-sm text-background/70">
+                  <span>500 Terry Francine St.</span>
+                  <span>San Francisco, CA 94158</span>
+                  <a href="tel:1234567890" className="hover:text-background transition-colors mt-1">123-456-7890</a>
+                  <a href="mailto:info@mysite.com" className="hover:text-background transition-colors">info@mysite.com</a>
+                </address>
+              </div>
               <div>
                 <h3 className="font-body text-xs tracking-label uppercase text-background/40 mb-6">Navigate</h3>
                 <nav className="flex flex-col gap-4">
