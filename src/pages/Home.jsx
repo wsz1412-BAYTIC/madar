@@ -59,8 +59,8 @@ export default function Home() {
           style={{ y: parallaxY }}
         >
           <img
-            src="https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/20f7e06fd_generated_image.png"
-            alt="Modern kitchen design"
+            src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/010a99009_generated_image.png"
+            alt="Luxury brutalist modern home"
             className="w-full h-full object-cover"
           />
         </motion.div>
