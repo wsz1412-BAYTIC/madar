@@ -99,13 +99,15 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-background/10 py-8 px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
-        <span className="font-display text-xl font-light tracking-editorial">
-          MAISON <span className="text-background/50">ESTATE</span>
-        </span>
-        <span className="font-body text-xs text-background/40">
-          © {new Date().getFullYear()} Maison Estate. All rights reserved.
-        </span>
+      <div className="w-full border-t border-background/10 py-8">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="font-display text-xl font-light tracking-editorial">
+            MAISON <span className="text-background/50">ESTATE</span>
+          </span>
+          <span className="font-body text-xs text-background/40">
+            © {new Date().getFullYear()} Maison Estate. All rights reserved.
+          </span>
+        </div>
       </div>
     </footer>
   );
