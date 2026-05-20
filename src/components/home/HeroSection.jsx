@@ -69,7 +69,7 @@ export default function HeroSection({ heroImage }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.8]">
+          <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.9]">
             Welcome to Your<br />
             <span className="italic">Next Home</span>
           </h1>
