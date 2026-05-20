@@ -99,9 +99,9 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-background/10 py-8">
-        <div className="px-6 md:px-12 3xl:px-16">
-          <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-background/10 py-8 bg-foreground z-40">
+        <div className="pl-[2%]">
+          <div className="flex flex-col md:flex-row items-center justify-start gap-4">
             <span className="font-display text-xl font-light tracking-editorial order-first">
               MAISON <span className="text-background/50">ESTATE</span>
             </span>
