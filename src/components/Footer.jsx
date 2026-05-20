@@ -22,7 +22,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-foreground text-background w-full">
-      <div className="max-w-[1440px] mx-auto px-12">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 3xl:px-16">
         <div className="py-20 md:py-32">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
             <div>
@@ -100,7 +100,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-background/10 py-8">
-        <div className="px-12">
+        <div className="px-6 md:px-12 3xl:px-16">
           <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <span className="font-display text-xl font-light tracking-editorial">
               MAISON <span className="text-background/50">ESTATE</span>
