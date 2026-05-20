@@ -66,7 +66,7 @@ export default function About() {
             <img
               src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/a725d6d49_ConstructionsWebsite_Gemini3NanoBananaPro_2026-03-11_19-19-00.png"
               alt="Modern architecture office"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover"
             />
           </motion.div>
         </div>
