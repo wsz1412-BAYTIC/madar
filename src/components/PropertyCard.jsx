@@ -24,8 +24,11 @@ export default function PropertyCard({ property, size = "default" }) {
             alt={property.title}
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-700" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out">
+          {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
+          <div className="absolute bottom-0 left-0 right-0 h-2/3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out"
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)", backdropFilter: "blur(0px)" }}
+          />
+          <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 ease-out">
             <div className="flex items-end justify-between text-white">
               <span className="font-display text-2xl font-light">{formatPrice(property.price)}</span>
               <span className="font-body text-xs tracking-label uppercase">{property.sqft?.toLocaleString()} sqft</span>
