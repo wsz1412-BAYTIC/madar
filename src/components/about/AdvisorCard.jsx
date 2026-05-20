@@ -12,7 +12,7 @@ export default function AdvisorCard({ agent, index }) {
         <img
           src={agent.photo}
           alt={agent.name}
-          className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+          className="w-full h-full object-cover"
         />
       </div>
       <h3 className="font-display text-2xl font-light">{agent.name}</h3>
