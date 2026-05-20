@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import PropertyCard from "../components/PropertyCard";
+import FeaturedCard from "../components/FeaturedCard";
 import PropertyFilters, { priceRanges } from "../components/PropertyFilters";
 
 import { motion } from "framer-motion";
@@ -80,12 +81,18 @@ export default function PropertySearch() {
           <p className="font-body text-sm text-muted-foreground mt-3">Try adjusting your filters</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12">
-          {filtered.map((property, i) => (
-            <div key={property.id} className={i % 5 === 0 ? "md:col-span-2" : ""}>
-              <PropertyCard property={property} size={i % 5 === 0 ? "large" : "default"} />
+        <div className="mt-12 space-y-8">
+          {/* First card — large horizontal with text on the side */}
+          <FeaturedCard property={filtered[0]} />
+
+          {/* Rest — small grid */}
+          {filtered.length > 1 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {filtered.slice(1).map((property) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>
