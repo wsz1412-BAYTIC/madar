@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-background/10 py-8 bg-foreground z-40">
+      <div className="border-t border-background/10 py-8 bg-foreground">
         <div className="px-[2%]">
           <div className="flex flex-col md:flex-row items-center justify-start gap-4">
             <span className="font-display text-xl font-light tracking-editorial order-first">
