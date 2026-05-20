@@ -19,7 +19,7 @@ export default function ClientStories({ testimonials }) {
   const next = () => setCurrent((c) => (c === testimonials.length - 1 ? 0 : c + 1));
 
   return (
-    <section className="py-24 md:py-40 px-6 md:px-12 max-w-[1400px] mx-auto">
+    <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
       <div className="text-center mb-16">
 
         <h2 className="font-display text-display-lg font-light mt-3">

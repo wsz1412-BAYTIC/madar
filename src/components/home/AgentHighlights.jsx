@@ -6,7 +6,7 @@ export default function AgentHighlights({ agents }) {
 
   return (
     <section className="py-24 md:py-40 bg-secondary/30">
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
+      <div className="px-[2%] max-w-[1400px] mx-auto">
         <div className="flex items-end justify-between mb-16">
           <div>
               <h2 className="font-display text-display-lg font-light mt-3">
