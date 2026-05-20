@@ -71,7 +71,7 @@ export default function HeroSection({ heroImage }) {
         >
           <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.9]">
             Welcome to Your<br />
-            <span className="italic">Next Home</span>
+            <span className="italic">Next <span className="not-italic font-normal">Home</span></span>
           </h1>
 
           <div className="flex flex-col items-start gap-4">
