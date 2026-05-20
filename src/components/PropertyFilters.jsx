@@ -42,7 +42,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
           <SelectTrigger className="w-[180px] bg-transparent border-border/50 font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-[6px]">
             {locations.map((l) => (
               <SelectItem key={l} value={l}>{l}</SelectItem>
             ))}
@@ -53,7 +53,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
           <SelectTrigger className="w-[160px] bg-transparent border-border/50 font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-[6px]">
             {propertyTypes.map((t) => (
               <SelectItem key={t} value={t}>{t}</SelectItem>
             ))}
@@ -64,7 +64,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
           <SelectTrigger className="w-[160px] bg-transparent border-border/50 font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-[6px]">
             {priceRanges.map((p) => (
               <SelectItem key={p.label} value={p.label}>{p.label}</SelectItem>
             ))}
@@ -75,7 +75,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
           <SelectTrigger className="w-[120px] bg-transparent border-border/50 font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-[6px]">
             {bedOptions.map((b) => (
               <SelectItem key={b} value={b}>{b}</SelectItem>
             ))}
