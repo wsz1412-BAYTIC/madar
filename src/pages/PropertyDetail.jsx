@@ -162,8 +162,8 @@ export default function PropertyDetail() {
               </div>
             )}
 
-            {/* Map placeholder */}
-            {(property.latitude && property.longitude) && (
+            {/* Map */}
+            {property.address && (
               <div className="mb-10">
                 <h2 className="font-display text-display-sm font-light mb-6">Location & Amenities</h2>
                 <div className="aspect-[16/9] overflow-hidden">
@@ -173,7 +173,7 @@ export default function PropertyDetail() {
                     style={{ border: 0 }}
                     loading="lazy"
                     allowFullScreen
-                    src={`https://www.google.com/maps?q=${property.latitude},${property.longitude}&z=15&output=embed`}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(`${property.address}, ${property.city}, ${property.state} ${property.zip_code}`)}&z=15&output=embed`}
                   />
                 </div>
               </div>
