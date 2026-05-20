@@ -19,17 +19,17 @@ export default function About() {
   }, []);
 
   const credentials = [
-    { icon: Award, label: "Luxury Collection Specialist", year: "Since 2008" },
-    { icon: Award, label: "Top 1% Nationwide", year: "2019 – Present" },
-    { icon: Award, label: "Best Real Estate Agency", year: "City Awards 2023" },
-    { icon: Award, label: "Diamond Circle of Excellence", year: "2020 – Present" },
-  ];
+  { icon: Award, label: "Luxury Collection Specialist", year: "Since 2008" },
+  { icon: Award, label: "Top 1% Nationwide", year: "2019 – Present" },
+  { icon: Award, label: "Best Real Estate Agency", year: "City Awards 2023" },
+  { icon: Award, label: "Diamond Circle of Excellence", year: "2020 – Present" }];
+
 
   const impacts = [
-    { icon: Heart, title: "Habitat for Humanity", description: "Annual partnership building homes for families in need across the metropolitan area." },
-    { icon: Users, title: "Youth Mentorship", description: "Sponsoring internship programs for underrepresented students pursuing real estate careers." },
-    { icon: MapPin, title: "Historic Preservation", description: "Active stewardship of the city's architectural heritage through restoration advocacy." },
-  ];
+  { icon: Heart, title: "Habitat for Humanity", description: "Annual partnership building homes for families in need across the metropolitan area." },
+  { icon: Users, title: "Youth Mentorship", description: "Sponsoring internship programs for underrepresented students pursuing real estate careers." },
+  { icon: MapPin, title: "Historic Preservation", description: "Active stewardship of the city's architectural heritage through restoration advocacy." }];
+
 
   return (
     <div className="pt-32 pb-24">
@@ -39,8 +39,8 @@ export default function About() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+            transition={{ duration: 0.8 }}>
+            
             <h1 className="font-display text-display-xl font-light mt-4 mb-8">
               A Legacy of<br />
               <span className="italic">Distinction</span>
@@ -61,13 +61,13 @@ export default function About() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="overflow-hidden"
-          >
+            className="overflow-hidden">
+            
             <img
               src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/a725d6d49_ConstructionsWebsite_Gemini3NanoBananaPro_2026-03-11_19-19-00.png"
               alt="Modern architecture office"
-              className="w-full h-full object-cover"
-            />
+              className="w-full h-full object-cover" />
+            
           </motion.div>
         </div>
       </section>
@@ -86,53 +86,60 @@ export default function About() {
           </p>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-16">
+        {loading ?
+        <div className="flex justify-center py-16">
             <div className="w-8 h-8 border-2 border-border border-t-accent rounded-full animate-spin" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
-            {agents.map((agent, i) => (
-              <motion.div
-                key={agent.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-              >
+          </div> :
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
+            {agents.map((agent, i) =>
+          <motion.div
+            key={agent.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: i * 0.1 }}>
+            
                 <div className="aspect-[3/4] overflow-hidden mb-6">
-                  <img
-                    src={agent.photo}
-                    alt={agent.name}
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                  />
+                  <img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/fe5d3696b_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-20_18-42-53.png"
+
+              alt={agent.name}
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+              
                 </div>
                 <h3 className="font-display text-2xl font-light">{agent.name}</h3>
                 <p className="font-body text-xs tracking-label uppercase text-accent mt-1 mb-4">{agent.title}</p>
                 
-                {agent.bio && (
-                  <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">{agent.bio}</p>
-                )}
+                {agent.bio &&
+            <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">{agent.bio}</p>
+            }
 
                 <div className="space-y-2 text-sm font-body">
-                  {agent.years_experience && (
-                    <p className="text-muted-foreground">{agent.years_experience} Years Experience</p>
-                  )}
-                  {agent.total_sales_volume && (
-                    <p className="text-muted-foreground">{agent.total_sales_volume} in Sales</p>
-                  )}
+                  {agent.years_experience &&
+              <p className="text-muted-foreground">{agent.years_experience} Years Experience</p>
+              }
+                  {agent.total_sales_volume &&
+              <p className="text-muted-foreground">{agent.total_sales_volume} in Sales</p>
+              }
                 </div>
 
-
+                {agent.notable_sales?.length > 0 &&
+            <div className="mt-4 pt-4 border-t border-border/50">
+                    <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-2">Notable Sales</p>
+                    {agent.notable_sales.map((sale, j) =>
+              <p key={j} className="font-body text-sm text-foreground/70">{sale}</p>
+              )}
+                  </div>
+            }
 
                 <div className="mt-4 space-y-1 font-body text-xs text-muted-foreground">
                   {agent.email && <p>{agent.email}</p>}
                   {agent.phone && <p>{agent.phone}</p>}
                 </div>
               </motion.div>
-            ))}
+          )}
           </div>
-        )}
+        }
       </section>
 
       <div className="hairline max-w-[1400px] mx-auto" />
@@ -151,22 +158,22 @@ export default function About() {
             </p>
           </div>
           <div className="space-y-0">
-            {credentials.map((cred, i) => (
-              <motion.div
-                key={cred.label}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="py-6 border-b border-border/50 first:border-t flex items-center gap-5"
-              >
+            {credentials.map((cred, i) =>
+            <motion.div
+              key={cred.label}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="py-6 border-b border-border/50 first:border-t flex items-center gap-5">
+              
                 <cred.icon size={20} className="text-accent flex-shrink-0" />
                 <div className="flex-1">
                   <p className="font-display text-lg font-light">{cred.label}</p>
                   <p className="font-body text-xs text-muted-foreground">{cred.year}</p>
                 </div>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -180,20 +187,20 @@ export default function About() {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {impacts.map((impact, i) => (
-              <motion.div
-                key={impact.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="text-center"
-              >
+            {impacts.map((impact, i) =>
+            <motion.div
+              key={impact.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className="text-center">
+              
                 <impact.icon size={28} className="mx-auto text-accent mb-4" />
                 <h3 className="font-display text-xl font-light mb-3">{impact.title}</h3>
                 <p className="font-body text-sm text-muted-foreground leading-relaxed">{impact.description}</p>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -216,6 +223,6 @@ export default function About() {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
