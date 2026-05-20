@@ -42,7 +42,7 @@ export default function AdvisorsSection() {
           transition={{ duration: 0.6, delay: i * 0.1 }}>
           
               <div className="aspect-[3/4] overflow-hidden mb-6">
-                <img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/fe5d3696b_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-20_18-42-53.png"
+                <img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/3a57cd7cc_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-20_18-42-49.png"
 
             alt={agent.name}
             className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
