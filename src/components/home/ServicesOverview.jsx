@@ -54,7 +54,9 @@ export default function ServicesOverview() {
             className="py-8 border-b border-border/50 first:border-t">
             
               <div className="flex items-start gap-5">
-                <service.icon size={20} className="text-accent mt-1 flex-shrink-0" />
+                <motion.div whileHover={{ scale: 1.2, rotate: 5 }} transition={{ duration: 0.3 }}>
+                  <service.icon size={20} className="text-accent mt-1 flex-shrink-0" />
+                </motion.div>
                 <div>
                   <h3 className="font-display text-xl font-light mb-2">{service.title}</h3>
                   <p className="font-body text-sm text-muted-foreground leading-relaxed">
