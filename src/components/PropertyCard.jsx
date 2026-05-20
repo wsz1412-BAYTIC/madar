@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+const rotateAnimation = {
+  animate: { rotate: 360 },
+  transition: { duration: 20, repeat: Infinity, ease: "linear" },
+};
+
 export default function PropertyCard({ property, size = "default" }) {
   const formatPrice = (price) => {
     if (price >= 1000000) return `$${(price / 1000000).toFixed(1)}M`;
@@ -25,10 +30,11 @@ export default function PropertyCard({ property, size = "default" }) {
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
           />
           {isLarge && (
-            <img
+            <motion.img
               src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
               alt="Badge"
               className="absolute top-6 right-6 w-24 h-24 md:w-32 md:h-32"
+              {...rotateAnimation}
             />
           )}
           {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
