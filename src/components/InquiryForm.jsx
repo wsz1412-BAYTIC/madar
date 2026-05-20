@@ -46,7 +46,7 @@ export default function InquiryForm({ propertyId, propertyTitle }) {
         value={form.full_name}
         onChange={(e) => setForm({ ...form, full_name: e.target.value })}
         required
-        className="bg-transparent border-border/50 font-body text-sm h-12"
+        className="bg-transparent border-border/50 font-body text-sm h-12 rounded-[6px]"
       />
       <Input
         type="email"
@@ -54,19 +54,19 @@ export default function InquiryForm({ propertyId, propertyTitle }) {
         value={form.email}
         onChange={(e) => setForm({ ...form, email: e.target.value })}
         required
-        className="bg-transparent border-border/50 font-body text-sm h-12"
+        className="bg-transparent border-border/50 font-body text-sm h-12 rounded-[6px]"
       />
       <Input
         placeholder="Phone"
         value={form.phone}
         onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        className="bg-transparent border-border/50 font-body text-sm h-12"
+        className="bg-transparent border-border/50 font-body text-sm h-12 rounded-[6px]"
       />
       <Select
         value={form.inquiry_type}
         onValueChange={(v) => setForm({ ...form, inquiry_type: v })}
       >
-        <SelectTrigger className="bg-transparent border-border/50 font-body text-sm h-12">
+        <SelectTrigger className="bg-transparent border-border/50 font-body text-sm h-12 rounded-[6px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -80,14 +80,14 @@ export default function InquiryForm({ propertyId, propertyTitle }) {
         type="date"
         value={form.preferred_date}
         onChange={(e) => setForm({ ...form, preferred_date: e.target.value })}
-        className="bg-transparent border-border/50 font-body text-sm h-12"
+        className="bg-transparent border-border/50 font-body text-sm h-12 rounded-[6px]"
       />
       <Textarea
         placeholder="Your message..."
         value={form.message}
         onChange={(e) => setForm({ ...form, message: e.target.value })}
         rows={4}
-        className="bg-transparent border-border/50 font-body text-sm resize-none"
+        className="bg-transparent border-border/50 font-body text-sm resize-none rounded-[6px]"
       />
       <button
         type="submit"
