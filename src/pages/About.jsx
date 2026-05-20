@@ -43,8 +43,13 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.15 }}
               className="text-center">
-              
-                <impact.icon size={28} className="mx-auto text-accent mb-4" />
+
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <impact.icon size={28} className="mx-auto text-accent mb-4" />
+                </motion.div>
                 <h3 className="font-display text-xl font-light mb-3">{impact.title}</h3>
                 <p className="font-body text-sm text-muted-foreground leading-relaxed">{impact.description}</p>
               </motion.div>
