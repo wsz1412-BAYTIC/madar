@@ -27,7 +27,6 @@ export default function Header() {
 
   const navLinks = [
    { label: "Sell", path: "/sell" },
-   { label: "Insights", path: "/blog" },
    { label: "About", path: "/about" }];
 
   const isHomepage = location.pathname === "/";

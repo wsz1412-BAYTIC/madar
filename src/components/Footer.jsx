@@ -63,6 +63,7 @@ export default function Footer() {
                   <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">Home</Link>
                   <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Collection</Link>
                   <Link to="/about" className="font-body text-sm text-background/70 hover:text-background transition-colors">About</Link>
+                  <Link to="/sell" className="font-body text-sm text-background/70 hover:text-background transition-colors">Sell</Link>
                 </nav>
               </div>
               <div>
