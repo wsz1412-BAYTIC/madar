@@ -24,6 +24,13 @@ export default function PropertyCard({ property, size = "default" }) {
             alt={property.title}
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
           />
+          {isLarge && (
+            <img
+              src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
+              alt="Badge"
+              className="absolute top-6 right-6 w-24 h-24 md:w-32 md:h-32"
+            />
+          )}
           {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
           <div className="absolute bottom-0 left-0 right-0 h-2/3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out"
             style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)", backdropFilter: "blur(0px)" }}
