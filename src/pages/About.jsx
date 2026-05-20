@@ -123,14 +123,7 @@ export default function About() {
                   )}
                 </div>
 
-                {agent.notable_sales?.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-border/50">
-                    <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-2">Notable Sales</p>
-                    {agent.notable_sales.map((sale, j) => (
-                      <p key={j} className="font-body text-sm text-foreground/70">{sale}</p>
-                    ))}
-                  </div>
-                )}
+
 
                 <div className="mt-4 space-y-1 font-body text-xs text-muted-foreground">
                   {agent.email && <p>{agent.email}</p>}
