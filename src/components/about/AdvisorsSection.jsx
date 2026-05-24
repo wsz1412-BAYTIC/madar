@@ -16,7 +16,7 @@ export default function AdvisorsSection() {
   }, []);
 
   return (
-    <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
+    <section className="py-24 md:py-40 px-[4%] md:px-[2%] max-w-[1400px] mx-auto">
       <div className="text-center mb-16 md:mb-24">
         <h2 className="font-display text-display-lg font-light mt-3">
           Meet the <span className="italic">Advisors</span>

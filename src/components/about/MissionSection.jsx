@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function MissionSection() {
   return (
-    <section className="px-[2%] max-w-[1400px] mx-auto mb-24 md:mb-40">
+    <section className="px-[4%] md:px-[2%] max-w-[1400px] mx-auto mb-24 md:mb-40">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
