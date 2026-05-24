@@ -81,15 +81,15 @@ export default function HeroSection({ heroImage }) {
 
           <div className="flex flex-col items-start gap-4">
             <div className="flex flex-col gap-3 text-white font-body text-sm">
-              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
+              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-1.5 rounded-full">
                 <span className="text-white">I am looking for a</span>
                 <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
               </div>
-              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
+              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-1.5 rounded-full">
                 <span className="text-white">in</span>
                 <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
               </div>
-              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
+              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-1.5 rounded-full">
                 <span className="text-white">at the price of</span>
                 <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
               </div>
