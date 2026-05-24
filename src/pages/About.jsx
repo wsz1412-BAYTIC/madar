@@ -61,6 +61,15 @@ export default function About() {
         </div>
       </section>
 
+      {/* Full bleed photo */}
+      <div className="w-full h-[500px] md:h-[650px] overflow-hidden">
+        <img
+          src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/199673b62_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-24_05-57-46.jpeg"
+          alt="Luxury property"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {/* Contact / Inquiry */}
       <section className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
