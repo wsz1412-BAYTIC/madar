@@ -51,7 +51,7 @@ export default function ServicesOverview() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="py-8 border-b border-border/50 first:border-t">
+            className="py-8 border-b border-border/70 first:border-t">
             
               <div className="flex items-start gap-5">
                 <motion.div whileHover={{ scale: 1.2, rotate: 5 }} transition={{ duration: 0.3 }}>
