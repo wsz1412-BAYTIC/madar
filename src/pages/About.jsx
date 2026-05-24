@@ -94,7 +94,7 @@ export default function About() {
               we're here to guide you with the expertise and discretion you deserve.
             </p>
           </div>
-          <div className="border border-border/50 p-8">
+          <div className="md:border md:border-border/50 p-8">
             <InquiryForm />
           </div>
         </div>
