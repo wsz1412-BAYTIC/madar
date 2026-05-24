@@ -74,7 +74,7 @@ export default function HeroSection({ heroImage }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}>
           
-          <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.9]">
+          <h1 className="font-display text-white font-light mb-8 max-w-4xl leading-[0.9] text-[clamp(3.45rem,9.2vw,8.05rem)]">
             Welcome to Your<br />
             <span className="italic">Next <span className="not-italic font-normal">Home</span></span>
           </h1>
