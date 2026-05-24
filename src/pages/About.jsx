@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Users, MapPin, Heart } from "lucide-react";
 
 import InquiryForm from "../components/InquiryForm";
@@ -7,6 +8,10 @@ import AdvisorsSection from "../components/about/AdvisorsSection";
 import CredentialsSection from "../components/about/CredentialsSection";
 
 export default function About() {
+  const parallaxRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: parallaxRef, offset: ["start end", "end start"] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+
   const impacts = [
     { icon: Heart, title: "Habitat for Humanity", description: "Annual partnership building homes for families in need across the metropolitan area." },
     { icon: Users, title: "Youth Mentorship", description: "Sponsoring internship programs for underrepresented students pursuing real estate careers." },
@@ -62,12 +67,18 @@ export default function About() {
       </section>
 
       {/* Full bleed photo */}
-      <div className="w-full h-[500px] md:h-[650px] overflow-hidden">
-        <img
-          src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/199673b62_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-24_05-57-46.jpeg"
-          alt="Luxury property"
-          className="w-full h-full object-cover"
-        />
+      <div className="w-full h-[500px] md:h-[650px] overflow-hidden relative">
+        <motion.div
+          ref={parallaxRef}
+          className="absolute inset-0 w-full h-[140%] top-[-20%]"
+          style={{ y: parallaxY }}
+        >
+          <img
+            src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/199673b62_Base44_Templates_Gemini_3__Nano_Banana_Pro__2026-05-24_05-57-46.jpeg"
+            alt="Luxury property"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
       </div>
 
       {/* Contact / Inquiry */}
