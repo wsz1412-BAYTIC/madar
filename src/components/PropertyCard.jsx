@@ -48,7 +48,7 @@ export default function PropertyCard({ property, size = "default" }) {
 
           }
           {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
-          <div className="absolute bottom-0 left-0 right-0 h-2/3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 ease-out"
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 ease-out"
           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)", backdropFilter: "blur(0px)" }} />
           
           <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-0 opacity-100 md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-700 ease-out">
