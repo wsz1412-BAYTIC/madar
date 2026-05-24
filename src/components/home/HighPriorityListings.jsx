@@ -7,7 +7,7 @@ export default function HighPriorityListings({ properties }) {
 
   return (
     <section id="listings" className="py-24 md:py-40 px-[2%] max-w-[1400px] mx-auto">
-      <div className="flex items-end justify-between mb-16">
+      <div className="flex items-end justify-between mb-16 px-[2%]">
         <div>
           <h2 className="font-display text-display-lg font-light mt-3">
             Featured Properties
