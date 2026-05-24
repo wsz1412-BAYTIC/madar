@@ -63,7 +63,7 @@ export default function HeroSection({ heroImage }) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
       </div>
 
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-12 max-w-[1400px] mx-auto">
+      <div className="relative z-10 h-full flex flex-col justify-start pt-[35vh] px-6 md:px-12 max-w-[1400px] mx-auto">
         
 
 
@@ -74,25 +74,19 @@ export default function HeroSection({ heroImage }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}>
           
-          <h1 className="font-display text-white font-light mb-8 max-w-4xl leading-[0.9] text-[clamp(3.45rem,9.2vw,8.05rem)]">
+          <h1 className="font-display text-display-xl text-white font-light mb-8 max-w-4xl leading-[0.9]">
             Welcome to Your<br />
             <span className="italic">Next <span className="not-italic font-normal">Home</span></span>
           </h1>
 
           <div className="flex flex-col items-start gap-4">
-            <div className="flex flex-col gap-3 text-white font-body text-sm">
-              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-1.5 rounded-full">
-                <span className="text-white">I am looking for a</span>
-                <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
-              </div>
-              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-1.5 rounded-full">
-                <span className="text-white">in</span>
-                <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
-              </div>
-              <div className="flex items-center gap-2 bg-black/20 backdrop-blur-md px-6 py-1.5 rounded-full">
-                <span className="text-white">at the price of</span>
-                <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
-              </div>
+            <div className="inline-flex flex-wrap items-center gap-2 md:gap-3 text-white font-body text-sm bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
+              <span className="text-white">I am looking for a</span>
+              <SearchDropdown label="Type" options={types} value={type} onChange={setType} />
+              <span className="text-white">in</span>
+              <SearchDropdown label="Location" options={locations} value={loc} onChange={setLoc} />
+              <span className="text-white">at the price of</span>
+              <SearchDropdown label="Price" options={priceRanges} value={price} onChange={setPrice} />
             </div>
 
             <button onClick={handleSearch} className="ghost-btn-light">
