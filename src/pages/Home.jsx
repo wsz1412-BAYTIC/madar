@@ -22,7 +22,13 @@ export default function Home() {
       base44.entities.Agent.filter({ is_featured: true }, "-created_date", 3),
       base44.entities.Testimonial.list("-created_date", 5)]
       );
-      setProperties(p);
+      // Sort so Marina District Mediterranean Villa is first
+      const sorted = p.sort((x, y) => {
+        if (x.title === "Marina District Mediterranean Villa") return -1;
+        if (y.title === "Marina District Mediterranean Villa") return 1;
+        return 0;
+      });
+      setProperties(sorted);
       setAgents(a);
       setTestimonials(t);
       setLoading(false);
