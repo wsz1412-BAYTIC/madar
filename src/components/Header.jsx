@@ -48,10 +48,10 @@ export default function Header() {
         <div className="w-full px-[4%] md:px-[2%]">
           <div className="flex items-center justify-between h-20 md:h-24">
             <Link to="/" className="relative z-10">
-              <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${textColor}`}>MAISON
+              <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${menuOpen ? "text-foreground" : textColor}`}>MAISON
 
               </span>
-              <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
+              <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${menuOpen ? "text-accent" : isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
 
               </span>
             </Link>
@@ -78,7 +78,7 @@ export default function Header() {
 
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className={`md:hidden relative z-10 p-2 ${textColor}`}
+              className={`md:hidden relative z-10 p-2 ${menuOpen ? "text-foreground" : textColor}`}
               aria-label="Toggle menu">
 
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -94,9 +94,9 @@ export default function Header() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center">
+          className="fixed inset-0 z-40 bg-background flex flex-col items-start justify-center px-[4%]">
           
-            <nav className="flex flex-col items-center gap-10">
+            <nav className="flex flex-col items-start gap-6">
               {navLinks.map((link, i) =>
             <motion.div
               key={link.path}
@@ -106,7 +106,7 @@ export default function Header() {
               
                   <Link
                   to={link.path}
-                  className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors">
+                  className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors text-left">
                 
                     {link.label}
                   </Link>
@@ -126,7 +126,7 @@ export default function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="mt-12 flex flex-col items-center gap-2 text-muted-foreground font-body text-xs tracking-label uppercase">
+              className="mt-12 flex flex-col items-start gap-2 text-muted-foreground font-body text-xs tracking-label uppercase">
               
                 <span>Penthouses</span>
                 <span>Waterfront</span>
