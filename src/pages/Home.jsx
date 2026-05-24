@@ -52,7 +52,7 @@ export default function Home() {
       <div className="hairline max-w-[1400px] mx-auto" />
       <AgentHighlights agents={agents} />
       <ClientStories testimonials={testimonials} />
-      <section className="w-full h-[500px] md:h-[600px] overflow-hidden relative">
+      <section className="w-full h-[280px] md:h-[600px] overflow-hidden relative">
         <motion.div
           ref={parallaxRef}
           className="absolute inset-0 w-full h-[140%] top-[-20%]"
