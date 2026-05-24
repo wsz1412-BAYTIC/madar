@@ -63,7 +63,7 @@ export default function HeroSection({ heroImage }) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
       </div>
 
-      <div className="relative z-10 h-full flex flex-col justify-start pt-[35vh] px-6 md:px-12 max-w-[1400px] mx-auto">
+      <div className="relative z-10 h-full flex flex-col justify-center px-6 md:px-12 max-w-[1400px] mx-auto">
         
 
 
