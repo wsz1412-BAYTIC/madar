@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const load = async () => {
       const [p, a, t] = await Promise.all([
-      base44.entities.Property.filter({ is_high_priority: true }, "-created_date", 6),
+      base44.entities.Property.filter({ is_featured: true }, "-created_date", 6),
       base44.entities.Agent.filter({ is_featured: true }, "-created_date", 3),
       base44.entities.Testimonial.list("-created_date", 5)]
       );
