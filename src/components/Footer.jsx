@@ -55,7 +55,7 @@ export default function Footer() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-x-12 gap-y-12">
+            <div className="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-12">
               {/* Row 1: Navigate (left) + Categories (right) */}
               <div>
                 <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">Navigate</h3>
