@@ -61,7 +61,7 @@ export default function PropertyCard({ property, size = "default" }) {
           <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-1">
             {property.neighborhood || property.city} · {property.property_type}
           </p>
-          <h3 className={`font-display font-light ${isLarge ? "text-display-sm" : "text-xl md:text-2xl"}`}>
+          <h3 className="font-display font-light text-display-sm">
             {property.title}
           </h3>
           <div className="flex items-center gap-4 mt-2 font-body text-sm text-muted-foreground">
