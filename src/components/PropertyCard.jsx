@@ -33,7 +33,7 @@ export default function PropertyCard({ property, size = "default" }) {
             <motion.img
               src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
               alt="Badge"
-              className="absolute top-3 right-3 w-[67px] h-[67px] md:top-6 md:right-6 md:w-32 md:h-32"
+              className="absolute top-3 right-3 w-[77px] h-[77px] md:top-6 md:right-6 md:w-32 md:h-32"
               {...rotateAnimation}
             />
           )}
