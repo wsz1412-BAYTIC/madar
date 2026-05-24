@@ -51,7 +51,7 @@ export default function Header() {
               <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${textColor}`}>MAISON
 
               </span>
-              <span className={`hidden md:inline font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
+              <span className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${isHomepage ? "text-[#facca3]" : "text-accent"}`}> ESTATE
 
               </span>
             </Link>
