@@ -62,7 +62,7 @@ export default function NeighborhoodExpertise() {
                 to={`/properties?location=${encodeURIComponent(n.name)}`}
                 className="group block"
               >
-                <div className="relative aspect-[3/4] overflow-hidden">
+                <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[480px] overflow-hidden">
                   <img
                     src={n.image}
                     alt={n.name}
