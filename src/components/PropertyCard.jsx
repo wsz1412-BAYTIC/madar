@@ -58,7 +58,7 @@ export default function PropertyCard({ property, size = "default" }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 md:mt-6">
+        <div className="mt-4 md:mt-6 px-[2%]">
           <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-1">
             {property.neighborhood || property.city} · {property.property_type}
           </p>
