@@ -4,7 +4,8 @@ import PropertyCard from "../components/PropertyCard";
 import FeaturedCard from "../components/FeaturedCard";
 import PropertyFilters, { priceRanges } from "../components/PropertyFilters";
 import { useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUp } from "lucide-react";
 
 export default function PropertySearch() {
   const [properties, setProperties] = useState([]);
@@ -23,6 +24,13 @@ export default function PropertySearch() {
   };
 
   const [filters, setFilters] = useState(getFiltersFromUrl);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     setFilters(getFiltersFromUrl());
@@ -101,6 +109,31 @@ export default function PropertySearch() {
           )}
         </div>
       )}
+    </div>
+
+      {/* Scroll to top — mobile/tablet only */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="lg:hidden fixed bottom-8 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center"
+            style={{
+              background: "rgba(255,255,255,0.6)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.4)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+            }}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={18} className="text-foreground" strokeWidth={1.5} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
