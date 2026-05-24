@@ -68,7 +68,7 @@ export default function NeighborhoodExpertise() {
                     alt={n.name}
                     className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground to-transparent" style={{ backgroundPosition: '0 40%' }} />
                   <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                     <p className="font-body text-xs tracking-label uppercase text-white/60 mb-2">
                       {neighborhoodCounts[n.name] || 0} Properties
