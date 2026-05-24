@@ -29,7 +29,7 @@ export default function FeaturedCard({ property }) {
         </div>
 
         {/* Text */}
-        <div className="flex flex-col justify-center px-10 py-12 bg-background">
+        <div className="flex flex-col justify-center px-[4%] md:px-10 py-12 bg-background">
           <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-3">
             {property.neighborhood || property.city} · {property.property_type}
           </p>
