@@ -32,7 +32,7 @@ export default function AdvisorsSection() {
           <div className="w-8 h-8 border-2 border-border border-t-accent rounded-full animate-spin" />
         </div> :
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
           {agents.map((agent, i) => (
             <AdvisorCard key={agent.id} agent={agent} index={i} />
           ))}
