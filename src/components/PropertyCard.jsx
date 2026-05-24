@@ -33,7 +33,7 @@ export default function PropertyCard({ property, size = "default" }) {
            <img
              src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/808df4276_Badge_1.svg"
              alt="Badge"
-             className="absolute top-0 right-0 w-16 h-16 md:top-1 md:right-1 md:w-24 md:h-24"
+             className="absolute top-2 right-2 w-16 h-16 md:top-4 md:right-4 md:w-24 md:h-24"
              style={{ filter: "drop-shadow(0 0 0 transparent)" }}
            />
           )}
