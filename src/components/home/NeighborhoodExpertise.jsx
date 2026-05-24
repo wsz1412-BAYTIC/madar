@@ -62,13 +62,13 @@ export default function NeighborhoodExpertise() {
                 to={`/properties?location=${encodeURIComponent(n.name)}`}
                 className="group block"
               >
-                <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[480px] overflow-hidden">
+                <div className="relative h-[450px] md:aspect-auto md:min-h-[480px] overflow-hidden">
                   <img
                     src={n.image}
                     alt={n.name}
                     className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                     <p className="font-body text-xs tracking-label uppercase text-white/60 mb-2">
                       {neighborhoodCounts[n.name] || 0} Properties
