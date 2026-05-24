@@ -38,11 +38,12 @@ export default function PropertyCard({ property, size = "default" }) {
           {...rotateAnimation} />
 
           }
-          {isLarge &&
+          {property.title === "Marina District Mediterranean Villa" &&
           <motion.img
             src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
             alt="Badge"
-            className="absolute top-3 right-3 w-[67px] h-[67px] md:top-6 md:right-6 md:w-32 md:h-32"
+            className="absolute top-2 right-2 w-16 h-16 md:top-4 md:right-4 md:w-24 md:h-24"
+            style={{ filter: "contrast(1.1)" }}
             {...rotateAnimation} />
 
           }
