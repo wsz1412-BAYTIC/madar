@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <div>
-      <HeroSection heroImage="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/6471f0452_Base44_2_Templates_Gemini_3__Nano_Banana_Pro__2026-05-19_14-55-54.jpg" />
+      <HeroSection heroImage="https://media.base44.com/videos/public/6a0c3ea982f98940623f21f5/a0e02d2b4_Video_Back.mp4" />
       <HighPriorityListings properties={properties} />
       <div className="hairline max-w-[1400px] mx-auto" />
       <NeighborhoodExpertise />
