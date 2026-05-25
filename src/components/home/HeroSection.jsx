@@ -56,12 +56,15 @@ export default function HeroSection({ heroImage }) {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroImage})` }}>
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute inset-0 w-full h-full object-cover">
+        <source src={heroImage} type="video/mp4" />
+      </video>
         
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/50" />
 
       <div className="relative z-10 h-full flex flex-col justify-center md:justify-start md:pt-[35vh] px-[4%] md:px-12 max-w-[1400px] mx-auto">
         
