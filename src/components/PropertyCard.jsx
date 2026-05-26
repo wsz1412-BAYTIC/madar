@@ -30,20 +30,22 @@ export default function PropertyCard({ property, size = "default" }) {
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105" />
           
           {property.neighborhood === "Marina District" && property.property_type === "Waterfront" &&
-          <motion.div
-            className="absolute top-2 right-2 w-20 h-20 md:top-4 md:right-4 md:w-28 md:h-28 flex items-center justify-center bg-accent rounded-full font-display text-white text-xs md:text-sm font-light"
-            style={{ ...rotateAnimation }}
-          >
-            NEW HOUSE
-          </motion.div>
+          <motion.img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/2d94e6f62_Badge_3.svg"
+
+          alt="Badge"
+          className="absolute top-2 right-2 w-20 h-20 md:top-4 md:right-4 md:w-28 md:h-28"
+          style={{ filter: "contrast(1.1)" }}
+          {...rotateAnimation} />
+
           }
           {property.title === "Marina District Mediterranean Villa" &&
-          <motion.div
-            className="absolute top-2 right-2 w-20 h-20 md:top-4 md:right-4 md:w-28 md:h-28 flex items-center justify-center bg-accent rounded-full font-display text-white text-xs md:text-sm font-light"
-            style={{ ...rotateAnimation }}
-          >
-            NEW HOUSE
-          </motion.div>
+          <motion.img
+            src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
+            alt="Badge"
+            className="absolute top-2 right-2 w-20 h-20 md:top-4 md:right-4 md:w-28 md:h-28"
+            style={{ filter: "contrast(1.1)" }}
+            {...rotateAnimation} />
+
           }
           {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
           <div className="absolute bottom-0 left-0 right-0 h-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 ease-out"
