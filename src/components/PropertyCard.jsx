@@ -38,7 +38,7 @@ export default function PropertyCard({ property, size = "default" }) {
           {...rotateAnimation} />
 
           }
-          {property.title === "Marina District Mediterranean Villa" &&
+          {property.title === "New House" &&
           <motion.img
             src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
             alt="Badge"
