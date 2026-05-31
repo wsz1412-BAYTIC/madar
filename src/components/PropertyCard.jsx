@@ -6,7 +6,7 @@ const rotateAnimation = {
   transition: { duration: 20, repeat: Infinity, ease: "linear" }
 };
 
-export default function PropertyCard({ property, size = "default", hideImage = false }) {
+export default function PropertyCard({ property, size = "default" }) {
   const formatPrice = (price) => {
     if (price >= 1000000) return `$${(price / 1000000).toFixed(1)}M`;
     if (price >= 1000) return `$${(price / 1000).toFixed(0)}K`;
@@ -24,12 +24,10 @@ export default function PropertyCard({ property, size = "default", hideImage = f
         transition={{ duration: 0.6 }}>
         
         <div className="relative overflow-hidden aspect-square md:aspect-[16/9]">
-          {!hideImage && (
-            <img
-              src={property.featured_image}
-              alt={property.title}
-              className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105" />
-          )}
+          <img
+            src={property.featured_image}
+            alt={property.title}
+            className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105" />
           
           {property.neighborhood === "Marina District" && property.property_type === "Waterfront" &&
           <motion.img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/2d94e6f62_Badge_3.svg"
