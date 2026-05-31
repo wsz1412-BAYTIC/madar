@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
+
 import { CheckCircle2 } from "lucide-react";
-import InquiryForm from "../components/InquiryForm";
 
 export default function Sell() {
   const benefits = [
@@ -77,24 +77,6 @@ export default function Sell() {
           className="w-full h-full object-cover" />
         
       </motion.section>
-
-      {/* Contact Form Section */}
-      <section id="contact" className="py-24 md:py-40 px-[4%] md:px-[2%] max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
-          <div>
-            <h2 className="font-display text-display-lg font-light mt-3 mb-6">
-              Start Your<br />
-              <span className="italic">Journey</span>
-            </h2>
-            <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-md">
-              Ready to get started? Share your property details and our team will provide a personalized selling strategy tailored to your needs.
-            </p>
-          </div>
-          <div className="md:border md:border-border/50 md:p-8">
-            <InquiryForm />
-          </div>
-        </div>
-      </section>
     </div>);
 
 }
