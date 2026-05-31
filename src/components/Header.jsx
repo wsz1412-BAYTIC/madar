@@ -71,8 +71,8 @@ export default function Header() {
               <Link
                 to="/properties"
                 className={`text-xs ${isHomepage ? "ghost-btn-light" : "ghost-btn"}`}>
-                
-                View Collection
+
+                View Listings
               </Link>
             </nav>
 
@@ -118,7 +118,7 @@ export default function Header() {
               transition={{ delay: 0.4 }}>
               
                 <Link to="/properties" className="ghost-btn text-sm mt-6">
-                  View Collection
+                  View Listings
                 </Link>
               </motion.div>
 
