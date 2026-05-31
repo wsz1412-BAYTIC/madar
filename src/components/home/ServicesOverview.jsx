@@ -38,7 +38,7 @@ export default function ServicesOverview() {
             Whether acquiring your legacy residence or positioning your property 
             for the discerning market, our approach is both artful and analytical.
           </p>
-          <Link to="/about" className="ghost-btn inline-block mt-8 text-sm">LEARN MORE
+          <Link to="/about#contact" className="ghost-btn inline-block mt-8 text-sm">LEARN MORE
 
           </Link>
         </div>

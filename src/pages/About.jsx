@@ -82,7 +82,7 @@ export default function About() {
       </div>
 
       {/* Contact / Inquiry */}
-      <section className="py-12 md:py-40 px-[4%] md:px-[2%] max-w-[1400px] mx-auto">
+      <section id="contact" className="py-12 md:py-40 px-[4%] md:px-[2%] max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           <div>
             <h2 className="font-display text-display-lg font-light mt-3 mb-6">
