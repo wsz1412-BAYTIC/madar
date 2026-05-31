@@ -4,13 +4,13 @@ import { CheckCircle2 } from "lucide-react";
 
 export default function Sell() {
   const benefits = [
-    "Expert market analysis and competitive pricing",
-    "Professional photography and virtual tours",
-    "Targeted marketing to qualified buyers",
-    "Seamless negotiation and transaction management",
-    "24/7 dedicated agent support",
-    "Strategic staging and presentation",
-  ];
+  "Expert market analysis and competitive pricing",
+  "Professional photography and virtual tours",
+  "Targeted marketing to qualified buyers",
+  "Seamless negotiation and transaction management",
+  "24/7 dedicated agent support",
+  "Strategic staging and presentation"];
+
 
   return (
     <div className="min-h-screen">
@@ -19,13 +19,13 @@ export default function Sell() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+          transition={{ duration: 0.6 }}>
+          
           <h1 className="font-display text-display-lg font-light mt-3 mb-6">
             Ready to sell?
           </h1>
-          <p className="font-body text-lg text-muted-foreground max-w-[600px] leading-relaxed">
-            We understand that selling your property is one of the most important decisions you'll make. Our team of luxury real estate experts is here to guide you through every step of the process, ensuring maximum value and a seamless experience.
+          <p className="font-body text-muted-foreground max-w-[600px] leading-relaxed text-base">We understand that selling your property is one of the most important decisions you'll make. Our team of luxury real estate experts is here to guide you through every step of the process, ensuring maximum value and a seamless experience.
+
           </p>
         </motion.div>
       </section>
@@ -37,29 +37,29 @@ export default function Sell() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
+          className="mb-12">
+          
           <h2 className="font-display text-display-md font-light">
             We got you <span className="italic">covered</span>
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {benefits.map((benefit, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="flex gap-4"
-            >
+          {benefits.map((benefit, i) =>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: i * 0.1 }}
+            className="flex gap-4">
+            
               <CheckCircle2 className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
               <p className="font-body text-base text-foreground leading-relaxed">
                 {benefit}
               </p>
             </motion.div>
-          ))}
+          )}
         </div>
       </section>
 
@@ -69,14 +69,14 @@ export default function Sell() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8 }}
-        className="w-full h-[500px] md:h-[700px] overflow-hidden"
-      >
+        className="w-full h-[500px] md:h-[700px] overflow-hidden">
+        
         <img
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&h=800&fit=crop"
           alt="Luxury property"
-          className="w-full h-full object-cover"
-        />
+          className="w-full h-full object-cover" />
+        
       </motion.section>
-    </div>
-  );
+    </div>);
+
 }
