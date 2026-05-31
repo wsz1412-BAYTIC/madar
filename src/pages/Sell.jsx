@@ -1,8 +1,21 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import InquiryForm from "../components/InquiryForm";
 
 export default function Sell() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === "#contact") {
+      setTimeout(() => {
+        const el = document.getElementById("contact");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, [location.hash]);
+
   const benefits = [
   "Expert market analysis and competitive pricing",
   "Professional photography and virtual tours",
