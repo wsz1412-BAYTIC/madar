@@ -80,7 +80,7 @@ export default function PropertySearch() {
         transition={{ duration: 0.6 }}
       >
         <h1 className="font-display text-display-lg font-light mt-3 mb-12">
-          The <span className="italic">Collection</span>
+          Our Listings
         </h1>
       </motion.div>
 
