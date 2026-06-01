@@ -29,16 +29,12 @@ export default function Accessibility() {
           </div>
 
           <div className="space-y-14">
-            {/* Last updated */}
-            <div>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                This statement was last updated on [enter relevant date].
-              </p>
-            </div>
-
             {/* Intro paragraph */}
             <div>
               <div className="hairline mb-8" />
+              <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">
+                This statement was last updated on [enter relevant date].
+              </p>
               <p className="font-body text-sm text-muted-foreground leading-relaxed">
                 We at [enter organization / business name] are working to make our site [enter site name and address] accessible to people with disabilities.
               </p>
