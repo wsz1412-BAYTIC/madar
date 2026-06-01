@@ -16,7 +16,7 @@ export default function Accessibility() {
           </h1>
 
           {/* Intro note */}
-          <div className="bg-muted/50 border border-border/50 rounded-lg p-6 mb-16 space-y-3">
+          <div className="mb-16 space-y-3">
             <p className="font-body text-sm text-muted-foreground leading-relaxed">
               The purpose of the following template is to assist you in writing your accessibility statement. Please note that you are responsible for ensuring that your site's statement meets the requirements of the local law in your area or region.
             </p>
