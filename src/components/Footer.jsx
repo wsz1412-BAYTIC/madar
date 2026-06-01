@@ -110,7 +110,7 @@ export default function Footer() {
             </span>
             <div className="flex gap-4 md:ml-0">
               <Link to="/privacy" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Terms &amp; Conditions</Link>
+              <Link to="/terms" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Terms &amp; Conditions</Link>
               <Link to="/accessibility" className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Accessibility</Link>
             </div>
           </div>
