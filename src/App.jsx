@@ -11,6 +11,7 @@ import PropertySearch from './pages/PropertySearch';
 import PropertyDetail from './pages/PropertyDetail';
 import About from './pages/About';
 import Sell from './pages/Sell';
+import Accessibility from './pages/Accessibility';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -45,6 +46,7 @@ const AuthenticatedApp = () => {
         <Route path="/about" element={<About />} />
 
         <Route path="/sell" element={<Sell />} />
+        <Route path="/accessibility" element={<Accessibility />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
