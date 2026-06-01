@@ -13,6 +13,7 @@ import About from './pages/About';
 import Sell from './pages/Sell';
 import Accessibility from './pages/Accessibility';
 import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -49,6 +50,7 @@ const AuthenticatedApp = () => {
         <Route path="/sell" element={<Sell />} />
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
