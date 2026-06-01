@@ -34,7 +34,7 @@ export default function ServicesOverview() {
             Buyer & Seller<br />
             <span className="italic">Services</span>
           </h2>
-          <p className="font-body text-muted-foreground text-sm mt-6 leading-relaxed max-w-md">
+          <p className="font-body text-muted-foreground text-base mt-6 leading-relaxed max-w-md">
             Whether acquiring your legacy residence or positioning your property 
             for the discerning market, our approach is both artful and analytical.
           </p>
