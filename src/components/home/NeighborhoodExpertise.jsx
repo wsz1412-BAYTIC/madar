@@ -43,7 +43,7 @@ export default function NeighborhoodExpertise() {
           <h2 className="font-display text-display-lg font-light mt-3">
             Neighborhood <span className="italic">Expertise</span>
           </h2>
-          <p className="font-body text-muted-foreground text-sm mt-4 max-w-lg mx-auto leading-relaxed">
+          <p className="font-body text-muted-foreground text-base mt-4 max-w-lg mx-auto leading-relaxed">
             Decades of local knowledge distilled into unparalleled guidance 
             for the city's most coveted addresses.
           </p>
