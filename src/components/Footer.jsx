@@ -101,14 +101,14 @@ export default function Footer() {
 
       <div className="border-t border-background/10 py-6 pb-10 md:pb-8 bg-foreground w-full">
         <div className="px-[2%]">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-start gap-4">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
             <span className="font-display text-xl font-light tracking-editorial order-first">
               MAISON <span className="text-background/50">ESTATE</span>
             </span>
             <span className="font-body text-xs text-background/40 mx-auto">
               © 2035 Maison Estate. Built on Base44.
             </span>
-            <div className="flex gap-4 md:ml-0 self-center md:self-auto">
+            <div className="flex gap-4 lg:ml-0 self-center lg:self-auto">
               <Link to="/privacy" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Privacy Policy</Link>
               <Link to="/terms" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Terms &amp; Conditions</Link>
               <Link to="/accessibility" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Accessibility</Link>
