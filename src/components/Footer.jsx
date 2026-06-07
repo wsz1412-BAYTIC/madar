@@ -108,7 +108,7 @@ export default function Footer() {
             <span className="font-body text-xs text-background/40 mx-auto">
               © 2035 Maison Estate. Built on Base44.
             </span>
-            <div className="flex gap-4 md:ml-0">
+            <div className="flex gap-4 md:ml-0 self-center md:self-auto">
               <Link to="/privacy" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Privacy Policy</Link>
               <Link to="/terms" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Terms &amp; Conditions</Link>
               <Link to="/accessibility" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Accessibility</Link>
