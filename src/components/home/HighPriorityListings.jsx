@@ -24,7 +24,12 @@ export default function HighPriorityListings({ properties }) {
       {/* Big featured card on top */}
       {properties[0] && (
         <div className="mb-6 md:mb-8">
-          <PropertyCard property={properties[0]} size="large" />
+          <PropertyCard
+            property={properties[0]}
+            size="large"
+            showBadge={properties[0].title === "Nob Hill Elegant Residence"}
+            badgeType="openhouse"
+          />
         </div>
       )}
 
