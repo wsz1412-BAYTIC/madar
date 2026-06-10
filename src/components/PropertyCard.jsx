@@ -25,7 +25,7 @@ export default function PropertyCard({ property, size = "default", showBadge = f
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6 }}>
         
-        <div className="relative overflow-hidden aspect-square">
+        <div className="relative overflow-hidden aspect-[5/4]">
           <img
             src={property.featured_image}
             alt={property.title}
