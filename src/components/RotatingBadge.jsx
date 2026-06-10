@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 
-export default function RotatingBadge({ text = "NEW LISTING  •  NEW LISTING  •  NEW LISTING  •  " }) {
+const REPEAT = "NEW LISTING  •  ";
+const fullText = REPEAT.repeat(4);
+
+export default function RotatingBadge() {
   return (
     <div className="absolute top-2 right-2 md:top-4 md:right-4 w-20 h-20 md:w-28 md:h-28 pointer-events-none z-10">
       <motion.svg
@@ -10,14 +13,15 @@ export default function RotatingBadge({ text = "NEW LISTING  •  NEW LISTING  �
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       >
         <circle cx="50" cy="50" r="50" fill="#FFFFA3" />
-        <path
-          id="circlePath"
-          d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-          fill="none"
-        />
-        <text style={{ fontSize: "10.5px", fontFamily: "var(--font-body)", letterSpacing: "0.18em", fill: "#000000", fontWeight: 500, textTransform: "uppercase" }}>
-          <textPath href="#circlePath" startOffset="0%">
-            {text}
+        <defs>
+          <path
+            id="circlePath"
+            d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+          />
+        </defs>
+        <text style={{ fontSize: "9.5px", fontFamily: "var(--font-body)", fill: "#000000", fontWeight: 500 }}>
+          <textPath href="#circlePath" startOffset="0%" textLength="232.5" lengthAdjust="spacing">
+            {fullText}
           </textPath>
         </text>
       </motion.svg>
