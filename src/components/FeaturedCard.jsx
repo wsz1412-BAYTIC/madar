@@ -20,7 +20,7 @@ export default function FeaturedCard({ property, showBadge = false }) {
     >
       <Link to={`/property/${property.id}`} className="group grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden border border-border/50">
         {/* Image */}
-        <div className="relative overflow-hidden aspect-[4/3] md:aspect-auto md:min-h-[340px]">
+        <div className="relative overflow-hidden aspect-[4/3] md:aspect-auto md:min-h-[260px]">
           <img
             src={property.featured_image}
             alt={property.title}
