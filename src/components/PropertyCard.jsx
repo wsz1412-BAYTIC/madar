@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import RotatingBadge from "./RotatingBadge";
 
 const rotateAnimation = {
   animate: { rotate: 360 },
@@ -29,24 +30,7 @@ export default function PropertyCard({ property, size = "default" }) {
             alt={property.title}
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105" />
           
-          {property.neighborhood === "Marina District" && property.property_type === "Waterfront" &&
-          <motion.img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/2d94e6f62_Badge_3.svg"
-
-          alt="Badge"
-          className="absolute top-2 right-2 w-20 h-20 md:top-4 md:right-4 md:w-28 md:h-28"
-          style={{ filter: "contrast(1.1)" }}
-          {...rotateAnimation} />
-
-          }
-          {property.title === "Marina District Mediterranean Villa" &&
-          <motion.img
-            src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/601dd92f6_Badge_2.svg"
-            alt="Badge"
-            className="absolute top-2 right-2 w-20 h-20 md:top-4 md:right-4 md:w-28 md:h-28"
-            style={{ filter: "contrast(1.1)" }}
-            {...rotateAnimation} />
-
-          }
+          <RotatingBadge />
           {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
           <div className="absolute bottom-0 left-0 right-0 h-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 ease-out"
           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)", backdropFilter: "blur(0px)" }} />
