@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import PropertyCard from "../PropertyCard";
 import { Link } from "react-router-dom";
+import { getBadgeForProperty } from "@/lib/badgeUtils";
 
 export default function HighPriorityListings({ properties }) {
   if (!properties || properties.length === 0) return null;
@@ -27,8 +28,7 @@ export default function HighPriorityListings({ properties }) {
           <PropertyCard
             property={properties[0]}
             size="large"
-            showBadge={properties[0].title === "Nob Hill Elegant Residence"}
-            badgeType="openhouse"
+            {...getBadgeForProperty(properties[0])}
           />
         </div>
       )}
@@ -40,8 +40,7 @@ export default function HighPriorityListings({ properties }) {
             <PropertyCard
               key={property.id}
               property={property}
-              showBadge={property.title === "Nob Hill Elegant Residence"}
-              badgeType="openhouse"
+              {...getBadgeForProperty(property)}
             />
           ))}
         </div>

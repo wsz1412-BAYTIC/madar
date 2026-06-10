@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import PropertyCard from "../components/PropertyCard";
 import FeaturedCard from "../components/FeaturedCard";
 import PropertyFilters, { priceRanges } from "../components/PropertyFilters";
+import { getBadgeForProperty } from "@/lib/badgeUtils";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
@@ -98,17 +99,16 @@ export default function PropertySearch() {
       ) : (
         <div className="mt-12 space-y-8">
           {/* First card — large horizontal with text on the side */}
-           <FeaturedCard property={filtered[0]} showBadge={true} />
+           <FeaturedCard property={filtered[0]} {...getBadgeForProperty(filtered[0])} />
 
            {/* Rest — small grid */}
            {filtered.length > 1 && (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-               {filtered.slice(1).map((property, i) => (
+               {filtered.slice(1).map((property) => (
                  <PropertyCard
                    key={property.id}
                    property={property}
-                   showBadge={i < 3 || i === 3}
-                   badgeType={i === 3 ? "openhouse" : "new"}
+                   {...getBadgeForProperty(property)}
                  />
                ))}
              </div>

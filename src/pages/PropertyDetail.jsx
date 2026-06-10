@@ -4,6 +4,9 @@ import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { ArrowLeft, Bed, Bath, Maximize, Calendar, Car, MapPin } from "lucide-react";
 import InquiryForm from "../components/InquiryForm";
+import RotatingBadge from "../components/RotatingBadge";
+import RotatingBadgeOpenHouse from "../components/RotatingBadgeOpenHouse";
+import { getBadgeForProperty } from "@/lib/badgeUtils";
 
 
 export default function PropertyDetail() {
@@ -41,6 +44,7 @@ export default function PropertyDetail() {
 
   const images = property.images?.length > 0 ? property.images : [property.featured_image].filter(Boolean);
   const formatPrice = (price) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(price);
+  const { showBadge, badgeType } = getBadgeForProperty(property);
 
   const stats = [
     { icon: Bed, label: "Bedrooms", value: property.bedrooms },
@@ -71,12 +75,14 @@ export default function PropertyDetail() {
             >
               {images.length > 0 && (
                 <div className="space-y-4">
-                  <div className="aspect-[16/10] overflow-hidden">
+                  <div className="aspect-[16/10] overflow-hidden relative">
                     <img
                       src={images[activeImage]}
                       alt={property.title}
                       className="w-full h-full object-cover"
                     />
+                    {showBadge && badgeType === "openhouse" && <RotatingBadgeOpenHouse />}
+                    {showBadge && badgeType === "new" && <RotatingBadge />}
                   </div>
                   {images.length > 1 && (
                     <div className="flex gap-3 overflow-x-auto pb-2">
