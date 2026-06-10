@@ -20,7 +20,7 @@ export default function RotatingBadge() {
           />
         </defs>
         <text style={{ fontSize: "9.5px", fontFamily: "var(--font-body)", fill: "hsl(0, 0%, 10%)", fontWeight: 500 }}>
-          <textPath href="#circlePath" startOffset="0%" textLength="232.5" lengthAdjust="spacing">
+          <textPath href="#circlePath" startOffset="0%">
             {fullText}
           </textPath>
         </text>
