@@ -102,8 +102,8 @@ export default function Footer() {
       <div className="border-t border-background/10 py-6 pb-10 md:pb-8 bg-foreground w-full">
         <div className="px-[2%]">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
-            <Link to="/" className="font-display text-xl font-light tracking-editorial order-first" style={{ color: "#FFCBA4" }}>
-              MAISON <span style={{ color: "rgba(255,203,164,0.5)" }}>ESTATE</span>
+            <Link to="/" className="font-display text-xl font-light tracking-editorial order-first text-white">
+              MAISON <span style={{ color: "#FFCBA4" }}>ESTATE</span>
             </Link>
             <span className="font-body text-xs text-background/40 mx-auto">
               © 2035 Maison Estate. Built on Base44.
