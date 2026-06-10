@@ -9,7 +9,7 @@ export default function RotatingBadgeOpenHouse() {
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       >
-        <circle cx="50" cy="50" r="50" fill="#FFFFA3" />
+        <circle cx="50" cy="50" r="50" fill="#F2CC65" />
         <defs>
           <path
             id="circlePathOH"
