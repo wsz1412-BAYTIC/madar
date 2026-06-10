@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 const REPEAT = "NEW LISTING  •  ";
-const fullText = REPEAT.repeat(4);
+const fullText = REPEAT.repeat(2);
 
 export default function RotatingBadge() {
   return (
