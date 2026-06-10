@@ -34,12 +34,12 @@ export default function PropertyFilters({ filters, onChange, total }) {
             placeholder="Search properties..."
             value={filters.search || ""}
             onChange={(e) => updateFilter("search", e.target.value)}
-            className="pl-10 bg-transparent border-border/50 font-body text-sm h-12"
+            className="pl-10 bg-transparent border-border font-body text-sm h-12"
           />
         </div>
         
         <Select value={filters.location} onValueChange={(v) => updateFilter("location", v)}>
-          <SelectTrigger className="w-[180px] bg-transparent border-border/50 font-body text-sm h-12">
+          <SelectTrigger className="w-[180px] bg-transparent border-border font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="rounded-[6px]">
@@ -50,7 +50,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
         </Select>
 
         <Select value={filters.type} onValueChange={(v) => updateFilter("type", v)}>
-          <SelectTrigger className="w-[160px] bg-transparent border-border/50 font-body text-sm h-12">
+          <SelectTrigger className="w-[160px] bg-transparent border-border font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="rounded-[6px]">
@@ -61,7 +61,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
         </Select>
 
         <Select value={filters.price} onValueChange={(v) => updateFilter("price", v)}>
-          <SelectTrigger className="w-[160px] bg-transparent border-border/50 font-body text-sm h-12">
+          <SelectTrigger className="w-[160px] bg-transparent border-border font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="rounded-[6px]">
@@ -72,7 +72,7 @@ export default function PropertyFilters({ filters, onChange, total }) {
         </Select>
 
         <Select value={filters.beds} onValueChange={(v) => updateFilter("beds", v)}>
-          <SelectTrigger className="w-[120px] bg-transparent border-border/50 font-body text-sm h-12">
+          <SelectTrigger className="w-[120px] bg-transparent border-border font-body text-sm h-12">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="rounded-[6px]">
