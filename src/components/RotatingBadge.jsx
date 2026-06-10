@@ -13,11 +13,11 @@ export default function RotatingBadge() {
         <defs>
           <path
             id="circlePath"
-            d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+            d="M 50,50 m -33,0 a 33,33 0 1,1 66,0 a 33,33 0 1,1 -66,0"
           />
         </defs>
         <text style={{ fontSize: "9px", fontFamily: "var(--font-body)", fill: "hsl(0, 0%, 10%)", fontWeight: 500 }}>
-          <textPath href="#circlePath" textLength="232" lengthAdjust="spacing">
+          <textPath href="#circlePath" textLength="207" lengthAdjust="spacing">
             NEW LISTING · NEW LISTING ·
           </textPath>
         </text>
