@@ -32,7 +32,12 @@ export default function HighPriorityListings({ properties }) {
       {properties.length > 1 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {properties.slice(1, 4).map((property) => (
-            <PropertyCard key={property.id} property={property} />
+            <PropertyCard
+              key={property.id}
+              property={property}
+              showBadge={property.title === "Nob Hill Elegant Residence"}
+              badgeType="openhouse"
+            />
           ))}
         </div>
       )}

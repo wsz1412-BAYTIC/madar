@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import RotatingBadge from "./RotatingBadge";
+import RotatingBadgeOpenHouse from "./RotatingBadgeOpenHouse";
 
 const rotateAnimation = {
   animate: { rotate: 360 },
   transition: { duration: 20, repeat: Infinity, ease: "linear" }
 };
 
-export default function PropertyCard({ property, size = "default", showBadge = false }) {
+export default function PropertyCard({ property, size = "default", showBadge = false, badgeType = "new" }) {
   const formatPrice = (price) => {
     if (price >= 1000000) return `$${(price / 1000000).toFixed(1)}M`;
     if (price >= 1000) return `$${(price / 1000).toFixed(0)}K`;
@@ -30,7 +31,7 @@ export default function PropertyCard({ property, size = "default", showBadge = f
             alt={property.title}
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105" />
           
-          {showBadge && <RotatingBadge />}
+          {showBadge && (badgeType === "openhouse" ? <RotatingBadgeOpenHouse /> : <RotatingBadge />)}
           {/* Gradient glass overlay — appears on hover, fades from black/60 at bottom to transparent */}
           <div className="absolute bottom-0 left-0 right-0 h-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 ease-out"
           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%)", backdropFilter: "blur(0px)" }} />
