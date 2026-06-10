@@ -9,6 +9,10 @@ export function getBadgeForProperty(property) {
     return { showBadge: true, badgeType: "openhouse" };
   }
 
+  if (property.title === "Nob Hill Heritage Penthouse") {
+    return { showBadge: true, badgeType: "new" };
+  }
+
   if (property.is_high_priority) {
     return { showBadge: true, badgeType: "new" };
   }
