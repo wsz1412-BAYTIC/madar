@@ -9,18 +9,17 @@ export default function RotatingBadge({ text = "NEW LISTING • NEW LISTING • 
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       >
+        <circle cx="50" cy="50" r="50" fill="#FFFFA3" />
         <path
           id="circlePath"
           d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
           fill="none"
         />
-        <text style={{ fontSize: "10.5px", fontFamily: "var(--font-body)", letterSpacing: "0.18em", fill: "white", fontWeight: 500, textTransform: "uppercase" }}>
+        <text style={{ fontSize: "10.5px", fontFamily: "var(--font-body)", letterSpacing: "0.18em", fill: "#000000", fontWeight: 500, textTransform: "uppercase" }}>
           <textPath href="#circlePath" startOffset="0%">
             {text}
           </textPath>
         </text>
-        {/* Center dot */}
-        <circle cx="50" cy="50" r="5" fill="white" opacity="0.9" />
       </motion.svg>
     </div>
   );
