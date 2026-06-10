@@ -104,7 +104,12 @@ export default function PropertySearch() {
            {filtered.length > 1 && (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                {filtered.slice(1).map((property, i) => (
-                 <PropertyCard key={property.id} property={property} showBadge={i < 3} />
+                 <PropertyCard
+                   key={property.id}
+                   property={property}
+                   showBadge={i < 3 || i === 3}
+                   badgeType={i === 3 ? "openhouse" : "new"}
+                 />
                ))}
              </div>
            )}
