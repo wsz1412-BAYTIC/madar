@@ -70,7 +70,7 @@ export default function Header() {
               )}
               <Link
                 to="/properties"
-                className={`text-xs ${isHomepage ? "ghost-btn-light" : "ghost-btn"}`}>
+                className="text-xs border border-white bg-white px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-black hover:bg-white/80">
 
                 View Listings
               </Link>
