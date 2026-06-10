@@ -23,7 +23,7 @@ export default function PropertyCard({ property, size = "default" }) {
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6 }}>
         
-        <div className="relative overflow-hidden aspect-square md:aspect-[16/9]">
+        <div className="relative overflow-hidden aspect-square">
           <img
             src={property.featured_image}
             alt={property.title}
