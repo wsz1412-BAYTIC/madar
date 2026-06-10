@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import RotatingBadge from "./RotatingBadge";
 
-const rotateAnimation = {
-  animate: { rotate: 360 },
-  transition: { duration: 20, repeat: Infinity, ease: "linear" }
-};
-
-export default function FeaturedCard({ property }) {
+export default function FeaturedCard({ property, showBadge = false }) {
   if (!property) return null;
 
   const formatPrice = (price) => {
@@ -31,14 +27,7 @@ export default function FeaturedCard({ property }) {
             className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-700" />
-          
-          {property.neighborhood === "Marina District" && property.property_type === "Waterfront" &&
-          <motion.img src="https://media.base44.com/images/public/6a0c3ea982f98940623f21f5/2d94e6f62_Badge_3.svg"
-            alt="Badge"
-            className="absolute top-4 right-4 w-24 h-24 md:top-6 md:right-6 md:w-32 md:h-32"
-            style={{ filter: "contrast(1.1)" }}
-            {...rotateAnimation} />
-          }
+          {showBadge && <RotatingBadge />}
         </div>
 
         {/* Text */}
