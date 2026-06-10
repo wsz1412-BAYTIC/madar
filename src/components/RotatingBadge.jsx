@@ -18,7 +18,7 @@ export default function RotatingBadge() {
         </defs>
         <text style={{ fontSize: "9px", fontFamily: "var(--font-body)", fill: "hsl(0, 0%, 10%)", fontWeight: 500, letterSpacing: "2.8px" }}>
           <textPath href="#circlePath">
-            NEW LISTING · NEW LISTING · 
+            NEW LISTING <tspan style={{letterSpacing: "6px"}}>·</tspan> NEW LISTING <tspan style={{letterSpacing: "6px"}}>·</tspan>{" "}
           </textPath>
         </text>
       </motion.svg>
