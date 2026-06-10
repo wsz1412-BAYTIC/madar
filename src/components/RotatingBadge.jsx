@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function RotatingBadge({ text = "NEW LISTING • NEW LISTING • NEW LISTING • " }) {
+export default function RotatingBadge({ text = "NEW LISTING  •  NEW LISTING  •  NEW LISTING  •  " }) {
   return (
     <div className="absolute top-2 right-2 md:top-4 md:right-4 w-20 h-20 md:w-28 md:h-28 pointer-events-none z-10">
       <motion.svg
