@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function RotatingBadgeOpenHouse() {
   return (
-    <div className="absolute top-2 right-2 md:top-4 md:right-4 w-[68px] h-[68px] md:w-[95px] md:h-[95px] pointer-events-none z-10">
+    <div className="absolute top-1 right-1 md:top-2 md:right-2 w-[68px] h-[68px] md:w-[95px] md:h-[95px] pointer-events-none z-10">
       <motion.svg
         viewBox="0 0 100 100"
         className="w-full h-full"
