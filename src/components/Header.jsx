@@ -62,7 +62,7 @@ export default function Header() {
                 key={link.path}
                 to={link.path}
                 className={`font-body text-xs tracking-label uppercase relative group pb-1 ${
-                location.pathname === link.path ? "text-accent" : "text-white"}`}
+                location.pathname === link.path ? "text-accent" : isHomepage ? "text-white" : "text-foreground"}`}
                 >
                    {link.label}
                    <span className="absolute bottom-0 left-0 w-full h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
@@ -70,7 +70,7 @@ export default function Header() {
               )}
               <Link
                 to="/properties"
-                className="text-xs border border-white bg-white px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-black hover:bg-white/80">
+                className={`text-xs px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full border ${isHomepage ? "border-white bg-white text-black hover:bg-white/80" : "border-foreground bg-foreground text-background hover:bg-foreground/80"}`}>
 
                 View Listings
               </Link>
