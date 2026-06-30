@@ -1,51 +1,43 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const neighborhoods = [
   {
-    name: "Pacific Heights",
-    tagline: "Grand estates and panoramic bay views",
-    image: "https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/549d642e5_generated_c90ff458.png",
+    name: "Riyadh",
+    nameAr: "الرياض",
+    tagline: "Capital city, premium demand",
+    taglineAr: "العاصمة، طلب عالي",
+    image: "https://images.unsplash.com/photo-1586724237569-f3d0c34bb83e?w=800&h=1000&fit=crop",
   },
   {
-    name: "Marina District",
-    tagline: "Waterfront living at its finest",
-    image: "https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/1e5e447e3_generated_bd2f305c.png",
+    name: "Jeddah",
+    nameAr: "جدة",
+    tagline: "Waterfront gems on the Red Sea",
+    taglineAr: "لآلئ البحر الأحمر",
+    image: "https://images.unsplash.com/photo-1564506249664-6eb7d28c3c81?w=800&h=1000&fit=crop",
   },
   {
-    name: "Nob Hill",
-    tagline: "Historic elegance meets modern luxury",
-    image: "https://media.base44.com/images/public/69db45a7fc9eedd006e6060b/6d063e766_generated_bc4b1d6d.png",
+    name: "Dammam",
+    nameAr: "الدمام",
+    tagline: "Eastern Province hub",
+    taglineAr: "مركز المنطقة الشرقية",
+    image: "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800&h=1000&fit=crop",
   },
 ];
 
 export default function NeighborhoodExpertise() {
-  const [neighborhoodCounts, setNeighborhoodCounts] = useState({});
-
-  useEffect(() => {
-    const load = async () => {
-      const properties = await base44.entities.Property.list("-created_date", 1000);
-      const counts = {};
-      neighborhoods.forEach((n) => {
-        counts[n.name] = properties.filter((p) => p.neighborhood === n.name).length;
-      });
-      setNeighborhoodCounts(counts);
-    };
-    load();
-  }, []);
+  const { t, lang } = useLanguage();
 
   return (
     <section className="py-24 md:py-40 bg-secondary/30">
       <div className="px-[2%] max-w-[1400px] mx-auto">
         <div className="text-center mb-16 md:mb-24">
           <h2 className="font-display text-display-lg font-light mt-3">
-            Neighborhood <span className="italic">Expertise</span>
+            {t("dashboard.neighborhoods")}
           </h2>
           <p className="font-body text-muted-foreground text-base mt-4 max-w-lg mx-auto leading-relaxed">
-            Decades of local knowledge distilled into unparalleled guidance 
-            for the city's most coveted addresses.
+            {t("dashboard.neighborhoodsDesc")}
           </p>
         </div>
 
@@ -59,24 +51,23 @@ export default function NeighborhoodExpertise() {
               transition={{ duration: 0.6, delay: i * 0.15 }}
             >
               <Link
-                to={`/properties?location=${encodeURIComponent(n.name)}`}
+                to={`/market?city=${encodeURIComponent(n.name)}`}
                 className="group block"
               >
                 <div className="relative h-[450px] md:aspect-auto md:min-h-[480px] overflow-hidden">
                   <img
                     src={n.image}
-                    alt={n.name}
+                    alt={lang === "ar" ? n.nameAr : n.name}
                     className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
                   />
                   <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-foreground to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <p className="font-body text-xs tracking-label uppercase text-white/60 mb-2">
-                      {neighborhoodCounts[n.name] || 0} Properties
-                    </p>
                     <h3 className="font-display text-2xl md:text-3xl text-white font-light">
-                      {n.name}
+                      {lang === "ar" ? n.nameAr : n.name}
                     </h3>
-                    <p className="font-body text-sm text-white/70 mt-1">{n.tagline}</p>
+                    <p className="font-body text-sm text-white/70 mt-1">
+                      {lang === "ar" ? n.taglineAr : n.tagline}
+                    </p>
                   </div>
                 </div>
               </Link>

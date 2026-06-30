@@ -1,26 +1,134 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { ArrowLeft, Bed, Bath, Maximize, Calendar, Car, MapPin } from "lucide-react";
-import InquiryForm from "../components/InquiryForm";
-import RotatingBadge from "../components/RotatingBadge";
-import RotatingBadgeOpenHouse from "../components/RotatingBadgeOpenHouse";
-import { getBadgeForProperty } from "@/lib/badgeUtils";
+import { madarApi } from "@/api/madarApi";
+import { useLanguage } from "@/lib/LanguageContext";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  ArrowLeft,
+  Bed,
+  Users,
+  Star,
+  MapPin,
+  BarChart3,
+  Globe,
+  TrendingUp,
+} from "lucide-react";
 
+function formatPrice(price) {
+  if (!price && price !== 0) return "—";
+  return new Intl.NumberFormat("en-US").format(price);
+}
+
+function PlatformComparison({ platforms, t }) {
+  if (!platforms || platforms.length === 0) return null;
+
+  return (
+    <div className="mb-10">
+      <h2 className="font-display text-display-sm font-light mb-6">
+        {t("property.platformComparison")}
+      </h2>
+      <div className="space-y-4">
+        {platforms.map((p, i) => {
+          const platformName = p.platform || p.name || p.source || "—";
+          const price = p.price ?? p.listing_price ?? p.current_price;
+          const recommendedPrice = p.recommended_price;
+          const diff = recommendedPrice && price ? recommendedPrice - price : null;
+          const url = p.url || p.listing_url;
+
+          return (
+            <div key={i} className="border border-border/50 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Globe size={18} className="text-accent" strokeWidth={1} />
+                  <span className="font-display text-lg font-light capitalize">{platformName}</span>
+                </div>
+                {url && (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-body text-xs tracking-label uppercase text-muted-foreground hover:text-accent transition-colors"
+                  >
+                    {t("property.back")} ↗
+                  </a>
+                )}
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div>
+                  <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-1">
+                    {t("property.listingPrice")}
+                  </p>
+                  <p className="font-display text-xl font-light">
+                    {formatPrice(price)} {t("common.sar")}
+                  </p>
+                </div>
+                {recommendedPrice != null && (
+                  <div>
+                    <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-1">
+                      {t("property.recommendedPrice")}
+                    </p>
+                    <p className="font-display text-xl font-light text-accent">
+                      {formatPrice(recommendedPrice)} {t("common.sar")}
+                    </p>
+                  </div>
+                )}
+                {diff != null && (
+                  <div>
+                    <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-1">
+                      {t("analytics.trend")}
+                    </p>
+                    <p
+                      className={`font-display text-xl font-light ${
+                        diff > 0 ? "text-green-600" : diff < 0 ? "text-destructive" : "text-muted-foreground"
+                      }`}
+                    >
+                      {diff > 0 ? "+" : ""}
+                      {formatPrice(diff)} {t("common.sar")}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function PropertyDetail() {
   const { id } = useParams();
+  const { t, lang } = useLanguage();
+  const { toast } = useToast();
   const [property, setProperty] = useState(null);
+  const [brief, setBrief] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     const load = async () => {
-      const all = await base44.entities.Property.list("-created_date", 100);
-      const found = all.find((p) => p.id === id);
-      setProperty(found);
-      setLoading(false);
+      setLoading(true);
+      try {
+        const [propResult, briefResult] = await Promise.allSettled([
+          madarApi.getProperty(id),
+          madarApi.getLatestBriefs(),
+        ]);
+
+        if (propResult.status === "fulfilled") {
+          setProperty(propResult.value);
+        }
+        if (briefResult.status === "fulfilled") {
+          const briefs = Array.isArray(briefResult.value)
+            ? briefResult.value
+            : briefResult.value?.briefs || [];
+          const found = briefs.find((b) => b.property_id === id);
+          setBrief(found);
+        }
+      } catch (err) {
+        toast({ title: err.message || t("common.error"), variant: "destructive" });
+      } finally {
+        setLoading(false);
+      }
     };
     load();
   }, [id]);
@@ -36,30 +144,35 @@ export default function PropertyDetail() {
   if (!property) {
     return (
       <div className="pt-32 px-6 md:px-12 max-w-[1400px] mx-auto text-center py-24">
-        <p className="font-display text-display-md">Property not found</p>
-        <Link to="/properties" className="ghost-btn inline-block mt-8">Back to Collection</Link>
+        <p className="font-display text-display-md">{t("property.notFound")}</p>
+        <Link to="/properties" className="ghost-btn inline-block mt-8">
+          {t("property.back")}
+        </Link>
       </div>
     );
   }
 
-  const images = property.images?.length > 0 ? property.images : [property.featured_image].filter(Boolean);
-  const formatPrice = (price) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(price);
-  const { showBadge, badgeType } = getBadgeForProperty(property);
-
+  const images = property.images?.length > 0 ? property.images : [property.featured_image || property.image].filter(Boolean);
+  const platforms = property.platforms || property.platform_urls || [];
   const stats = [
-    { icon: Bed, label: "Bedrooms", value: property.bedrooms },
-    { icon: Bath, label: "Bathrooms", value: property.bathrooms },
-    { icon: Maximize, label: "Sq Ft", value: property.sqft?.toLocaleString() },
-    { icon: Car, label: "Garage", value: property.garage },
-    { icon: Calendar, label: "Year Built", value: property.year_built },
-  ].filter((s) => s.value);
+    { icon: Bed, label: t("properties.bedrooms"), value: property.bedrooms },
+    { icon: Users, label: t("properties.guests"), value: property.guests },
+    { icon: Star, label: t("properties.rating"), value: property.rating },
+  ].filter((s) => s.value != null);
+
+  const reasoning = lang === "ar"
+    ? brief?.reasoning_ar || brief?.reasoning_en
+    : brief?.reasoning_en || brief?.reasoning_ar;
 
   return (
     <div className="pt-24">
       {/* Back navigation */}
       <div className="px-[2%] max-w-[1600px] mx-auto mb-8">
-        <Link to="/properties" className="inline-flex items-center gap-2 font-body text-xs tracking-label uppercase text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft size={14} /> Back to Collection
+        <Link
+          to="/properties"
+          className="inline-flex items-center gap-2 font-body text-xs tracking-label uppercase text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft size={14} /> {t("property.back")}
         </Link>
       </div>
 
@@ -67,37 +180,14 @@ export default function PropertyDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 3xl:gap-20">
           {/* Left: Content */}
           <div className="lg:col-span-2">
-            {/* Visual showcase filmstrip */}
+            {/* Image gallery */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
               {images.length > 0 && (
-                <div className="space-y-4">
-                  <div className="aspect-[16/10] overflow-hidden relative">
-                    <img
-                      src={images[activeImage]}
-                      alt={property.title}
-                      className="w-full h-full object-cover"
-                    />
-                    {showBadge && badgeType === "openhouse" && <RotatingBadgeOpenHouse />}
-                    {showBadge && badgeType === "new" && <RotatingBadge />}
-                  </div>
-                  {images.length > 1 && (
-                    <div className="flex gap-3 overflow-x-auto pb-2">
-                      {images.map((img, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setActiveImage(i)}
-                          className={`flex-shrink-0 w-20 h-20 overflow-hidden transition-opacity ${i === activeImage ? "opacity-100 ring-1 ring-accent" : "opacity-50 hover:opacity-75"}`}
-                        >
-                          <img src={img} alt="" className="w-full h-full object-cover" />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <PropertyGallery images={images} title={property.title} />
               )}
             </motion.div>
 
@@ -107,19 +197,22 @@ export default function PropertyDetail() {
               <div className="flex items-center gap-2 mt-3 text-muted-foreground">
                 <MapPin size={14} />
                 <span className="font-body text-sm">
-                  {property.address && `${property.address}, `}{property.neighborhood && `${property.neighborhood}, `}{property.city}{property.state && `, ${property.state}`}
+                  {property.city}
+                  {property.neighborhood && `, ${property.neighborhood}`}
                 </span>
               </div>
-              <p className="font-display text-display-sm text-accent mt-4">{formatPrice(property.price)}</p>
+              <p className="font-display text-display-sm text-accent mt-4">
+                {formatPrice(property.price)} {t("common.sar")} {t("common.perNight")}
+              </p>
             </div>
 
             <div className="hairline mb-8" />
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center py-4 border border-border/50">
-                  <stat.icon size={18} className="mx-auto text-accent mb-2" />
+                  <stat.icon size={18} className="mx-auto text-accent mb-2" strokeWidth={1} />
                   <p className="font-display text-lg">{stat.value}</p>
                   <p className="font-body text-xs text-muted-foreground tracking-label uppercase">{stat.label}</p>
                 </div>
@@ -129,7 +222,7 @@ export default function PropertyDetail() {
             {/* Description */}
             {property.description && (
               <div className="mb-10">
-                <h2 className="font-display text-display-sm font-light mb-4">About This Property</h2>
+                <h2 className="font-display text-display-sm font-light mb-4">{t("property.about")}</h2>
                 <p className="font-body text-sm text-muted-foreground leading-[1.8] whitespace-pre-line">
                   {property.description}
                 </p>
@@ -138,40 +231,30 @@ export default function PropertyDetail() {
 
             <div className="hairline mb-10" />
 
-            {/* Features */}
-            {property.features?.length > 0 && (
+            {/* Amenities */}
+            {property.amenities?.length > 0 && (
               <div className="mb-10">
-                <h2 className="font-display text-display-sm font-light mb-6">Features</h2>
+                <h2 className="font-display text-display-sm font-light mb-6">{t("property.features")}</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {property.features.map((feature, i) => (
+                  {property.amenities.map((amenity, i) => (
                     <div key={i} className="flex items-center gap-3 py-3 border-b border-border/30">
                       <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                      <span className="font-body text-sm">{feature}</span>
+                      <span className="font-body text-sm">{amenity}</span>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Video */}
-            {property.video_url && (
-              <div className="mb-10">
-                <h2 className="font-display text-display-sm font-light mb-6">Virtual Tour</h2>
-                <div className="aspect-video">
-                  <iframe
-                    src={property.video_url}
-                    className="w-full h-full"
-                    allowFullScreen
-                    title="Virtual tour"
-                  />
-                </div>
-              </div>
-            )}
+            <div className="hairline mb-10" />
+
+            {/* Platform comparison */}
+            <PlatformComparison platforms={platforms} t={t} />
 
             {/* Map */}
-            {property.address && (
+            {property.city && (
               <div className="mb-10">
-                <h2 className="font-display text-display-sm font-light mb-6">Location & Amenities</h2>
+                <h2 className="font-display text-display-sm font-light mb-6">{t("property.location")}</h2>
                 <div className="aspect-[16/9] overflow-hidden">
                   <iframe
                     width="100%"
@@ -179,29 +262,119 @@ export default function PropertyDetail() {
                     style={{ border: 0 }}
                     loading="lazy"
                     allowFullScreen
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(`${property.address}, ${property.city}, ${property.state} ${property.zip_code}`)}&z=15&output=embed`}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(property.city + ", Saudi Arabia")}&z=12&output=embed`}
                   />
                 </div>
               </div>
             )}
           </div>
 
-          {/* Right: Sticky Inquiry */}
+          {/* Right: Sticky pricing brief + analytics */}
           <div className="lg:col-span-1">
-            <div className="lg:sticky lg:top-6">
-              <div className="border border-border/50 p-8">
-                <h3 className="font-display text-2xl font-light mb-2">Schedule a Viewing</h3>
-                <p className="font-body text-xs text-muted-foreground mb-6">
-                  Our advisors respond within 24 hours
+            <div className="lg:sticky lg:top-6 space-y-6">
+              {/* AI Pricing Brief */}
+              {brief && (
+                <div className="border border-border/50 p-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <TrendingUp size={18} className="text-accent" strokeWidth={1} />
+                    <h3 className="font-display text-2xl font-light">
+                      {t("dashboard.recommendedPrice")}
+                    </h3>
+                  </div>
+
+                  <p className="font-display text-display-sm text-accent mb-6">
+                    {formatPrice(brief.recommended_price)} {t("common.sar")} {t("common.perNight")}
+                  </p>
+
+                  {brief.confidence_score != null && (
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-body text-xs tracking-label uppercase text-muted-foreground">
+                          {t("dashboard.confidence")}
+                        </span>
+                        <span className="font-body text-sm font-medium">
+                          {Math.round(brief.confidence_score * 100)}%
+                        </span>
+                      </div>
+                      <div className="h-px bg-border/50 relative overflow-hidden">
+                        <div
+                          className="absolute inset-y-0 left-0 bg-accent transition-all duration-500"
+                          style={{
+                            width: `${brief.confidence_score * 100}%`,
+                            height: "2px",
+                            top: "-0.5px",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {reasoning && (
+                    <div className="mb-6">
+                      <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-3">
+                        {t("dashboard.reasoning")}
+                      </p>
+                      <p className="font-body text-sm text-muted-foreground leading-[1.8]">
+                        {reasoning}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Analytics CTA */}
+              <Link
+                to={`/analytics/${id}`}
+                className="block border border-foreground bg-foreground text-background p-8 hover:bg-foreground/90 transition-colors group"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <BarChart3 size={20} strokeWidth={1} />
+                  <h3 className="font-display text-xl font-light">{t("analytics.title")}</h3>
+                </div>
+                <p className="font-body text-sm text-background/60 mb-4">
+                  {t("analytics.priceHistory")} & {t("analytics.competitors")}
                 </p>
-                <InquiryForm propertyId={property.id} propertyTitle={property.title} />
-              </div>
+                <span className="font-body text-xs tracking-label uppercase flex items-center gap-2 group-hover:gap-3 transition-all">
+                  {t("property.viewAnalytics")} <ArrowLeft size={12} className="rotate-180" />
+                </span>
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
       <div className="pb-24" />
+    </div>
+  );
+}
+
+function PropertyGallery({ images, title }) {
+  const [activeImage, setActiveImage] = useState(0);
+
+  return (
+    <div className="space-y-4">
+      <div className="aspect-[16/10] overflow-hidden relative">
+        <img
+          src={images[activeImage]}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      {images.length > 1 && (
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {images.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveImage(i)}
+              className={`flex-shrink-0 w-20 h-20 overflow-hidden transition-opacity ${
+                i === activeImage ? "opacity-100 ring-1 ring-accent" : "opacity-50 hover:opacity-75"
+              }`}
+            >
+              <img src={img} alt="" className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

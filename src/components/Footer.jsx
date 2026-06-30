@@ -1,21 +1,18 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) return;
-    await base44.entities.Inquiry.create({
-      full_name: "Newsletter Subscriber",
-      email,
-      inquiry_type: "General",
-      message: "Newsletter subscription",
-    });
+    // Newsletter subscription — no base44 storage, just local confirmation
+    // In production, POST to madarApi newsletter endpoint
     setSubscribed(true);
     setEmail("");
   };
@@ -27,16 +24,14 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 px-[2%] mx-auto max-w-[1400px]">
             <div>
               <h2 className="font-display text-display-lg font-light mb-6">
-                Market Insights,<br />
-                <span className="italic">Delivered</span>
+                {t("footer.newsletter")}
               </h2>
               <p className="font-body text-background/60 text-sm leading-relaxed max-w-md mb-8">
-                Curated intelligence on luxury real estate trends, 
-                neighborhood analyses, and exclusive pre-market opportunities.
+                {t("footer.newsletterDesc")}
               </p>
               {subscribed ? (
                 <p className="font-body text-sm tracking-label uppercase text-background/80">
-                  Thank you for subscribing
+                  {t("footer.subscribed")}
                 </p>
               ) : (
                 <form onSubmit={handleSubscribe} className="flex items-center border-b border-background/20 pb-2 max-w-md">
@@ -44,7 +39,7 @@ export default function Footer() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
+                    placeholder={t("footer.newsletterPlaceholder")}
                     className="flex-1 bg-transparent font-body text-sm text-background placeholder:text-background/40 focus:outline-none"
                     required
                   />
@@ -56,42 +51,38 @@ export default function Footer() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 md:gap-x-12 gap-y-12">
-              {/* Row 1: Navigate (left) + Categories (right) */}
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">Navigate</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">{t("footer.navigate")}</h3>
                 <nav className="flex flex-col gap-2">
-                  <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">Home</Link>
-                  <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">Properties</Link>
-                  <Link to="/sell" className="font-body text-sm text-background/70 hover:text-background transition-colors">Sell</Link>
-                  <Link to="/about" className="font-body text-sm text-background/70 hover:text-background transition-colors">About</Link>
+                  <Link to="/" className="font-body text-sm text-background/70 hover:text-background transition-colors">{t("nav.dashboard")}</Link>
+                  <Link to="/properties" className="font-body text-sm text-background/70 hover:text-background transition-colors">{t("nav.properties")}</Link>
+                  <Link to="/market" className="font-body text-sm text-background/70 hover:text-background transition-colors">{t("nav.market")}</Link>
+                  <Link to="/billing" className="font-body text-sm text-background/70 hover:text-background transition-colors">{t("nav.billing")}</Link>
+                  <Link to="/assistant" className="font-body text-sm text-background/70 hover:text-background transition-colors">{t("nav.assistant")}</Link>
                 </nav>
               </div>
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">Categories</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">{t("footer.categories")}</h3>
                 <nav className="flex flex-col gap-2">
-                  <Link to="/properties?type=Penthouse" className="font-body text-sm text-background/70 hover:text-background transition-colors">Penthouses</Link>
-                  <Link to="/properties?type=Waterfront" className="font-body text-sm text-background/70 hover:text-background transition-colors">Waterfront</Link>
-                  <Link to="/properties?type=Modernist" className="font-body text-sm text-background/70 hover:text-background transition-colors">Modernist</Link>
-                  <Link to="/properties?type=Estate" className="font-body text-sm text-background/70 hover:text-background transition-colors">Estates</Link>
+                  <Link to="/market?city=Riyadh" className="font-body text-sm text-background/70 hover:text-background transition-colors">الرياض</Link>
+                  <Link to="/market?city=Jeddah" className="font-body text-sm text-background/70 hover:text-background transition-colors">جدة</Link>
+                  <Link to="/market?city=Dammam" className="font-body text-sm text-background/70 hover:text-background transition-colors">الدمام</Link>
+                  <Link to="/market?city=Mecca" className="font-body text-sm text-background/70 hover:text-background transition-colors">مكة</Link>
                 </nav>
               </div>
-              {/* Row 2: Contact (left) + Follow (right) */}
               <div>
-                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">Contact</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">{t("footer.contact")}</h3>
                 <address className="not-italic flex flex-col gap-2 font-body text-sm text-background/70">
-                  <span>500 Terry Francine St.</span>
-                  <span>San Francisco, CA 94158</span>
-                  <a href="tel:1234567890" className="hover:text-background transition-colors mt-1">123-456-7890</a>
-                  <a href="mailto:info@mysite.com" className="hover:text-background transition-colors">info@mysite.com</a>
+                  <span>الرياض، المملكة العربية السعودية</span>
+                  <a href="mailto:hello@aimadar.com" className="hover:text-background transition-colors mt-1">hello@aimadar.com</a>
                 </address>
               </div>
               <div>
-               <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">Follow</h3>
+                <h3 className="font-body text-xs tracking-label uppercase text-background/60 mb-4">{t("footer.follow")}</h3>
                 <nav className="flex flex-col gap-2">
                   <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Instagram</a>
-                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Facebook</a>
-                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">YouTube</a>
-                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">Pinterest</a>
+                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">X</a>
+                  <a href="#" className="font-body text-sm text-background/70 hover:text-background transition-colors">LinkedIn</a>
                 </nav>
               </div>
             </div>
@@ -103,10 +94,10 @@ export default function Footer() {
         <div className="px-[2%]">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
             <Link to="/" className="font-display text-xl font-light tracking-editorial order-first text-white">
-              MAISON <span style={{ color: "#FFCBA4" }}>ESTATE</span>
+              MADAR <span style={{ color: "#FFCBA4" }}>مدار</span>
             </Link>
             <span className="font-body text-xs text-background/40 mx-auto">
-              © 2035 Maison Estate. Built on Base44.
+              {t("footer.rights")}
             </span>
             <div className="flex gap-4 lg:ml-0 self-center lg:self-auto">
               <Link to="/privacy" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Privacy Policy</Link>
