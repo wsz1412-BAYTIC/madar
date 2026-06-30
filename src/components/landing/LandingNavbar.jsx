@@ -26,7 +26,7 @@ export default function LandingNavbar() {
   const navLinks = [
     { label: t["nav.features"], action: () => scrollTo("features") },
     { label: t["nav.pricing"], action: () => scrollTo("pricing") },
-    { label: t["nav.cities"], action: () => scrollTo("cities") },
+    { label: t["nav.cities"], action: () => scrollTo("cities-anchor") },
   ];
 
   return (
