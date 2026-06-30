@@ -16,19 +16,19 @@ export default function Features() {
   const t = landingT[lang];
 
   return (
-    <section id="features" className="bg-[#0A0E1A] py-24 md:py-32">
+    <section id="features" className="bg-[#F5F2EC] py-28 md:py-36">
       <div className="max-w-[1400px] mx-auto px-[5%] md:px-[4%]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 md:mb-20"
+          className="text-center mb-20 md:mb-24"
         >
-          <h2 className="font-display text-3xl md:text-5xl font-light text-white">
+          <h2 className="font-display text-3xl md:text-5xl font-light text-[#1C1C20]">
             {t["features.title"]}
           </h2>
-          <p className="mt-4 text-white/50 font-body text-base md:text-lg max-w-xl mx-auto">
+          <p className="mt-4 text-[#1C1C20]/50 font-body text-base md:text-lg max-w-xl mx-auto">
             {t["features.subtitle"]}
           </p>
         </motion.div>
@@ -41,17 +41,14 @@ export default function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className="group relative bg-[#0E1422] border border-white/[0.06] rounded-2xl p-8 hover:border-[#FF6B4A]/30 transition-all duration-500"
+              className="group relative bg-white border border-[#1C1C20]/8 rounded-2xl p-8 hover:border-[#FF6B4A]/30 hover:shadow-xl hover:shadow-[#FF6B4A]/5 transition-all duration-500"
             >
-              {/* Glow on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-[#FF6B4A]/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
               <div className="relative">
                 <div className="w-14 h-14 rounded-xl bg-[#FF6B4A]/10 flex items-center justify-center text-2xl mb-5">
                   {feature.emoji}
                 </div>
                 <div className="flex items-center gap-2 mb-2">
-                  <h3 className="font-display text-xl font-light text-white">
+                  <h3 className="font-display text-xl font-light text-[#1C1C20]">
                     {t[feature.titleKey]}
                   </h3>
                   {feature.badge && (
@@ -60,7 +57,7 @@ export default function Features() {
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-white/55 font-body leading-relaxed">
+                <p className="text-sm text-[#1C1C20]/55 font-body leading-relaxed">
                   {t[feature.descKey]}
                 </p>
               </div>

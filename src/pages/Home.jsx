@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <div
       dir={lang === "ar" ? "rtl" : "ltr"}
-      className="bg-[#080B14] min-h-screen overflow-x-hidden"
+      className="bg-[#F5F2EC] min-h-screen overflow-x-hidden"
     >
       <LandingNavbar />
       <main>

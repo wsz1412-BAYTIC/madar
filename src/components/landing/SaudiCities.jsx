@@ -35,19 +35,19 @@ export default function SaudiCities() {
   const t = landingT[lang];
 
   return (
-    <section id="cities-anchor" className="bg-[#0A0E1A] py-24 md:py-32">
+    <section id="cities-anchor" className="bg-[#EEEAE1] py-28 md:py-36">
       <div className="max-w-[1400px] mx-auto px-[5%] md:px-[4%]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 md:mb-20"
+          className="text-center mb-20 md:mb-24"
         >
-          <h2 className="font-display text-3xl md:text-5xl font-light text-white">
+          <h2 className="font-display text-3xl md:text-5xl font-light text-[#1C1C20]">
             {t["cities.title"]}
           </h2>
-          <p className="mt-4 text-white/50 font-body text-base md:text-lg">
+          <p className="mt-4 text-[#1C1C20]/50 font-body text-base md:text-lg">
             {t["cities.subtitle"]}
           </p>
         </motion.div>
@@ -60,14 +60,14 @@ export default function SaudiCities() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group relative h-[380px] rounded-2xl overflow-hidden"
+              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-sm"
             >
               <img
                 src={city.image}
                 alt={lang === "ar" ? city.nameAr : city.nameEn}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#080B14] via-[#080B14]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C20] via-[#1C1C20]/40 to-transparent" />
               <div className="absolute bottom-0 inset-x-0 p-6">
                 <div className="flex items-center gap-2 mb-2">
                   <MapPin size={16} className="text-[#FF6B4A]" />
@@ -75,7 +75,7 @@ export default function SaudiCities() {
                     {lang === "ar" ? city.nameAr : city.nameEn}
                   </h3>
                 </div>
-                <p className="text-sm text-white/65 font-body leading-relaxed">
+                <p className="text-sm text-white/70 font-body leading-relaxed">
                   {t[`cities.${city.key}`]}
                 </p>
               </div>

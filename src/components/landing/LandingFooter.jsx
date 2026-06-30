@@ -36,7 +36,7 @@ export default function LandingFooter() {
   ];
 
   return (
-    <footer className="bg-[#050810] border-t border-white/[0.06]">
+    <footer className="bg-[#1C1C20] border-t border-white/[0.06]">
       <div className="max-w-[1400px] mx-auto px-[5%] md:px-[4%] py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Logo + tagline */}
@@ -44,7 +44,6 @@ export default function LandingFooter() {
             <img
               src={LOGO_URL}
               alt="MADAR"
-              style={{ mixBlendMode: "screen" }}
               className="w-[140px] h-auto mb-4"
             />
             <p className="text-sm text-white/45 font-body max-w-xs leading-relaxed">

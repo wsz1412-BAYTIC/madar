@@ -11,7 +11,7 @@ export default function Pricing() {
 
   const tiers = [
     {
-      name: t["pricing.free"] === "Free" ? "مجاني" : "مجاني",
+      name: lang === "ar" ? "مجاني" : "Free",
       nameEn: "Free",
       price: 0,
       features: lang === "ar"
@@ -49,19 +49,19 @@ export default function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="bg-[#080B14] py-24 md:py-32">
+    <section id="pricing" className="bg-[#EEEAE1] py-28 md:py-36">
       <div className="max-w-[1400px] mx-auto px-[5%] md:px-[4%]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 md:mb-20"
+          className="text-center mb-20 md:mb-24"
         >
-          <h2 className="font-display text-3xl md:text-5xl font-light text-white">
+          <h2 className="font-display text-3xl md:text-5xl font-light text-[#1C1C20]">
             {t["pricing.title"]}
           </h2>
-          <p className="mt-4 text-white/50 font-body text-base md:text-lg max-w-xl mx-auto">
+          <p className="mt-4 text-[#1C1C20]/50 font-body text-base md:text-lg max-w-xl mx-auto">
             {t["pricing.subtitle"]}
           </p>
         </motion.div>
@@ -76,36 +76,36 @@ export default function Pricing() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className={`relative rounded-2xl p-8 flex flex-col transition-all duration-500 ${
                 tier.popular
-                  ? "bg-[#0E1422] border-2 border-[#FF6B4A]/40 shadow-2xl shadow-[#FF6B4A]/10 lg:scale-105"
-                  : "bg-[#0E1422] border border-white/[0.06] hover:border-white/[0.12]"
+                  ? "bg-white border-2 border-[#FF6B4A]/40 shadow-2xl shadow-[#FF6B4A]/10 lg:scale-105"
+                  : "bg-white border border-[#1C1C20]/8 hover:border-[#1C1C20]/15"
               }`}
             >
               {tier.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="text-xs font-body font-bold px-4 py-1.5 rounded-full bg-[#FF6B4A] text-white whitespace-nowrap">
+                  <span className="text-xs font-body font-bold px-4 py-1.5 rounded-full bg-[#FF6B4A] text-white whitespace-nowrap shadow-lg shadow-[#FF6B4A]/30">
                     {t["pricing.popular"]}
                   </span>
                 </div>
               )}
 
-              <h3 className="font-display text-2xl font-light text-white mb-1">
+              <h3 className="font-display text-2xl font-light text-[#1C1C20] mb-1">
                 {tier.name}
               </h3>
-              <p className="text-xs text-white/35 font-body uppercase tracking-wider mb-6">
+              <p className="text-xs text-[#1C1C20]/35 font-body uppercase tracking-wider mb-6">
                 {tier.nameEn}
               </p>
 
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
-                  <span className="font-display text-4xl md:text-5xl font-light text-white">
+                  <span className="font-display text-4xl md:text-5xl font-light text-[#1C1C20]">
                     {tier.price}
                   </span>
-                  <span className="text-sm text-white/50 font-body">
+                  <span className="text-sm text-[#1C1C20]/50 font-body">
                     {currency}
                   </span>
                 </div>
                 {tier.price > 0 && (
-                  <span className="text-xs text-white/35 font-body">
+                  <span className="text-xs text-[#1C1C20]/35 font-body">
                     {t["pricing.month"]}
                   </span>
                 )}
@@ -115,7 +115,7 @@ export default function Pricing() {
                 {tier.features.map((feature, fi) => (
                   <li key={fi} className="flex items-start gap-2.5">
                     <Check size={16} className="text-[#FF6B4A] shrink-0 mt-0.5" />
-                    <span className="text-sm text-white/65 font-body">{feature}</span>
+                    <span className="text-sm text-[#1C1C20]/65 font-body">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -124,8 +124,8 @@ export default function Pricing() {
                 to="/login"
                 className={`block text-center text-sm font-body font-medium px-6 py-3.5 rounded-full transition-all duration-300 ${
                   tier.popular
-                    ? "bg-[#FF6B4A] text-white hover:bg-[#FF8264]"
-                    : "border border-white/15 text-white hover:bg-white/10"
+                    ? "bg-[#FF6B4A] text-white hover:bg-[#FF7D5C]"
+                    : "border border-[#1C1C20]/15 text-[#1C1C20] hover:bg-[#1C1C20]/5"
                 }`}
               >
                 {t["pricing.cta"]}

@@ -19,8 +19,7 @@ export default function LandingNavbar() {
 
   const scrollTo = (id) => {
     setMenuOpen(false);
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const navLinks = [
@@ -34,7 +33,7 @@ export default function LandingNavbar() {
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#080B14]/90 backdrop-blur-xl border-b border-white/[0.06]"
+            ? "bg-[#F5F2EC]/90 backdrop-blur-xl border-b border-[#1C1C20]/8"
             : "bg-transparent"
         }`}
       >
@@ -45,7 +44,6 @@ export default function LandingNavbar() {
               <img
                 src={LOGO_URL}
                 alt="MADAR"
-                style={{ mixBlendMode: "screen" }}
                 className="w-[120px] md:w-[160px] h-auto"
               />
             </Link>
@@ -56,7 +54,7 @@ export default function LandingNavbar() {
                 <button
                   key={link.label}
                   onClick={link.action}
-                  className="font-body text-sm text-white/70 hover:text-white transition-colors"
+                  className="font-body text-sm text-[#1C1C20]/70 hover:text-[#1C1C20] transition-colors"
                 >
                   {link.label}
                 </button>
@@ -64,7 +62,7 @@ export default function LandingNavbar() {
 
               <button
                 onClick={toggleLang}
-                className="flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors"
+                className="flex items-center gap-1.5 text-sm text-[#1C1C20]/50 hover:text-[#1C1C20] transition-colors"
               >
                 <Languages size={15} />
                 {lang === "ar" ? "EN" : "ع"}
@@ -72,14 +70,14 @@ export default function LandingNavbar() {
 
               <Link
                 to="/login"
-                className="text-sm text-white/70 hover:text-white transition-colors"
+                className="text-sm text-[#1C1C20]/70 hover:text-[#1C1C20] transition-colors"
               >
                 {t["nav.login"]}
               </Link>
 
               <Link
                 to="/login"
-                className="text-sm font-body font-medium tracking-wide px-6 py-2.5 rounded-full bg-[#FF6B4A] text-white hover:bg-[#FF8264] transition-all duration-300 shadow-lg shadow-[#FF6B4A]/20"
+                className="text-sm font-body font-medium tracking-wide px-6 py-2.5 rounded-full bg-[#FF6B4A] text-white hover:bg-[#FF7D5C] transition-all duration-300 shadow-lg shadow-[#FF6B4A]/20"
               >
                 {t["nav.startFree"]}
               </Link>
@@ -89,14 +87,14 @@ export default function LandingNavbar() {
             <div className="flex md:hidden items-center gap-3">
               <button
                 onClick={toggleLang}
-                className="flex items-center gap-1 text-sm text-white/60"
+                className="flex items-center gap-1 text-sm text-[#1C1C20]/60"
               >
                 <Languages size={15} />
                 {lang === "ar" ? "EN" : "ع"}
               </button>
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="text-white p-1"
+                className="text-[#1C1C20] p-1"
               >
                 {menuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -113,7 +111,7 @@ export default function LandingNavbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#080B14] flex flex-col items-center justify-center gap-8 md:hidden"
+            className="fixed inset-0 z-40 bg-[#F5F2EC] flex flex-col items-center justify-center gap-8 md:hidden"
           >
             {navLinks.map((link, i) => (
               <motion.button
@@ -122,7 +120,7 @@ export default function LandingNavbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 + 0.1 }}
                 onClick={link.action}
-                className="font-display text-3xl text-white hover:text-[#FF6B4A] transition-colors"
+                className="font-display text-3xl text-[#1C1C20] hover:text-[#FF6B4A] transition-colors"
               >
                 {link.label}
               </motion.button>
@@ -133,7 +131,7 @@ export default function LandingNavbar() {
               transition={{ delay: 0.35 }}
               className="flex flex-col items-center gap-4"
             >
-              <Link to="/login" className="text-lg text-white/70">
+              <Link to="/login" className="text-lg text-[#1C1C20]/70">
                 {t["nav.login"]}
               </Link>
               <Link
