@@ -49,7 +49,7 @@ function MadarRoutes() {
       <Route path="/login" element={<Login />} />
 
       <Route element={<Layout />}>
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/" element={<Home />} />
         <Route path="/properties" element={<ProtectedRoute><PropertySearch /></ProtectedRoute>} />
         <Route path="/property/:id" element={<ProtectedRoute><PropertyDetail /></ProtectedRoute>} />
         <Route path="/analytics/:propertyId" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />

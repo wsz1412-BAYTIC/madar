@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronDown, TrendingUp } from "lucide-react";
+import { ChevronDown, TrendingUp, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useMadarAuth } from "@/lib/MadarAuthContext";
 
 function SearchDropdown({ label, options, value, onChange, dark = true }) {
   const [open, setOpen] = useState(false);
@@ -41,9 +42,14 @@ function SearchDropdown({ label, options, value, onChange, dark = true }) {
 export default function HeroSection({ heroImage }) {
   const navigate = useNavigate();
   const { t, lang } = useLanguage();
+  const { isAuthenticated } = useMadarAuth();
   const [search, setSearch] = useState("");
 
   const handleSearch = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
     const params = new URLSearchParams();
     if (search) params.set("q", search);
     navigate(`/properties${params.toString() ? `?${params.toString()}` : ""}`);
@@ -102,6 +108,16 @@ export default function HeroSection({ heroImage }) {
             <button onClick={handleSearch} className="ghost-btn-light">
               {t("hero.cta")}
             </button>
+
+            {!isAuthenticated && (
+              <Link
+                to="/login"
+                className="font-body text-xs tracking-label uppercase text-white/70 hover:text-white transition-colors flex items-center gap-2 mt-2"
+              >
+                {t("nav.login")}
+                <ArrowRight size={14} />
+              </Link>
+            )}
           </div>
         </motion.div>
       </div>

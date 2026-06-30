@@ -82,22 +82,23 @@ export default function Header() {
             </Link>
 
             <nav className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`font-body text-xs tracking-label uppercase relative group pb-1 ${
-                    location.pathname === link.path
-                      ? "text-accent"
-                      : isHomepage
-                      ? "text-white"
-                      : "text-foreground"
-                  }`}
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-0 w-full h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </Link>
-              ))}
+              {isAuthenticated &&
+                navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`font-body text-xs tracking-label uppercase relative group pb-1 ${
+                      location.pathname === link.path
+                        ? "text-accent"
+                        : isHomepage
+                        ? "text-white"
+                        : "text-foreground"
+                    }`}
+                  >
+                    {link.label}
+                    <span className="absolute bottom-0 left-0 w-full h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                  </Link>
+                ))}
 
               <button
                 onClick={toggleLang}
@@ -110,7 +111,7 @@ export default function Header() {
                 {lang === "ar" ? "EN" : "ع"}
               </button>
 
-              {isAuthenticated && (
+              {isAuthenticated ? (
                 <button
                   onClick={handleLogout}
                   className={`flex items-center gap-1.5 font-body text-xs tracking-label uppercase transition-colors ${
@@ -120,17 +121,26 @@ export default function Header() {
                   <LogOut size={14} />
                   {t("nav.logout")}
                 </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`font-body text-xs tracking-label uppercase transition-colors ${
+                    isHomepage ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t("nav.login")}
+                </Link>
               )}
 
               <Link
-                to="/properties"
+                to={isAuthenticated ? "/properties" : "/login"}
                 className={`text-xs px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full border ${
                   isHomepage
                     ? "border-white bg-white text-black hover:bg-white/80"
                     : "border-foreground bg-foreground text-background hover:bg-foreground/80"
                 }`}
               >
-                {t("nav.addProperty")}
+                {isAuthenticated ? t("nav.addProperty") : t("hero.cta")}
               </Link>
             </nav>
 
@@ -155,21 +165,37 @@ export default function Header() {
             className="fixed inset-0 z-40 bg-background flex flex-col items-start justify-center px-[4%]"
           >
             <nav className="flex flex-col items-start gap-6">
-              {navLinks.map((link, i) => (
+              {isAuthenticated &&
+                navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.path}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 + 0.2 }}
+                  >
+                    <Link
+                      to={link.path}
+                      className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors text-left"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+
+              {!isAuthenticated && (
                 <motion.div
-                  key={link.path}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 + 0.2 }}
+                  transition={{ delay: 0.3 }}
                 >
                   <Link
-                    to={link.path}
+                    to="/login"
                     className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors text-left"
                   >
-                    {link.label}
+                    {t("nav.login")}
                   </Link>
                 </motion.div>
-              ))}
+              )}
 
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
