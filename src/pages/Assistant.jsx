@@ -26,7 +26,7 @@ function ChatMessage({ message }) {
         {isUser ? (
           <p className="font-body text-sm">{message.content}</p>
         ) : (
-          <div className="font-body text-sm prose prose-sm max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+          <div className="font-body text-sm leading-relaxed max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:mb-2 [&_ol]:mb-2 [&_li]:ml-4 [&_li]:mb-1 [&_strong]:font-medium [&_a]:text-accent [&_a]:underline">
             <ReactMarkdown>{message.content}</ReactMarkdown>
           </div>
         )}
