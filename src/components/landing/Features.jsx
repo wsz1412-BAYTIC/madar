@@ -1,14 +1,16 @@
 import { motion } from "framer-motion";
+import { Compass, BarChart3, Building2, Link2, Bot } from "lucide-react";
+import TelegramIcon from "./TelegramIcon";
 import { useLanguage } from "@/lib/LanguageContext";
 import { landingT } from "@/lib/landing-i18n";
 
 const FEATURES = [
-  { emoji: "🧭", titleKey: "features.f1.title", descKey: "features.f1.desc" },
-  { emoji: "📊", titleKey: "features.f2.title", descKey: "features.f2.desc" },
-  { emoji: "🏙️", titleKey: "features.f3.title", descKey: "features.f3.desc" },
-  { emoji: "📱", titleKey: "features.f4.title", descKey: "features.f4.desc" },
-  { emoji: "🔗", titleKey: "features.f5.title", descKey: "features.f5.desc" },
-  { emoji: "🤖", titleKey: "features.f6.title", descKey: "features.f6.desc", badge: true },
+  { icon: Compass, gradient: "from-[#2D9CDB] to-[#56CCF2]", titleKey: "features.f1.title", descKey: "features.f1.desc" },
+  { icon: BarChart3, gradient: "from-[#27AE60] to-[#6FCF97]", titleKey: "features.f2.title", descKey: "features.f2.desc" },
+  { icon: Building2, gradient: "from-[#9B51E0] to-[#BB6BD9]", titleKey: "features.f3.title", descKey: "features.f3.desc" },
+  { icon: TelegramIcon, gradient: "from-[#2D9CDB] to-[#56CCF2]", titleKey: "features.f4.title", descKey: "features.f4.desc", svg: true },
+  { icon: Link2, gradient: "from-[#27AE60] to-[#6FCF97]", titleKey: "features.f5.title", descKey: "features.f5.desc" },
+  { icon: Bot, gradient: "from-[#9B51E0] to-[#BB6BD9]", titleKey: "features.f6.title", descKey: "features.f6.desc", badge: true },
 ];
 
 export default function Features() {
@@ -34,35 +36,38 @@ export default function Features() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURES.map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className="group relative bg-white border border-[#1C1C20]/8 rounded-2xl p-8 hover:border-[#FF6B4A]/30 hover:shadow-xl hover:shadow-[#FF6B4A]/5 transition-all duration-500"
-            >
-              <div className="relative">
-                <div className="w-14 h-14 rounded-xl bg-[#FF6B4A]/10 flex items-center justify-center text-2xl mb-5">
-                  {feature.emoji}
+          {FEATURES.map((feature, i) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
+                className="group relative bg-white border border-[#1C1C20]/8 rounded-2xl p-8 hover:border-[#FF6B4A]/30 hover:shadow-xl hover:shadow-[#FF6B4A]/5 transition-all duration-500"
+              >
+                <div className="relative">
+                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-5 shadow-md`}>
+                    <Icon className="w-7 h-7 text-white" strokeWidth={feature.svg ? 0 : 2} />
+                  </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="font-display text-xl font-light text-[#1C1C20]">
+                      {t[feature.titleKey]}
+                    </h3>
+                    {feature.badge && (
+                      <span className="text-[10px] font-body font-bold px-2 py-0.5 rounded-full bg-[#FF6B4A] text-white">
+                        {t["features.f6.badge"]}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-[#1C1C20]/55 font-body leading-relaxed">
+                    {t[feature.descKey]}
+                  </p>
                 </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="font-display text-xl font-light text-[#1C1C20]">
-                    {t[feature.titleKey]}
-                  </h3>
-                  {feature.badge && (
-                    <span className="text-[10px] font-body font-bold px-2 py-0.5 rounded-full bg-[#FF6B4A] text-white">
-                      {t["features.f6.badge"]}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-[#1C1C20]/55 font-body leading-relaxed">
-                  {t[feature.descKey]}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
