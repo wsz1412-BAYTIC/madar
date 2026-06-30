@@ -1,0 +1,400 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const translations = {
+  en: {
+    // Nav
+    home: 'Home',
+    dashboard: 'Dashboard',
+    properties: 'Properties',
+    analytics: 'Analytics',
+    revenue: 'Revenue',
+    alerts: 'Alerts',
+    market: 'Market',
+    calendar: 'Calendar',
+    settings: 'Settings',
+    billing: 'Billing',
+    calculator: 'Calculator',
+    connect: 'Connect',
+    referral: 'Referral',
+    admin: 'Admin',
+    login: 'Login',
+    logout: 'Logout',
+    signup: 'Sign Up',
+    getStarted: 'Get Started',
+    language: 'العربية',
+    
+    // Landing
+    heroTitle: 'Your AI Revenue Co-Pilot',
+    heroSubtitle: 'for Short-Term Rentals',
+    heroDesc: 'Madar uses artificial intelligence to optimize your pricing, forecast demand, and maximize revenue across Airbnb, Gatherin, and Booking.com in Saudi Arabia.',
+    startFree: 'Start Free Trial',
+    viewPricing: 'View Pricing',
+    trustedBy: 'Trusted by 500+ hosts across Saudi Arabia',
+    
+    // Features
+    featuresTitle: 'Everything you need to maximize revenue',
+    featuresSubtitle: 'Powerful tools designed for Saudi Arabian short-term rental hosts',
+    feat1Title: 'AI Dynamic Pricing',
+    feat1Desc: 'Real-time price recommendations based on demand, seasonality, local events, and competitor analysis.',
+    feat2Title: 'Multi-Platform Sync',
+    feat2Desc: 'Connect Airbnb, Gatherin, and Booking.com. Manage all listings from one dashboard.',
+    feat3Title: 'Market Intelligence',
+    feat3Desc: 'City-level demand indices, event impact analysis, and competitor benchmarking.',
+    feat4Title: 'Revenue Forecasting',
+    feat4Desc: 'AI-powered projections help you plan ahead and optimize your rental strategy.',
+    
+    // Pricing
+    pricingTitle: 'Simple, transparent pricing',
+    pricingSubtitle: 'Start free, upgrade as you grow',
+    mo: '/mo',
+    sar: 'SAR',
+    free: 'Free',
+    basic: 'Basic',
+    growth: 'Growth',
+    pro: 'Pro',
+    popular: 'Most Popular',
+    currentPlan: 'Current Plan',
+    upgrade: 'Upgrade',
+    downgrade: 'Downgrade',
+    
+    // Dashboard
+    welcomeBack: 'Welcome back',
+    todayOverview: "Today's Overview",
+    totalRevenue: 'Total Revenue',
+    occupancyRate: 'Occupancy Rate',
+    avgNightlyRate: 'Avg Nightly Rate',
+    activeListings: 'Active Listings',
+    aiRecommendations: 'AI Pricing Recommendations',
+    occupancyForecast: 'Occupancy Forecast',
+    
+    // Properties
+    myProperties: 'My Properties',
+    addProperty: 'Add Property',
+    importListing: 'Import Listing',
+    pasteUrl: 'Paste your listing URL from Airbnb, Gatherin, or Booking.com',
+    importing: 'Importing...',
+    import: 'Import',
+    bedrooms: 'Bedrooms',
+    bathrooms: 'Bathrooms',
+    guests: 'Guests',
+    perNight: '/night',
+    
+    // Analytics
+    revenueOverTime: 'Revenue Over Time',
+    occupancyOverTime: 'Occupancy Over Time',
+    competitorComparison: 'Competitor Price Comparison',
+    last30Days: 'Last 30 Days',
+    last90Days: 'Last 90 Days',
+    lastYear: 'Last Year',
+    
+    // Revenue
+    revenueBreakdown: 'Monthly Revenue Breakdown',
+    projections: 'Revenue Projections',
+    totalEarnings: 'Total Earnings',
+    platformFees: 'Platform Fees',
+    cleaningFees: 'Cleaning Fees',
+    netRevenue: 'Net Revenue',
+    
+    // Alerts
+    smartAlerts: 'Smart Price Alerts',
+    alertsDesc: 'AI-generated pricing alerts to help you capture more revenue',
+    critical: 'Critical',
+    warning: 'Warning',
+    info: 'Info',
+    opportunity: 'Opportunity',
+    dismiss: 'Dismiss',
+    applyNow: 'Apply Now',
+    
+    // Market
+    marketIntelligence: 'Market Intelligence',
+    demandIndex: 'City Demand Index',
+    localEvents: 'Local Events Affecting Pricing',
+    eventImpact: 'Event Impact',
+    high: 'High',
+    medium: 'Medium',
+    low: 'Low',
+    
+    // Calendar
+    bookingCalendar: 'Booking Calendar',
+    booked: 'Booked',
+    blocked: 'Blocked',
+    available: 'Available',
+    
+    // Settings
+    profileSettings: 'Profile Settings',
+    fullName: 'Full Name',
+    email: 'Email',
+    phone: 'Phone',
+    languagePref: 'Language Preference',
+    notifications: 'Notifications',
+    emailNotif: 'Email Notifications',
+    smsNotif: 'SMS Notifications',
+    pushNotif: 'Push Notifications',
+    saveChanges: 'Save Changes',
+    
+    // Billing
+    billingPayments: 'Billing & Payments',
+    currentSubscription: 'Current Subscription',
+    paymentHistory: 'Payment History',
+    date: 'Date',
+    amount: 'Amount',
+    status: 'Status',
+    paid: 'Paid',
+    pending: 'Pending',
+    
+    // Calculator
+    investmentCalculator: 'Investment Calculator',
+    calcDesc: 'Estimate your potential ROI from short-term rental investment',
+    propertyValue: 'Property Value (SAR)',
+    monthlyRent: 'Expected Monthly Rent (SAR)',
+    occupancyEst: 'Estimated Occupancy (%)',
+    monthlyExpenses: 'Monthly Expenses (SAR)',
+    calculate: 'Calculate ROI',
+    annualRevenue: 'Annual Revenue',
+    annualExpenses: 'Annual Expenses',
+    annualProfit: 'Annual Net Profit',
+    roi: 'ROI',
+    paybackPeriod: 'Payback Period',
+    years: 'years',
+    
+    // Connect
+    connectPlatforms: 'Connect Your Platforms',
+    connectDesc: 'Link your rental platforms to sync listings, bookings, and pricing automatically',
+    connected: 'Connected',
+    notConnected: 'Not Connected',
+    connectNow: 'Connect Now',
+    disconnect: 'Disconnect',
+    
+    // Referral
+    referralProgram: 'Referral Program',
+    referralDesc: 'Earn 10% commission for every host you refer to Madar',
+    yourCode: 'Your Referral Code',
+    copyCode: 'Copy Code',
+    copied: 'Copied!',
+    totalReferrals: 'Total Referrals',
+    totalEarned: 'Total Earned',
+    pendingPayout: 'Pending Payout',
+    
+    // Admin
+    adminPanel: 'Admin Panel',
+    subscribers: 'Subscribers',
+    systemHealth: 'System Health',
+    apiLatency: 'API Latency',
+    uptime: 'Uptime',
+    activeUsers: 'Active Users',
+    totalProperties: 'Total Properties',
+    
+    // Common
+    search: 'Search',
+    filter: 'Filter',
+    export: 'Export',
+    loading: 'Loading...',
+    noData: 'No data available',
+    password: 'Password',
+    rememberMe: 'Remember me',
+    forgotPassword: 'Forgot password?',
+    dontHaveAccount: "Don't have an account?",
+    haveAccount: 'Already have an account?',
+  },
+  ar: {
+    home: 'الرئيسية',
+    dashboard: 'لوحة التحكم',
+    properties: 'العقارات',
+    analytics: 'التحليلات',
+    revenue: 'الإيرادات',
+    alerts: 'التنبيهات',
+    market: 'السوق',
+    calendar: 'التقويم',
+    settings: 'الإعدادات',
+    billing: 'الفواتير',
+    calculator: 'الحاسبة',
+    connect: 'الربط',
+    referral: 'الإحالات',
+    admin: 'الإدارة',
+    login: 'تسجيل الدخول',
+    logout: 'تسجيل الخروج',
+    signup: 'إنشاء حساب',
+    getStarted: 'ابدأ الآن',
+    language: 'English',
+    
+    heroTitle: 'مساعدك الذكي لإدارة الإيرادات',
+    heroSubtitle: 'للإيجارات قصيرة المدى',
+    heroDesc: 'يستخدم مدار الذكاء الاصطناعي لتحسين أسعارك، والتنبؤ بالطلب، وتعظيم إيراداتك عبر Airbnb وGatherin وBooking.com في المملكة العربية السعودية.',
+    startFree: 'ابدأ تجربة مجانية',
+    viewPricing: 'عرض الأسعار',
+    trustedBy: 'يثق بنا أكثر من 500 مضيف في المملكة العربية السعودية',
+    
+    featuresTitle: 'كل ما تحتاجه لتعظيم إيراداتك',
+    featuresSubtitle: 'أدوات قوية مصممة لمضيفي الإيجارات قصيرة المدى في السعودية',
+    feat1Title: 'تسعير ذكي بالذكاء الاصطناعي',
+    feat1Desc: 'توصيات أسعار فورية بناءً على الطلب والموسمية والفعاليات المحلية وتحليل المنافسين.',
+    feat2Title: 'مزامنة متعددة المنصات',
+    feat2Desc: 'اربط Airbnb وGatherin وBooking.com. أدر جميع إعلاناتك من لوحة تحكم واحدة.',
+    feat3Title: 'ذكاء السوق',
+    feat3Desc: 'مؤشرات طلب على مستوى المدينة وتحليل تأثير الفعاليات ومقارنة المنافسين.',
+    feat4Title: 'توقعات الإيرادات',
+    feat4Desc: 'تتيح لك التوقعات المدعومة بالذكاء الاصطناعي التخطيط المسبق وتحسين استراتيجية التأجير.',
+    
+    pricingTitle: 'أسعار بسيطة وشفافة',
+    pricingSubtitle: 'ابدأ مجاناً، وقم بالترقية مع نموك',
+    mo: '/شهر',
+    sar: 'ر.س',
+    free: 'مجاني',
+    basic: 'أساسي',
+    growth: 'نمو',
+    pro: 'احترافي',
+    popular: 'الأكثر شعبية',
+    currentPlan: 'الخطة الحالية',
+    upgrade: 'ترقية',
+    downgrade: 'تخفيض',
+    
+    welcomeBack: 'مرحباً بعودتك',
+    todayOverview: 'نظرة عامة اليوم',
+    totalRevenue: 'إجمالي الإيرادات',
+    occupancyRate: 'نسبة الإشغال',
+    avgNightlyRate: 'متوسط سعر الليلة',
+    activeListings: 'الإعلانات النشطة',
+    aiRecommendations: 'توصيات التسعير الذكي',
+    occupancyForecast: 'توقعات الإشغال',
+    
+    myProperties: 'عقاراتي',
+    addProperty: 'إضافة عقار',
+    importListing: 'استيراد إعلان',
+    pasteUrl: 'الصق رابط إعلانك من Airbnb أو Gatherin أو Booking.com',
+    importing: 'جاري الاستيراد...',
+    import: 'استيراد',
+    bedrooms: 'غرف نوم',
+    bathrooms: 'حمامات',
+    guests: 'ضيوف',
+    perNight: '/ليلة',
+    
+    revenueOverTime: 'الإيرادات عبر الزمن',
+    occupancyOverTime: 'الإشغال عبر الزمن',
+    competitorComparison: 'مقارنة أسعار المنافسين',
+    last30Days: 'آخر 30 يوم',
+    last90Days: 'آخر 90 يوم',
+    lastYear: 'السنة الماضية',
+    
+    revenueBreakdown: 'تفصيل الإيرادات الشهرية',
+    projections: 'توقعات الإيرادات',
+    totalEarnings: 'إجمالي الأرباح',
+    platformFees: 'رسوم المنصات',
+    cleaningFees: 'رسوم التنظيف',
+    netRevenue: 'صافي الإيرادات',
+    
+    smartAlerts: 'تنبيهات الأسعار الذكية',
+    alertsDesc: 'تنبيهات تسعير ذكية لمساعدتك على تحقيق المزيد من الإيرادات',
+    critical: 'حرج',
+    warning: 'تحذير',
+    info: 'معلومات',
+    opportunity: 'فرصة',
+    dismiss: 'تجاهل',
+    applyNow: 'تطبيق الآن',
+    
+    marketIntelligence: 'ذكاء السوق',
+    demandIndex: 'مؤشر الطلب حسب المدينة',
+    localEvents: 'الفعاليات المحلية المؤثرة على الأسعار',
+    eventImpact: 'تأثير الفعالية',
+    high: 'مرتفع',
+    medium: 'متوسط',
+    low: 'منخفض',
+    
+    bookingCalendar: 'تقويم الحجوزات',
+    booked: 'محجوز',
+    blocked: 'محظور',
+    available: 'متاح',
+    
+    profileSettings: 'إعدادات الملف الشخصي',
+    fullName: 'الاسم الكامل',
+    email: 'البريد الإلكتروني',
+    phone: 'الهاتف',
+    languagePref: 'تفضيل اللغة',
+    notifications: 'الإشعارات',
+    emailNotif: 'إشعارات البريد الإلكتروني',
+    smsNotif: 'إشعارات الرسائل النصية',
+    pushNotif: 'الإشعارات الفورية',
+    saveChanges: 'حفظ التغييرات',
+    
+    billingPayments: 'الفواتير والمدفوعات',
+    currentSubscription: 'الاشتراك الحالي',
+    paymentHistory: 'سجل المدفوعات',
+    date: 'التاريخ',
+    amount: 'المبلغ',
+    status: 'الحالة',
+    paid: 'مدفوع',
+    pending: 'معلق',
+    
+    investmentCalculator: 'حاسبة الاستثمار',
+    calcDesc: 'قدّر العائد المحتمل من استثمارك في الإيجارات قصيرة المدى',
+    propertyValue: 'قيمة العقار (ر.س)',
+    monthlyRent: 'الإيجار الشهري المتوقع (ر.س)',
+    occupancyEst: 'نسبة الإشغال المتوقعة (%)',
+    monthlyExpenses: 'المصاريف الشهرية (ر.س)',
+    calculate: 'احسب العائد',
+    annualRevenue: 'الإيرادات السنوية',
+    annualExpenses: 'المصاريف السنوية',
+    annualProfit: 'صافي الربح السنوي',
+    roi: 'العائد على الاستثمار',
+    paybackPeriod: 'فترة الاسترداد',
+    years: 'سنوات',
+    
+    connectPlatforms: 'اربط منصاتك',
+    connectDesc: 'اربط منصات التأجير لمزامنة الإعلانات والحجوزات والأسعار تلقائياً',
+    connected: 'متصل',
+    notConnected: 'غير متصل',
+    connectNow: 'اربط الآن',
+    disconnect: 'قطع الاتصال',
+    
+    referralProgram: 'برنامج الإحالة',
+    referralDesc: 'اكسب عمولة 10% عن كل مضيف تحيله إلى مدار',
+    yourCode: 'رمز الإحالة الخاص بك',
+    copyCode: 'نسخ الرمز',
+    copied: 'تم النسخ!',
+    totalReferrals: 'إجمالي الإحالات',
+    totalEarned: 'إجمالي المكاسب',
+    pendingPayout: 'الدفع المعلق',
+    
+    adminPanel: 'لوحة الإدارة',
+    subscribers: 'المشتركون',
+    systemHealth: 'صحة النظام',
+    apiLatency: 'زمن استجابة API',
+    uptime: 'وقت التشغيل',
+    activeUsers: 'المستخدمون النشطون',
+    totalProperties: 'إجمالي العقارات',
+    
+    search: 'بحث',
+    filter: 'تصفية',
+    export: 'تصدير',
+    loading: 'جاري التحميل...',
+    noData: 'لا توجد بيانات',
+    password: 'كلمة المرور',
+    rememberMe: 'تذكرني',
+    forgotPassword: 'نسيت كلمة المرور؟',
+    dontHaveAccount: 'ليس لديك حساب؟',
+    haveAccount: 'لديك حساب بالفعل؟',
+  }
+};
+
+const LanguageContext = createContext();
+
+export function LanguageProvider({ children }) {
+  const [lang, setLang] = useState(() => localStorage.getItem('madar_lang') || 'en');
+
+  useEffect(() => {
+    localStorage.setItem('madar_lang', lang);
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  const t = (key) => translations[lang]?.[key] || translations.en[key] || key;
+  const isRTL = lang === 'ar';
+  const toggleLang = () => setLang(prev => prev === 'en' ? 'ar' : 'en');
+
+  return (
+    <LanguageContext.Provider value={{ lang, setLang, t, isRTL, toggleLang }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export const useLang = () => useContext(LanguageContext);
