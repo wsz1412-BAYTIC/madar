@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/LanguageContext";
-import { landingT, LOGO_URL } from "@/lib/landing-i18n";
+import { landingT, LOGO_URL_LIGHT } from "@/lib/landing-i18n";
 
 export default function LandingFooter() {
   const { lang } = useLanguage();
@@ -42,7 +42,7 @@ export default function LandingFooter() {
           {/* Logo + tagline */}
           <div>
             <img
-              src={LOGO_URL}
+              src={LOGO_URL_LIGHT}
               alt="MADAR"
               className="w-[140px] h-auto mb-4"
             />

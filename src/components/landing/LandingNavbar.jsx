@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, Languages } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
-import { landingT, LOGO_URL } from "@/lib/landing-i18n";
+import { landingT, LOGO_URL, LOGO_URL_LIGHT } from "@/lib/landing-i18n";
 
 export default function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -42,9 +42,9 @@ export default function LandingNavbar() {
             {/* Logo */}
             <Link to="/" className="flex items-center shrink-0">
               <img
-                src={LOGO_URL}
+                src={scrolled ? LOGO_URL : LOGO_URL_LIGHT}
                 alt="MADAR"
-                className="w-[120px] md:w-[160px] h-auto"
+                className="w-[120px] md:w-[160px] h-auto transition-opacity duration-300"
               />
             </Link>
 
