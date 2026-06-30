@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Menu, X, Languages } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
-import { landingT, LOGO_URL, LOGO_URL_LIGHT } from "@/lib/landing-i18n";
+import { landingT } from "@/lib/landing-i18n";
+import { MadarFullLogo } from "@/components/Logo";
 
 export default function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -41,10 +42,9 @@ export default function LandingNavbar() {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center shrink-0">
-              <img
-                src={scrolled ? LOGO_URL : LOGO_URL_LIGHT}
-                alt="MADAR"
-                className="w-[150px] md:w-[200px] h-auto transition-opacity duration-300"
+              <MadarFullLogo
+                variant={scrolled ? "dark" : "light"}
+                className="w-[150px] md:w-[200px] h-auto"
               />
             </Link>
 

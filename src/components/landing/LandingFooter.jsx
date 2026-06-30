@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/LanguageContext";
-import { landingT, LOGO_URL_LIGHT } from "@/lib/landing-i18n";
+import { landingT } from "@/lib/landing-i18n";
+import { MadarFullLogo } from "@/components/Logo";
 
 export default function LandingFooter() {
   const { lang } = useLanguage();
@@ -41,11 +42,7 @@ export default function LandingFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Logo + tagline */}
           <div>
-            <img
-              src={LOGO_URL_LIGHT}
-              alt="MADAR"
-              className="w-[180px] h-auto mb-4"
-            />
+            <MadarFullLogo variant="light" className="w-[180px] h-auto mb-4" />
             <p className="text-sm text-white/45 font-body max-w-xs leading-relaxed">
               {t["footer.tagline"]}
             </p>

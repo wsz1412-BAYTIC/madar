@@ -5,7 +5,7 @@ import { madarApi } from "@/api/madarApi";
 import { useMadarAuth } from "@/lib/MadarAuthContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { Languages } from "lucide-react";
-import MadarLogo from "@/components/Logo";
+import { MadarFullLogo } from "@/components/Logo";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -38,12 +38,8 @@ export default function Login() {
     <div className="min-h-screen flex flex-col bg-background">
       {/* Top bar */}
       <div className="px-[4%] md:px-[2%] py-6 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5">
-          <MadarLogo size={36} />
-          <span className="font-display text-2xl md:text-3xl font-light tracking-editorial text-foreground">
-            MADAR
-            <span className="text-accent"> مدار</span>
-          </span>
+        <Link to="/" className="flex items-center">
+          <MadarFullLogo variant="dark" className="w-[140px] md:w-[180px] h-auto" />
         </Link>
         <button
           onClick={toggleLang}

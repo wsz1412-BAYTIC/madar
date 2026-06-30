@@ -4,7 +4,7 @@ import { Menu, X, Languages, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useMadarAuth } from "@/lib/MadarAuthContext";
-import MadarLogo from "./Logo";
+import { MadarFullLogo } from "./Logo";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -62,23 +62,11 @@ export default function Header() {
       >
         <div className="w-full px-[4%] md:px-[2%]">
           <div className="flex items-center justify-between h-14 md:h-16">
-            <Link to="/" className="relative z-10 flex items-center gap-2.5">
-              <MadarLogo size={34} className="w-[28px] h-[28px] md:w-[34px] md:h-[34px]" />
-              <span
-                className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${
-                  menuOpen ? "text-foreground" : textColor
-                }`}
-              >
-                MADAR
-              </span>
-              <span
-                className={`font-display text-2xl md:text-3xl 3xl:text-4xl font-light tracking-editorial ${
-                  menuOpen ? "text-accent" : isHomepage ? "text-[#facca3]" : "text-accent"
-                }`}
-              >
-                {" "}
-                مدار
-              </span>
+            <Link to="/" className="relative z-10 flex items-center">
+              <MadarFullLogo
+                variant={isHomepage && !menuOpen ? "light" : "dark"}
+                className="w-[120px] md:w-[160px] h-auto"
+              />
             </Link>
 
             <nav className="hidden md:flex items-center gap-6">

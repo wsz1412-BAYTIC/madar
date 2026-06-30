@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { MadarFullLogo } from "@/components/Logo";
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -93,8 +94,8 @@ export default function Footer() {
       <div className="border-t border-background/10 py-6 pb-10 md:pb-8 bg-foreground w-full">
         <div className="px-[2%]">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-start gap-4">
-            <Link to="/" className="font-display text-xl font-light tracking-editorial order-first text-white">
-              MADAR <span style={{ color: "#FFCBA4" }}>مدار</span>
+            <Link to="/" className="order-first">
+              <MadarFullLogo variant="light" className="w-[140px] h-auto" />
             </Link>
             <span className="font-body text-xs text-background/40 mx-auto">
               {t("footer.rights")}
