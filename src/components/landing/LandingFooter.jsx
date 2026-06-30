@@ -44,7 +44,7 @@ export default function LandingFooter() {
             <img
               src={LOGO_URL_LIGHT}
               alt="MADAR"
-              className="w-[140px] h-auto mb-4"
+              className="w-[180px] h-auto mb-4"
             />
             <p className="text-sm text-white/45 font-body max-w-xs leading-relaxed">
               {t["footer.tagline"]}

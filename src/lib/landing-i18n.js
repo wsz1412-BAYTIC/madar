@@ -1,5 +1,5 @@
 export const LOGO_URL = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/888d74ebd_MADARMainsymbol.png";
-export const LOGO_URL_LIGHT = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/ce39ed561_MADARInvertedsquarelogo.png";
+export const LOGO_URL_LIGHT = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/d1af3482b_IMG_7737.png";
 export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1586724237569-f3d0c34bb83e?w=1920&h=1080&fit=crop&auto=format";
 
 export const landingT = {

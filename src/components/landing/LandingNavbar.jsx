@@ -44,7 +44,7 @@ export default function LandingNavbar() {
               <img
                 src={scrolled ? LOGO_URL : LOGO_URL_LIGHT}
                 alt="MADAR"
-                className="w-[120px] md:w-[160px] h-auto transition-opacity duration-300"
+                className="w-[150px] md:w-[200px] h-auto transition-opacity duration-300"
               />
             </Link>
 
