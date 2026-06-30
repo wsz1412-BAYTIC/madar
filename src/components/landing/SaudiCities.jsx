@@ -8,25 +8,25 @@ const CITIES = [
     key: "jeddah",
     nameAr: "جدة",
     nameEn: "Jeddah",
-    image: "https://images.unsplash.com/photo-1564506249664-6eb7d28c3c81?w=800&h=1000&fit=crop&auto=format",
+    image: "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/21d75628b_IMG_7742.jpeg",
   },
   {
     key: "riyadh",
     nameAr: "الرياض",
     nameEn: "Riyadh",
-    image: "https://images.unsplash.com/photo-1586724237569-f3d0c34bb83e?w=800&h=1000&fit=crop&auto=format",
+    image: "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/1aaba2894_IMG_7743.jpeg",
   },
   {
     key: "mecca",
     nameAr: "مكة المكرمة",
     nameEn: "Mecca",
-    image: "https://images.unsplash.com/photo-1591604129939-f1efa4d97f7d?w=800&h=1000&fit=crop&auto=format",
+    image: "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/0a86ff558_IMG_7744.jpeg",
   },
   {
     key: "medina",
     nameAr: "المدينة المنورة",
     nameEn: "Medina",
-    image: "https://images.unsplash.com/photo-1591456983933-0c7723e93ddd?w=800&h=1000&fit=crop&auto=format",
+    image: "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/3a69a7e3d_IMG_7745.jpeg",
   },
 ];
 
