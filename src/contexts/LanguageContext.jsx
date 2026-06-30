@@ -195,6 +195,14 @@ const translations = {
     forgotPassword: 'Forgot password?',
     dontHaveAccount: "Don't have an account?",
     haveAccount: 'Already have an account?',
+    createAccount: 'Create Account',
+    signupDesc: 'Start maximizing your rental revenue today',
+    confirmPassword: 'Confirm Password',
+    sendResetLink: 'Send Reset Link',
+    backToLogin: 'Back to Login',
+    forgotDesc: 'Enter your email and we\'ll send you a link to reset your password',
+    resetEmailSent: 'If an account exists with that email, a password reset link has been sent.',
+    passwordsMatch: 'Passwords do not match',
   },
   ar: {
     home: 'الرئيسية',
@@ -372,6 +380,14 @@ const translations = {
     forgotPassword: 'نسيت كلمة المرور؟',
     dontHaveAccount: 'ليس لديك حساب؟',
     haveAccount: 'لديك حساب بالفعل؟',
+    createAccount: 'إنشاء حساب',
+    signupDesc: 'ابدأ في تعظيم إيرادات إيجاراتك اليوم',
+    confirmPassword: 'تأكيد كلمة المرور',
+    sendResetLink: 'إرسال رابط الاستعادة',
+    backToLogin: 'العودة لتسجيل الدخول',
+    forgotDesc: 'أدخل بريدك الإلكتروني وسنرسل لك رابطاً لاستعادة كلمة المرور',
+    resetEmailSent: 'إذا كان هناك حساب بهذا البريد، فقد أرسلنا رابط استعادة كلمة المرور.',
+    passwordsMatch: 'كلمتا المرور غير متطابقتين',
   }
 };
 

@@ -1,26 +1,40 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
-import { useMadarAuth } from '@/contexts/AuthContext';
-import { Eye, EyeOff, Globe, Loader2 } from 'lucide-react';
+import { api, setToken, setUser } from '@/lib/api';
+import { Eye, EyeOff, Globe, Loader2, Check } from 'lucide-react';
 
-export default function MadarLogin() {
+export default function MadarSignup() {
   const { t, lang, toggleLang, isRTL } = useLang();
-  const { login, loading } = useMadarAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({ full_name: '', email: '', password: '', confirm: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (form.password !== form.confirm) {
+      setError(t('passwordsMatch'));
+      return;
+    }
+    setLoading(true);
     try {
-      await login(email, password);
+      const res = await api.post('/auth/register', {
+        full_name: form.full_name,
+        email: form.email,
+        password: form.password,
+      });
+      setToken(res.access_token || res.token);
+      setUser(res.user || { full_name: form.full_name, email: form.email });
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || (lang === 'ar' ? 'فشل تسجيل الدخول' : 'Login failed. Please check your credentials.'));
+      setError(err.message || (lang === 'ar' ? 'فشل إنشاء الحساب' : 'Registration failed. Please try again.'));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,11 +50,18 @@ export default function MadarLogin() {
         </Link>
         <div>
           <h2 className="font-heading text-3xl font-bold text-white mb-4 leading-tight">
-            {lang === 'ar' ? 'حسّن إيرادات إيجاراتك\nبالذكاء الاصطناعي' : 'Optimize your rental\nrevenue with AI'}
+            {lang === 'ar' ? 'انضم لمئات المضيفين\nالذين يثقون بمدار' : 'Join hundreds of hosts\nwho trust Madar'}
           </h2>
-          <p className="text-white/50 text-sm max-w-sm leading-relaxed">
-            {lang === 'ar' ? 'انضم لأكثر من 500 مضيف في المملكة العربية السعودية يستخدمون مدار لتعظيم إيراداتهم.' : 'Join 500+ hosts across Saudi Arabia using Madar to maximize their earnings.'}
-          </p>
+          <ul className="space-y-3">
+            {(lang === 'ar'
+              ? ['تسعير ذكي بالذكاء الاصطناعي', 'مزامنة متعددة المنصات', 'توقعات الإيرادات', 'ذكاء السوق المحلي']
+              : ['AI-powered dynamic pricing', 'Multi-platform sync', 'Revenue forecasting', 'Local market intelligence']
+            ).map((f, i) => (
+              <li key={i} className="flex items-center gap-2 text-white/70 text-sm">
+                <Check className="w-4 h-4 text-[#D95F3B]" />{f}
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="text-white/30 text-xs">© 2025 Madar</div>
       </div>
@@ -60,10 +81,8 @@ export default function MadarLogin() {
             </button>
           </div>
 
-          <h1 className="font-heading text-2xl font-bold text-[#1C1F2E] mb-2">{t('login')}</h1>
-          <p className="text-sm text-[#1C1F2E]/50 mb-8">
-            {lang === 'ar' ? 'أدخل بياناتك للوصول إلى لوحة التحكم' : 'Enter your credentials to access your dashboard'}
-          </p>
+          <h1 className="font-heading text-2xl font-bold text-[#1C1F2E] mb-2">{t('createAccount')}</h1>
+          <p className="text-sm text-[#1C1F2E]/50 mb-8">{t('signupDesc')}</p>
 
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm">{error}</div>
@@ -71,11 +90,23 @@ export default function MadarLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
+              <label className="block text-sm font-medium text-[#1C1F2E]/70 mb-1.5">{t('fullName')}</label>
+              <input
+                name="full_name"
+                value={form.full_name}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-white border border-[#1C1F2E]/10 text-[#1C1F2E] placeholder-[#1C1F2E]/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B] transition-all text-sm"
+                placeholder={lang === 'ar' ? 'أدخل اسمك الكامل' : 'Enter your full name'}
+              />
+            </div>
+            <div>
               <label className="block text-sm font-medium text-[#1C1F2E]/70 mb-1.5">{t('email')}</label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={form.email}
+                onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-xl bg-white border border-[#1C1F2E]/10 text-[#1C1F2E] placeholder-[#1C1F2E]/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B] transition-all text-sm"
                 placeholder={lang === 'ar' ? 'أدخل بريدك الإلكتروني' : 'Enter your email'}
@@ -86,8 +117,9 @@ export default function MadarLogin() {
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-xl bg-white border border-[#1C1F2E]/10 text-[#1C1F2E] placeholder-[#1C1F2E]/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B] transition-all text-sm"
                   placeholder={lang === 'ar' ? 'أدخل كلمة المرور' : 'Enter your password'}
@@ -97,13 +129,17 @@ export default function MadarLogin() {
                 </button>
               </div>
             </div>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm text-[#1C1F2E]/60 cursor-pointer">
-                <input type="checkbox" className="rounded border-[#1C1F2E]/20 text-[#D95F3B] focus:ring-[#D95F3B]/20" />
-                {t('rememberMe')}
-              </label>
-              <Link to="/forgot-password" className="text-sm text-[#D95F3B] hover:text-[#D95F3B]/80">{t('forgotPassword')}</Link>
+            <div>
+              <label className="block text-sm font-medium text-[#1C1F2E]/70 mb-1.5">{t('confirmPassword')}</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="confirm"
+                value={form.confirm}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-xl bg-white border border-[#1C1F2E]/10 text-[#1C1F2E] placeholder-[#1C1F2E]/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B] transition-all text-sm"
+                placeholder={lang === 'ar' ? 'أعد إدخال كلمة المرور' : 'Re-enter your password'}
+              />
             </div>
 
             <button
@@ -112,13 +148,13 @@ export default function MadarLogin() {
               className="w-full py-3 bg-[#D95F3B] text-white font-medium rounded-xl hover:bg-[#D95F3B]/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {t('login')}
+              {t('createAccount')}
             </button>
           </form>
 
           <p className="text-center text-sm text-[#1C1F2E]/50 mt-6">
-            {t('dontHaveAccount')}{' '}
-            <Link to="/signup" className="text-[#D95F3B] font-medium hover:text-[#D95F3B]/80">{t('signup')}</Link>
+            {t('haveAccount')}{' '}
+            <Link to="/login" className="text-[#D95F3B] font-medium hover:text-[#D95F3B]/80">{t('login')}</Link>
           </p>
 
           <div className="hidden lg:flex items-center justify-center mt-8">

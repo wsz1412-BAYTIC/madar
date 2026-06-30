@@ -10,6 +10,8 @@ import AppLayout from '@/components/madar/AppLayout';
 
 import Landing from '@/pages/Landing';
 import MadarLogin from '@/pages/MadarLogin';
+import MadarSignup from '@/pages/MadarSignup';
+import MadarForgotPassword from '@/pages/MadarForgotPassword';
 import Dashboard from '@/pages/Dashboard';
 import Properties from '@/pages/Properties';
 import Analytics from '@/pages/Analytics';
@@ -31,6 +33,8 @@ const AuthenticatedApp = () => {
       {/* Public routes */}
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<MadarLogin />} />
+      <Route path="/signup" element={<MadarSignup />} />
+      <Route path="/forgot-password" element={<MadarForgotPassword />} />
       <Route path="/calculator" element={<Calculator />} />
       
       {/* App routes with sidebar */}
