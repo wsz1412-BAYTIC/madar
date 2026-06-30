@@ -4,96 +4,98 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { landingT, HERO_IMAGE_URL } from "@/lib/landing-i18n";
 
-const PLATFORMS = [
-  { name: "Airbnb", color: "#FF5A5F" },
-  { name: "Gatherin", color: "#00C39A" },
-  { name: "Booking.com", color: "#5BA7F5" },
-];
+const PARTNERS = ["Airbnb", "Booking.com", "Gatherin"];
 
 export default function Hero() {
   const { lang } = useLanguage();
   const t = landingT[lang];
   const Arrow = lang === "ar" ? ArrowLeft : ArrowRight;
-  const gradientDir = lang === "ar" ? "bg-gradient-to-l" : "bg-gradient-to-r";
 
   const scrollToFeatures = () => {
     document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
           src={HERO_IMAGE_URL}
-          alt="Saudi Arabia cityscape"
+          alt="Riyadh cityscape at night"
           className="w-full h-full object-cover"
         />
-        {/* Gradient overlay — dark on text side */}
-        <div className={`absolute inset-0 ${gradientDir} from-[#080B14] via-[#080B14]/85 to-[#080B14]/30`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080B14] via-transparent to-[#080B14]/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/70 via-[#0a1628]/50 to-[#0a1628]/85" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 w-full px-[5%] md:px-[4%] pt-20 pb-12">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
+      {/* Centered content */}
+      <div className="relative z-10 w-full px-[5%] md:px-[4%] pt-20 pb-16 flex flex-col items-center text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-2xl"
+          className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.15] text-white max-w-4xl"
         >
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.1] text-white">
-            {t["hero.title"]}
-          </h1>
+          {t["hero.title"]}
+        </motion.h1>
 
-          <p className="mt-6 text-base md:text-lg text-white/65 max-w-xl leading-relaxed font-body">
-            {t["hero.subtitle"]}
-          </p>
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+          className="mt-5 text-base md:text-xl text-[#FFE8E0]/90 max-w-2xl leading-relaxed font-body"
+        >
+          {t["hero.subtitle"]}
+        </motion.p>
 
-          {/* CTAs */}
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link
-              to="/login"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#FF6B4A] text-white font-body font-medium text-sm md:text-base hover:bg-[#FF8264] transition-all duration-300 shadow-xl shadow-[#FF6B4A]/30"
-            >
-              {t["hero.ctaPrimary"]}
-              <Arrow size={18} />
-            </Link>
-            <button
-              onClick={scrollToFeatures}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/25 text-white font-body font-medium text-sm md:text-base hover:bg-white/10 transition-all duration-300"
-            >
-              {t["hero.ctaSecondary"]}
-            </button>
-          </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          className="mt-10 flex flex-wrap items-center justify-center gap-4"
+        >
+          <button
+            onClick={scrollToFeatures}
+            className="inline-flex items-center px-8 py-4 rounded-full border border-white/30 text-white font-body font-medium text-sm md:text-base hover:bg-white/10 transition-all duration-300"
+          >
+            {t["hero.ctaSecondary"]}
+          </button>
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#F76C54] text-white font-body font-medium text-sm md:text-base hover:bg-[#FF8264] transition-all duration-300 shadow-xl shadow-[#F76C54]/30"
+          >
+            {t["hero.ctaPrimary"]}
+            <Arrow size={18} />
+          </Link>
+        </motion.div>
 
-          {/* Trust line */}
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <span className="text-xs text-white/40 uppercase tracking-wider font-body">
-              {t["hero.trust"]}
-            </span>
-            {PLATFORMS.map((p) => (
+        {/* Partners */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-16 flex flex-col items-center gap-4"
+        >
+          <span className="text-xs text-white/50 uppercase tracking-wider font-body">
+            {t["hero.partners"]}
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-10">
+            {PARTNERS.map((name) => (
               <span
-                key={p.name}
-                className="text-sm font-body font-semibold"
-                style={{ color: p.color }}
+                key={name}
+                className="text-base md:text-lg font-body font-semibold text-white/80"
               >
-                {p.name}
+                {name}
               </span>
             ))}
           </div>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <div className="w-px h-12 bg-gradient-to-b from-white/40 to-transparent" />
-      </motion.div>
+      {/* Bottom separator with diamond */}
+      <div className="absolute bottom-0 inset-x-0 z-10 flex items-center px-[5%] md:px-[4%] pb-5">
+        <div className="flex-1 h-px bg-white/15" />
+        <div className="mx-3 w-2 h-2 rotate-45 bg-white/30" />
+      </div>
     </section>
   );
 }

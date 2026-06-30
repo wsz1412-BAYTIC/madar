@@ -34,114 +34,82 @@ export default function LandingNavbar() {
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#F5F2EC]/90 backdrop-blur-xl border-b border-[#1C1C20]/8"
+            ? "bg-[#0a1628]/90 backdrop-blur-xl border-b border-white/10"
             : "bg-transparent"
         }`}
       >
         <div className="w-full px-[5%] md:px-[4%]">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center shrink-0">
-              <MadarFullLogo
-                variant={scrolled ? "dark" : "light"}
-                className="w-[150px] md:w-[200px] h-auto"
-              />
-            </Link>
-
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={link.action}
-                  className="font-body text-sm text-[#1C1C20]/70 hover:text-[#1C1C20] transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
-
-              <button
-                onClick={toggleLang}
-                className="flex items-center gap-1.5 text-sm text-[#1C1C20]/50 hover:text-[#1C1C20] transition-colors"
-              >
-                <Languages size={15} />
-                {lang === "ar" ? "EN" : "ع"}
-              </button>
-
-              <Link
-                to="/login"
-                className="text-sm text-[#1C1C20]/70 hover:text-[#1C1C20] transition-colors"
-              >
-                {t["nav.login"]}
-              </Link>
-
-              <Link
-                to="/login"
-                className="text-sm font-body font-medium tracking-wide px-6 py-2.5 rounded-full bg-[#FF6B4A] text-white hover:bg-[#FF7D5C] transition-all duration-300 shadow-lg shadow-[#FF6B4A]/20"
-              >
-                {t["nav.startFree"]}
-              </Link>
-            </nav>
-
-            {/* Mobile toggle */}
-            <div className="flex md:hidden items-center gap-3">
-              <button
-                onClick={toggleLang}
-                className="flex items-center gap-1 text-sm text-[#1C1C20]/60"
-              >
-                <Languages size={15} />
-                {lang === "ar" ? "EN" : "ع"}
-              </button>
+            {/* Left: menu + language (desktop) */}
+            <div className="flex items-center gap-4 md:gap-6">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="text-[#1C1C20] p-1"
+                className="text-white p-1"
+                aria-label="Toggle menu"
               >
-                {menuOpen ? <X size={24} /> : <Menu size={24} />}
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+              <button
+                onClick={toggleLang}
+                className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors"
+              >
+                <Languages size={15} />
+                {lang === "ar" ? "EN" : "ع"}
               </button>
             </div>
+
+            {/* Right: logo */}
+            <Link to="/" className="flex items-center">
+              <MadarFullLogo variant="light" className="w-[130px] md:w-[170px] h-auto" />
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile/dropdown menu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#F5F2EC] flex flex-col items-center justify-center gap-8 md:hidden"
-          >
-            {navLinks.map((link, i) => (
-              <motion.button
-                key={link.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 + 0.1 }}
-                onClick={link.action}
-                className="font-display text-3xl text-[#1C1C20] hover:text-[#FF6B4A] transition-colors"
-              >
-                {link.label}
-              </motion.button>
-            ))}
+          <>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className="flex flex-col items-center gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-40 bg-[#0a1628]/95 backdrop-blur-xl md:hidden"
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.nav
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="fixed top-16 md:top-20 left-0 z-50 w-64 bg-[#0a1628] border-r border-white/10 p-6 flex flex-col gap-5"
             >
-              <Link to="/login" className="text-lg text-[#1C1C20]/70">
+              {navLinks.map((link) => (
+                <button
+                  key={link.label}
+                  onClick={link.action}
+                  className="text-left font-body text-base text-white/80 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </button>
+              ))}
+              <Link
+                to="/login"
+                className="font-body text-base text-white/80 hover:text-white transition-colors"
+                onClick={() => setMenuOpen(false)}
+              >
                 {t["nav.login"]}
               </Link>
               <Link
                 to="/login"
-                className="text-sm font-medium px-8 py-3 rounded-full bg-[#FF6B4A] text-white"
+                className="text-sm font-medium px-6 py-3 rounded-full bg-[#F76C54] text-white text-center"
+                onClick={() => setMenuOpen(false)}
               >
                 {t["nav.startFree"]}
               </Link>
-            </motion.div>
-          </motion.div>
+            </motion.nav>
+          </>
         )}
       </AnimatePresence>
     </>

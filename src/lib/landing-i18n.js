@@ -1,6 +1,6 @@
 export const LOGO_URL = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/888d74ebd_MADARMainsymbol.png";
 export const LOGO_URL_LIGHT = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/d1af3482b_IMG_7737.png";
-export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1586724237569-f3d0c34bb83e?w=1920&h=1080&fit=crop&auto=format";
+export const HERO_IMAGE_URL = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/1aaba2894_IMG_7743.jpeg";
 
 export const landingT = {
   ar: {
@@ -10,11 +10,11 @@ export const landingT = {
     "nav.login": "تسجيل الدخول",
     "nav.startFree": "ابدأ مجاناً",
 
-    "hero.title": "حوّل عقارك إلى آلة ربح ذكية",
-    "hero.subtitle": "ذكاء الإيرادات بالذكاء الاصطناعي لمضيفي الإيجارات قصيرة الأجل في السعودية",
+    "hero.title": "ارتق بعوائدك العقارية",
+    "hero.subtitle": "باستخدام أدوات استثمار ذكية وقرارات واثقة",
     "hero.ctaPrimary": "ابدأ مجاناً",
-    "hero.ctaSecondary": "شاهد كيف يعمل",
-    "hero.trust": "يدعم",
+    "hero.ctaSecondary": "اكتشف أكثر",
+    "hero.partners": "يعمل بكفاءة مع :",
 
     "stats.revenue": "متوسط زيادة الإيرادات",
     "stats.platforms": "منصات مدعومة",
@@ -94,11 +94,11 @@ export const landingT = {
     "nav.login": "Login",
     "nav.startFree": "Start Free",
 
-    "hero.title": "Turn your property into a smart revenue machine",
-    "hero.subtitle": "AI-powered revenue intelligence for Saudi short-term rental hosts",
+    "hero.title": "Elevate Your Real Estate Returns",
+    "hero.subtitle": "With smart investment tools and confident decisions",
     "hero.ctaPrimary": "Start Free",
-    "hero.ctaSecondary": "See How It Works",
-    "hero.trust": "Supports",
+    "hero.ctaSecondary": "Discover More",
+    "hero.partners": "Works seamlessly with:",
 
     "stats.revenue": "Avg. revenue increase",
     "stats.platforms": "Platforms supported",
