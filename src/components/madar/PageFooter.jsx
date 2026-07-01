@@ -17,7 +17,7 @@ export default function PageFooter() {
               <img
                 src={LOGO_URL}
                 alt="Madar"
-                className="h-14 w-auto"
+                className="h-24 w-auto"
               />
             </Link>
             <p className="text-sm text-[#0A0B10]/60 max-w-xs leading-relaxed">

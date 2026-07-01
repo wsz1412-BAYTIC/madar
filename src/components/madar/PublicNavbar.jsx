@@ -61,7 +61,7 @@ export default function PublicNavbar() {
               <img
                 src={LOGO_URL}
                 alt="Madar"
-                className="relative h-11 w-auto group-hover:scale-105 transition-transform duration-500"
+                className="relative h-20 w-auto group-hover:scale-105 transition-transform duration-500"
               />
             </div>
           </Link>
