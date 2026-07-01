@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -25,15 +25,40 @@ const plans = [
   { key: 'pro', price: 349, features: { en: ['Unlimited properties', 'Full AI suite', 'All integrations', 'Dedicated account manager', 'Custom reports', 'API access', 'White-label options'], ar: ['عقارات غير محدودة', 'مجموعة ذكاء اصطناعي كاملة', 'جميع التكاملات', 'مدير حساب مخصص', 'تقارير مخصصة', 'وصول API', 'خيارات العلامة البيضاء'] } }
 ];
 
+const marketData = {
+  riyadh: { apartment: { 1: 2500, 2: 4000, 3: 6500, 4: 8500 }, villa: { 2: 5000, 3: 8000, 4: 10000, 5: 13000 } },
+  jeddah: { apartment: { 1: 2200, 2: 3500, 3: 5500, 4: 7500 }, villa: { 2: 4500, 3: 7000, 4: 9000, 5: 11500 } },
+  dammam: { apartment: { 1: 1800, 2: 3000, 3: 4800, 4: 6500 }, villa: { 2: 3800, 3: 6000, 4: 8000, 5: 10000 } },
+};
+
+const estimateRent = (city, type, bedrooms) => marketData[city]?.[type]?.[bedrooms] || 4000;
+
 export default function Landing() {
   const { t, lang, isRTL } = useLang();
   const { theme } = useTheme();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
+  const sar = lang === 'ar' ? 'ر.س' : 'SAR';
   const heroRef = useRef(null);
   const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroY = useTransform(heroScroll, [0, 1], ['0%', '40%']);
   const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
   const heroScale = useTransform(heroScroll, [0, 1], [1, 1.15]);
+
+  const [calcCity, setCalcCity] = useState('riyadh');
+  const [calcType, setCalcType] = useState('apartment');
+  const [calcBedrooms, setCalcBedrooms] = useState(2);
+  const [calcResult, setCalcResult] = useState(null);
+
+  const handleCalculate = () => {
+    const estRent = estimateRent(calcCity, calcType, calcBedrooms);
+    const propVal = calcType === 'apartment' ? 500000 : 800000;
+    const occupancy = 80;
+    const annualRev = estRent * 12 * (occupancy / 100);
+    const expenses = 2500 * 12;
+    const profit = annualRev - expenses;
+    const roi = ((profit / propVal) * 100).toFixed(1);
+    setCalcResult({ estRent, annualRev, expenses, profit, roi, propVal });
+  };
 
   return (
     <div className={`min-h-screen ${
@@ -195,7 +220,7 @@ export default function Landing() {
                   <label className={`block text-sm font-medium mb-2 ${
                     theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
                   }`}>{lang === 'ar' ? 'المدينة' : 'City'}</label>
-                  <select className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  <select value={calcCity} onChange={(e) => setCalcCity(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     theme === 'dark'
                       ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] focus:ring-2 focus:ring-[#D95F3B]/20'
                       : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:ring-2 focus:ring-[#D95F3B]/20'
@@ -209,7 +234,7 @@ export default function Landing() {
                   <label className={`block text-sm font-medium mb-2 ${
                     theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
                   }`}>{lang === 'ar' ? 'نوع العقار' : 'Property Type'}</label>
-                  <select className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  <select value={calcType} onChange={(e) => setCalcType(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     theme === 'dark'
                       ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] focus:ring-2 focus:ring-[#D95F3B]/20'
                       : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:ring-2 focus:ring-[#D95F3B]/20'
@@ -222,7 +247,7 @@ export default function Landing() {
                   <label className={`block text-sm font-medium mb-2 ${
                     theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
                   }`}>{lang === 'ar' ? 'عدد الغرف' : 'Bedrooms'}</label>
-                  <select className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  <select value={calcBedrooms} onChange={(e) => setCalcBedrooms(Number(e.target.value))} className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     theme === 'dark'
                       ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] focus:ring-2 focus:ring-[#D95F3B]/20'
                       : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:ring-2 focus:ring-[#D95F3B]/20'
@@ -235,16 +260,80 @@ export default function Landing() {
                   </select>
                 </div>
               </div>
-              <Link to="/calculator" className="group relative flex items-center justify-center gap-2 w-full px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-[#D95F3B]/30 overflow-hidden">
+              <button onClick={handleCalculate} className="group relative flex items-center justify-center gap-2 w-full px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-[#D95F3B]/30 overflow-hidden">
                 <span className="relative z-10">{lang === 'ar' ? 'قدّر إيراداتك' : 'Estimate Revenue'}</span>
                 <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
                 <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              </Link>
+              </button>
               <p className={`text-xs text-center ${
                 theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
               }`}>{lang === 'ar' ? '✨ استخدم بيانات السوق الفعلية للحصول على تقديرات دقيقة' : '✨ Based on real market data for accurate estimates'}</p>
             </div>
           </ScaleIn>
+
+          {calcResult && (
+            <FadeIn delay={0.1}>
+              <div className={`p-6 rounded-2xl ${
+                theme === 'dark'
+                  ? 'bg-white/[0.03] border border-white/[0.06]'
+                  : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+              }`}>
+                <h3 className={`font-heading text-lg font-bold mb-6 ${
+                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                }`}>{lang === 'ar' ? 'مقارنة العوائد المتوقعة' : 'Projected Returns Comparison'}</h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className={`p-4 rounded-xl ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.02] border border-white/[0.06]'
+                      : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+                  }`}>
+                    <p className={`text-xs font-medium mb-1 ${
+                      theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+                    }`}>{lang === 'ar' ? 'الإيجار الشهري المقدّر' : 'Est. Monthly Rent'}</p>
+                    <p className={`font-heading font-bold text-2xl ${
+                      theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+                    }`}>{calcResult.estRent.toLocaleString()} {sar}</p>
+                  </div>
+                  <div className={`p-4 rounded-xl ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.02] border border-white/[0.06]'
+                      : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+                  }`}>
+                    <p className={`text-xs font-medium mb-1 ${
+                      theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+                    }`}>{lang === 'ar' ? 'الإيرادات السنوية' : 'Annual Revenue'}</p>
+                    <p className={`font-heading font-bold text-2xl ${
+                      theme === 'dark' ? 'text-[#C8972A]' : 'text-[#C8972A]'
+                    }`}>{calcResult.annualRev.toLocaleString()} {sar}</p>
+                  </div>
+                  <div className={`p-4 rounded-xl ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.02] border border-white/[0.06]'
+                      : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+                  }`}>
+                    <p className={`text-xs font-medium mb-1 ${
+                      theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+                    }`}>{lang === 'ar' ? 'الربح السنوي' : 'Annual Profit'}</p>
+                    <p className={`font-heading font-bold text-2xl ${
+                      theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+                    }`}>{calcResult.profit.toLocaleString()} {sar}</p>
+                  </div>
+                  <div className={`p-4 rounded-xl ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.02] border border-white/[0.06]'
+                      : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+                  }`}>
+                    <p className={`text-xs font-medium mb-1 ${
+                      theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+                    }`}>{lang === 'ar' ? 'العائد على الاستثمار' : 'ROI'}</p>
+                    <p className={`font-heading font-bold text-2xl ${
+                      theme === 'dark' ? 'text-[#C8972A]' : 'text-[#C8972A]'
+                    }`}>{calcResult.roi}%</p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          )}
 
           <StaggerContainer stagger={0.1} className="grid sm:grid-cols-3 gap-6">
             {[
