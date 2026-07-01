@@ -3,16 +3,34 @@ import { useLang } from '@/contexts/LanguageContext';
 import { FadeIn } from '@/components/madar/Motion';
 import { motion } from 'framer-motion';
 
-// Airbnb "Bélo" logo
-const AirbnbLogo = ({ className = '', monochrome }) => (
-  <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M12 18.25c-1.2 1.5-2.6 2.25-4.05 2.25-1.8 0-3.2-1.35-3.2-3.1 0-1.05.5-2 1.35-2.95.2-.25.55-.55.95-.9.75-.65 1.95-1.5 2.55-2.1.5-.5.85-1.05.85-1.7 0-.85-.65-1.55-1.5-1.55-.6 0-1.15.35-1.5 1-.15.25-.3.45-.6.45-.35 0-.65-.3-.65-.65 0-.1.05-.2.1-.3.5-1 1.65-1.75 2.95-1.75 1.6 0 2.8 1.1 2.8 2.6 0 .95-.4 1.75-1.15 2.55-.6.65-1.8 1.55-2.6 2.2-.35.25-.6.5-.75.7-.25.3-.4.6-.4.9 0 .75.6 1.3 1.4 1.3.65 0 1.25-.3 1.85-1 .35-.4.65-.6.95-.6.35 0 .65.25.65.6 0 .15-.05.3-.15.45zm5.25-.8c0-.3-.15-.6-.4-.9-.15-.2-.4-.45-.75-.7-.8-.65-2-1.55-2.6-2.2-.75-.8-1.15-1.6-1.15-2.55 0-1.5 1.2-2.6 2.8-2.6 1.3 0 2.45.75 2.95 1.75.05.1.1.2.1.3 0 .35-.3.65-.65.65-.3 0-.45-.2-.6-.45-.35-.65-.9-1-1.5-1-.85 0-1.5.7-1.5 1.55 0 .65.35 1.2.85 1.7.6.6 1.8 1.45 2.55 2.1.4.35.75.65.95.9.85.95 1.35 1.9 1.35 2.95 0 1.75-1.4 3.1-3.2 3.1-1.45 0-2.85-.75-4.05-2.25-.1-.15-.15-.3-.15-.45 0-.35.3-.6.65-.6.3 0 .6.2.95.6.6.7 1.2 1 1.85 1 .8 0 1.4-.55 1.4-1.3z"
-      fill="currentColor"
-      style={{ color: monochrome ? 'rgba(247,245,240,0.5)' : '#FF5A5F', transition: 'color 0.4s ease' }}
-    />
-  </svg>
-);
+// Official Airbnb logo — Bélo icon + "airbnb" wordmark
+const AirbnbLogo = ({ className = '', monochrome }) => {
+  const color = monochrome ? 'rgba(247,245,240,0.5)' : '#FF385C';
+  return (
+    <div className={`flex flex-col items-center gap-1.5 ${className}`}>
+      <svg viewBox="0 0 32 32" fill="none" className="h-8 w-8" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M16 3.2c-3.7 0-6.8 3-6.8 6.7 0 2.3 1.1 4.4 2.8 6.4.5.6 1 1.1 1.5 1.7.9 1 1.7 1.9 2.2 2.9.2.4.3.8.3 1.1 0 .8-.6 1.4-1.4 1.4-.7 0-1.3-.4-1.8-1.1-.2-.3-.4-.5-.7-.5-.4 0-.7.3-.7.7 0 .2.1.4.2.5.7 1.1 1.8 1.8 3 1.8 1.6 0 2.8-1.2 2.8-2.8 0-.6-.2-1.2-.5-1.8-.4-.8-1-1.6-1.7-2.4-.4-.5-.9-1-1.4-1.5-1.3-1.4-2.2-2.6-2.2-4 0-1.9 1.5-3.4 3.4-3.4 1.4 0 2.6.8 3.1 2 .1.3.3.5.6.5.4 0 .7-.3.7-.7 0-.1 0-.2-.1-.3-.7-1.6-2.3-2.7-4.1-2.7-2.4 0-4.1 1.7-4.1 4 0 1.5.7 2.8 1.7 4 .5.6 1 1.1 1.5 1.7.7.8 1.2 1.5 1.5 2.2.2.4.3.8.3 1.1 0 .8-.6 1.4-1.4 1.4-.7 0-1.3-.4-1.8-1.1-.2-.3-.4-.5-.7-.5-.4 0-.7.3-.7.7 0 .2.1.4.2.5.7 1.1 1.8 1.8 3 1.8 1.6 0 2.8-1.2 2.8-2.8 0-.6-.2-1.2-.5-1.8-.4-.8-1-1.6-1.7-2.4-.4-.5-.9-1-1.4-1.5-1.3-1.4-2.2-2.6-2.2-4 0-1.9 1.5-3.4 3.4-3.4z"
+          fill={color}
+          style={{ transition: 'fill 0.4s ease' }}
+        />
+      </svg>
+      <span
+        style={{
+          fontFamily: "'Airbnb Cereal App', 'Inter', sans-serif",
+          fontWeight: 700,
+          fontSize: '1.5rem',
+          letterSpacing: '-0.02em',
+          color,
+          transition: 'color 0.4s ease',
+          lineHeight: 1,
+        }}
+      >
+        airbnb
+      </span>
+    </div>
+  );
+};
 
 // Gathern text logo
 const GathernLogo = ({ className = '', monochrome }) => (
@@ -49,7 +67,7 @@ const BookingLogo = ({ className = '', monochrome }) => (
 );
 
 const platforms = [
-  { id: 'airbnb', Logo: AirbnbLogo, logoClass: 'h-8 w-auto' },
+  { id: 'airbnb', Logo: AirbnbLogo, logoClass: '' },
   { id: 'gathern', Logo: GathernLogo, logoClass: '' },
   { id: 'booking', Logo: BookingLogo, logoClass: '' },
 ];
@@ -103,7 +121,7 @@ export default function PlatformLogos() {
               >
                 {/* Hover glow */}
                 <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -m-8" />
-                <div className="relative flex items-center justify-center h-16 min-w-[140px]">
+                <div className="relative flex items-center justify-center h-20 min-w-[140px]">
                   <p.Logo className={p.logoClass} monochrome={true} />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400">
                     <p.Logo className={p.logoClass} monochrome={false} />
