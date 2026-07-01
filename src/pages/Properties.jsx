@@ -4,7 +4,9 @@ import { api } from '@/lib/api';
 import { Plus, Loader2, X, Link2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn } from '@/components/madar/Motion';
-import PropertyCard from '@/components/madar/PropertyCard';
+import PropertyCardWithSelection from '@/components/madar/PropertyCardWithSelection';
+import BulkActionsToolbar from '@/components/madar/BulkActionsToolbar';
+import { StatusChangeModal, AddLabelsModal, ArchiveConfirmModal, ActionResultsModal } from '@/components/madar/BulkActionModals';
 import FloorplanVisualizer from '@/components/madar/FloorplanVisualizer';
 
 const mockProperties = [
@@ -20,6 +22,20 @@ export default function Properties() {
   const [importUrl, setImportUrl] = useState('');
   const [importing, setImporting] = useState(false);
 
+  // Bulk Management State
+  const [selectedProps, setSelectedProps] = useState(new Set());
+  const [actionLoading, setActionLoading] = useState(false);
+  const [actionResults, setActionResults] = useState(null);
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [resultsTitle, setResultsTitle] = useState('');
+  const [resultsDescription, setResultsDescription] = useState('');
+  const [isResultsSuccess, setIsResultsSuccess] = useState(true);
+
+  // Modal States
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [showLabelsModal, setShowLabelsModal] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
+
   const handleImport = async (e) => {
     e.preventDefault();
     setImporting(true);
@@ -29,6 +45,145 @@ export default function Properties() {
       setImportUrl('');
     } catch { }
     setImporting(false);
+  };
+
+  // Selection Handlers
+  const togglePropertySelection = (propId) => {
+    const newSelected = new Set(selectedProps);
+    if (newSelected.has(propId)) {
+      newSelected.delete(propId);
+    } else {
+      newSelected.add(propId);
+    }
+    setSelectedProps(newSelected);
+  };
+
+  const selectAllProperties = () => {
+    setSelectedProps(new Set(mockProperties.map(p => p.id)));
+  };
+
+  const clearSelection = () => {
+    setSelectedProps(new Set());
+  };
+
+  // Bulk Action Handlers
+  const handleExport = async () => {
+    setActionLoading(true);
+    try {
+      const selected = mockProperties.filter(p => selectedProps.has(p.id));
+      const csvContent = [
+        ['ID', 'Name', 'City', 'Bedrooms', 'Bathrooms', 'Guests', 'Price', 'Status', 'Platform'].join(','),
+        ...selected.map(p => [p.id, p.name, p.city, p.bedrooms, p.bathrooms, p.guests, p.price, p.status, p.platform].join(','))
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `properties_export_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+
+      setResultsTitle(lang === 'ar' ? 'تم التصدير بنجاح' : 'Export Successful');
+      setResultsDescription(`${selected.length} ${lang === 'ar' ? 'عقار تم تصديره' : 'properties exported'}`);
+      setIsResultsSuccess(true);
+      setActionResults([{
+        name: lang === 'ar' ? 'تصدير البيانات' : 'Data Export',
+        message: `${selected.length} ${lang === 'ar' ? 'عقار' : 'properties'}`,
+        success: true
+      }]);
+      setShowResultsModal(true);
+      clearSelection();
+    } catch (error) {
+      setResultsTitle(lang === 'ar' ? 'فشل التصدير' : 'Export Failed');
+      setIsResultsSuccess(false);
+      setActionResults([{ name: 'Export', message: error.message, success: false }]);
+      setShowResultsModal(true);
+    }
+    setActionLoading(false);
+  };
+
+  const handleStatusChange = async (newStatus) => {
+    setActionLoading(true);
+    try {
+      const results = [];
+      for (const propId of selectedProps) {
+        const prop = mockProperties.find(p => p.id === propId);
+        results.push({
+          name: prop.name,
+          message: `${lang === 'ar' ? 'تم تحديث الحالة إلى' : 'Status updated to'} ${newStatus}`,
+          success: true
+        });
+      }
+
+      setResultsTitle(lang === 'ar' ? 'تم تحديث الحالة' : 'Status Updated');
+      setIsResultsSuccess(true);
+      setActionResults(results);
+      setShowResultsModal(true);
+      clearSelection();
+      setShowStatusModal(false);
+    } catch (error) {
+      setResultsTitle(lang === 'ar' ? 'خطأ في التحديث' : 'Update Failed');
+      setIsResultsSuccess(false);
+      setActionResults([{ name: 'Status Update', message: error.message, success: false }]);
+      setShowResultsModal(true);
+    }
+    setActionLoading(false);
+  };
+
+  const handleAddLabels = async (labels) => {
+    setActionLoading(true);
+    try {
+      const results = [];
+      for (const propId of selectedProps) {
+        const prop = mockProperties.find(p => p.id === propId);
+        results.push({
+          name: prop.name,
+          message: `${lang === 'ar' ? 'تم إضافة التسميات:' : 'Added labels:'} ${labels.join(', ')}`,
+          success: true
+        });
+      }
+
+      setResultsTitle(lang === 'ar' ? 'تم إضافة التسميات' : 'Labels Added');
+      setIsResultsSuccess(true);
+      setActionResults(results);
+      setShowResultsModal(true);
+      clearSelection();
+      setShowLabelsModal(false);
+    } catch (error) {
+      setResultsTitle(lang === 'ar' ? 'خطأ في الإضافة' : 'Add Failed');
+      setIsResultsSuccess(false);
+      setActionResults([{ name: 'Add Labels', message: error.message, success: false }]);
+      setShowResultsModal(true);
+    }
+    setActionLoading(false);
+  };
+
+  const handleArchive = async () => {
+    setActionLoading(true);
+    try {
+      const results = [];
+      for (const propId of selectedProps) {
+        const prop = mockProperties.find(p => p.id === propId);
+        results.push({
+          name: prop.name,
+          message: lang === 'ar' ? 'تم الأرشفة' : 'Archived',
+          success: true
+        });
+      }
+
+      setResultsTitle(lang === 'ar' ? 'تم أرشفة العقارات' : 'Properties Archived');
+      setIsResultsSuccess(true);
+      setActionResults(results);
+      setShowResultsModal(true);
+      clearSelection();
+      setShowArchiveModal(false);
+    } catch (error) {
+      setResultsTitle(lang === 'ar' ? 'خطأ في الأرشفة' : 'Archive Failed');
+      setIsResultsSuccess(false);
+      setActionResults([{ name: 'Archive', message: error.message, success: false }]);
+      setShowResultsModal(true);
+    }
+    setActionLoading(false);
   };
 
   return (
@@ -95,12 +250,66 @@ export default function Properties() {
         <FloorplanVisualizer />
       </FadeIn>
 
+      {/* Bulk Actions Toolbar */}
+      <BulkActionsToolbar
+        selectedCount={selectedProps.size}
+        totalCount={mockProperties.length}
+        onSelectAll={selectAllProperties}
+        onClearSelection={clearSelection}
+        onExport={handleExport}
+        onChangeStatus={() => setShowStatusModal(true)}
+        onAddLabels={() => setShowLabelsModal(true)}
+        onArchive={() => setShowArchiveModal(true)}
+        isLoading={actionLoading}
+        allSelected={selectedProps.size === mockProperties.length}
+      />
+
       {/* Properties Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {mockProperties.map((prop, i) => (
-          <PropertyCard key={prop.id} prop={prop} index={i} />
+          <PropertyCardWithSelection
+            key={prop.id}
+            prop={prop}
+            index={i}
+            isSelected={selectedProps.has(prop.id)}
+            onSelect={() => togglePropertySelection(prop.id)}
+          />
         ))}
       </div>
+
+      {/* Modals */}
+      <StatusChangeModal
+        isOpen={showStatusModal}
+        onClose={() => setShowStatusModal(false)}
+        onConfirm={handleStatusChange}
+        isLoading={actionLoading}
+        selectedCount={selectedProps.size}
+      />
+
+      <AddLabelsModal
+        isOpen={showLabelsModal}
+        onClose={() => setShowLabelsModal(false)}
+        onConfirm={handleAddLabels}
+        isLoading={actionLoading}
+        selectedCount={selectedProps.size}
+      />
+
+      <ArchiveConfirmModal
+        isOpen={showArchiveModal}
+        onClose={() => setShowArchiveModal(false)}
+        onConfirm={handleArchive}
+        isLoading={actionLoading}
+        selectedCount={selectedProps.size}
+      />
+
+      <ActionResultsModal
+        isOpen={showResultsModal}
+        onClose={() => setShowResultsModal(false)}
+        results={actionResults}
+        isSuccess={isResultsSuccess}
+        title={resultsTitle}
+        description={resultsDescription}
+      />
     </div>
   );
 }
