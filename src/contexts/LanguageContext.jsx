@@ -310,6 +310,7 @@ const translations = {
     occupancyForecast: 'توقعات الإشغال',
     
     myProperties: 'عقاراتي',
+    floorplan: 'مخطط العقار التفاعلي',
     addProperty: 'إضافة عقار',
     importListing: 'استيراد إعلان',
     pasteUrl: 'الصق رابط إعلانك من Airbnb أو Gatherin أو Booking.com',

@@ -5,6 +5,7 @@ import { Plus, Loader2, X, Link2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn } from '@/components/madar/Motion';
 import PropertyCard from '@/components/madar/PropertyCard';
+import FloorplanVisualizer from '@/components/madar/FloorplanVisualizer';
 
 const mockProperties = [
   { id: 1, name: 'Luxury Villa', nameAr: 'فيلا فاخرة', city: 'Riyadh', cityAr: 'الرياض', bedrooms: 4, bathrooms: 3, guests: 8, price: 850, status: 'active', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop' },
@@ -88,6 +89,11 @@ export default function Properties() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floorplan Visualizer */}
+      <FadeIn delay={0.1}>
+        <FloorplanVisualizer />
+      </FadeIn>
 
       {/* Properties Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
