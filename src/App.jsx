@@ -25,6 +25,9 @@ import Calculator from '@/pages/Calculator';
 import Connect from '@/pages/Connect';
 import Referral from '@/pages/Referral';
 import Admin from '@/pages/Admin';
+import Contact from '@/pages/Contact';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import Terms from '@/pages/Terms';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -36,6 +39,9 @@ const AuthenticatedApp = () => {
       <Route path="/signup" element={<MadarSignup />} />
       <Route path="/forgot-password" element={<MadarForgotPassword />} />
       <Route path="/calculator" element={<Calculator />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<Terms />} />
       
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>
