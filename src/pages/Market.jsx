@@ -75,11 +75,11 @@ export default function Market() {
   ];
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-background' : 'bg-white'}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden ${theme === 'dark' ? 'bg-background' : 'bg-white'}`}>
       <PublicNavbar />
 
-      <main className="pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <main className="w-full pt-32 pb-20 flex flex-col">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           {/* Header */}
           <FadeIn>
             <div>
