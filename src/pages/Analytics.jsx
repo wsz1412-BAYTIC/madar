@@ -4,6 +4,7 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart,
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 import { TrendingUp, TrendingDown, DollarSign, Percent, BarChart3 } from 'lucide-react';
+import DailyRateComparisonTable from '@/components/madar/DailyRateComparisonTable';
 
 const revenueData = [
   { month: 'Jan', value: 32000 }, { month: 'Feb', value: 28000 }, { month: 'Mar', value: 35000 },
@@ -276,6 +277,9 @@ export default function Analytics() {
           </div>
         </FadeIn>
       </div>
-    </div>
-  );
-}
+
+      {/* Daily Rate Comparison Table */}
+      <DailyRateComparisonTable />
+      </div>
+      );
+      }
