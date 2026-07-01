@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
+import ComprehensiveFooter from '@/components/madar/ComprehensiveFooter';
 import PlatformLogos from '@/components/madar/PlatformLogos';
 import MarketMetrics from '@/components/madar/MarketMetrics';
 import ProblemSolution from '@/components/madar/ProblemSolution';
@@ -250,44 +251,7 @@ export default function Landing() {
       <FinalCTA />
 
       {/* ===== FOOTER ===== */}
-      <footer className={`py-16 px-4 ${
-        theme === 'dark'
-          ? 'border-t border-white/[0.06] bg-background'
-          : 'border-t border-[#0A0B10]/[0.06] bg-white'
-      }`}>
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">م</span>
-            </div>
-            <div>
-              <span className={`font-heading font-bold ${
-                theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
-              }`}>Madar</span>
-              <span className={`text-sm ml-2 ${
-                theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
-              }`}>© 2025</span>
-            </div>
-          </div>
-          <div className="flex gap-8">
-            <Link to="/calculator" className={`text-sm transition-colors ${
-              theme === 'dark'
-                ? 'text-[#F7F5F0]/40 hover:text-[#C8972A]'
-                : 'text-[#0A0B10]/40 hover:text-[#C8972A]'
-            }`}>{t('calculator')}</Link>
-            <Link to="/login" className={`text-sm transition-colors ${
-              theme === 'dark'
-                ? 'text-[#F7F5F0]/40 hover:text-[#C8972A]'
-                : 'text-[#0A0B10]/40 hover:text-[#C8972A]'
-            }`}>{t('login')}</Link>
-            <Link to="/signup" className={`text-sm transition-colors ${
-              theme === 'dark'
-                ? 'text-[#F7F5F0]/40 hover:text-[#C8972A]'
-                : 'text-[#0A0B10]/40 hover:text-[#C8972A]'
-            }`}>{t('signup')}</Link>
-          </div>
-        </div>
-      </footer>
+      <ComprehensiveFooter />
     </div>
   );
 }
