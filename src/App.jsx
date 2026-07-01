@@ -7,6 +7,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { MadarAuthProvider } from '@/contexts/AuthContext';
 import { CookieProvider } from '@/contexts/CookieContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import AppLayout from '@/components/madar/AppLayout';
 import CookieConsentBanner from '@/components/madar/CookieConsentBanner';
 
@@ -81,19 +82,21 @@ const AuthenticatedApp = () => {
 function App() {
   return (
     <AuthProvider>
-      <LanguageProvider>
-        <CookieProvider>
-          <MadarAuthProvider>
-            <QueryClientProvider client={queryClientInstance}>
-              <Router>
-                <AuthenticatedApp />
-                <CookieConsentBanner />
-              </Router>
-              <Toaster />
-            </QueryClientProvider>
-          </MadarAuthProvider>
-        </CookieProvider>
-      </LanguageProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <CookieProvider>
+            <MadarAuthProvider>
+              <QueryClientProvider client={queryClientInstance}>
+                <Router>
+                  <AuthenticatedApp />
+                  <CookieConsentBanner />
+                </Router>
+                <Toaster />
+              </QueryClientProvider>
+            </MadarAuthProvider>
+          </CookieProvider>
+        </LanguageProvider>
+      </ThemeProvider>
     </AuthProvider>
   )
 }
