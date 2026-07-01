@@ -3,30 +3,19 @@ import { useLang } from '@/contexts/LanguageContext';
 import { FadeIn } from '@/components/madar/Motion';
 import { motion } from 'framer-motion';
 
-// Official Airbnb logo — Correct brand asset
+// Official Airbnb logo — Official brand asset
 const AirbnbLogo = ({ className = '', monochrome }) => {
   return (
-    <svg
-      viewBox="0 0 256 256"
-      fill="none"
+    <img
+      src="https://media.base44.com/images/public/6a43dd3026ba0773af35c603/28637b525_hd-airbnb-official-logo-brand-png-image-701751694789803fttrlqeagv.png"
+      alt="Airbnb"
       className={`h-20 w-auto ${className}`}
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ opacity: monochrome ? 0.4 : 1, transition: 'opacity 0.4s ease' }}
-    >
-      {/* Airbnb logo — Heart/A icon + wordmark */}
-      <g>
-        {/* Heart icon */}
-        <path
-          d="M 128 64 C 128 64 96 32 64 32 C 38 32 20 50 20 76 C 20 114 128 192 128 192 C 128 192 236 114 236 76 C 236 50 218 32 192 32 C 160 32 128 64 128 64 Z"
-          fill="#FF385C"
-          style={{ transition: 'fill 0.4s ease' }}
-        />
-        {/* Airbnb text - positioned to the right */}
-        <text x="80" y="210" fontFamily="Arial, sans-serif" fontSize="48" fontWeight="bold" fill="#FF385C" style={{ transition: 'fill 0.4s ease' }}>
-          airbnb
-        </text>
-      </g>
-    </svg>
+      style={{
+        opacity: monochrome ? 0.4 : 1,
+        transition: 'opacity 0.4s ease',
+        filter: monochrome ? 'grayscale(100%)' : 'grayscale(0%)'
+      }}
+    />
   );
 };
 
