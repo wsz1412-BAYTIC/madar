@@ -11,7 +11,7 @@ export function MadarAuthProvider({ children }) {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const data = await api.post('/auth/login', { email, password });
+      const form=new URLSearchParams();form.append('username',email);form.append('password',password);const data=await api.post('/auth/login',form,{headers:{'Content-Type':'application/x-www-form-urlencoded'}});
       setToken(data.token || data.access_token);
       setUser(data.user || { email });
       setTokenState(data.token || data.access_token);
