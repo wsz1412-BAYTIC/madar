@@ -12,8 +12,20 @@ export default function Calculator() {
 
   const [form, setForm] = useState({ propertyValue: 800000, monthlyRent: 8000, occupancy: 75, expenses: 2500 });
   const [result, setResult] = useState(null);
+  const [dynForm, setDynForm] = useState({ city: 'riyadh', type: 'apartment', bedrooms: 2 });
+  const [dynResult, setDynResult] = useState(null);
+
+  // Market data: monthly rent estimates by city, property type, and bedrooms
+  const marketData = {
+    riyadh: { apartment: { 1: 2500, 2: 4000, 3: 6500, 4: 8500 }, villa: { 2: 5000, 3: 8000, 4: 10000, 5: 13000 } },
+    jeddah: { apartment: { 1: 2200, 2: 3500, 3: 5500, 4: 7500 }, villa: { 2: 4500, 3: 7000, 4: 9000, 5: 11500 } },
+    dammam: { apartment: { 1: 1800, 2: 3000, 3: 4800, 4: 6500 }, villa: { 2: 3800, 3: 6000, 4: 8000, 5: 10000 } },
+  };
+
+  const estimateRent = (city, type, bedrooms) => marketData[city]?.[type]?.[bedrooms] || 4000;
 
   const update = (key, val) => setForm(prev => ({ ...prev, [key]: Number(val) }));
+  const updateDyn = (key, val) => setDynForm(prev => ({ ...prev, [key]: val }));
 
   const calculate = () => {
     const annualRevenue = form.monthlyRent * 12 * (form.occupancy / 100);
@@ -22,6 +34,18 @@ export default function Calculator() {
     const roi = ((annualProfit / form.propertyValue) * 100).toFixed(1);
     const payback = (form.propertyValue / annualProfit).toFixed(1);
     setResult({ annualRevenue, annualExpenses, annualProfit, roi, payback });
+  };
+
+  const calculateDynamic = () => {
+    const estimatedRent = estimateRent(dynForm.city, dynForm.type, dynForm.bedrooms);
+    const propertyValue = dynForm.type === 'apartment' ? 500000 : 800000;
+    const expenses = 2500;
+    const occupancy = 80;
+    const annualRevenue = estimatedRent * 12 * (occupancy / 100);
+    const annualExpenses = expenses * 12;
+    const annualProfit = annualRevenue - annualExpenses;
+    const roi = ((annualProfit / propertyValue) * 100).toFixed(1);
+    setDynResult({ estimatedRent, annualRevenue, annualExpenses, annualProfit, roi, propertyValue });
   };
 
   const content = (
@@ -38,31 +62,92 @@ export default function Calculator() {
         </div>
       </FadeIn>
 
+      {/* Dynamic Revenue Estimator */}
       <FadeIn delay={0.1}>
-        <div className="glass rounded-2xl p-6 space-y-5">
-          {[
-            { key: 'propertyValue', val: form.propertyValue },
-            { key: 'monthlyRent', val: form.monthlyRent },
-            { key: 'occupancyEst', val: form.occupancy },
-            { key: 'monthlyExpenses', val: form.expenses },
-          ].map(field => (
-            <div key={field.key}>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t(field.key)}</label>
-              <input
-                type="number"
-                value={field.val}
-                onChange={e => update(field.key === 'propertyValue' ? 'propertyValue' : field.key === 'monthlyRent' ? 'monthlyRent' : field.key === 'occupancyEst' ? 'occupancy' : 'expenses', e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
-                dir="ltr"
-              />
+        <div className="glass rounded-2xl p-6 space-y-4">
+          <h2 className="font-heading text-lg font-semibold text-[#F7F5F0]">{lang === 'ar' ? 'مقدّر الإيرادات الديناميكي' : 'Dynamic Revenue Estimator'}</h2>
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{lang === 'ar' ? 'المدينة' : 'City'}</label>
+              <select value={dynForm.city} onChange={e => updateDyn('city', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+                <option value="riyadh">{lang === 'ar' ? 'الرياض' : 'Riyadh'}</option>
+                <option value="jeddah">{lang === 'ar' ? 'جدة' : 'Jeddah'}</option>
+                <option value="dammam">{lang === 'ar' ? 'الدمام' : 'Dammam'}</option>
+              </select>
             </div>
-          ))}
-          <button onClick={calculate} className="group relative w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
+            <div>
+              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{lang === 'ar' ? 'النوع' : 'Type'}</label>
+              <select value={dynForm.type} onChange={e => updateDyn('type', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+                <option value="apartment">{lang === 'ar' ? 'شقة' : 'Apartment'}</option>
+                <option value="villa">{lang === 'ar' ? 'فيلا' : 'Villa'}</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{lang === 'ar' ? 'غرف النوم' : 'Bedrooms'}</label>
+              <select value={dynForm.bedrooms} onChange={e => updateDyn('bedrooms', Number(e.target.value))} className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+                {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </div>
+          </div>
+          <button onClick={calculateDynamic} className="group relative w-full py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
             <span className="relative z-10">{t('calculate')}</span>
             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </button>
         </div>
       </FadeIn>
+
+      {dynResult && (
+        <FadeIn delay={0.2}>
+          <div className="glass rounded-2xl p-6">
+            <h2 className="font-heading text-lg font-semibold text-[#F7F5F0] mb-4">{lang === 'ar' ? 'المقارنة المتوقعة' : 'Projected Returns Comparison'}</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'الإيجار الشهري المقدّر' : 'Estimated Monthly Rent'}</div>
+                <div className="text-2xl font-bold text-[#D95F3B] font-heading">{dynResult.estimatedRent.toLocaleString()} {sar}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'الإيرادات السنوية' : 'Annual Revenue'}</div>
+                <div className="text-2xl font-bold text-[#C8972A] font-heading">{dynResult.annualRevenue.toLocaleString()} {sar}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'الربح السنوي' : 'Annual Profit'}</div>
+                <div className="text-2xl font-bold text-[#D95F3B] font-heading">{dynResult.annualProfit.toLocaleString()} {sar}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'العائد على الاستثمار' : 'ROI'}</div>
+                <div className="text-2xl font-bold text-[#C8972A] font-heading">{dynResult.roi}%</div>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      )}
+
+      <FadeIn delay={0.15}>
+        <div className="glass rounded-2xl p-6 space-y-5">
+          <h2 className="font-heading text-lg font-semibold text-[#F7F5F0]">{lang === 'ar' ? 'حاسبة الاستثمار' : 'Investment Calculator'}</h2>
+          {[
+             { key: 'propertyValue', val: form.propertyValue },
+             { key: 'monthlyRent', val: form.monthlyRent },
+             { key: 'occupancyEst', val: form.occupancy },
+             { key: 'monthlyExpenses', val: form.expenses },
+           ].map(field => (
+             <div key={field.key}>
+               <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t(field.key)}</label>
+               <input
+                 type="number"
+                 value={field.val}
+                 onChange={e => update(field.key === 'propertyValue' ? 'propertyValue' : field.key === 'monthlyRent' ? 'monthlyRent' : field.key === 'occupancyEst' ? 'occupancy' : 'expenses', e.target.value)}
+                 className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
+                 dir="ltr"
+               />
+             </div>
+           ))}
+           <button onClick={calculate} className="group relative w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
+             <span className="relative z-10">{t('calculate')}</span>
+             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+           </button>
+         </div>
+       </FadeIn>
 
       {result && (
         <div className="grid grid-cols-2 gap-4">
