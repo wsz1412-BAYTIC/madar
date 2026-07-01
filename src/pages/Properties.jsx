@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { api } from '@/lib/api';
 import { Plus, Loader2, X, Link2 } from 'lucide-react';
@@ -8,12 +8,13 @@ import PropertyCardWithSelection from '@/components/madar/PropertyCardWithSelect
 import BulkActionsToolbar from '@/components/madar/BulkActionsToolbar';
 import { StatusChangeModal, AddLabelsModal, ArchiveConfirmModal, ActionResultsModal } from '@/components/madar/BulkActionModals';
 import FloorplanVisualizer from '@/components/madar/FloorplanVisualizer';
+import PropertiesFilter from '@/components/madar/PropertiesFilter';
 
 const mockProperties = [
-  { id: 1, name: 'Luxury Villa', nameAr: 'فيلا فاخرة', city: 'Riyadh', cityAr: 'الرياض', bedrooms: 4, bathrooms: 3, guests: 8, price: 850, status: 'active', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop' },
-  { id: 2, name: 'Modern Studio', nameAr: 'استوديو عصري', city: 'Jeddah', cityAr: 'جدة', bedrooms: 1, bathrooms: 1, guests: 2, price: 320, status: 'active', platform: 'Gatherin', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop' },
-  { id: 3, name: 'Family Home', nameAr: 'منزل عائلي', city: 'KAEC', cityAr: 'كاوست', bedrooms: 3, bathrooms: 2, guests: 6, price: 600, status: 'active', platform: 'Booking.com', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop' },
-  { id: 4, name: 'Penthouse Suite', nameAr: 'جناح بنتهاوس', city: 'Dammam', cityAr: 'الدمام', bedrooms: 2, bathrooms: 2, guests: 4, price: 720, status: 'paused', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop' },
+  { id: 1, name: 'Luxury Villa', nameAr: 'فيلا فاخرة', city: 'Riyadh', cityAr: 'الرياض', bedrooms: 4, bathrooms: 3, guests: 8, price: 850, status: 'active', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop', occupancy: 0.85, tags: ['premium', 'family-friendly'] },
+  { id: 2, name: 'Modern Studio', nameAr: 'استوديو عصري', city: 'Jeddah', cityAr: 'جدة', bedrooms: 1, bathrooms: 1, guests: 2, price: 320, status: 'active', platform: 'Gatherin', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop', occupancy: 0.35, tags: ['budget-friendly'] },
+  { id: 3, name: 'Family Home', nameAr: 'منزل عائلي', city: 'KAEC', cityAr: 'كاوست', bedrooms: 3, bathrooms: 2, guests: 6, price: 600, status: 'active', platform: 'Booking.com', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop', occupancy: 0.65, tags: ['family-friendly', 'corporate'] },
+  { id: 4, name: 'Penthouse Suite', nameAr: 'جناح بنتهاوس', city: 'Dammam', cityAr: 'الدمام', bedrooms: 2, bathrooms: 2, guests: 4, price: 720, status: 'paused', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop', occupancy: 0.55, tags: ['business', 'luxury'] },
 ];
 
 export default function Properties() {
@@ -21,6 +22,7 @@ export default function Properties() {
   const [showImport, setShowImport] = useState(false);
   const [importUrl, setImportUrl] = useState('');
   const [importing, setImporting] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({ cities: [], tags: [], performance: [] });
 
   // Bulk Management State
   const [selectedProps, setSelectedProps] = useState(new Set());
@@ -35,6 +37,40 @@ export default function Properties() {
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [showLabelsModal, setShowLabelsModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
+
+  // Apply filters
+  const filteredProperties = useMemo(() => {
+    return mockProperties.filter(prop => {
+      // City filter
+      if (selectedFilters.cities?.length > 0 && !selectedFilters.cities.includes(prop.city)) {
+        return false;
+      }
+
+      // Tags filter
+      if (selectedFilters.tags?.length > 0) {
+        const hasTag = selectedFilters.tags.some(tag => prop.tags?.includes(tag));
+        if (!hasTag) return false;
+      }
+
+      // Performance filter
+      if (selectedFilters.performance?.length > 0) {
+        const occupancy = prop.occupancy || 0;
+        const price = prop.price || 0;
+        const matchesPerf = selectedFilters.performance.some(perf => {
+          if (perf === 'high-occupancy' && occupancy > 0.7) return true;
+          if (perf === 'medium-occupancy' && occupancy >= 0.4 && occupancy <= 0.7) return true;
+          if (perf === 'low-occupancy' && occupancy < 0.4) return true;
+          if (perf === 'high-price' && price > 600) return true;
+          if (perf === 'medium-price' && price >= 300 && price <= 600) return true;
+          if (perf === 'low-price' && price < 300) return true;
+          return false;
+        });
+        if (!matchesPerf) return false;
+      }
+
+      return true;
+    });
+  }, [selectedFilters]);
 
   const handleImport = async (e) => {
     e.preventDefault();
@@ -250,31 +286,50 @@ export default function Properties() {
         <FloorplanVisualizer />
       </FadeIn>
 
+      {/* Filters */}
+      <FadeIn delay={0.1}>
+        <PropertiesFilter
+          properties={mockProperties}
+          selectedFilters={selectedFilters}
+          onFilter={setSelectedFilters}
+        />
+      </FadeIn>
+
       {/* Bulk Actions Toolbar */}
       <BulkActionsToolbar
         selectedCount={selectedProps.size}
-        totalCount={mockProperties.length}
-        onSelectAll={selectAllProperties}
+        totalCount={filteredProperties.length}
+        onSelectAll={() => setSelectedProps(new Set(filteredProperties.map(p => p.id)))}
         onClearSelection={clearSelection}
         onExport={handleExport}
         onChangeStatus={() => setShowStatusModal(true)}
         onAddLabels={() => setShowLabelsModal(true)}
         onArchive={() => setShowArchiveModal(true)}
         isLoading={actionLoading}
-        allSelected={selectedProps.size === mockProperties.length}
+        allSelected={selectedProps.size === filteredProperties.length}
       />
 
       {/* Properties Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockProperties.map((prop, i) => (
-          <PropertyCardWithSelection
-            key={prop.id}
-            prop={prop}
-            index={i}
-            isSelected={selectedProps.has(prop.id)}
-            onSelect={() => togglePropertySelection(prop.id)}
-          />
-        ))}
+      <div>
+        {filteredProperties.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProperties.map((prop, i) => (
+              <PropertyCardWithSelection
+                key={prop.id}
+                prop={prop}
+                index={i}
+                isSelected={selectedProps.has(prop.id)}
+                onSelect={() => togglePropertySelection(prop.id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-[#F7F5F0]/60 text-sm">
+              {lang === 'ar' ? 'لا توجد عقارات تطابق التصفيات المختارة' : 'No properties match the selected filters'}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Modals */}
