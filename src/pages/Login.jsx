@@ -24,8 +24,7 @@ export default function Login() {
     setLoading(true);
     setError("");
     try {
-      const data = await madarApi.login(email, password);
-      login(data);
+      await login(email, password);
       navigate(nextUrl, { replace: true });
     } catch (err) {
       setError(err.message || t("login.error"));
