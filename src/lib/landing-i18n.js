@@ -1,6 +1,6 @@
 export const LOGO_URL = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/888d74ebd_MADARMainsymbol.png";
 export const LOGO_URL_LIGHT = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/d1af3482b_IMG_7737.png";
-export const HERO_IMAGE_URL = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/1aaba2894_IMG_7743.jpeg";
+export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?w=1920&h=1080&fit=crop&q=80";
 
 export const landingT = {
   ar: {

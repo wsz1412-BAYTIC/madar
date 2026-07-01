@@ -21,7 +21,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <img
           src={HERO_IMAGE_URL}
-          alt="Riyadh cityscape at night"
+          alt="Jeddah corniche at night"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628]/70 via-[#0a1628]/50 to-[#0a1628]/85" />
