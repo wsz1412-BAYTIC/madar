@@ -16,7 +16,7 @@ import Testimonials from '@/components/madar/Testimonials';
 import FinalCTA from '@/components/madar/FinalCTA';
 import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Shield } from 'lucide-react';
+import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Shield, DollarSign } from 'lucide-react';
 
 const plans = [
   { key: 'free', price: 0, features: { en: ['1 property', 'Basic pricing insights', 'Community support'], ar: ['عقار واحد', 'تحليلات تسعير أساسية', 'دعم المجتمع'] } },
@@ -165,7 +165,112 @@ export default function Landing() {
       {/* ===== 9. CUSTOMER RESULTS / TESTIMONIALS ===== */}
       <Testimonials />
 
-      {/* ===== 10. PRICING PLANS ===== */}
+      {/* ===== 10. RENTAL ROI CALCULATOR SECTION ===== */}
+      <section className="py-28 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <FadeIn className="text-center mb-16">
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[#C8972A] text-xs font-medium mb-6 ${
+              theme === 'dark'
+                ? 'bg-[#0A0B10] border border-white/[0.08]'
+                : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10'
+            }`}>
+              <Zap className="w-3 h-3" />{lang === 'ar' ? 'أداة سريعة' : 'Quick Tool'}
+            </div>
+            <h2 className={`font-heading text-4xl sm:text-5xl font-bold mb-4 ${
+              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+            }`}>{lang === 'ar' ? 'حاسبة الإيجار القصير المدى' : 'Rental ROI Calculator'}</h2>
+            <p className={`text-lg ${
+              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+            }`}>{lang === 'ar' ? 'قدّر إيراداتك الديناميكية حسب المدينة ونوع العقار وعدد الغرف' : 'Estimate your dynamic monthly revenue by city, property type, and bedroom count'}</p>
+          </FadeIn>
+
+          <ScaleIn className={`p-8 rounded-3xl mb-8 ${
+            theme === 'dark'
+              ? 'bg-gradient-to-br from-[#1C1F2E] via-[#0F1117] to-[#1C1F2E] border border-white/[0.08]'
+              : 'bg-gradient-to-br from-white via-[#F2EFE8] to-white border border-[#0A0B10]/5'
+          }`}>
+            <div className="space-y-6">
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                  }`}>{lang === 'ar' ? 'المدينة' : 'City'}</label>
+                  <select className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] focus:ring-2 focus:ring-[#D95F3B]/20'
+                      : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:ring-2 focus:ring-[#D95F3B]/20'
+                  }`}>
+                    <option value="riyadh">{lang === 'ar' ? 'الرياض' : 'Riyadh'}</option>
+                    <option value="jeddah">{lang === 'ar' ? 'جدة' : 'Jeddah'}</option>
+                    <option value="dammam">{lang === 'ar' ? 'الدمام' : 'Dammam'}</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                  }`}>{lang === 'ar' ? 'نوع العقار' : 'Property Type'}</label>
+                  <select className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] focus:ring-2 focus:ring-[#D95F3B]/20'
+                      : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:ring-2 focus:ring-[#D95F3B]/20'
+                  }`}>
+                    <option value="apartment">{lang === 'ar' ? 'شقة' : 'Apartment'}</option>
+                    <option value="villa">{lang === 'ar' ? 'فيلا' : 'Villa'}</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                  }`}>{lang === 'ar' ? 'عدد الغرف' : 'Bedrooms'}</label>
+                  <select className={`w-full px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    theme === 'dark'
+                      ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] focus:ring-2 focus:ring-[#D95F3B]/20'
+                      : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:ring-2 focus:ring-[#D95F3B]/20'
+                  }`}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5+</option>
+                  </select>
+                </div>
+              </div>
+              <Link to="/calculator" className="group relative flex items-center justify-center gap-2 w-full px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all hover:shadow-lg hover:shadow-[#D95F3B]/30 overflow-hidden">
+                <span className="relative z-10">{lang === 'ar' ? 'قدّر إيراداتك' : 'Estimate Revenue'}</span>
+                <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              </Link>
+              <p className={`text-xs text-center ${
+                theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+              }`}>{lang === 'ar' ? '✨ استخدم بيانات السوق الفعلية للحصول على تقديرات دقيقة' : '✨ Based on real market data for accurate estimates'}</p>
+            </div>
+          </ScaleIn>
+
+          <StaggerContainer stagger={0.1} className="grid sm:grid-cols-3 gap-6">
+            {[
+              { icon: DollarSign, label: lang === 'ar' ? 'الإيرادات الشهرية' : 'Monthly Revenue', value: lang === 'ar' ? 'حسب السوق' : 'Market-based' },
+              { icon: BarChart3, label: lang === 'ar' ? 'العائد على الاستثمار' : 'ROI Projection', value: lang === 'ar' ? 'دقيق ومفصل' : 'Detailed' },
+              { icon: TrendingUp, label: lang === 'ar' ? 'مقارنة المنافسين' : 'Competitor Compare', value: lang === 'ar' ? 'في الوقت الفعلي' : 'Real-time' }
+            ].map((item, i) => (
+              <StaggerItem key={i}>
+                <div className={`p-6 rounded-2xl text-center ${
+                  theme === 'dark'
+                    ? 'bg-white/[0.03] border border-white/[0.06]'
+                    : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+                }`}>
+                  <item.icon className="w-8 h-8 text-[#D95F3B] mx-auto mb-4" />
+                  <h3 className={`font-heading font-semibold mb-2 ${
+                    theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                  }`}>{item.label}</h3>
+                  <p className={theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'}>{item.value}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* ===== 11. PRICING PLANS ===== */}
       <section id="pricing" className="py-28 px-4 sm:px-6 lg:px-8 bg-[#F2EFE8]">
         <div className="max-w-6xl mx-auto">
           <FadeIn className="text-center mb-20">
@@ -247,7 +352,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ===== 11. FINAL CALL TO ACTION ===== */}
+      {/* ===== 12. FINAL CALL TO ACTION ===== */}
       <FinalCTA />
 
       {/* ===== FOOTER ===== */}
