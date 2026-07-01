@@ -72,8 +72,8 @@ export default function Landing() {
       <section ref={heroRef} className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0 z-0">
           <img
-            src="https://media.base44.com/images/public/6a43dd3026ba0773af35c603/b61ceee51_.png"
-            alt="Riyadh skyline at night"
+            src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?w=1920&h=1080&fit=crop&q=80"
+            alt="Jeddah corniche at night"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#05070d]/80 via-[#0A0B10]/50 to-[#F2EFE8]" />
