@@ -1,4 +1,4 @@
-const API_BASE = 'https://aimadar.com/api/v1';
+const API_BASE = 'https://aimadar.com/api';
 
 let authToken = localStorage.getItem('madar_token') || null;
 
