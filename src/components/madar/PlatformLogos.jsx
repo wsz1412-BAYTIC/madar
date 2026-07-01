@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { FadeIn } from '@/components/madar/Motion';
+import PlatformMetrics from '@/components/madar/PlatformMetrics';
 import { motion } from 'framer-motion';
 
 // Official Airbnb logo — Bélo icon + "airbnb" wordmark
@@ -129,9 +130,16 @@ export default function PlatformLogos() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        </FadeIn>
-      </div>
-    </section>
+            </div>
+            </FadeIn>
+
+            {/* Metrics */}
+            <FadeIn delay={0.4}>
+            <div className="mt-16 max-w-4xl mx-auto">
+            <PlatformMetrics />
+            </div>
+            </FadeIn>
+            </div>
+            </section>
   );
 }
