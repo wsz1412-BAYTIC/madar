@@ -31,12 +31,12 @@ export default function Landing() {
       <section ref={heroRef} className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1920&h=1080&fit=crop"
-            alt="Luxury Saudi property"
+            src="https://media.base44.com/images/public/6a43dd3026ba0773af35c603/b61ceee51_.png"
+            alt="Riyadh skyline at night"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0B10]/70 via-[#0A0B10]/60 to-[#F2EFE8]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0B10]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#05070d]/80 via-[#0A0B10]/50 to-[#F2EFE8]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#000b1e]/70 via-transparent to-transparent" />
         </motion.div>
 
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
