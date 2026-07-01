@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { AlertTriangle, Info, Sparkles, X, Bell, TrendingUp, Clock, Zap, BellRing } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { AlertTriangle, Info, Sparkles, X, Bell, TrendingUp, Clock, Zap, BellRing, Pause, CheckCircle, Mail, Smartphone, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 
@@ -86,9 +87,23 @@ const summaryCards = [
 
 export default function Alerts() {
   const { t, lang } = useLang();
+  const { theme } = useTheme();
   const [alerts, setAlerts] = useState(mockAlerts);
   const [filter, setFilter] = useState('all');
   const [newId, setNewId] = useState(null);
+  const [showConfig, setShowConfig] = useState(false);
+  const [thresholds, setThresholds] = useState({
+    occupancyRisk: 65,
+    priceDeviation: 20,
+    demandSpike: 50,
+  });
+  const [channels, setChannels] = useState({
+    email: true,
+    sms: false,
+    inApp: true,
+  });
+  const [snoozedAlerts, setSnoozedAlerts] = useState({});
+  const [resolvedAlerts, setResolvedAlerts] = useState({});
 
   // Simulate a new alert arriving after 5 seconds
   useEffect(() => {
@@ -103,8 +118,115 @@ export default function Alerts() {
   const filtered = filter === 'all' ? alerts : alerts.filter(a => a.severity === filter);
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
+  const snoozeAlert = (id) => {
+    setSnoozedAlerts(prev => ({ ...prev, [id]: true }));
+    setTimeout(() => {
+      setSnoozedAlerts(prev => ({ ...prev, [id]: false }));
+    }, 3600000);
+  };
+
+  const resolveAlert = (id) => {
+    setResolvedAlerts(prev => ({ ...prev, [id]: true }));
+  };
+
+  const dismissAlert = (id) => {
+    setAlerts(prev => prev.filter(a => a.id !== id));
+  };
+
+  const bgCard = theme === 'dark'
+    ? 'bg-white/[0.03] border border-white/[0.06]'
+    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+
+  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
+  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+
   return (
     <div className="space-y-8">
+      {/* Settings Panel */}
+      <AnimatePresence>
+        {showConfig && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`p-6 rounded-2xl glass ${bgCard} space-y-6`}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className={`font-heading font-bold text-lg ${textColor}`}>
+                {lang === 'ar' ? 'إعدادات التنبيهات' : 'Alert Settings'}
+              </h2>
+              <button onClick={() => setShowConfig(false)} className={`p-1 hover:bg-white/5 rounded-lg transition-colors`}>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Confidence Thresholds */}
+            <div className="space-y-4">
+              <h3 className={`font-medium ${textColor}`}>
+                {lang === 'ar' ? 'عتبات الثقة' : 'Confidence Thresholds'}
+              </h3>
+              {[
+                { key: 'occupancyRisk', label: lang === 'ar' ? 'خطر الإشغال' : 'Occupancy Risk', min: 30, max: 90 },
+                { key: 'priceDeviation', label: lang === 'ar' ? 'انحراف الأسعار' : 'Price Deviation', min: 5, max: 50 },
+                { key: 'demandSpike', label: lang === 'ar' ? 'قمة الطلب' : 'Demand Spike', min: 20, max: 100 },
+              ].map(item => (
+                <div key={item.key} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className={`text-sm font-medium ${textColor}`}>{item.label}</label>
+                    <span className="text-sm font-bold text-[#D95F3B]">{thresholds[item.key]}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={item.min}
+                    max={item.max}
+                    value={thresholds[item.key]}
+                    onChange={(e) => setThresholds(prev => ({ ...prev, [item.key]: parseInt(e.target.value) }))}
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#D95F3B]"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Notification Channels */}
+            <div className="space-y-4 pt-4 border-t border-white/10">
+              <h3 className={`font-medium ${textColor}`}>
+                {lang === 'ar' ? 'قنوات الإشعارات' : 'Notification Channels'}
+              </h3>
+              <div className="space-y-3">
+                {[
+                  { key: 'email', label: lang === 'ar' ? 'بريد إلكتروني' : 'Email', icon: Mail },
+                  { key: 'sms', label: lang === 'ar' ? 'رسائل SMS' : 'SMS', icon: Smartphone },
+                  { key: 'inApp', label: lang === 'ar' ? 'في التطبيق' : 'In-App', icon: Bell },
+                ].map(item => {
+                  const Icon = item.icon;
+                  return (
+                    <label key={item.key} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                      channels[item.key] ? 'bg-white/5' : 'hover:bg-white/3'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={channels[item.key]}
+                        onChange={(e) => setChannels(prev => ({ ...prev, [item.key]: e.target.checked }))}
+                        className="w-4 h-4 rounded accent-[#D95F3B] cursor-pointer"
+                      />
+                      <Icon className="w-4 h-4 text-[#D95F3B]" />
+                      <span className={`text-sm font-medium ${textColor}`}>{item.label}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowConfig(false)}
+              className="w-full py-2 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+            >
+              {lang === 'ar' ? 'حفظ التغييرات' : 'Save Changes'}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <FadeIn>
         <div className="flex items-center justify-between flex-wrap gap-4">
@@ -120,13 +242,23 @@ export default function Alerts() {
               <p className="text-sm text-[#F7F5F0]/40">{t('alertsDesc')}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full glass">
-            <motion.div
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-2 h-2 rounded-full bg-emerald-400"
-            />
-            <span className="text-xs text-[#F7F5F0]/50">{lang === 'ar' ? 'مراقبة نشطة' : 'Live monitoring'}</span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowConfig(!showConfig)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full glass hover:bg-white/5 transition-colors"
+              title={lang === 'ar' ? 'إعدادات التنبيهات' : 'Alert Settings'}
+            >
+              <Settings className="w-4 h-4" />
+              <span className="text-xs hidden sm:inline">{lang === 'ar' ? 'الإعدادات' : 'Settings'}</span>
+            </button>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full glass">
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-2 h-2 rounded-full bg-emerald-400"
+              />
+              <span className="text-xs text-[#F7F5F0]/50">{lang === 'ar' ? 'مراقبة نشطة' : 'Live monitoring'}</span>
+            </div>
           </div>
         </div>
       </FadeIn>
@@ -280,9 +412,28 @@ export default function Alerts() {
                         {t('applyNow')}
                       </motion.button>
                     )}
+                    {!snoozedAlerts[alert.id] && (
+                      <button
+                        onClick={() => snoozeAlert(alert.id)}
+                        className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                        title={lang === 'ar' ? 'إرجاء' : 'Snooze'}
+                      >
+                        <Pause className="w-3.5 h-3.5 text-[#F7F5F0]/40 hover:text-[#F7F5F0]/60" />
+                      </button>
+                    )}
+                    {!resolvedAlerts[alert.id] && (
+                      <button
+                        onClick={() => resolveAlert(alert.id)}
+                        className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                        title={lang === 'ar' ? 'تم التعامل معها' : 'Resolve'}
+                      >
+                        <CheckCircle className="w-3.5 h-3.5 text-[#F7F5F0]/40 hover:text-emerald-400" />
+                      </button>
+                    )}
                     <button
-                      onClick={() => setAlerts(prev => prev.filter(a => a.id !== alert.id))}
+                      onClick={() => dismissAlert(alert.id)}
                       className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                      title={lang === 'ar' ? 'رفض' : 'Dismiss'}
                     >
                       <X className="w-3.5 h-3.5 text-[#F7F5F0]/20" />
                     </button>
