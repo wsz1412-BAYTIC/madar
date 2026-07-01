@@ -17,7 +17,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const nextUrl = new URLSearchParams(location.search).get("next") || "/";
+  const nextUrl = new URLSearchParams(location.search).get("next") || "/dashboard";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -29,6 +29,9 @@ export function MadarAuthProvider({ children }) {
     setToken(json.access_token);
     setUser({ email, name: json.name, plan: json.plan, id: json.subscriber_id });
     setIsAuthenticated(true);
+    if (window.location.pathname !== '/dashboard') {
+      window.location.href = '/dashboard';
+    }
     return json;
   }, []);
 
