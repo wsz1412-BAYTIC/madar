@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
+import ToolsSection from '@/components/madar/ToolsSection';
 import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Globe2, Shield } from 'lucide-react';
@@ -108,6 +109,9 @@ export default function Landing() {
           </div>
         </motion.div>
       </section>
+
+      {/* ===== TOOLS ===== */}
+      <ToolsSection />
 
       {/* ===== STATS ===== */}
       <section className="py-20 px-4 border-y border-white/[0.04]">

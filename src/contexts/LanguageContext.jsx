@@ -31,6 +31,23 @@ const translations = {
     viewPricing: 'View Pricing',
     trustedBy: 'Trusted by 500+ hosts across Saudi Arabia',
     
+    // Tools Section
+    toolsBadge: 'Powerful Tools',
+    toolsTitle: 'Everything you need to invest smarter',
+    toolsSubtitle: 'Professional-grade revenue management tools trusted by hundreds of successful hosts across Saudi Arabia',
+    tool1Title: 'AI-Powered Revenue Analysis',
+    tool1Desc: 'Advanced machine learning algorithms analyze 50+ data sources — demand, seasonality, events, and competitors — to deliver precise pricing insights and revenue predictions.',
+    tool2Title: 'Smart Pricing Engine',
+    tool2Desc: 'A complete pricing workspace with real-time market data, demand signals, and AI-powered price recommendations that adjust automatically to maximize occupancy.',
+    tool3Title: 'Revenue Calculators',
+    tool3Desc: 'A comprehensive suite including ROI, occupancy, break-even, and cash flow calculators tailored for the Saudi short-term rental market.',
+    tool4Title: 'AI Revenue Coach',
+    tool4Desc: 'A 24/7 AI-powered investment coach providing personalized guidance, market insights, and strategy recommendations for your properties.',
+    tool5Title: 'Saudi Market Insights',
+    tool5Desc: 'Free access to city-level demand indices, event calendars, and tourism data for informed investment decisions across the Kingdom.',
+    tool6Title: 'Multi-Platform Accuracy',
+    tool6Desc: 'Multiple verified data sources across Airbnb, Gatherin, and Booking.com ensure the highest accuracy and reliability for your pricing decisions.',
+    
     // Features
     featuresTitle: 'Everything you need to maximize revenue',
     featuresSubtitle: 'Powerful tools designed for Saudi Arabian short-term rental hosts',
@@ -231,6 +248,23 @@ const translations = {
     startFree: 'ابدأ تجربة مجانية',
     viewPricing: 'عرض الأسعار',
     trustedBy: 'يثق بنا أكثر من 500 مضيف في المملكة العربية السعودية',
+    
+    // Tools Section
+    toolsBadge: 'أدوات قوية',
+    toolsTitle: 'كل ما تحتاجه لاستثمار أذكى',
+    toolsSubtitle: 'أدوات إدارة إيرادات احترافية يثق بها مئات المضيفين الناجحين في جميع أنحاء المملكة العربية السعودية',
+    tool1Title: 'تحليل الإيرادات بالذكاء الاصطناعي',
+    tool1Desc: 'خوارزميات تعلم آلي متقدمة تحلل أكثر من 50 مصدراً للبيانات — الطلب والموسمية والفعاليات والمنافسين — لتقديم رؤى تسعير دقيقة وتوقعات إيرادات موثوقة.',
+    tool2Title: 'محرك التسعير الذكي',
+    tool2Desc: 'مساحة عمل متكاملة للتسعير مع بيانات سوق فورية وإشارات طلب وتوصيات أسعار مدعومة بالذكاء الاصطناعي تتكيف تلقائياً لتعظيم الإشغال.',
+    tool3Title: 'حاسبات الإيرادات',
+    tool3Desc: 'مجموعة شاملة تتضمن حاسبات العائد على الاستثمار والإشغال ونقطة التعادل والتدفق النقدي مصممة خصيصاً لسوق الإيجارات قصيرة المدى في السعودية.',
+    tool4Title: 'مدرب الإيرادات الذكي',
+    tool4Desc: 'مدرب استثماري مدعوم بالذكاء الاصطناعي يعمل على مدار الساعة لتقديم إرشادات مخصصة ورؤى سوقية وتوصيات استراتيجية لعقاراتك.',
+    tool5Title: 'رؤى السوق السعودي',
+    tool5Desc: 'وصول مجاني إلى مؤشرات الطلب على مستوى المدينة وتقاويم الفعاليات وبيانات السياحة لاتخاذ قرارات استثمارية مستنيرة في جميع أنحاء المملكة.',
+    tool6Title: 'دقة متعددة المنصات',
+    tool6Desc: 'مصادر بيانات متعددة موثقة عبر Airbnb وGatherin وBooking.com تضمن أعلى مستوى من الدقة والموثوقية لقراراتك التسعيرية.',
     
     featuresTitle: 'كل ما تحتاجه لتعظيم إيراداتك',
     featuresSubtitle: 'أدوات قوية مصممة لمضيفي الإيجارات قصيرة المدى في السعودية',
