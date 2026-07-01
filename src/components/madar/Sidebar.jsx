@@ -63,14 +63,17 @@ export default function Sidebar() {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 h-16 border-b border-white/[0.04]">
-        <Link to="/dashboard" className="flex items-center gap-2.5" onClick={() => setMobileOpen(false)}>
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">م</span>
+      <div className="flex items-center justify-between px-5 h-20 border-b border-white/[0.06]">
+        <Link to="/dashboard" className="flex items-center gap-3 group" onClick={() => setMobileOpen(false)}>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-xl blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
+              <span className="text-white font-bold text-sm font-heading">م</span>
+            </div>
           </div>
-          {!collapsed && <span className="font-heading font-bold text-[#F7F5F0] text-lg">Madar</span>}
+          {!collapsed && <span className="font-heading font-bold text-xl text-[#F7F5F0] tracking-tight">Madar</span>}
         </Link>
-        <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:flex p-1.5 rounded-lg hover:bg-white/[0.04] text-[#F7F5F0]/30">
+        <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:flex p-2 rounded-lg hover:bg-white/[0.04] text-[#F7F5F0]/30 hover:text-[#F7F5F0]/60 transition-all duration-500">
           {collapsed ? (isRTL ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />) : (isRTL ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />)}
         </button>
       </div>
@@ -96,14 +99,17 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 cinematic-blur bg-[#0A0B10]/70 border-b border-white/[0.04] h-14 flex items-center justify-between px-4">
-        <Link to="/dashboard" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center">
-            <span className="text-white font-bold text-xs">م</span>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 cinematic-blur bg-[#0A0B10]/80 border-b border-white/[0.06] h-16 flex items-center justify-between px-6">
+        <Link to="/dashboard" className="flex items-center gap-3 group">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-lg blur-sm opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+              <span className="text-white font-bold text-xs font-heading">م</span>
+            </div>
           </div>
-          <span className="font-heading font-bold text-sm text-[#F7F5F0]">Madar</span>
+          <span className="font-heading font-bold text-lg text-[#F7F5F0] tracking-tight">Madar</span>
         </Link>
-        <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-[#F7F5F0]">
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-[#F7F5F0]/70 hover:text-[#F7F5F0] transition-colors duration-500">
           {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
@@ -123,7 +129,7 @@ export default function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: isRTL ? '100%' : '-100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="absolute top-14 w-72 h-[calc(100%-56px)] bg-[#0F1117] shadow-2xl"
+              className="absolute top-16 w-72 h-[calc(100%-64px)] bg-[#0F1117] shadow-2xl"
               style={{ [isRTL ? 'right' : 'left']: 0 }}
               onClick={e => e.stopPropagation()}
             >

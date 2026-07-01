@@ -22,7 +22,7 @@ export default function AppLayout() {
   return (
     <div className="min-h-screen bg-[#0A0B10]">
       <Sidebar />
-      <main className="pt-14 lg:pt-0 min-h-screen transition-all duration-300" style={marginStyle}>
+      <main className="pt-16 lg:pt-0 min-h-screen transition-all duration-300" style={marginStyle}>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
