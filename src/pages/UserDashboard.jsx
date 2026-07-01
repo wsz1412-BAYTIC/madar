@@ -3,23 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import AppLayout from '@/components/madar/AppLayout';
+import FeatureGuard from '@/components/FeatureGuard';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import RecentAlerts from '@/components/dashboard/RecentAlerts';
 import UpcomingBookings from '@/components/dashboard/UpcomingBookings';
 import PropertyPerformance from '@/components/dashboard/PropertyPerformance';
 import RevenueChart from '@/components/dashboard/RevenueChart';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, TrendingUp, Home, AlertTriangle } from 'lucide-react';
+import { AlertCircle, TrendingUp, Home, AlertTriangle, Lock } from 'lucide-react';
 
 export default function UserDashboard() {
   const navigate = useNavigate();
   const { t, lang } = useLang();
   const { theme } = useTheme();
+  const { subscription: subscriptionData, getPlanName } = useSubscription();
   
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [subscription, setSubscription] = useState(null);
   const [properties, setProperties] = useState([]);
   const [stats, setStats] = useState(null);
   const [errors, setErrors] = useState(null);
@@ -32,12 +34,6 @@ export default function UserDashboard() {
         // Get current user
         const currentUser = await base44.auth.me();
         setUser(currentUser);
-
-        // Get user subscription
-        const userSubs = await base44.entities.UserSubscription.filter({ userId: currentUser.id });
-        if (userSubs.length > 0) {
-          setSubscription(userSubs[0]);
-        }
 
         // Get user properties
         const userProps = await base44.entities.UserProperty.filter({ userId: currentUser.id });
@@ -58,7 +54,7 @@ export default function UserDashboard() {
           avgOccupancy: Math.round(avgOccupancy),
           avgAdr: Math.round(avgAdr),
           totalRevenue,
-          monthRevenue: totalRevenue, // simplified for demo
+          monthRevenue: totalRevenue,
           lostOpportunities: Math.round(totalRevenue * 0.15),
         });
 
@@ -84,6 +80,8 @@ export default function UserDashboard() {
     );
   }
 
+  const currentPlan = getPlanName();
+
   return (
     <AppLayout>
       <div className={`p-4 sm:p-6 lg:p-8 min-h-screen ${
@@ -91,11 +89,22 @@ export default function UserDashboard() {
       }`}>
         {/* Header */}
         <div className="mb-8">
-          <h1 className={`text-3xl sm:text-4xl font-heading font-bold mb-2 ${
-            theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
-          }`}>
-            {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
-          </h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className={`text-3xl sm:text-4xl font-heading font-bold ${
+              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+            }`}>
+              {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+            </h1>
+            <span className={`text-xs px-3 py-1.5 rounded-full ${
+              currentPlan === 'free'
+                ? theme === 'dark'
+                  ? 'bg-white/10 text-[#F7F5F0]/70'
+                  : 'bg-[#0A0B10]/10 text-[#0A0B10]/70'
+                : 'bg-primary/20 text-primary'
+            }`}>
+              {currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1)} Plan
+            </span>
+          </div>
           <p className={`text-sm ${
             theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
           }`}>
@@ -117,7 +126,7 @@ export default function UserDashboard() {
         )}
 
         {/* Subscription Warning */}
-        {subscription?.status === 'cancelled' && (
+        {subscriptionData?.status === 'cancelled' && (
           <div className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
             theme === 'dark'
               ? 'bg-amber-950/20 border-amber-700/30'
@@ -143,32 +152,67 @@ export default function UserDashboard() {
           </div>
         )}
 
-        {/* Stats */}
+        {/* Stats - Always shown */}
         {stats && (
           <DashboardStats 
             stats={stats}
-            subscription={subscription}
+            subscription={subscriptionData}
           />
         )}
 
-        {/* Main Grid */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          {/* Revenue Chart */}
-          <div className="lg:col-span-2">
-            <RevenueChart properties={properties} />
+        {/* Main Grid - Only show based on plan features */}
+        <FeatureGuard feature="analytics.advancedCharts">
+          <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            {/* Revenue Chart */}
+            <div className="lg:col-span-2">
+              <RevenueChart properties={properties} />
+            </div>
+
+            {/* Property Performance */}
+            <div>
+              <PropertyPerformance properties={properties} />
+            </div>
           </div>
 
-          {/* Property Performance */}
-          <div>
-            <PropertyPerformance properties={properties} />
+          {/* Alerts and Bookings */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <RecentAlerts properties={properties} />
+            <UpcomingBookings properties={properties} />
           </div>
-        </div>
+        </FeatureGuard>
 
-        {/* Alerts and Bookings */}
-        <div className="grid lg:grid-cols-2 gap-6">
-          <RecentAlerts properties={properties} />
-          <UpcomingBookings properties={properties} />
-        </div>
+        {/* Upsell for Free Plan Users */}
+        {currentPlan === 'free' && (
+          <div className={`mt-8 p-6 rounded-2xl border ${
+            theme === 'dark'
+              ? 'bg-primary/10 border-primary/30'
+              : 'bg-primary/5 border-primary/30'
+          }`}>
+            <div className="flex items-start gap-4">
+              <Lock className={`w-6 h-6 flex-shrink-0 text-primary`} />
+              <div className="flex-1">
+                <h3 className={`font-heading font-bold mb-2 ${
+                  theme === 'dark' ? 'text-primary' : 'text-primary'
+                }`}>
+                  {lang === 'ar' ? 'فتح ميزات متقدمة' : 'Unlock Advanced Features'}
+                </h3>
+                <p className={`text-sm mb-4 ${
+                  theme === 'dark' ? 'text-[#F7F5F0]/70' : 'text-[#0A0B10]/70'
+                }`}>
+                  {lang === 'ar' 
+                    ? 'ترقيتك إلى Basic أو أعلى للوصول إلى التحليلات المتقدمة والتسعير الذكي'
+                    : 'Upgrade to Basic or higher to access advanced analytics and smart pricing'}
+                </p>
+                <button
+                  onClick={() => navigate('/plans')}
+                  className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all text-sm font-medium"
+                >
+                  {lang === 'ar' ? 'عرض الخطط' : 'View Plans'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Quick Actions */}
         <div className={`mt-8 p-6 rounded-2xl border ${
@@ -197,21 +241,23 @@ export default function UserDashboard() {
                 {lang === 'ar' ? 'إضافة عقار' : 'Add Property'}
               </p>
             </button>
-            <button
-              onClick={() => navigate('/analytics')}
-              className={`p-4 rounded-lg text-left hover:bg-primary/5 transition-colors ${
-                theme === 'dark'
-                  ? 'border border-white/[0.06]'
-                  : 'border border-[#0A0B10]/[0.06]'
-              }`}
-            >
-              <TrendingUp className="w-5 h-5 mb-2 text-primary" />
-              <p className={`text-sm font-medium ${
-                theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
-              }`}>
-                {lang === 'ar' ? 'التحليلات' : 'Analytics'}
-              </p>
-            </button>
+            <FeatureGuard feature="analytics.advancedCharts">
+              <button
+                onClick={() => navigate('/analytics')}
+                className={`p-4 rounded-lg text-left hover:bg-primary/5 transition-colors ${
+                  theme === 'dark'
+                    ? 'border border-white/[0.06]'
+                    : 'border border-[#0A0B10]/[0.06]'
+                }`}
+              >
+                <TrendingUp className="w-5 h-5 mb-2 text-primary" />
+                <p className={`text-sm font-medium ${
+                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                }`}>
+                  {lang === 'ar' ? 'التحليلات' : 'Analytics'}
+                </p>
+              </button>
+            </FeatureGuard>
           </div>
         </div>
       </div>

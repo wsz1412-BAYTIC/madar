@@ -18,6 +18,8 @@ import MadarForgotPassword from '@/pages/MadarForgotPassword';
 import Dashboard from '@/pages/Dashboard';
 import UserDashboard from '@/pages/UserDashboard';
 import AdminDashboard from '@/pages/AdminDashboard';
+import PlansAndUpgrade from '@/pages/PlansAndUpgrade';
+import { SubscriptionProvider } from '@/contexts/SubscriptionContext';
 import Properties from '@/pages/Properties';
 import Analytics from '@/pages/Analytics';
 import Revenue from '@/pages/Revenue';
@@ -63,6 +65,7 @@ const AuthenticatedApp = () => {
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/plans" element={<PlansAndUpgrade />} />
         <Route path="/properties" element={<Properties />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/revenue" element={<Revenue />} />
@@ -98,13 +101,15 @@ function App() {
         <LanguageProvider>
           <CookieProvider>
             <MadarAuthProvider>
-              <QueryClientProvider client={queryClientInstance}>
-                <Router>
-                  <AuthenticatedApp />
-                  <CookieConsentBanner />
-                </Router>
-                <Toaster />
-              </QueryClientProvider>
+              <SubscriptionProvider>
+                <QueryClientProvider client={queryClientInstance}>
+                  <Router>
+                    <AuthenticatedApp />
+                    <CookieConsentBanner />
+                  </Router>
+                  <Toaster />
+                </QueryClientProvider>
+              </SubscriptionProvider>
             </MadarAuthProvider>
           </CookieProvider>
         </LanguageProvider>
