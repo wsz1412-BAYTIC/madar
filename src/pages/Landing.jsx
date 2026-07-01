@@ -4,6 +4,7 @@ import { useLang } from '@/contexts/LanguageContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
 import ToolsSection from '@/components/madar/ToolsSection';
 import PlatformLogos from '@/components/madar/PlatformLogos';
+import ProblemSolution from '@/components/madar/ProblemSolution';
 import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Globe2, Shield } from 'lucide-react';
@@ -110,6 +111,9 @@ export default function Landing() {
           </div>
         </motion.div>
       </section>
+
+      {/* ===== PROBLEM / SOLUTION ===== */}
+      <ProblemSolution />
 
       {/* ===== PLATFORM LOGOS ===== */}
       <PlatformLogos />
