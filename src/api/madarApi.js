@@ -181,15 +181,23 @@ async function request(path, options = {}) {
 export const madarApi = {
   // ── HTTP primitives ──
   get: (path) => request(path, { method: "GET" }),
-  post: (path, body) =>
-    request(path, { method: "POST", body: body ? JSON.stringify(body) : undefined }),
+  post: (path, body, customHeaders) =>
+    request(path, {
+      method: "POST",
+      body: body ? JSON.stringify(body) : undefined,
+      headers: customHeaders,
+    }),
   put: (path, body) =>
     request(path, { method: "PUT", body: body ? JSON.stringify(body) : undefined }),
   delete: (path) => request(path, { method: "DELETE" }),
 
   // ── Auth ──
   login: (email, password) =>
-    request("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
+    request("/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ username: email, password }).toString(),
+    }),
   logout: () => {
     // If the API has a logout endpoint, call it; otherwise just clear locally
     try {
