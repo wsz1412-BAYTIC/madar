@@ -44,6 +44,7 @@ import IPTrademark from '@/pages/IPTrademark';
 import ThirdPartyDisclaimer from '@/pages/ThirdPartyDisclaimer';
 import HowToUseMadar from '@/pages/HowToUseMadar';
 import HelpCenter from '@/pages/HelpCenter';
+import Reports from '@/pages/Reports';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -77,6 +78,7 @@ const AuthenticatedApp = () => {
         <Route path="/alerts" element={<Alerts />} />
         <Route path="/market" element={<Market />} />
         <Route path="/calendar" element={<BookingCalendar />} />
+        <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<MadarSettings />} />
         <Route path="/billing" element={<Billing />} />
         <Route path="/connect" element={<Connect />} />
