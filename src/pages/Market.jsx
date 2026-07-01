@@ -5,7 +5,7 @@ import PublicNavbar from '@/components/madar/PublicNavbar';
 import ComprehensiveFooter from '@/components/madar/ComprehensiveFooter';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, Users, DollarSign, Zap, Filter, Download } from 'lucide-react';
+import { TrendingUp, Users, DollarSign, Zap, Filter, Download, BarChart3, Brain } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const marketData = [
@@ -37,6 +37,8 @@ export default function Market() {
   const { theme } = useTheme();
   const [selectedCity, setSelectedCity] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('6months');
+  const [selectedSize, setSelectedSize] = useState('all');
+  const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
@@ -119,29 +121,58 @@ export default function Market() {
 
           {/* Filters */}
           <FadeIn delay={0.2}>
-            <div className={`p-6 rounded-xl ${bgCard} flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between`}>
+            <div className={`p-6 rounded-xl ${bgCard} space-y-4`}>
               <div className="flex items-center gap-2">
                 <Filter className="w-5 h-5 text-[#D95F3B]" />
                 <span className={`font-medium ${textColor}`}>
                   {lang === 'ar' ? 'الفلاتر' : 'Filters'}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {['all', 'riyadh', 'jeddah', 'khobar'].map(city => (
-                  <button
-                    key={city}
-                    onClick={() => setSelectedCity(city)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedCity === city
-                        ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
-                        : theme === 'dark'
-                          ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                          : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
-                    }`}
-                  >
-                    {city === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : city}
-                  </button>
-                ))}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <p className={`text-xs font-medium mb-2 ${textMuted}`}>
+                    {lang === 'ar' ? 'المنطقة الجغرافية' : 'Geographic Zone'}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {['all', 'riyadh', 'jeddah', 'khobar'].map(city => (
+                      <button
+                        key={city}
+                        onClick={() => setSelectedCity(city)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          selectedCity === city
+                            ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                            : theme === 'dark'
+                              ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
+                              : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                        }`}
+                      >
+                        {city === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : city}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className={`text-xs font-medium mb-2 ${textMuted}`}>
+                    {lang === 'ar' ? 'حجم العقار' : 'Property Size'}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {['all', '1-2br', '3-4br', '5+br'].map(size => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          selectedSize === size
+                            ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                            : theme === 'dark'
+                              ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
+                              : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                        }`}
+                      >
+                        {size === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </FadeIn>
@@ -187,8 +218,101 @@ export default function Market() {
             </div>
           </FadeIn>
 
-          {/* Seasonal Distribution */}
+          {/* Competitor Rate Benchmarks */}
+          <FadeIn delay={0.45}>
+            <div className={`p-6 rounded-xl ${bgCard}`}>
+              <div className="flex items-center gap-2 mb-6">
+                <BarChart3 className="w-5 h-5 text-[#D95F3B]" />
+                <h2 className={`font-heading font-bold text-xl ${textColor}`}>
+                  {lang === 'ar' ? 'معايير أسعار المنافسين' : 'Competitor Rate Benchmarks'}
+                </h2>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                  <p className={`text-xs font-medium mb-2 ${textMuted}`}>
+                    {lang === 'ar' ? 'متوسط أسعار المنافسين' : 'Competitor Avg'}
+                  </p>
+                  <p className={`font-heading font-bold text-2xl ${textColor}`}>
+                    {selectedCity === 'riyadh' ? '410' : selectedCity === 'jeddah' ? '345' : '305'} {sar}
+                  </p>
+                  <p className="text-xs text-emerald-400 mt-1">+3.2% {lang === 'ar' ? 'أعلى من السوق' : 'vs Market'}</p>
+                </div>
+                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                  <p className={`text-xs font-medium mb-2 ${textMuted}`}>
+                    {lang === 'ar' ? 'السعر الأدنى' : 'Min Rate'}
+                  </p>
+                  <p className={`font-heading font-bold text-2xl ${textColor}`}>
+                    {selectedCity === 'riyadh' ? '320' : selectedCity === 'jeddah' ? '260' : '215'} {sar}
+                  </p>
+                  <p className={`text-xs ${textMuted} mt-1`}>{lang === 'ar' ? 'في السوق' : 'in Market'}</p>
+                </div>
+                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                  <p className={`text-xs font-medium mb-2 ${textMuted}`}>
+                    {lang === 'ar' ? 'السعر الأقصى' : 'Max Rate'}
+                  </p>
+                  <p className={`font-heading font-bold text-2xl ${textColor}`}>
+                    {selectedCity === 'riyadh' ? '550' : selectedCity === 'jeddah' ? '480' : '420'} {sar}
+                  </p>
+                  <p className={`text-xs ${textMuted} mt-1`}>{lang === 'ar' ? 'في السوق' : 'in Market'}</p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* AI-Driven Occupancy Forecast */}
           <FadeIn delay={0.5}>
+            <div className={`p-6 rounded-xl ${bgCard}`}>
+              <div className="flex items-center gap-2 mb-6">
+                <Brain className="w-5 h-5 text-[#C8972A]" />
+                <h2 className={`font-heading font-bold text-xl ${textColor}`}>
+                  {lang === 'ar' ? 'توقعات الإشغال بالذكاء الاصطناعي (30 يوم)' : 'AI-Driven Occupancy Forecast (30 Days)'}
+                </h2>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-sm font-medium ${textColor}`}>
+                      {lang === 'ar' ? 'الأسبوع القادم' : 'Next Week'}
+                    </span>
+                    <span className="text-sm text-[#D95F3B] font-medium">82%</span>
+                  </div>
+                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '82%'}} />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-sm font-medium ${textColor}`}>
+                      {lang === 'ar' ? 'الأسابيع 2-3' : 'Weeks 2-3'}
+                    </span>
+                    <span className="text-sm text-[#D95F3B] font-medium">68%</span>
+                  </div>
+                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '68%'}} />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-sm font-medium ${textColor}`}>
+                      {lang === 'ar' ? 'الأسبوع 4' : 'Week 4'}
+                    </span>
+                    <span className="text-sm text-[#D95F3B] font-medium">56%</span>
+                  </div>
+                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '56%'}} />
+                  </div>
+                </div>
+              </div>
+              <p className={`text-xs ${textMuted} mt-4 p-3 rounded-lg bg-white/[0.02]`}>
+                {lang === 'ar'
+                  ? '✨ التنبؤ مدعوم بالذكاء الاصطناعي ويأخذ في الاعتبار الأنماط الموسمية والأحداث المحلية والبيانات التاريخية'
+                  : '✨ Forecast powered by AI analyzing seasonal patterns, local events, and historical data'}
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Seasonal Distribution */}
+          <FadeIn delay={0.55}>
             <div className="grid lg:grid-cols-2 gap-8">
               <div className={`p-6 rounded-xl ${bgCard}`}>
                 <h2 className={`font-heading font-bold text-xl mb-6 ${textColor}`}>
