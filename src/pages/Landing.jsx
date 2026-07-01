@@ -24,7 +24,7 @@ export default function Landing() {
   const heroScale = useTransform(heroScroll, [0, 1], [1, 1.15]);
 
   return (
-    <div className="min-h-screen bg-[#0A0B10] text-[#F7F5F0]">
+    <div className="min-h-screen bg-[#F2EFE8] text-[#0A0B10]">
       <PublicNavbar />
 
       {/* ===== HERO ===== */}
@@ -35,7 +35,7 @@ export default function Landing() {
             alt="Luxury Saudi property"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0B10]/70 via-[#0A0B10]/60 to-[#0A0B10]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0B10]/70 via-[#0A0B10]/60 to-[#F2EFE8]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0A0B10]/60 to-transparent" />
         </motion.div>
 
@@ -114,7 +114,7 @@ export default function Landing() {
       <ToolsSection />
 
       {/* ===== STATS ===== */}
-      <section className="py-20 px-4 border-y border-white/[0.04]">
+      <section className="py-20 px-4 border-y border-[#0A0B10]/[0.06]">
         <StaggerContainer className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: '500+', label: lang === 'ar' ? 'مضيف نشط' : 'Active Hosts' },
@@ -124,7 +124,7 @@ export default function Landing() {
           ].map((s, i) => (
             <StaggerItem key={i}>
               <div className="text-4xl sm:text-5xl font-bold font-heading text-gradient-gold">{s.value}</div>
-              <div className="text-sm text-[#F7F5F0]/50 mt-2">{s.label}</div>
+              <div className="text-sm text-[#0A0B10]/50 mt-2">{s.label}</div>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -137,8 +137,8 @@ export default function Landing() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
               <Sparkles className="w-3 h-3" />{lang === 'ar' ? 'الميزات' : 'Features'}
             </div>
-            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-[#F7F5F0] mb-4 leading-tight">{t('featuresTitle')}</h2>
-            <p className="text-[#F7F5F0]/50 text-lg max-w-xl mx-auto">{t('featuresSubtitle')}</p>
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-[#0A0B10] mb-4 leading-tight">{t('featuresTitle')}</h2>
+            <p className="text-[#0A0B10]/50 text-lg max-w-xl mx-auto">{t('featuresSubtitle')}</p>
           </FadeIn>
 
           <div className="grid sm:grid-cols-2 gap-6">
@@ -149,10 +149,10 @@ export default function Landing() {
               { icon: TrendingUp, titleKey: 'feat4Title', descKey: 'feat4Desc', color: '#C8972A', img: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=600&h=400&fit=crop' },
             ].map((f, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="group relative h-[420px] rounded-3xl overflow-hidden glass hover:border-white/15 transition-all duration-500">
+                <div className="group relative h-[420px] rounded-3xl overflow-hidden bg-[#0F1117] border border-white/[0.06] hover:border-white/15 transition-all duration-500">
                   <div className="absolute inset-0 overflow-hidden">
                     <img src={f.img} alt="" className="w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B10] via-[#0A0B10]/80 to-[#0A0B10]/40" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F1117] via-[#0F1117]/80 to-[#0F1117]/40" />
                   </div>
                   <div className="relative z-10 h-full flex flex-col justify-end p-8">
                     <div className="w-12 h-12 rounded-2xl glass flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
@@ -195,8 +195,8 @@ export default function Landing() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
               <Shield className="w-3 h-3" />{lang === 'ar' ? 'الأسعار' : 'Pricing'}
             </div>
-            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-[#F7F5F0] mb-4">{t('pricingTitle')}</h2>
-            <p className="text-[#F7F5F0]/50 text-lg">{t('pricingSubtitle')}</p>
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-[#0A0B10] mb-4">{t('pricingTitle')}</h2>
+            <p className="text-[#0A0B10]/50 text-lg">{t('pricingSubtitle')}</p>
           </FadeIn>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -204,8 +204,8 @@ export default function Landing() {
               <ScaleIn key={plan.key} delay={i * 0.08}>
                 <div className={`relative h-full p-6 rounded-3xl transition-all duration-500 ${
                   plan.popular
-                    ? 'glass-strong border border-[#D95F3B]/30 glow-coral'
-                    : 'glass hover:border-white/15'
+                    ? 'bg-[#0F1117] border border-[#D95F3B]/30 glow-coral'
+                    : 'bg-[#0F1117] border border-white/[0.06] hover:border-white/15'
                 }`}>
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium rounded-full">
@@ -229,7 +229,7 @@ export default function Landing() {
                   <Link to="/signup" className={`block text-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     plan.popular
                       ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white hover:shadow-lg hover:shadow-[#D95F3B]/30'
-                      : 'glass text-[#F7F5F0] hover:bg-white/10'
+                      : 'bg-white/[0.04] text-[#F7F5F0] border border-white/[0.06] hover:bg-white/10'
                   }`}>
                     {t('getStarted')}
                   </Link>
@@ -241,21 +241,21 @@ export default function Landing() {
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer className="py-16 px-4 border-t border-white/[0.04]">
+      <footer className="py-16 px-4 border-t border-[#0A0B10]/[0.06]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center">
               <span className="text-white font-bold text-sm">م</span>
             </div>
             <div>
-              <span className="font-heading font-bold text-[#F7F5F0]">Madar</span>
-              <span className="text-sm text-[#F7F5F0]/40 ml-2">© 2025</span>
+              <span className="font-heading font-bold text-[#0A0B10]">Madar</span>
+              <span className="text-sm text-[#0A0B10]/40 ml-2">© 2025</span>
             </div>
           </div>
           <div className="flex gap-8">
-            <Link to="/calculator" className="text-sm text-[#F7F5F0]/40 hover:text-[#C8972A] transition-colors">{t('calculator')}</Link>
-            <Link to="/login" className="text-sm text-[#F7F5F0]/40 hover:text-[#C8972A] transition-colors">{t('login')}</Link>
-            <Link to="/signup" className="text-sm text-[#F7F5F0]/40 hover:text-[#C8972A] transition-colors">{t('signup')}</Link>
+            <Link to="/calculator" className="text-sm text-[#0A0B10]/40 hover:text-[#C8972A] transition-colors">{t('calculator')}</Link>
+            <Link to="/login" className="text-sm text-[#0A0B10]/40 hover:text-[#C8972A] transition-colors">{t('login')}</Link>
+            <Link to="/signup" className="text-sm text-[#0A0B10]/40 hover:text-[#C8972A] transition-colors">{t('signup')}</Link>
           </div>
         </div>
       </footer>

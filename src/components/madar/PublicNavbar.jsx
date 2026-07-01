@@ -5,7 +5,7 @@ import { useMadarAuth } from '@/contexts/AuthContext';
 import { Menu, X, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const navLinkClass = "relative text-sm font-light tracking-wide text-[#F7F5F0]/55 hover:text-[#F7F5F0] transition-colors duration-500 after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-px after:bg-gradient-to-r after:from-[#D95F3B] after:to-[#C8972A] hover:after:w-full after:transition-all after:duration-500";
+const getNavLinkClass = (scrolled) => `relative text-sm font-light tracking-wide ${scrolled ? 'text-[#0A0B10]/60 hover:text-[#0A0B10]' : 'text-[#F7F5F0]/55 hover:text-[#F7F5F0]'} transition-colors duration-500 after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-px after:bg-gradient-to-r after:from-[#D95F3B] after:to-[#C8972A] hover:after:w-full after:transition-all after:duration-500`;
 
 export default function PublicNavbar() {
   const { t, toggleLang, isRTL } = useLang();
@@ -26,7 +26,7 @@ export default function PublicNavbar() {
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
         scrolled
-          ? 'cinematic-blur bg-[#0A0B10]/80 border-b border-white/[0.06] py-3'
+          ? 'cinematic-blur bg-[#F2EFE8]/90 border-b border-[#0A0B10]/[0.06] py-3'
           : 'bg-transparent py-6'
       }`}
     >
@@ -40,14 +40,14 @@ export default function PublicNavbar() {
                 <span className="text-white font-bold text-sm font-heading">م</span>
               </div>
             </div>
-            <span className="font-heading font-bold text-xl text-[#F7F5F0] tracking-tight">Madar</span>
+            <span className={`font-heading font-bold text-xl tracking-tight transition-colors duration-500 ${scrolled ? 'text-[#0A0B10]' : 'text-[#F7F5F0]'}`}>Madar</span>
           </Link>
 
           {/* Center nav */}
           <div className="hidden md:flex items-center gap-12">
-            <Link to="/" className={navLinkClass}>{t('home')}</Link>
-            <Link to="/calculator" className={navLinkClass}>{t('calculator')}</Link>
-            <button onClick={toggleLang} className={`${navLinkClass} flex items-center gap-2`}>
+            <Link to="/" className={getNavLinkClass(scrolled)}>{t('home')}</Link>
+            <Link to="/calculator" className={getNavLinkClass(scrolled)}>{t('calculator')}</Link>
+            <button onClick={toggleLang} className={`${getNavLinkClass(scrolled)} flex items-center gap-2`}>
               <Globe className="w-3.5 h-3.5" />{t('language')}
             </button>
           </div>
@@ -55,12 +55,12 @@ export default function PublicNavbar() {
           {/* Auth actions */}
           <div className="hidden md:flex items-center gap-5">
             {isAuthenticated ? (
-              <Link to="/dashboard" className="px-5 py-2.5 text-sm font-light tracking-wide text-[#F7F5F0] glass rounded-full hover:bg-white/10 transition-all duration-500">
+              <Link to="/dashboard" className={`px-5 py-2.5 text-sm font-light tracking-wide rounded-full transition-all duration-500 ${scrolled ? 'text-[#0A0B10] bg-[#0A0B10]/5 hover:bg-[#0A0B10]/10' : 'text-[#F7F5F0] glass hover:bg-white/10'}`}>
                 {t('dashboard')}
               </Link>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-light tracking-wide text-[#F7F5F0]/70 hover:text-[#F7F5F0] transition-colors duration-500">
+                <Link to="/login" className={`text-sm font-light tracking-wide transition-colors duration-500 ${scrolled ? 'text-[#0A0B10]/70 hover:text-[#0A0B10]' : 'text-[#F7F5F0]/70 hover:text-[#F7F5F0]'}`}>
                   {t('login')}
                 </Link>
                 <Link to="/signup" className="group relative px-6 py-2.5 text-sm font-light tracking-wide text-white bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-full hover:shadow-xl hover:shadow-[#D95F3B]/30 transition-all duration-500 overflow-hidden">
@@ -72,7 +72,7 @@ export default function PublicNavbar() {
           </div>
 
           {/* Mobile toggle */}
-          <button onClick={() => setOpen(!open)} className="md:hidden relative w-10 h-10 flex items-center justify-center text-[#F7F5F0]">
+          <button onClick={() => setOpen(!open)} className={`md:hidden relative w-10 h-10 flex items-center justify-center transition-colors duration-500 ${scrolled ? 'text-[#0A0B10]' : 'text-[#F7F5F0]'}`}>
             <AnimatePresence mode="wait">
               {open ? (
                 <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.3 }}>
