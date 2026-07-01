@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
+import PageFooter from '@/components/madar/PageFooter';
 import { FadeIn } from '@/components/madar/Motion';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
@@ -385,28 +386,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-16 px-4 border-t border-[#0A0B10]/[0.06] bg-white">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">م</span>
-            </div>
-            <span className="font-heading font-bold text-[#0A0B10]">Madar © 2025</span>
-          </div>
-          <div className="flex gap-8">
-            <a href="/privacy" className="text-sm text-[#0A0B10]/40 hover:text-[#D95F3B] transition-colors">
-              {lang === 'ar' ? 'الخصوصية' : 'Privacy'}
-            </a>
-            <a href="/terms" className="text-sm text-[#0A0B10]/40 hover:text-[#D95F3B] transition-colors">
-              {lang === 'ar' ? 'الشروط' : 'Terms'}
-            </a>
-            <a href="/contact" className="text-sm text-[#0A0B10]/40 hover:text-[#D95F3B] transition-colors">
-              {lang === 'ar' ? 'اتصل بنا' : 'Contact'}
-            </a>
-          </div>
-        </div>
-      </footer>
+      <PageFooter />
     </div>
   );
 }

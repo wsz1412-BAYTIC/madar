@@ -5,7 +5,7 @@ import { useMadarAuth } from '@/contexts/AuthContext';
 import { Menu, X, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const LOGO_URL = 'https://media.base44.com/images/public/6a43dd3026ba0773af35c603/6a768fb7e_madar-removebg-preview.png';
+const LOGO_URL = 'https://media.base44.com/images/public/6a43dd3026ba0773af35c603/907c431e5_madar-removebg-preview.png';
 
 export default function PublicNavbar() {
   const { t, toggleLang, isRTL } = useLang();
