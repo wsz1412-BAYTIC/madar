@@ -16,6 +16,8 @@ import MadarLogin from '@/pages/MadarLogin';
 import MadarSignup from '@/pages/MadarSignup';
 import MadarForgotPassword from '@/pages/MadarForgotPassword';
 import Dashboard from '@/pages/Dashboard';
+import UserDashboard from '@/pages/UserDashboard';
+import AdminDashboard from '@/pages/AdminDashboard';
 import Properties from '@/pages/Properties';
 import Analytics from '@/pages/Analytics';
 import Revenue from '@/pages/Revenue';
@@ -60,7 +62,7 @@ const AuthenticatedApp = () => {
       
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/properties" element={<Properties />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/revenue" element={<Revenue />} />
@@ -71,8 +73,18 @@ const AuthenticatedApp = () => {
         <Route path="/billing" element={<Billing />} />
         <Route path="/connect" element={<Connect />} />
         <Route path="/referral" element={<Referral />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Route>
+
+      {/* Admin routes - separate from app layout */}
+      <Route path="/admin/users" element={<Admin />} />
+      <Route path="/admin/properties" element={<Admin />} />
+      <Route path="/admin/subscriptions" element={<Admin />} />
+      <Route path="/admin/data" element={<Admin />} />
+      <Route path="/admin/content" element={<Admin />} />
+      <Route path="/admin/support" element={<Admin />} />
+      <Route path="/admin/logs" element={<Admin />} />
+      <Route path="/admin/settings" element={<Admin />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

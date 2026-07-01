@@ -1,0 +1,101 @@
+{
+  "name": "SubscriptionPlan",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "nameAr": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "descriptionAr": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR"
+    },
+    "billingCycle": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "yearly"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "nameAr": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "limit": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "maxProperties": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maxUsers": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maxReports": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maxApiCalls": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayOrder": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name",
+    "nameAr",
+    "slug",
+    "price"
+  ]
+}

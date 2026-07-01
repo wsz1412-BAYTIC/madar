@@ -1,0 +1,115 @@
+{
+  "name": "UserProperty",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "apartment",
+        "villa",
+        "townhouse",
+        "chalet",
+        "other"
+      ]
+    },
+    "bedrooms": {
+      "type": "number"
+    },
+    "bathrooms": {
+      "type": "number"
+    },
+    "guests": {
+      "type": "number"
+    },
+    "amenities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operatingCosts": {
+      "type": "number"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "suspended"
+      ],
+      "default": "active"
+    },
+    "integrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string"
+          },
+          "externalId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "connected",
+              "disconnected",
+              "error"
+            ]
+          },
+          "lastSync": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "currentOccupancy": {
+      "type": "number"
+    },
+    "averageAdr": {
+      "type": "number"
+    },
+    "monthlyRevenue": {
+      "type": "number"
+    },
+    "performance": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number"
+        },
+        "trend": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "userId",
+    "name",
+    "type"
+  ]
+}

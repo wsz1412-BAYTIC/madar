@@ -1,0 +1,53 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "adminId": {
+      "type": "string"
+    },
+    "adminRole": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "targetType": {
+      "type": "string"
+    },
+    "targetId": {
+      "type": "string"
+    },
+    "targetName": {
+      "type": "string"
+    },
+    "previousValue": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "newValue": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ipAddress": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "adminId",
+    "action",
+    "targetType",
+    "targetId",
+    "timestamp"
+  ]
+}
