@@ -46,6 +46,8 @@ import HowToUseMadar from '@/pages/HowToUseMadar';
 import HelpCenter from '@/pages/HelpCenter';
 import Reports from '@/pages/Reports';
 import PricingPage from '@/pages/PricingPage';
+import PropertyAnalysis from '@/pages/PropertyAnalysis';
+import Opportunities from '@/pages/Opportunities';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -69,6 +71,9 @@ const AuthenticatedApp = () => {
       <Route path="/how-to-use" element={<HowToUseMadar />} />
       <Route path="/help" element={<HelpCenter />} />
       <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/market-insights" element={<Market />} />
+      <Route path="/property-analysis" element={<PropertyAnalysis />} />
+      <Route path="/opportunities" element={<Opportunities />} />
       
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>

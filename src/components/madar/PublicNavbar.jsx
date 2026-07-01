@@ -22,11 +22,11 @@ export default function PublicNavbar() {
   }, []);
 
   const navItems = [
-    { label: t('navMarket'), href: '/#market' },
-    { label: t('navAnalysis'), href: '/#analysis' },
-    { label: t('navOpportunities'), href: '/#opportunities' },
-    { label: t('navHowItWorks'), href: '/#how-it-works' },
-    { label: t('navPricing'), href: '/#pricing' },
+    { label: t('navMarket'), href: '/market-insights' },
+    { label: t('navAnalysis'), href: '/property-analysis' },
+    { label: t('navOpportunities'), href: '/opportunities' },
+    { label: t('navHowItWorks'), href: '/how-to-use' },
+    { label: t('navPricing'), href: '/pricing' },
   ];
 
   const getNavLinkClass = () => {
@@ -69,9 +69,9 @@ export default function PublicNavbar() {
           {/* Center nav */}
           <div className="hidden lg:flex items-center gap-10">
             {navItems.map((item) => (
-              <a key={item.label} href={item.href} className={getNavLinkClass()}>
+              <Link key={item.label} to={item.href} className={getNavLinkClass()}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -153,13 +153,13 @@ export default function PublicNavbar() {
           >
             <div className="px-6 py-8 space-y-5">
               {navItems.map((item) => (
-                <a key={item.label} href={item.href} onClick={() => setOpen(false)} className={`block text-base font-light transition-colors ${
+                <Link key={item.label} to={item.href} onClick={() => setOpen(false)} className={`block text-base font-light transition-colors ${
                   theme === 'dark'
                     ? 'text-[#F7F5F0]/70 hover:text-[#F7F5F0]'
                     : 'text-[#0A0B10]/70 hover:text-[#0A0B10]'
                 }`}>
                   {item.label}
-                </a>
+                </Link>
               ))}
               <div className="flex items-center gap-4 pt-2">
                 <button
