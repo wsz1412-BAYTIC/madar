@@ -181,6 +181,9 @@ export default function Landing() {
             <p className={`text-lg ${
               theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
             }`}>{t('pricingSubtitle')}</p>
+            <p className={`text-base mt-4 ${
+              theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+            }`}>{lang === 'ar' ? '✨ تجربة مجانية لمدة 14 يوماً متضمنة في جميع الخطط' : '✨ 14-Day Free Trial Included in All Plans'}</p>
           </FadeIn>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -198,6 +201,11 @@ export default function Landing() {
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium rounded-full">
                       {t('popular')}
+                    </div>
+                  )}
+                  {plan.key !== 'free' && (
+                    <div className="absolute top-6 right-6 px-2.5 py-1 bg-[#D95F3B]/10 border border-[#D95F3B]/30 text-[#D95F3B] text-xs font-medium rounded-full">
+                      {lang === 'ar' ? '14 يوم مجاني' : '14 Days Free'}
                     </div>
                   )}
                   <div className="mb-8">

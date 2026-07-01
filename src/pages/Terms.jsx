@@ -27,8 +27,8 @@ export default function Terms() {
       num: '3',
       titleEn: 'Subscription Terms',
       titleAr: 'شروط الاشتراك',
-      contentEn: 'Subscriptions auto-renew at the end of each billing cycle unless canceled. Free trials may be offered; charges begin after trial ends. Refunds are available within 14 days of subscription start. Prices may change with 30 days notice. You can upgrade, downgrade, or cancel anytime.',
-      contentAr: 'يتم تجديد الاشتراكات تلقائياً في نهاية كل دورة فواتير ما لم يتم إلغاؤها. قد يتم عرض نسخ تجريبية مجانية؛ تبدأ الرسوم بعد انتهاء النسخة التجريبية. يتوفر استرجاع الأموال في غضون 14 يوماً من بدء الاشتراك. قد تتغير الأسعار مع إشعار قدره 30 يوماً. يمكنك الترقية أو التخفيض أو الإلغاء في أي وقت.',
+      contentEn: 'Subscriptions auto-renew at the end of each billing cycle unless canceled. All paid subscription plans include a 14-day free trial with full access to plan features. No charges occur during the trial period. Charges begin only after the trial ends if you have not canceled. Customers may cancel before the trial ends to avoid being charged. Once the paid subscription begins, payments are non-refundable, subject to applicable laws. Prices may change with 30 days notice. You can upgrade, downgrade, or cancel anytime.',
+      contentAr: 'يتم تجديد الاشتراكات تلقائياً في نهاية كل دورة فواتير ما لم يتم إلغاؤها. تتضمن جميع خطط الاشتراك المدفوعة فترة تجريبية مجانية لمدة 14 يوماً مع الوصول الكامل إلى ميزات الخطة. لا يتم فرض أي رسوم خلال فترة المحاكمة. تبدأ الرسوم فقط بعد انتهاء الفترة التجريبية إذا لم تقم بالإلغاء. يمكن للعملاء الإلغاء قبل انتهاء الفترة التجريبية لتجنب الخصم. بعد بدء الاشتراك المدفوع، تكون المبالغ غير قابلة للاسترداد، مع مراعاة الأنظمة المعمول بها. قد تتغير الأسعار مع إشعار قدره 30 يوماً. يمكنك الترقية أو التخفيض أو الإلغاء في أي وقت.',
     },
     {
       num: '4',
@@ -155,8 +155,8 @@ export default function Terms() {
             </h2>
             <p className="text-[#0A0B10]/60 mb-8">
               {lang === 'ar'
-                ? 'تواصل معنا على صفحة اتصل بنا أو أرسل بريداً إلكترونياً إلى support@madar.ai.'
-                : 'Contact us on our Contact page or email support@madar.ai.'}
+                ? 'تواصل معنا على صفحة اتصل بنا أو أرسل بريداً إلكترونياً إلى Admin@baytic.app أو اتصل بـ +966 53 810 0119.'
+                : 'Contact us on our Contact page or email Admin@baytic.app or call +966 53 810 0119.'}
             </p>
             <a
               href="/contact"

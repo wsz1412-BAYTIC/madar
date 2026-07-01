@@ -12,8 +12,8 @@ export default function SubscriptionPolicy() {
     {
       titleEn: 'Subscription Plans',
       titleAr: 'خطط الاشتراك',
-      contentEn: 'Madar offers four subscription tiers: Free (1 property, basic features), Basic ($99/month, 3 properties), Growth ($199/month, 10 properties, popular), and Pro ($349/month, unlimited properties). All plans include core features; higher tiers unlock advanced capabilities.',
-      contentAr: 'تقدم مدار أربع مستويات اشتراك: مجانية (عقار واحد وميزات أساسية)، أساسية (99 دولار/شهر، 3 عقارات)، نمو (199 دولار/شهر، 10 عقارات، الشهيرة)، واحترافية (349 دولار/شهر، عقارات غير محدودة).',
+      contentEn: 'Madar offers four subscription tiers: Free (1 property, basic features), Basic ($99/month with 14-day free trial, 3 properties), Growth ($199/month with 14-day free trial, 10 properties, popular), and Pro ($349/month with 14-day free trial, unlimited properties). All paid plans include a 14-day free trial with full access to plan features. All plans include core features; higher tiers unlock advanced capabilities.',
+      contentAr: 'تقدم مدار أربع مستويات اشتراك: مجانية (عقار واحد وميزات أساسية)، أساسية (99 دولار/شهر مع فترة تجريبية لمدة 14 يوماً، 3 عقارات)، نمو (199 دولار/شهر مع فترة تجريبية لمدة 14 يوماً، 10 عقارات، الشهيرة)، واحترافية (349 دولار/شهر مع فترة تجريبية لمدة 14 يوماً، عقارات غير محدودة). تتضمن جميع الخطط المدفوعة فترة تجريبية لمدة 14 يوماً مع الوصول الكامل إلى ميزات الخطة.',
     },
     {
       titleEn: 'Billing Cycle',
@@ -54,8 +54,8 @@ export default function SubscriptionPolicy() {
     {
       titleEn: 'Refund Eligibility',
       titleAr: 'أهلية استرجاع الأموال',
-      contentEn: 'Refunds available within 14 days of subscription start. Prorated refunds offered for service outages exceeding 24 hours. No refunds after 14 days or for voluntary cancellations.',
-      contentAr: 'استرجاع الأموال متاح في غضون 14 يوماً من بدء الاشتراك. يتم عرض استرجاعات تناسبية لانقطاعات الخدمة التي تتجاوز 24 ساعة. لا استرجاع بعد 14 يوماً أو للإلغاءات الطوعية.',
+      contentEn: 'No refunds are provided after the customer has used or completed the 14-day free trial period. Customers may cancel their subscription before the trial ends to avoid being charged. Once the paid subscription begins, payments are non-refundable, subject to applicable laws and the final approved refund policy. Prorated refunds may be offered for service outages exceeding 24 hours, as determined by our support team.',
+      contentAr: 'لا يتم استرجاع المبالغ بعد استفادة العميل من الفترة التجريبية المجانية لمدة 14 يومًا. يمكن للعميل إلغاء الاشتراك قبل انتهاء الفترة التجريبية لتجنب الخصم. بعد بدء الاشتراك المدفوع، تكون المبالغ غير قابلة للاسترداد، مع مراعاة الأنظمة المعمول بها وسياسة الاسترداد النهائية المعتمدة. قد يتم عرض استرجاعات تناسبية لانقطاعات الخدمة التي تتجاوز 24 ساعة، حسبما تحدده فريق الدعم.',
     },
     {
       titleEn: 'Failed Payments',
@@ -112,9 +112,9 @@ export default function SubscriptionPolicy() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { name: 'Free', price: '0', monthly: lang === 'ar' ? 'مجاني' : 'Free', features: lang === 'ar' ? ['1 عقار', 'ميزات أساسية'] : ['1 property', 'Basic features'] },
-              { name: 'Basic', price: '$99', monthly: lang === 'ar' ? '/شهر' : '/mo', features: lang === 'ar' ? ['3 عقارات', 'توصيات ذكية', 'دعم البريد الإلكتروني'] : ['3 properties', 'Smart recommendations', 'Email support'] },
-              { name: 'Growth', price: '$199', monthly: lang === 'ar' ? '/شهر' : '/mo', popular: true, features: lang === 'ar' ? ['10 عقارات', 'ذكاء اصطناعي متقدم', 'دعم ذو أولوية'] : ['10 properties', 'Advanced AI', 'Priority support'] },
-              { name: 'Pro', price: '$349', monthly: lang === 'ar' ? '/شهر' : '/mo', features: lang === 'ar' ? ['عقارات غير محدودة', 'مجموعة كاملة', 'دعم مخصص'] : ['Unlimited properties', 'Full suite', 'Dedicated support'] },
+              { name: 'Basic', price: '$99', monthly: lang === 'ar' ? '/شهر' : '/mo', trial: true, features: lang === 'ar' ? ['3 عقارات', 'توصيات ذكية', 'دعم البريد الإلكتروني'] : ['3 properties', 'Smart recommendations', 'Email support'] },
+              { name: 'Growth', price: '$199', monthly: lang === 'ar' ? '/شهر' : '/mo', popular: true, trial: true, features: lang === 'ar' ? ['10 عقارات', 'ذكاء اصطناعي متقدم', 'دعم ذو أولوية'] : ['10 properties', 'Advanced AI', 'Priority support'] },
+              { name: 'Pro', price: '$349', monthly: lang === 'ar' ? '/شهر' : '/mo', trial: true, features: lang === 'ar' ? ['عقارات غير محدودة', 'مجموعة كاملة', 'دعم مخصص'] : ['Unlimited properties', 'Full suite', 'Dedicated support'] },
             ].map((plan, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <div className={`relative p-6 rounded-2xl h-full transition-all ${
@@ -125,6 +125,15 @@ export default function SubscriptionPolicy() {
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-bold rounded-full">
                       {lang === 'ar' ? 'الشهيرة' : 'Popular'}
+                    </div>
+                  )}
+                  {plan.trial && (
+                    <div className={`absolute top-6 right-6 px-2.5 py-1 text-xs font-medium rounded-full ${
+                      plan.popular
+                        ? 'bg-[#C8972A]/20 text-[#C8972A] border border-[#C8972A]/30'
+                        : 'bg-[#D95F3B]/10 text-[#D95F3B] border border-[#D95F3B]/30'
+                    }`}>
+                      {lang === 'ar' ? '14 يوم مجاني' : '14 Days Free'}
                     </div>
                   )}
                   <h3 className={`font-heading font-bold text-lg mb-2 ${plan.popular ? 'text-white' : 'text-[#0A0B10]'}`}>
@@ -229,8 +238,8 @@ export default function SubscriptionPolicy() {
             </h2>
             <p className="text-[#0A0B10]/60 mb-8">
               {lang === 'ar'
-                ? 'اتصل بفريق الدعم في billing@madar.ai'
-                : 'Contact support at billing@madar.ai'}
+                ? 'اتصل بفريق الدعم في Admin@baytic.app أو +966 53 810 0119'
+                : 'Contact support at Admin@baytic.app or +966 53 810 0119'}
             </p>
             <a
               href="/contact"

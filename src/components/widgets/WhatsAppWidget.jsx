@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const WHATSAPP_PHONE = '966538100119';
+const WHATSAPP_PHONE = '966538100119'; // +966 53 810 0119
 const WHATSAPP_MESSAGE_EN = 'Hello Madar Support, I need assistance with my account or the platform.';
 const WHATSAPP_MESSAGE_AR = 'مرحبًا فريق دعم مدار، أحتاج إلى مساعدة بخصوص حسابي أو استخدام المنصة.';
 

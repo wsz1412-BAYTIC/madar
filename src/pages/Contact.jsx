@@ -54,21 +54,21 @@ export default function Contact() {
       icon: Mail,
       titleEn: 'Email',
       titleAr: 'البريد الإلكتروني',
-      value: 'support@madar.ai',
-      href: 'mailto:support@madar.ai',
+      value: 'Admin@baytic.app',
+      href: 'mailto:Admin@baytic.app',
     },
     {
       icon: Phone,
-      titleEn: 'Phone',
-      titleAr: 'الهاتف',
-      value: '+966 (0) 11 XXXX XXXX',
-      href: 'tel:+966',
+      titleEn: 'Phone & WhatsApp',
+      titleAr: 'الهاتف وواتساب',
+      value: '+966 53 810 0119',
+      href: 'tel:+966538100119',
     },
     {
       icon: MapPin,
       titleEn: 'Address',
       titleAr: 'العنوان',
-      value: lang === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia',
+      value: lang === 'ar' ? 'حي النهضة، جدة، المملكة العربية السعودية' : 'Al Nahdah District, Jeddah, Saudi Arabia',
       href: '#',
     },
   ];
@@ -99,17 +99,17 @@ export default function Contact() {
       aAr: 'يمكنك ترقية أو تخفيض أو إلغاء الاشتراك في أي وقت من إعدادات حسابك.',
     },
     {
-      qEn: 'Do you offer refunds?',
-      qAr: 'هل تقدمون استرجاعاً للأموال؟',
-      aEn: 'Yes, refunds available within 14 days of subscription start.',
-      aAr: 'نعم، استرجاع الأموال متاح خلال 14 يوماً من بدء الاشتراك.',
-    },
-    {
-      qEn: 'Is there a free trial?',
-      qAr: 'هل هناك نسخة تجريبية مجانية؟',
-      aEn: 'Yes, the Free plan includes 1 property with basic features.',
-      aAr: 'نعم، تتضمن الخطة المجانية عقار واحد مع ميزات أساسية.',
-    },
+       qEn: 'Do you offer refunds?',
+       qAr: 'هل تقدمون استرجاعاً للأموال؟',
+       aEn: 'No refunds are provided after the customer has used or completed the 14-day free trial period. Customers may cancel their subscription before the trial ends to avoid being charged. Once the paid subscription begins, payments are non-refundable, subject to applicable laws and the final approved refund policy.',
+       aAr: 'لا يتم استرجاع المبالغ بعد استفادة العميل من الفترة التجريبية المجانية لمدة 14 يومًا. يمكن للعميل إلغاء الاشتراك قبل انتهاء الفترة التجريبية لتجنب الخصم. بعد بدء الاشتراك المدفوع، تكون المبالغ غير قابلة للاسترداد، مع مراعاة الأنظمة المعمول بها وسياسة الاسترداد النهائية المعتمدة.',
+     },
+     {
+       qEn: 'Is there a free trial?',
+       qAr: 'هل هناك فترة تجريبية مجانية؟',
+       aEn: 'Yes, all subscription plans include a 14-day free trial. The trial gives you full access to the features included in your selected plan. You will only be charged after the trial ends if you do not cancel.',
+       aAr: 'نعم، جميع خطط الاشتراك تتضمن فترة تجريبية مجانية لمدة 14 يوماً. تمنحك الفترة التجريبية الوصول الكامل إلى الميزات المضمنة في خطتك المختارة. سيتم فرض الرسوم عليك فقط بعد انتهاء الفترة التجريبية إذا لم تقم بالإلغاء.',
+     },
   ];
 
   return (
@@ -158,8 +158,8 @@ export default function Contact() {
           </div>
           <p className="text-[#0A0B10]/60">
             {lang === 'ar'
-              ? 'السبت - الخميس: 9 صباحاً - 6 مساءً (بتوقيت الرياض) | البريد الإلكتروني: 24/7'
-              : 'Sat - Thu: 9am - 6pm (Riyadh Time) | Email: 24/7'}
+              ? 'السبت - الخميس: 9 صباحاً - 6 مساءً (بتوقيت الرياض) | البريد الإلكتروني والهاتف: 24/7'
+              : 'Sat - Thu: 9am - 6pm (Riyadh Time) | Email & Phone: 24/7'}
           </p>
         </FadeIn>
       </section>
