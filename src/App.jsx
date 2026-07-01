@@ -45,6 +45,7 @@ import ThirdPartyDisclaimer from '@/pages/ThirdPartyDisclaimer';
 import HowToUseMadar from '@/pages/HowToUseMadar';
 import HelpCenter from '@/pages/HelpCenter';
 import Reports from '@/pages/Reports';
+import PricingPage from '@/pages/PricingPage';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -67,11 +68,11 @@ const AuthenticatedApp = () => {
       <Route path="/third-party" element={<ThirdPartyDisclaimer />} />
       <Route path="/how-to-use" element={<HowToUseMadar />} />
       <Route path="/help" element={<HelpCenter />} />
+      <Route path="/pricing" element={<PricingPage />} />
       
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/plans" element={<PlansAndUpgrade />} />
         <Route path="/properties" element={<Properties />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/revenue" element={<Revenue />} />
