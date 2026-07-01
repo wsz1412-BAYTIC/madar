@@ -6,7 +6,9 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { MadarAuthProvider } from '@/contexts/AuthContext';
+import { CookieProvider } from '@/contexts/CookieContext';
 import AppLayout from '@/components/madar/AppLayout';
+import CookieConsentBanner from '@/components/madar/CookieConsentBanner';
 
 import Landing from '@/pages/Landing';
 import MadarLogin from '@/pages/MadarLogin';
@@ -28,6 +30,9 @@ import Admin from '@/pages/Admin';
 import Contact from '@/pages/Contact';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import Terms from '@/pages/Terms';
+import AIDisclaimer from '@/pages/AIDisclaimer';
+import CookiePolicy from '@/pages/CookiePolicy';
+import SubscriptionPolicy from '@/pages/SubscriptionPolicy';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -42,6 +47,9 @@ const AuthenticatedApp = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<Terms />} />
+      <Route path="/ai-disclaimer" element={<AIDisclaimer />} />
+      <Route path="/cookies" element={<CookiePolicy />} />
+      <Route path="/subscription" element={<SubscriptionPolicy />} />
       
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>
@@ -68,14 +76,17 @@ function App() {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <MadarAuthProvider>
-          <QueryClientProvider client={queryClientInstance}>
-            <Router>
-              <AuthenticatedApp />
-            </Router>
-            <Toaster />
-          </QueryClientProvider>
-        </MadarAuthProvider>
+        <CookieProvider>
+          <MadarAuthProvider>
+            <QueryClientProvider client={queryClientInstance}>
+              <Router>
+                <AuthenticatedApp />
+                <CookieConsentBanner />
+              </Router>
+              <Toaster />
+            </QueryClientProvider>
+          </MadarAuthProvider>
+        </CookieProvider>
       </LanguageProvider>
     </AuthProvider>
   )
