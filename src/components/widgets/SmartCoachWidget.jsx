@@ -139,8 +139,8 @@ User question: ${text}`,
             : 'bg-primary text-white hover:bg-primary/90'
         }`}
         style={{
-          [isRTL ? 'left' : 'right']: '2rem',
-          bottom: '7rem'
+          [isRTL ? 'left' : 'right']: '1.5rem',
+          bottom: '1.5rem'
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -162,8 +162,8 @@ User question: ${text}`,
                 : 'bg-white border border-[#0A0B10]/[0.06]'
             }`}
             style={{
-              [isRTL ? 'left' : 'right']: '2rem',
-              bottom: isMinimized ? '7rem' : '7rem',
+              [isRTL ? 'left' : 'right']: '1.5rem',
+              bottom: isMinimized ? '5.5rem' : '5.5rem',
               maxHeight: isMinimized ? '52px' : '600px'
             }}
           >
