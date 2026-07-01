@@ -1,125 +1,273 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import { FadeIn } from '@/components/madar/Motion';
+import CalendarFilters from '@/components/calendar/CalendarFilters';
+import CalendarLegend from '@/components/calendar/CalendarLegend';
+import MasterCalendarView from '@/components/calendar/MasterCalendarView';
+import DateDetailModal from '@/components/calendar/DateDetailModal';
+import CalendarAlertsPanel from '@/components/calendar/CalendarAlertsPanel';
+import { AnimatePresence } from 'framer-motion';
 
-const bookings = {
-  '2025-07-04': 'booked', '2025-07-05': 'booked', '2025-07-06': 'booked',
-  '2025-07-10': 'booked', '2025-07-11': 'booked', '2025-07-12': 'booked', '2025-07-13': 'booked',
-  '2025-07-15': 'blocked', '2025-07-16': 'blocked',
-  '2025-07-20': 'booked', '2025-07-21': 'booked', '2025-07-22': 'booked',
-  '2025-07-25': 'booked', '2025-07-26': 'booked', '2025-07-27': 'booked',
-  '2025-07-28': 'booked', '2025-07-29': 'booked',
-};
+// Mock property data
+const mockProperties = [
+  { id: '1', name: 'Luxury Villa - Riyadh', city: 'Riyadh', type: 'villa', platform: 'Airbnb' },
+  { id: '2', name: 'Modern Studio - Jeddah', city: 'Jeddah', type: 'apartment', platform: 'Booking.com' },
+  { id: '3', name: 'Beachfront Chalet - Khobar', city: 'Khobar', type: 'chalet', platform: 'Airbnb' },
+];
 
-const monthNames = {
-  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
-};
+// Generate mock calendar data for the current month
+const generateCalendarData = () => {
+  const data = {};
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-const dayNames = {
-  en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  ar: ['أحد', 'إثن', 'ثلا', 'أرب', 'خمي', 'جمع', 'سبت'],
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const rand = Math.random();
+    const dayOfWeek = new Date(year, month, day).getDay();
+    const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+
+    // Higher demand on weekends
+    const baseDemand = isWeekend ? 0.7 : 0.5;
+    const occupancyRate = Math.min(100, Math.round((baseDemand + rand * 0.4) * 100));
+
+    // Demand levels
+    let demand = 'low';
+    if (occupancyRate > 70) demand = 'high';
+    else if (occupancyRate > 40) demand = 'medium';
+
+    // Pricing logic
+    const basePrice = 250;
+    const demandMultiplier = occupancyRate > 70 ? 1.4 : occupancyRate > 40 ? 1.1 : 0.8;
+    const currentPrice = Math.round(basePrice * demandMultiplier);
+    const recommendedPrice = Math.round(basePrice * (baseDemand + rand * 0.3) * 1.3);
+    const competitorPrice = Math.round(basePrice * demandMultiplier * 0.95);
+
+    const priceAlert = recommendedPrice > currentPrice * 1.2
+      ? 'Underpriced - opportunity to increase'
+      : currentPrice > recommendedPrice * 1.2
+        ? 'Overpriced - may reduce bookings'
+        : null;
+
+    const hasAlert = priceAlert !== null || (day > 1 && day < daysInMonth && occupancyRate < 20);
+
+    data[dateStr] = {
+      date: dateStr,
+      day,
+      occupancy: occupancyRate,
+      demand,
+      currentPrice,
+      recommendedPrice,
+      competitorPrice,
+      localDemand: rand > 0.7 ? 'Event (Jeddah Season)' : 'Normal',
+      revenueOpportunity: Math.max(0, recommendedPrice - currentPrice),
+      priceAlert,
+      hasAlert,
+      bookings: Math.ceil((occupancyRate / 100) * 3),
+    };
+  }
+
+  return data;
 };
 
 export default function BookingCalendar() {
-  const { t, lang, isRTL } = useLang();
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 6, 1));
-  const [selectedProperty, setSelectedProperty] = useState('all');
+  const { t, lang } = useLang();
+  const { theme } = useTheme();
+  const { entitlements } = useSubscription();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedProperty, setSelectedProperty] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const [selectedDateData, setSelectedDateData] = useState(null);
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const calendarData = useMemo(() => generateCalendarData(), []);
 
-  const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
-  const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
+  // Generate alerts from calendar data
+  const alerts = useMemo(() => {
+    const alertsList = [];
+    Object.values(calendarData).forEach(day => {
+      if (day.demand === 'high' && day.currentPrice < day.recommendedPrice * 0.8) {
+        alertsList.push({
+          type: 'underpriced',
+          title: lang === 'ar' ? 'سعر منخفض جداً' : 'Significantly Underpriced',
+          description: `${day.date}: ${lang === 'ar' ? 'طلب عالي' : 'High demand'} - ${day.currentPrice} SAR vs ${day.recommendedPrice} SAR`,
+          impact: `+${day.revenueOpportunity} SAR`,
+        });
+      }
+      if (day.demand === 'low' && day.currentPrice > day.recommendedPrice * 1.2) {
+        alertsList.push({
+          type: 'overpriced',
+          title: lang === 'ar' ? 'سعر مرتفع جداً' : 'Significantly Overpriced',
+          description: `${day.date}: ${lang === 'ar' ? 'طلب منخفض' : 'Low demand'} - ${day.currentPrice} SAR vs ${day.recommendedPrice} SAR`,
+          impact: `${lang === 'ar' ? 'قد يقلل الحجوزات' : 'May reduce bookings'}`,
+        });
+      }
+    });
+    return alertsList.slice(0, 5); // Show top 5 alerts
+  }, [calendarData, lang]);
 
-  const getStatus = (day) => {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return bookings[dateStr] || 'available';
+  // Filter properties based on subscription
+  const availableProperties = useMemo(() => {
+    const maxProperties = entitlements?.maxProperties || 1;
+    return mockProperties.slice(0, maxProperties);
+  }, [entitlements]);
+
+  const cities = useMemo(() => [...new Set(availableProperties.map(p => p.city))], [availableProperties]);
+  const platforms = useMemo(() => [...new Set(availableProperties.map(p => p.platform))], [availableProperties]);
+  const propertyTypes = useMemo(() => [...new Set(availableProperties.map(p => p.type))], [availableProperties]);
+
+  const handleDateClick = (dateData) => {
+    if (dateData) setSelectedDateData(dateData);
   };
 
-  const statusStyles = {
-    booked: 'bg-gradient-to-br from-[#D95F3B] to-[#C8972A] text-white shadow-lg shadow-[#D95F3B]/20',
-    blocked: 'bg-white/[0.05] text-[#F7F5F0]/20 line-through',
-    available: 'bg-white/[0.02] hover:bg-white/[0.06] text-[#F7F5F0]/70 hover:text-[#F7F5F0]',
+  const handleApprovePricing = (dateData) => {
+    // Simulate approval
+    setSelectedDateData(null);
+    // In a real app, this would call an API
   };
 
-  const properties = [
-    { value: 'all', label: lang === 'ar' ? 'جميع العقارات' : 'All Properties' },
-    { value: '1', label: lang === 'ar' ? 'فيلا فاخرة - الرياض' : 'Luxury Villa - Riyadh' },
-    { value: '2', label: lang === 'ar' ? 'استوديو عصري - جدة' : 'Modern Studio - Jeddah' },
-  ];
+  const handlePrevMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
 
   return (
     <div className="space-y-8">
       <FadeIn>
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('bookingCalendar')}</h1>
-          <select
-            value={selectedProperty}
-            onChange={e => setSelectedProperty(e.target.value)}
-            className="px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20"
-          >
-            {properties.map(p => <option key={p.value} value={p.value} className="bg-[#14161D]">{p.label}</option>)}
-          </select>
+          <div>
+            <h1 className={`font-heading text-3xl font-bold ${
+              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+            }`}>
+              {lang === 'ar' ? 'التقويم الرئيسي' : 'Master Calendar'}
+            </h1>
+            <p className={`text-sm mt-1 ${
+              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+            }`}>
+              {lang === 'ar'
+                ? 'راقب الاشغال والأسعار والطلب عبر جميع عقاراتك'
+                : 'Monitor occupancy, pricing, and demand across all properties'}
+            </p>
+          </div>
+          <div className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            theme === 'dark'
+              ? 'bg-[#D95F3B]/10 text-[#D95F3B] border border-[#D95F3B]/30'
+              : 'bg-[#D95F3B]/5 text-[#D95F3B] border border-[#D95F3B]/30'
+          }`}>
+            {lang === 'ar' ? 'عقار واحد متاح' : `${availableProperties.length} properties available`}
+          </div>
         </div>
       </FadeIn>
 
+      {/* Filters */}
       <FadeIn delay={0.1}>
-        <div className="glass rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-8">
-            <button onClick={prevMonth} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
-              {isRTL ? <ChevronRight className="w-5 h-5 text-[#F7F5F0]/50" /> : <ChevronLeft className="w-5 h-5 text-[#F7F5F0]/50" />}
-            </button>
-            <h2 className="font-heading font-semibold text-[#F7F5F0] text-lg">
-              {monthNames[lang][month]} {year}
-            </h2>
-            <button onClick={nextMonth} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
-              {isRTL ? <ChevronLeft className="w-5 h-5 text-[#F7F5F0]/50" /> : <ChevronRight className="w-5 h-5 text-[#F7F5F0]/50" />}
-            </button>
-          </div>
+        <CalendarFilters
+          selectedProperty={selectedProperty}
+          onPropertyChange={setSelectedProperty}
+          selectedCity={selectedCity}
+          onCityChange={setSelectedCity}
+          selectedPlatform={selectedPlatform}
+          onPlatformChange={setSelectedPlatform}
+          selectedType={selectedType}
+          onTypeChange={setSelectedType}
+          properties={availableProperties}
+          cities={cities}
+          platforms={platforms}
+          propertyTypes={propertyTypes}
+        />
+      </FadeIn>
 
-          <div className="grid grid-cols-7 gap-1.5 mb-2">
-            {dayNames[lang].map(d => (
-              <div key={d} className="text-center text-xs font-medium text-[#F7F5F0]/30 py-2">{d}</div>
-            ))}
-          </div>
+      {/* Legend */}
+      <FadeIn delay={0.15}>
+        <CalendarLegend />
+      </FadeIn>
 
-          <div className="grid grid-cols-7 gap-1.5">
-            {Array.from({ length: firstDay }).map((_, i) => <div key={`e-${i}`} />)}
-            {Array.from({ length: daysInMonth }).map((_, i) => {
-              const day = i + 1;
-              const status = getStatus(day);
-              return (
-                <motion.div
-                  key={day}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`aspect-square flex items-center justify-center rounded-xl text-sm font-medium cursor-pointer transition-all ${statusStyles[status]}`}
-                >
-                  {day}
-                </motion.div>
-              );
-            })}
-          </div>
+      {/* Main content grid */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Calendar */}
+        <FadeIn delay={0.2} className="lg:col-span-2">
+          <MasterCalendarView
+            currentDate={currentDate}
+            onPrevMonth={handlePrevMonth}
+            onNextMonth={handleNextMonth}
+            view="month"
+            calendarData={calendarData}
+            onDateClick={handleDateClick}
+          />
+        </FadeIn>
 
-          <div className="flex items-center gap-6 mt-8 pt-4 border-t border-white/[0.04]">
-            {[
-              { key: 'booked', color: 'bg-gradient-to-br from-[#D95F3B] to-[#C8972A]' },
-              { key: 'blocked', color: 'bg-white/[0.05]' },
-              { key: 'available', color: 'bg-white/[0.02] border border-white/[0.08]' },
-            ].map(item => (
-              <div key={item.key} className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded ${item.color}`} />
-                <span className="text-xs text-[#F7F5F0]/40">{t(item.key)}</span>
-              </div>
-            ))}
-          </div>
+        {/* Alerts Panel */}
+        <FadeIn delay={0.25}>
+          <CalendarAlertsPanel alerts={alerts} />
+        </FadeIn>
+      </div>
+
+      {/* Summary Stats */}
+      <FadeIn delay={0.3}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              label: lang === 'ar' ? 'متوسط الاشغال' : 'Avg Occupancy',
+              value: '62%',
+              color: 'bg-[#D95F3B]',
+            },
+            {
+              label: lang === 'ar' ? 'متوسط السعر' : 'Avg Price',
+              value: '285 SAR',
+              color: 'bg-[#C8972A]',
+            },
+            {
+              label: lang === 'ar' ? 'فرص الإيرادات' : 'Revenue Opportunities',
+              value: '8,540 SAR',
+              color: 'bg-[#6B7280]',
+            },
+            {
+              label: lang === 'ar' ? 'التنبيهات النشطة' : 'Active Alerts',
+              value: alerts.length,
+              color: 'bg-[#FF6B6B]',
+            },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className={`p-4 rounded-lg ${
+                theme === 'dark'
+                  ? 'bg-white/[0.03] border border-white/[0.06]'
+                  : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+              }`}
+            >
+              <p className={`text-xs font-medium mb-2 ${
+                theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              }`}>
+                {stat.label}
+              </p>
+              <p className={`font-heading font-bold text-2xl ${
+                theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              }`}>
+                {stat.value}
+              </p>
+            </div>
+          ))}
         </div>
       </FadeIn>
+
+      {/* Date Detail Modal */}
+      <AnimatePresence>
+        {selectedDateData && (
+          <DateDetailModal
+            dateData={selectedDateData}
+            onClose={() => setSelectedDateData(null)}
+            onApprovePricing={handleApprovePricing}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
