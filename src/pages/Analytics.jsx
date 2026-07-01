@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, BarChart, Bar } from 'recharts';
+import { motion } from 'framer-motion';
+import { FadeIn } from '@/components/madar/Motion';
 
 const revenueData = [
   { month: 'Jan', value: 32000 }, { month: 'Feb', value: 28000 }, { month: 'Mar', value: 35000 },
@@ -31,71 +33,78 @@ export default function Analytics() {
   const [period, setPeriod] = useState('lastYear');
 
   const chartTooltip = {
-    contentStyle: { background: '#1C1F2E', border: 'none', borderRadius: 12, color: '#fff', fontSize: 12 },
-    labelStyle: { color: '#ffffff80' },
+    contentStyle: { background: '#14161D', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#F7F5F0', fontSize: 12 },
+    labelStyle: { color: 'rgba(247,245,240,0.5)' },
+    cursor: { fill: 'rgba(255,255,255,0.03)' },
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <h1 className="font-heading text-2xl font-bold text-[#1C1F2E]">{t('analytics')}</h1>
-        <div className="flex items-center gap-2 bg-white rounded-xl border border-[#1C1F2E]/5 p-1">
-          {periods.map(p => (
-            <button key={p} onClick={() => setPeriod(p)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${period === p ? 'bg-[#1C1F2E] text-white' : 'text-[#1C1F2E]/50 hover:text-[#1C1F2E]'}`}>
-              {t(p)}
-            </button>
-          ))}
+    <div className="space-y-8">
+      <FadeIn>
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('analytics')}</h1>
+          <div className="flex items-center gap-1 glass rounded-xl p-1">
+            {periods.map(p => (
+              <button key={p} onClick={() => setPeriod(p)} className={`relative px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${period === p ? 'text-white' : 'text-[#F7F5F0]/40 hover:text-[#F7F5F0]'}`}>
+                {period === p && <motion.div layoutId="periodPill" className="absolute inset-0 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-lg" />}
+                <span className="relative z-10">{t(p)}</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      </FadeIn>
 
-      {/* Revenue Chart */}
-      <div className="bg-white rounded-2xl border border-[#1C1F2E]/5 p-6">
-        <h2 className="font-heading font-semibold text-[#1C1F2E] mb-1">{t('revenueOverTime')}</h2>
-        <p className="text-xs text-[#1C1F2E]/40 mb-6">{lang === 'ar' ? 'ر.س' : 'SAR'}</p>
-        <ResponsiveContainer width="100%" height={280}>
-          <AreaChart data={revenueData}>
-            <defs>
-              <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#D95F3B" stopOpacity={0.2} />
-                <stop offset="100%" stopColor="#D95F3B" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-            <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${lang === 'ar' ? 'ر.س' : 'SAR'}`, lang === 'ar' ? 'الإيرادات' : 'Revenue']} />
-            <Area type="monotone" dataKey="value" stroke="#D95F3B" strokeWidth={2} fill="url(#revGrad)" />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
+      <FadeIn delay={0.1}>
+        <div className="glass rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-1">{t('revenueOverTime')}</h2>
+          <p className="text-xs text-[#F7F5F0]/30 mb-6">{lang === 'ar' ? 'ر.س' : 'SAR'}</p>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={revenueData}>
+              <defs>
+                <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#D95F3B" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#D95F3B" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${lang === 'ar' ? 'ر.س' : 'SAR'}`, lang === 'ar' ? 'الإيرادات' : 'Revenue']} />
+              <Area type="monotone" dataKey="value" stroke="#D95F3B" strokeWidth={2} fill="url(#revGrad)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </FadeIn>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Occupancy Chart */}
-        <div className="bg-white rounded-2xl border border-[#1C1F2E]/5 p-6">
-          <h2 className="font-heading font-semibold text-[#1C1F2E] mb-6">{t('occupancyOverTime')}</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={occupancyData}>
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} domain={[0, 100]} />
-              <Tooltip {...chartTooltip} formatter={(v) => [`${v}%`, lang === 'ar' ? 'الإشغال' : 'Occupancy']} />
-              <Line type="monotone" dataKey="value" stroke="#C8972A" strokeWidth={2} dot={{ fill: '#C8972A', strokeWidth: 0, r: 3 }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <FadeIn delay={0.2}>
+          <div className="glass rounded-2xl p-6 h-full">
+            <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('occupancyOverTime')}</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={occupancyData}>
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} domain={[0, 100]} />
+                <Tooltip {...chartTooltip} formatter={(v) => [`${v}%`, lang === 'ar' ? 'الإشغال' : 'Occupancy']} />
+                <Line type="monotone" dataKey="value" stroke="#C8972A" strokeWidth={2} dot={{ fill: '#C8972A', strokeWidth: 0, r: 3 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </FadeIn>
 
-        {/* Competitor Comparison */}
-        <div className="bg-white rounded-2xl border border-[#1C1F2E]/5 p-6">
-          <h2 className="font-heading font-semibold text-[#1C1F2E] mb-6">{t('competitorComparison')}</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={competitorData}>
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-              <Tooltip {...chartTooltip} />
-              <Bar dataKey="you" fill="#D95F3B" radius={[4, 4, 0, 0]} name={lang === 'ar' ? 'أنت' : 'You'} />
-              <Bar dataKey="competitor" fill="#C8972A" radius={[4, 4, 0, 0]} name={lang === 'ar' ? 'المنافس' : 'Competitor'} />
-              <Bar dataKey="market" fill="#1C1F2E20" radius={[4, 4, 0, 0]} name={lang === 'ar' ? 'السوق' : 'Market'} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <FadeIn delay={0.3}>
+          <div className="glass rounded-2xl p-6 h-full">
+            <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('competitorComparison')}</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={competitorData}>
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+                <Tooltip {...chartTooltip} />
+                <Bar dataKey="you" fill="#D95F3B" radius={[4, 4, 0, 0]} name={lang === 'ar' ? 'أنت' : 'You'} />
+                <Bar dataKey="competitor" fill="#C8972A" radius={[4, 4, 0, 0]} name={lang === 'ar' ? 'المنافس' : 'Competitor'} />
+                <Bar dataKey="market" fill="rgba(247,245,240,0.1)" radius={[4, 4, 0, 0]} name={lang === 'ar' ? 'السوق' : 'Market'} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </FadeIn>
       </div>
     </div>
   );

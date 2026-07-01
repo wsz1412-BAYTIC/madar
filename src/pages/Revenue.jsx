@@ -2,6 +2,7 @@ import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { DollarSign, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 
 const monthlyBreakdown = [
   { month: 'Jan', gross: 32000, fees: 4800, cleaning: 2400, net: 24800 },
@@ -38,63 +39,70 @@ export default function Revenue() {
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
   const chartTooltip = {
-    contentStyle: { background: '#1C1F2E', border: 'none', borderRadius: 12, color: '#fff', fontSize: 12 },
-    labelStyle: { color: '#ffffff80' },
+    contentStyle: { background: '#14161D', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#F7F5F0', fontSize: 12 },
+    labelStyle: { color: 'rgba(247,245,240,0.5)' },
+    cursor: { fill: 'rgba(255,255,255,0.03)' },
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="font-heading text-2xl font-bold text-[#1C1F2E]">{t('revenue')}</h1>
+    <div className="space-y-8">
+      <FadeIn>
+        <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('revenue')}</h1>
+      </FadeIn>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
         {summaryCards.map(card => (
-          <div key={card.key} className="bg-white rounded-2xl p-5 border border-[#1C1F2E]/5">
-            <div className="flex items-center justify-between mb-3">
-              <div className="w-9 h-9 rounded-xl bg-[#D95F3B]/10 flex items-center justify-center">
-                <card.icon className="w-4 h-4 text-[#D95F3B]" />
+          <StaggerItem key={card.key}>
+            <div className="glass rounded-2xl p-5 hover:border-white/15 transition-all">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
+                  <card.icon className="w-4 h-4 text-[#D95F3B]" />
+                </div>
+                <span className={`text-xs font-medium ${card.up ? 'text-emerald-400' : 'text-[#F7F5F0]/30'}`}>{card.trend}</span>
               </div>
-              <span className={`text-xs font-medium ${card.up ? 'text-emerald-600' : 'text-[#1C1F2E]/40'}`}>{card.trend}</span>
+              <div className="text-xl font-bold text-[#F7F5F0] font-heading">{card.value} <span className="text-xs font-normal text-[#F7F5F0]/30">{sar}</span></div>
+              <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(card.key)}</div>
             </div>
-            <div className="text-xl font-bold text-[#1C1F2E] font-heading">{card.value} <span className="text-xs font-normal text-[#1C1F2E]/40">{sar}</span></div>
-            <div className="text-xs text-[#1C1F2E]/50 mt-1">{t(card.key)}</div>
-          </div>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
 
-      {/* Monthly Breakdown */}
-      <div className="bg-white rounded-2xl border border-[#1C1F2E]/5 p-6">
-        <h2 className="font-heading font-semibold text-[#1C1F2E] mb-6">{t('revenueBreakdown')}</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={monthlyBreakdown}>
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-            <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`]} />
-            <Bar dataKey="net" fill="#D95F3B" radius={[4, 4, 0, 0]} name={t('netRevenue')} />
-            <Bar dataKey="fees" fill="#C8972A" radius={[4, 4, 0, 0]} name={t('platformFees')} />
-            <Bar dataKey="cleaning" fill="#1C1F2E20" radius={[4, 4, 0, 0]} name={t('cleaningFees')} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      <FadeIn delay={0.2}>
+        <div className="glass rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('revenueBreakdown')}</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={monthlyBreakdown}>
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`]} />
+              <Bar dataKey="net" fill="#D95F3B" radius={[4, 4, 0, 0]} name={t('netRevenue')} />
+              <Bar dataKey="fees" fill="#C8972A" radius={[4, 4, 0, 0]} name={t('platformFees')} />
+              <Bar dataKey="cleaning" fill="rgba(247,245,240,0.1)" radius={[4, 4, 0, 0]} name={t('cleaningFees')} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </FadeIn>
 
-      {/* Projections */}
-      <div className="bg-white rounded-2xl border border-[#1C1F2E]/5 p-6">
-        <h2 className="font-heading font-semibold text-[#1C1F2E] mb-6">{t('projections')}</h2>
-        <ResponsiveContainer width="100%" height={280}>
-          <AreaChart data={allProjection}>
-            <defs>
-              <linearGradient id="projGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#C8972A" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#C8972A" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#1C1F2E80', fontSize: 12 }} />
-            <Tooltip {...chartTooltip} formatter={(v) => v ? [`${v.toLocaleString()} ${sar}`] : ['-']} />
-            <Area type="monotone" dataKey="actual" stroke="#D95F3B" strokeWidth={2} fill="none" name={lang === 'ar' ? 'فعلي' : 'Actual'} />
-            <Area type="monotone" dataKey="projected" stroke="#C8972A" strokeWidth={2} strokeDasharray="6 4" fill="url(#projGrad)" name={lang === 'ar' ? 'متوقع' : 'Projected'} />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
+      <FadeIn delay={0.3}>
+        <div className="glass rounded-2xl p-6">
+          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('projections')}</h2>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={allProjection}>
+              <defs>
+                <linearGradient id="projGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#C8972A" stopOpacity={0.2} />
+                  <stop offset="100%" stopColor="#C8972A" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <Tooltip {...chartTooltip} formatter={(v) => v ? [`${v.toLocaleString()} ${sar}`] : ['-']} />
+              <Area type="monotone" dataKey="actual" stroke="#D95F3B" strokeWidth={2} fill="none" name={lang === 'ar' ? 'فعلي' : 'Actual'} />
+              <Area type="monotone" dataKey="projected" stroke="#C8972A" strokeWidth={2} strokeDasharray="6 4" fill="url(#projGrad)" name={lang === 'ar' ? 'متوقع' : 'Projected'} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </FadeIn>
     </div>
   );
 }

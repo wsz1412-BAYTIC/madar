@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '@/components/madar/Sidebar';
 import { useLang } from '@/contexts/LanguageContext';
+import { motion } from 'framer-motion';
 
 export default function AppLayout() {
   const { isRTL } = useLang();
@@ -15,16 +16,21 @@ export default function AppLayout() {
   }, []);
 
   const marginStyle = isLg
-    ? { [isRTL ? 'marginRight' : 'marginLeft']: 'var(--sidebar-width, 240px)' }
+    ? { [isRTL ? 'marginRight' : 'marginLeft']: 'var(--sidebar-width, 250px)' }
     : {};
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0]">
+    <div className="min-h-screen bg-[#0A0B10]">
       <Sidebar />
       <main className="pt-14 lg:pt-0 min-h-screen transition-all duration-300" style={marginStyle}>
-        <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px] mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="p-4 sm:p-6 lg:p-10 max-w-[1400px] mx-auto"
+        >
           <Outlet />
-        </div>
+        </motion.div>
       </main>
     </div>
   );
