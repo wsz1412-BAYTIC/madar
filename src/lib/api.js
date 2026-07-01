@@ -5,12 +5,10 @@ let authToken = localStorage.getItem('madar_token') || null;
 export function setToken(token) {
   authToken = token;
   if (token) localStorage.setItem('madar_token', token);
-  else localStorage.removeItem('madar_token');
+  else localStorage.removeItem('madar_access_token');
 }
 
-export function getToken() {
-  return authToken;
-}
+export function getToken() { return localStorage.getItem("madar_access_token") || null; }
 
 export function isLoggedIn() {
   return !!authToken;
@@ -19,6 +17,7 @@ export function isLoggedIn() {
 export function logoutUser() {
   setToken(null);
   localStorage.removeItem('madar_user');
+  localStorage.removeItem("madar_access_token");
   window.location.href = '/login';
 }
 
