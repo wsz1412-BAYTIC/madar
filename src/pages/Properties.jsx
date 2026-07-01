@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { api } from '@/lib/api';
-import { Plus, Bed, Bath, Users, MapPin, ExternalLink, Loader2, X, Link2 } from 'lucide-react';
+import { Plus, Loader2, X, Link2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
+import { FadeIn } from '@/components/madar/Motion';
+import PropertyCard from '@/components/madar/PropertyCard';
 
 const mockProperties = [
   { id: 1, name: 'Luxury Villa', nameAr: 'فيلا فاخرة', city: 'Riyadh', cityAr: 'الرياض', bedrooms: 4, bathrooms: 3, guests: 8, price: 850, status: 'active', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop' },
@@ -27,12 +28,6 @@ export default function Properties() {
       setImportUrl('');
     } catch { }
     setImporting(false);
-  };
-
-  const platformColor = (p) => {
-    if (p === 'Airbnb') return 'bg-rose-500/10 text-rose-400';
-    if (p === 'Gatherin') return 'bg-emerald-500/10 text-emerald-400';
-    return 'bg-blue-500/10 text-blue-400';
   };
 
   return (
@@ -95,42 +90,11 @@ export default function Properties() {
       </AnimatePresence>
 
       {/* Properties Grid */}
-      <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" stagger={0.1}>
-        {mockProperties.map(prop => (
-          <StaggerItem key={prop.id}>
-            <div className="glass rounded-2xl overflow-hidden hover:border-white/15 transition-all duration-500 group">
-              <div className="relative h-48 overflow-hidden">
-                <img src={prop.image} alt={lang === 'ar' ? prop.nameAr : prop.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B10] via-transparent to-transparent" />
-                <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                  <span className={`text-[10px] font-medium px-2.5 py-1 rounded-full backdrop-blur-md ${platformColor(prop.platform)}`}>{prop.platform}</span>
-                  {prop.status === 'paused' && <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 backdrop-blur-md">{lang === 'ar' ? 'متوقف' : 'Paused'}</span>}
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-heading font-semibold text-[#F7F5F0] mb-1">{lang === 'ar' ? prop.nameAr : prop.name}</h3>
-                <div className="flex items-center gap-1 text-xs text-[#F7F5F0]/40 mb-3">
-                  <MapPin className="w-3 h-3" />{lang === 'ar' ? prop.cityAr : prop.city}
-                </div>
-                <div className="flex items-center gap-4 text-xs text-[#F7F5F0]/40 mb-4">
-                  <span className="flex items-center gap-1"><Bed className="w-3.5 h-3.5" />{prop.bedrooms}</span>
-                  <span className="flex items-center gap-1"><Bath className="w-3.5 h-3.5" />{prop.bathrooms}</span>
-                  <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />{prop.guests}</span>
-                </div>
-                <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
-                  <div>
-                    <span className="text-lg font-bold text-[#F7F5F0]">{prop.price}</span>
-                    <span className="text-xs text-[#F7F5F0]/30 ml-1">{lang === 'ar' ? 'ر.س' : 'SAR'}{t('perNight')}</span>
-                  </div>
-                  <button className="p-2 rounded-lg hover:bg-white/5 text-[#F7F5F0]/30 group-hover:text-[#C8972A] transition-colors">
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </StaggerItem>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {mockProperties.map((prop, i) => (
+          <PropertyCard key={prop.id} prop={prop} index={i} />
         ))}
-      </StaggerContainer>
+      </div>
     </div>
   );
 }
