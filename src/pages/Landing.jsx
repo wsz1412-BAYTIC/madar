@@ -2,13 +2,19 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
-import ToolsSection from '@/components/madar/ToolsSection';
 import PlatformLogos from '@/components/madar/PlatformLogos';
+import MarketMetrics from '@/components/madar/MarketMetrics';
 import ProblemSolution from '@/components/madar/ProblemSolution';
+import DashboardShowcase from '@/components/madar/DashboardShowcase';
 import PremiumFeatures from '@/components/madar/PremiumFeatures';
-import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage, AnimatedCounter } from '@/components/madar/Motion';
+import ToolsSection from '@/components/madar/ToolsSection';
+import HowItWorks from '@/components/madar/HowItWorks';
+import SupportedCities from '@/components/madar/SupportedCities';
+import Testimonials from '@/components/madar/Testimonials';
+import FinalCTA from '@/components/madar/FinalCTA';
+import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Globe2, Shield } from 'lucide-react';
+import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Shield } from 'lucide-react';
 
 const plans = [
   { key: 'free', price: 0, features: { en: ['1 property', 'Basic pricing insights', 'Community support'], ar: ['عقار واحد', 'تحليلات تسعير أساسية', 'دعم المجتمع'] } },
@@ -30,7 +36,7 @@ export default function Landing() {
     <div className="min-h-screen bg-[#F2EFE8] text-[#0A0B10]">
       <PublicNavbar />
 
-      {/* ===== HERO ===== */}
+      {/* ===== 1. HERO ===== */}
       <section ref={heroRef} className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0 z-0">
           <img
@@ -57,7 +63,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.05] mb-6"
+            className="font-heading text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.05]! mb-6"
           >
             <span className="block text-[#F7F5F0]">{t('heroTitle')}</span>
             <span className="block text-gradient-gold mt-2">{t('heroSubtitle')}</span>
@@ -113,98 +119,36 @@ export default function Landing() {
         </motion.div>
       </section>
 
-      {/* ===== PROBLEM / SOLUTION ===== */}
-      <ProblemSolution />
-
-      {/* ===== PREMIUM FEATURES ===== */}
-      <PremiumFeatures />
-
-      {/* ===== PLATFORM LOGOS ===== */}
+      {/* ===== 2. PLATFORM LOGOS ===== */}
       <PlatformLogos />
 
-      {/* ===== TOOLS ===== */}
+      {/* ===== 3. MARKET METRICS ===== */}
+      <MarketMetrics />
+
+      {/* ===== 4. PROBLEM & SOLUTION ===== */}
+      <ProblemSolution />
+
+      {/* ===== 5. PRODUCT DASHBOARD SHOWCASE ===== */}
+      <DashboardShowcase />
+
+      {/* ===== 6. CORE FEATURES ===== */}
+      <PremiumFeatures />
       <ToolsSection />
 
-      {/* ===== STATS ===== */}
-      <section className="py-20 px-4 border-y border-[#0A0B10]/[0.06]">
-        <StaggerContainer className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {[
-            { value: '500+', label: lang === 'ar' ? 'مضيف نشط' : 'Active Hosts' },
-            { value: '2,400+', label: lang === 'ar' ? 'عقار مُدار' : 'Properties Managed' },
-            { value: '23%', label: lang === 'ar' ? 'زيادة متوسط الإيرادات' : 'Avg Revenue Increase' },
-            { value: '98%', label: lang === 'ar' ? 'رضا العملاء' : 'Client Satisfaction' },
-          ].map((s, i) => (
-            <StaggerItem key={i}>
-              <AnimatedCounter value={s.value} className="block text-4xl sm:text-5xl font-bold font-heading text-gradient-gold" />
-              <div className="text-sm text-[#0A0B10]/50 mt-2">{s.label}</div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </section>
+      {/* ===== 7. HOW MADAR WORKS ===== */}
+      <HowItWorks />
 
-      {/* ===== FEATURES ===== */}
-      <section className="py-28 px-4 sm:px-6 lg:px-8">
+      {/* ===== 8. SUPPORTED CITIES ===== */}
+      <SupportedCities />
+
+      {/* ===== 9. CUSTOMER RESULTS / TESTIMONIALS ===== */}
+      <Testimonials />
+
+      {/* ===== 10. PRICING PLANS ===== */}
+      <section id="pricing" className="py-28 px-4 sm:px-6 lg:px-8 bg-[#F2EFE8]">
         <div className="max-w-6xl mx-auto">
           <FadeIn className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
-              <Sparkles className="w-3 h-3" />{lang === 'ar' ? 'الميزات' : 'Features'}
-            </div>
-            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-[#0A0B10] mb-4 leading-tight">{t('featuresTitle')}</h2>
-            <p className="text-[#0A0B10]/50 text-lg max-w-xl mx-auto">{t('featuresSubtitle')}</p>
-          </FadeIn>
-
-          <div className="grid sm:grid-cols-2 gap-6">
-            {[
-              { icon: Zap, titleKey: 'feat1Title', descKey: 'feat1Desc', color: '#D95F3B', img: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&h=400&fit=crop' },
-              { icon: RefreshCw, titleKey: 'feat2Title', descKey: 'feat2Desc', color: '#C8972A', img: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&h=400&fit=crop' },
-              { icon: BarChart3, titleKey: 'feat3Title', descKey: 'feat3Desc', color: '#D95F3B', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop' },
-              { icon: TrendingUp, titleKey: 'feat4Title', descKey: 'feat4Desc', color: '#C8972A', img: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=600&h=400&fit=crop' },
-            ].map((f, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="group relative h-[420px] rounded-3xl overflow-hidden bg-[#0F1117] border border-white/[0.06] hover:border-white/15 hover:-translate-y-1 transition-all duration-500">
-                  <div className="absolute inset-0 overflow-hidden">
-                    <img src={f.img} alt="" className="w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F1117] via-[#0F1117]/80 to-[#0F1117]/40" />
-                  </div>
-                  <div className="relative z-10 h-full flex flex-col justify-end p-8">
-                    <div className="w-12 h-12 rounded-2xl glass flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                      <f.icon className="w-5 h-5" style={{ color: f.color }} />
-                    </div>
-                    <h3 className="font-heading font-bold text-[#F7F5F0] text-2xl mb-3">{t(f.titleKey)}</h3>
-                    <p className="text-[#F7F5F0]/60 text-sm leading-relaxed">{t(f.descKey)}</p>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CINEMATIC BANNER ===== */}
-      <section className="relative py-32 overflow-hidden">
-        <ParallaxImage src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1920&h=800&fit=crop" alt="" className="absolute inset-0" speed={0.15} />
-        <div className="absolute inset-0 bg-[#0A0B10]/80" />
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <FadeIn>
-            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#F7F5F0] mb-6 leading-tight">
-              {lang === 'ar' ? 'عقاراتك تستحق' : 'Your properties deserve'}{' '}
-              <span className="text-gradient-gold">{lang === 'ar' ? 'الأفضل' : 'the best'}</span>
-            </h2>
-            <p className="text-lg text-[#F7F5F0]/60 mb-10 max-w-xl mx-auto">
-              {lang === 'ar' ? 'انضم إلى نخبة المضيفين الذين يحققون أقصى عائد من إيجاراتهم في المملكة.' : 'Join an elite group of hosts maximizing returns across the Kingdom.'}
-            </p>
-            <Link to="/signup" className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl glow-coral hover:scale-105 transition-transform">
-              {t('startFree')} <Arrow className="w-4 h-4" />
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ===== PRICING ===== */}
-      <section id="pricing" className="py-28 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <FadeIn className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0A0B10] border border-white/[0.08] text-[#C8972A] text-xs font-medium mb-6">
               <Shield className="w-3 h-3" />{lang === 'ar' ? 'الأسعار' : 'Pricing'}
             </div>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold text-[#0A0B10] mb-4">{t('pricingTitle')}</h2>
@@ -252,8 +196,11 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ===== 11. FINAL CALL TO ACTION ===== */}
+      <FinalCTA />
+
       {/* ===== FOOTER ===== */}
-      <footer className="py-16 px-4 border-t border-[#0A0B10]/[0.06]">
+      <footer className="py-16 px-4 border-t border-[#0A0B10]/[0.06] bg-[#F2EFE8]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center">
