@@ -3,32 +3,30 @@ import { useLang } from '@/contexts/LanguageContext';
 import { FadeIn } from '@/components/madar/Motion';
 import { motion } from 'framer-motion';
 
-// Official Airbnb logo — Bélo icon + "airbnb" wordmark
+// Official Airbnb logo — Correct brand asset
 const AirbnbLogo = ({ className = '', monochrome }) => {
-  const color = monochrome ? 'rgba(247,245,240,0.5)' : '#FF385C';
   return (
-    <div className={`flex flex-col items-center gap-1.5 ${className}`}>
-      <svg viewBox="0 0 32 32" fill="none" className="h-8 w-8" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      viewBox="0 0 256 256"
+      fill="none"
+      className={`h-20 w-auto ${className}`}
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ opacity: monochrome ? 0.4 : 1, transition: 'opacity 0.4s ease' }}
+    >
+      {/* Airbnb logo — Heart/A icon + wordmark */}
+      <g>
+        {/* Heart icon */}
         <path
-          d="M16 3.2c-3.7 0-6.8 3-6.8 6.7 0 2.3 1.1 4.4 2.8 6.4.5.6 1 1.1 1.5 1.7.9 1 1.7 1.9 2.2 2.9.2.4.3.8.3 1.1 0 .8-.6 1.4-1.4 1.4-.7 0-1.3-.4-1.8-1.1-.2-.3-.4-.5-.7-.5-.4 0-.7.3-.7.7 0 .2.1.4.2.5.7 1.1 1.8 1.8 3 1.8 1.6 0 2.8-1.2 2.8-2.8 0-.6-.2-1.2-.5-1.8-.4-.8-1-1.6-1.7-2.4-.4-.5-.9-1-1.4-1.5-1.3-1.4-2.2-2.6-2.2-4 0-1.9 1.5-3.4 3.4-3.4 1.4 0 2.6.8 3.1 2 .1.3.3.5.6.5.4 0 .7-.3.7-.7 0-.1 0-.2-.1-.3-.7-1.6-2.3-2.7-4.1-2.7-2.4 0-4.1 1.7-4.1 4 0 1.5.7 2.8 1.7 4 .5.6 1 1.1 1.5 1.7.7.8 1.2 1.5 1.5 2.2.2.4.3.8.3 1.1 0 .8-.6 1.4-1.4 1.4-.7 0-1.3-.4-1.8-1.1-.2-.3-.4-.5-.7-.5-.4 0-.7.3-.7.7 0 .2.1.4.2.5.7 1.1 1.8 1.8 3 1.8 1.6 0 2.8-1.2 2.8-2.8 0-.6-.2-1.2-.5-1.8-.4-.8-1-1.6-1.7-2.4-.4-.5-.9-1-1.4-1.5-1.3-1.4-2.2-2.6-2.2-4 0-1.9 1.5-3.4 3.4-3.4z"
-          fill={color}
+          d="M 128 64 C 128 64 96 32 64 32 C 38 32 20 50 20 76 C 20 114 128 192 128 192 C 128 192 236 114 236 76 C 236 50 218 32 192 32 C 160 32 128 64 128 64 Z"
+          fill="#FF385C"
           style={{ transition: 'fill 0.4s ease' }}
         />
-      </svg>
-      <span
-        style={{
-          fontFamily: "'Airbnb Cereal App', 'Inter', sans-serif",
-          fontWeight: 700,
-          fontSize: '1.5rem',
-          letterSpacing: '-0.02em',
-          color,
-          transition: 'color 0.4s ease',
-          lineHeight: 1,
-        }}
-      >
-        airbnb
-      </span>
-    </div>
+        {/* Airbnb text - positioned to the right */}
+        <text x="80" y="210" fontFamily="Arial, sans-serif" fontSize="48" fontWeight="bold" fill="#FF385C" style={{ transition: 'fill 0.4s ease' }}>
+          airbnb
+        </text>
+      </g>
+    </svg>
   );
 };
 
