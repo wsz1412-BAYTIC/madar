@@ -33,6 +33,9 @@ import Terms from '@/pages/Terms';
 import AIDisclaimer from '@/pages/AIDisclaimer';
 import CookiePolicy from '@/pages/CookiePolicy';
 import SubscriptionPolicy from '@/pages/SubscriptionPolicy';
+import AcceptableUsePolicy from '@/pages/AcceptableUsePolicy';
+import IPTrademark from '@/pages/IPTrademark';
+import ThirdPartyDisclaimer from '@/pages/ThirdPartyDisclaimer';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -50,6 +53,9 @@ const AuthenticatedApp = () => {
       <Route path="/ai-disclaimer" element={<AIDisclaimer />} />
       <Route path="/cookies" element={<CookiePolicy />} />
       <Route path="/subscription" element={<SubscriptionPolicy />} />
+      <Route path="/aup" element={<AcceptableUsePolicy />} />
+      <Route path="/ip-trademark" element={<IPTrademark />} />
+      <Route path="/third-party" element={<ThirdPartyDisclaimer />} />
       
       {/* App routes with sidebar */}
       <Route element={<AppLayout />}>
