@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView, animate } from 'framer-motion';
 
 export function FadeIn({ children, delay = 0, y = 24, className = '', once = true }) {
   return (
@@ -107,4 +107,29 @@ export function MagneticButton({ children, className = '', onClick, type = 'butt
   );
 }
 
-export default { FadeIn, ScaleIn, SlideIn, StaggerContainer, StaggerItem, ParallaxImage, MagneticButton };
+export function AnimatedCounter({ value, duration = 2, className = '' }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [display, setDisplay] = useState(0);
+
+  const numeric = parseInt(value.replace(/[^0-9]/g, ''), 10);
+  const suffix = value.replace(/[0-9,]/g, '');
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, numeric, {
+      duration,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, numeric, duration]);
+
+  return (
+    <span ref={ref} className={className}>
+      {display.toLocaleString()}{suffix}
+    </span>
+  );
+}
+
+export default { FadeIn, ScaleIn, SlideIn, StaggerContainer, StaggerItem, ParallaxImage, MagneticButton, AnimatedCounter };

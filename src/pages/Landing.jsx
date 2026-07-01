@@ -6,7 +6,7 @@ import ToolsSection from '@/components/madar/ToolsSection';
 import PlatformLogos from '@/components/madar/PlatformLogos';
 import ProblemSolution from '@/components/madar/ProblemSolution';
 import PremiumFeatures from '@/components/madar/PremiumFeatures';
-import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/madar/Motion';
+import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage, AnimatedCounter } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Globe2, Shield } from 'lucide-react';
 
@@ -135,7 +135,7 @@ export default function Landing() {
             { value: '98%', label: lang === 'ar' ? 'رضا العملاء' : 'Client Satisfaction' },
           ].map((s, i) => (
             <StaggerItem key={i}>
-              <div className="text-4xl sm:text-5xl font-bold font-heading text-gradient-gold">{s.value}</div>
+              <AnimatedCounter value={s.value} className="block text-4xl sm:text-5xl font-bold font-heading text-gradient-gold" />
               <div className="text-sm text-[#0A0B10]/50 mt-2">{s.label}</div>
             </StaggerItem>
           ))}
@@ -161,7 +161,7 @@ export default function Landing() {
               { icon: TrendingUp, titleKey: 'feat4Title', descKey: 'feat4Desc', color: '#C8972A', img: 'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=600&h=400&fit=crop' },
             ].map((f, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="group relative h-[420px] rounded-3xl overflow-hidden bg-[#0F1117] border border-white/[0.06] hover:border-white/15 transition-all duration-500">
+                <div className="group relative h-[420px] rounded-3xl overflow-hidden bg-[#0F1117] border border-white/[0.06] hover:border-white/15 hover:-translate-y-1 transition-all duration-500">
                   <div className="absolute inset-0 overflow-hidden">
                     <img src={f.img} alt="" className="w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0F1117] via-[#0F1117]/80 to-[#0F1117]/40" />
@@ -214,7 +214,7 @@ export default function Landing() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {plans.map((plan, i) => (
               <ScaleIn key={plan.key} delay={i * 0.08}>
-                <div className={`relative h-full p-6 rounded-3xl transition-all duration-500 ${
+                <div className={`relative h-full p-6 rounded-3xl hover:-translate-y-1 transition-all duration-500 ${
                   plan.popular
                     ? 'bg-[#0F1117] border border-[#D95F3B]/30 glow-coral'
                     : 'bg-[#0F1117] border border-white/[0.06] hover:border-white/15'
