@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const LOGO_URL = 'https://media.base44.com/images/public/6a43dd3026ba0773af35c603/907c431e5_madar-removebg-preview.png';
 
 export default function PublicNavbar() {
-  const { t, toggleLang, isRTL } = useLang();
+  const { t, toggleLang, isRTL, lang } = useLang();
   const { isAuthenticated } = useMadarAuth();
   const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
@@ -22,7 +22,7 @@ export default function PublicNavbar() {
   }, []);
 
   const navItems = [
-    { label: t('navMarket'), href: '/market-insights' },
+    { label: lang === 'ar' ? 'أرقام السوق' : 'Market Numbers', href: '/market-insights' },
     { label: t('navAnalysis'), href: '/property-analysis' },
     { label: t('navOpportunities'), href: '/opportunities' },
     { label: t('navHowItWorks'), href: '/how-to-use' },

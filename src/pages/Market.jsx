@@ -82,7 +82,7 @@ export default function Market() {
           <FadeIn>
             <div>
               <h1 className={`font-heading text-4xl sm:text-5xl font-bold mb-4 ${textColor}`}>
-                {lang === 'ar' ? 'سوق الإيجار قصير المدى' : 'Short-Term Rental Market'}
+                {lang === 'ar' ? 'أرقام السوق' : 'Market Numbers'}
               </h1>
               <p className={`text-lg ${textMuted}`}>
                 {lang === 'ar'
