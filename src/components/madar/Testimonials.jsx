@@ -36,8 +36,6 @@ const testimonials = [
 
 const results = [
   { value: '28%', labelEn: 'Avg Revenue Increase', labelAr: 'متوسط زيادة الإيرادات' },
-  { value: '500+', labelEn: 'Active Hosts', labelAr: 'مضيف نشط' },
-  { value: '98%', labelEn: 'Satisfaction Rate', labelAr: 'نسبة الرضا' },
   { value: '8,400+', labelEn: 'Properties Managed', labelAr: 'عقار مُدار' },
 ];
 
