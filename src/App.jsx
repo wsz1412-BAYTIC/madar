@@ -10,6 +10,7 @@ import { CookieProvider } from '@/contexts/CookieContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import AppLayout from '@/components/madar/AppLayout';
 import CookieConsentBanner from '@/components/madar/CookieConsentBanner';
+import CommunicationWidgets from '@/components/widgets/CommunicationWidgets';
 
 import Landing from '@/pages/Landing';
 import MadarLogin from '@/pages/MadarLogin';
@@ -106,6 +107,7 @@ function App() {
                   <Router>
                     <AuthenticatedApp />
                     <CookieConsentBanner />
+                    <CommunicationWidgets />
                   </Router>
                   <Toaster />
                 </QueryClientProvider>
