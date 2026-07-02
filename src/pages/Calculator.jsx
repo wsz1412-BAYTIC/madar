@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
-import { useMadarAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/lib/AuthContext';
 import { Calculator as CalcIcon, TrendingUp, DollarSign, Clock, BarChart3 } from 'lucide-react';
 import { FadeIn } from '@/components/madar/Motion';
 
 export default function Calculator() {
   const { t, lang } = useLang();
-  const { isAuthenticated } = useMadarAuth();
+  const { isAuthenticated } = useAuth();
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
   const [form, setForm] = useState({ propertyValue: 800000, monthlyRent: 8000, occupancy: 75, expenses: 2500 });

@@ -1,45 +1,22 @@
+// Legacy REST helper for the one remaining non-Base44 endpoint
+// (property import in src/pages/Properties.jsx). This is NOT an auth system:
+// all token/session/login logic has been removed. Authentication is owned
+// solely by Base44 (src/lib/AuthContext.jsx + base44.auth.*).
+//
+// TODO(migration): move `/properties/import` to a Base44 backend function and
+// delete this file. It talks to a separate legacy backend that this app no
+// longer authenticates against directly.
+import { appParams } from '@/lib/app-params';
+
 const API_BASE = 'https://aimadar.com/api';
-
-let authToken = localStorage.getItem('madar_token') || null;
-
-export function setToken(token) {
-  authToken = token;
-  if (token) localStorage.setItem('madar_token', token);
-  else localStorage.removeItem('madar_access_token');
-}
-
-export function getToken() { return localStorage.getItem("madar_access_token") || null; }
-
-export function isLoggedIn() {
-  return !!authToken;
-}
-
-export function logoutUser() {
-  setToken(null);
-  localStorage.removeItem('madar_user');
-  localStorage.removeItem("madar_access_token");
-  window.location.href = '/login';
-}
-
-export function getUser() {
-  try {
-    return JSON.parse(localStorage.getItem('madar_user') || 'null');
-  } catch { return null; }
-}
-
-export function setUser(user) {
-  localStorage.setItem('madar_user', JSON.stringify(user));
-}
 
 async function request(endpoint, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...options.headers };
-  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
-  
+  // Best-effort: forward the single Base44 session token if present. There is
+  // no separate legacy token store any more.
+  if (appParams.token) headers['Authorization'] = `Bearer ${appParams.token}`;
+
   const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
-  if (res.status === 401) {
-    logoutUser();
-    throw new Error('Unauthorized');
-  }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message || err.detail || `Request failed: ${res.status}`);
