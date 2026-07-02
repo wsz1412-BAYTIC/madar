@@ -8,7 +8,7 @@
  * - On 500+: throws a MadarError with type 'server' (caller shows retry message)
  */
 
-const BASE_URL = "https://aimadar.com/api";
+const BASE_URL = "https://api.aimadar.com/api";
 const TOKEN_KEY = "madar_access_token";
 const REFRESH_KEY = "madar_refresh_token";
 

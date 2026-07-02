@@ -19,7 +19,7 @@ export function MadarAuthProvider({ children }) {
     const form = new URLSearchParams();
     form.append('username', email);
     form.append('password', password);
-    const data = await fetch('https://aimadar.com/api/auth/login', {
+    const data = await fetch('https://api.aimadar.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: form
