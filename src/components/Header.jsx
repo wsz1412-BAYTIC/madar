@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Languages, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
-import { useMadarAuth } from "@/lib/MadarAuthContext";
+import { useAuth } from "@/lib/AuthContext";
 import { MadarFullLogo } from "./Logo";
 
 export default function Header() {
@@ -14,7 +14,7 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const { lang, toggleLang, t } = useLanguage();
-  const { isAuthenticated, logout } = useMadarAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {

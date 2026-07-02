@@ -4,7 +4,6 @@ import { queryClientInstance } from "@/lib/query-client";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import UserNotRegisteredError from "@/components/UserNotRegisteredError";
-import { MadarAuthProvider, useMadarAuth } from "@/lib/MadarAuthContext";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { SubscriptionProvider } from "@/lib/SubscriptionContext";
 import Layout from "./components/Layout";
@@ -30,20 +29,19 @@ function LoadingScreen() {
 }
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useMadarAuth();
+  const { isAuthenticated, loading, authError } = useAuth();
   if (loading) return <LoadingScreen />;
+  if (authError?.type === "user_not_registered") return <UserNotRegisteredError />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 }
 
 function MadarRoutes() {
-  const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
+  const { loading, authError } = useAuth();
 
-  if (isLoadingPublicSettings || isLoadingAuth) return <LoadingScreen />;
+  if (loading) return <LoadingScreen />;
 
-  if (authError) {
-    if (authError.type === "user_not_registered") return <UserNotRegisteredError />;
-  }
+  if (authError?.type === "user_not_registered") return <UserNotRegisteredError />;
 
   return (
     <Routes>
@@ -73,18 +71,16 @@ function MadarRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <MadarAuthProvider>
-        <LanguageProvider>
-          <SubscriptionProvider>
-            <QueryClientProvider client={queryClientInstance}>
-              <Router>
-                <MadarRoutes />
-              </Router>
-              <Toaster />
-            </QueryClientProvider>
-          </SubscriptionProvider>
-        </LanguageProvider>
-      </MadarAuthProvider>
+      <LanguageProvider>
+        <SubscriptionProvider>
+          <QueryClientProvider client={queryClientInstance}>
+            <Router>
+              <MadarRoutes />
+            </Router>
+            <Toaster />
+          </QueryClientProvider>
+        </SubscriptionProvider>
+      </LanguageProvider>
     </AuthProvider>
   );
 }

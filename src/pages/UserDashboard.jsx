@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { madarApi, MadarError } from "@/api/madarApi";
 import { useLanguage } from "@/lib/LanguageContext";
-import { useMadarAuth } from "@/lib/MadarAuthContext";
+import { useAuth } from "@/lib/AuthContext";
 import { useSubscription } from "@/lib/SubscriptionContext";
 import { useToast } from "@/components/ui/use-toast";
 import OpportunityWallet from "@/components/dashboard/OpportunityWallet";
@@ -28,7 +28,7 @@ function DashboardLink({ to, icon: Icon, label }) {
 
 export default function UserDashboard() {
   const { t, lang } = useLanguage();
-  const { user } = useMadarAuth();
+  const { user } = useAuth();
   const { subscription } = useSubscription();
   const { toast } = useToast();
 
@@ -95,7 +95,7 @@ export default function UserDashboard() {
     );
   }
 
-  const userName = user?.name || (lang === "ar" ? "ضيف" : "Guest");
+  const userName = user?.full_name || (lang === "ar" ? "ضيف" : "Guest");
   const today = new Date().toLocaleDateString(lang === "ar" ? "ar-SA" : "en-US", {
     weekday: "long",
     day: "numeric",

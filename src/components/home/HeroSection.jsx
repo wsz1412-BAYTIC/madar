@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronDown, TrendingUp, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import { useMadarAuth } from "@/lib/MadarAuthContext";
+import { useAuth } from "@/lib/AuthContext";
 
 function SearchDropdown({ label, options, value, onChange, dark = true }) {
   const [open, setOpen] = useState(false);
@@ -42,7 +42,7 @@ function SearchDropdown({ label, options, value, onChange, dark = true }) {
 export default function HeroSection({ heroImage }) {
   const navigate = useNavigate();
   const { t, lang } = useLanguage();
-  const { isAuthenticated } = useMadarAuth();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState("");
 
   const handleSearch = () => {

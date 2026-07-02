@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { madarApi } from "@/api/madarApi";
+import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useSubscription } from "@/lib/SubscriptionContext";
 import { useToast } from "@/components/ui/use-toast";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
 
-const tierOrder = ["free", "basic", "growth", "pro"];
+const tierOrder = ["free", "starter", "growth", "pro"];
 
 const tierFeatures = {
   free: [
@@ -14,8 +14,8 @@ const tierFeatures = {
     "Daily pricing briefs",
     "Basic price comparison",
   ],
-  basic: [
-    "Up to 15 properties",
+  starter: [
+    "Up to 5 properties",
     "Market insights by city",
     "30-day price history",
     "Competitor comparison",
@@ -93,18 +93,17 @@ export default function Billing() {
   const { toast } = useToast();
   const [upgrading, setUpgrading] = useState(false);
 
-  const usage = subscription?.usage || {};
-
   const usageStats = [
-    { label: t("billing.propertiesUsed"), used: usage.properties_used, limit: usage.properties_limit },
-    { label: t("billing.briefsGenerated"), used: usage.briefs_generated, limit: usage.briefs_limit },
-    { label: t("billing.aiQueries"), used: usage.ai_queries, limit: usage.ai_queries_limit },
+    { label: t("billing.propertiesUsed"), used: subscription?.usage_count ?? 0, limit: subscription?.usage_limit ?? 0 },
   ];
 
   const handleUpgrade = async (targetTier) => {
     setUpgrading(true);
     try {
-      await madarApi.upgradeSubscription();
+      await base44.functions.invoke("manageSubscription", {
+        action: "upgrade",
+        new_plan: targetTier,
+      });
       await refresh();
       toast({ title: t("billing.upgradeSuccess") });
     } catch (err) {
