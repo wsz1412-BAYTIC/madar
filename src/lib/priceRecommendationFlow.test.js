@@ -121,3 +121,78 @@ describe('review-price-recommendation flow (human approval gate)', () => {
     expect(() => applyTransition(record, 'apply', { appliedPrice: 300 }, 'user-1')).toThrow();
   });
 });
+
+describe('apply-price safety check (end to end from generation through apply)', () => {
+  function approvedRecord() {
+    const snapshot = buildMetricsSnapshot(property);
+    const fallback = buildFallbackRecommendation(snapshot);
+    let record = buildRecordFromAiOutcome(snapshot, fallback, 'fallback');
+    // A real recommendedPriceMin/Max, computed the same way generate-price-recommendation would.
+    expect(record.recommendedPriceMin).toBeGreaterThan(0);
+    expect(record.recommendedPriceMax).toBeGreaterThan(record.recommendedPriceMin);
+    const approveResult = applyTransition(record, 'approve', {}, 'user-1');
+    record = { ...record, ...approveResult.patch };
+    expect(record.status).toBe('approved');
+    return record;
+  }
+
+  it('price inside the recommended range: applies in one step, not flagged as an override', () => {
+    const record = approvedRecord();
+    const midpoint = (record.recommendedPriceMin + record.recommendedPriceMax) / 2;
+    const { patch } = applyTransition(record, 'apply', { appliedPrice: midpoint }, 'user-1');
+    expect(patch.status).toBe('applied');
+    expect(patch.isManualOverride).toBe(false);
+  });
+
+  it('price below the recommended range: first attempt is blocked pending confirmation, human override still allowed', () => {
+    const record = approvedRecord();
+    const belowRange = record.recommendedPriceMin * 0.7;
+
+    let firstAttemptError = null;
+    try {
+      applyTransition(record, 'apply', { appliedPrice: belowRange }, 'user-1');
+    } catch (err) {
+      firstAttemptError = err;
+    }
+    expect(firstAttemptError?.code).toBe('override_confirmation_required');
+    expect(record.status).toBe('approved'); // unchanged — nothing was applied by the blocked attempt
+
+    // Human explicitly confirms the override.
+    const { patch } = applyTransition(record, 'apply', { appliedPrice: belowRange, confirmOverride: true }, 'user-1');
+    expect(patch.status).toBe('applied');
+    expect(patch.appliedPrice).toBe(belowRange);
+    expect(patch.isManualOverride).toBe(true);
+    expect(patch.appliedPriceRangeMin).toBe(record.recommendedPriceMin);
+    expect(patch.appliedPriceRangeMax).toBe(record.recommendedPriceMax);
+  });
+
+  it('price above the recommended range: first attempt is blocked pending confirmation, human override still allowed', () => {
+    const record = approvedRecord();
+    const aboveRange = record.recommendedPriceMax * 1.3;
+
+    expect(() => applyTransition(record, 'apply', { appliedPrice: aboveRange }, 'user-1')).toThrow();
+
+    const { patch } = applyTransition(record, 'apply', { appliedPrice: aboveRange, confirmOverride: true }, 'user-1');
+    expect(patch.status).toBe('applied');
+    expect(patch.isManualOverride).toBe(true);
+  });
+
+  it('rejects a clearly invalid appliedPrice (zero, negative, non-numeric) without ever reaching "applied"', () => {
+    const record = approvedRecord();
+    for (const bad of [0, -100, NaN, 'not-a-price']) {
+      expect(() => applyTransition(record, 'apply', { appliedPrice: bad }, 'user-1')).toThrow();
+    }
+    expect(record.status).toBe('approved');
+  });
+
+  it('rejects an unrealistic accidental value (e.g. an extra digit) even with confirmOverride, unlike a genuine override', () => {
+    const record = approvedRecord();
+    const accidentalExtraDigit = record.recommendedPriceMax * 10;
+    try {
+      applyTransition(record, 'apply', { appliedPrice: accidentalExtraDigit, confirmOverride: true }, 'user-1');
+      throw new Error('should have thrown');
+    } catch (err) {
+      expect(err.code).toBe('unrealistic_price');
+    }
+  });
+});
