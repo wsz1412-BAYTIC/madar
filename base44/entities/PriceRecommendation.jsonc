@@ -28,7 +28,23 @@
     },
     "reasoning": {
       "type": "string",
-      "title": "AI Reasoning"
+      "title": "AI Reasoning (legacy single-language)"
+    },
+    "reasoning_ar": {
+      "type": "string",
+      "title": "AI Reasoning (Arabic)"
+    },
+    "reasoning_en": {
+      "type": "string",
+      "title": "AI Reasoning (English)"
+    },
+    "action_ar": {
+      "type": "string",
+      "title": "Recommended Action (Arabic)"
+    },
+    "action_en": {
+      "type": "string",
+      "title": "Recommended Action (English)"
     },
     "revenue_impact": {
       "type": "number",

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { base44 } from "@/api/base44Client";
+import { mapUserProperty, mapRecommendation } from "@/lib/entityMappers";
 import { madarApi, MadarError } from "@/api/madarApi";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useAuth } from "@/lib/AuthContext";
@@ -42,33 +44,28 @@ export default function UserDashboard() {
     const load = async () => {
       setLoading(true);
       try {
-        const [propsResult, oppsResult, marketResult] = await Promise.allSettled([
-          madarApi.getProperties(),
-          madarApi.getOpportunities(),
+        const [propsResult, recsResult, marketResult] = await Promise.allSettled([
+          base44.entities.UserProperty.list(),
+          base44.entities.PriceRecommendation.list("-created_date", 50),
           userCity ? madarApi.getMarket(userCity) : Promise.resolve(null),
         ]);
 
         // Build property lookup map for client-side join
         const propertyMap = {};
         if (propsResult.status === "fulfilled") {
-          const props = Array.isArray(propsResult.value)
-            ? propsResult.value
-            : propsResult.value?.properties || [];
+          const props = (propsResult.value || []).map(mapUserProperty);
           props.forEach((p) => {
             propertyMap[p.id] = p;
           });
         }
 
-        // Enrich opportunities with joined property data
+        // Map recommendations to opportunity shape, enriched with property data
         let enriched = [];
-        if (oppsResult.status === "fulfilled") {
-          const opps = Array.isArray(oppsResult.value)
-            ? oppsResult.value
-            : oppsResult.value?.opportunities || [];
-          enriched = opps.map((opp) => ({
-            ...opp,
-            property: propertyMap[opp.property_id] || null,
-          }));
+        if (recsResult.status === "fulfilled") {
+          const recs = (recsResult.value || []).map((r) =>
+            mapRecommendation(r, propertyMap[r.user_property_id] || null)
+          );
+          enriched = recs;
         }
         setOpportunities(enriched);
 

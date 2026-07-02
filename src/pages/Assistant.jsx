@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { madarApi } from "@/api/madarApi";
+import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useSubscription } from "@/lib/SubscriptionContext";
 import { Send, Sparkles, ArrowRight } from "lucide-react";
@@ -67,7 +67,9 @@ export default function Assistant() {
     setLoading(true);
 
     try {
-      const response = await madarApi.askAI(userMessage.content);
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are Madar, a rental pricing intelligence assistant for short-term rental property managers in Saudi Arabia. Answer the user's question concisely in ${lang === "ar" ? "Arabic" : "English"}. User question: ${userMessage.content}`,
+      });
       const assistantContent =
         typeof response === "string"
           ? response

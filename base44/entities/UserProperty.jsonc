@@ -67,6 +67,33 @@
       "type": "boolean",
       "title": "Active",
       "default": true
+    },
+    "price": {
+      "type": "number",
+      "title": "Current Price (SAR/night)"
+    },
+    "rating": {
+      "type": "number",
+      "title": "Rating (0-5)"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "short_description": {
+      "type": "string",
+      "title": "Short Description"
+    },
+    "amenities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Amenities"
+    },
+    "featured_image": {
+      "type": "string",
+      "title": "Featured Image URL"
     }
   },
   "required": [

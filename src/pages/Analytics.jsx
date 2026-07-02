@@ -13,13 +13,14 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { madarApi } from "@/api/madarApi";
+import { base44 } from "@/api/base44Client";
+import { mapUserProperty, mapRecommendation } from "@/lib/entityMappers";
 import { useLanguage } from "@/lib/LanguageContext";
 import { ArrowLeft, TrendingUp } from "lucide-react";
 
 function PriceHistoryChart({ data, t }) {
   const chartData = (data || []).map((d) => ({
-    date: d.date || d.day,
+    date: d.date || d.day || (d.created_date ? new Date(d.created_date).toLocaleDateString() : ""),
     price: d.price || d.recommended_price,
     listed: d.listed_price || d.current_price,
   }));
@@ -145,15 +146,25 @@ export default function Analytics() {
       setLoading(true);
       setError(false);
       try {
-        const [briefData, compData, propData] = await Promise.allSettled([
-          madarApi.getPropertyBriefs(propertyId),
-          madarApi.getCompetitors(propertyId),
-          madarApi.getProperty(propertyId),
+        const [recsResult, propResult] = await Promise.allSettled([
+          base44.entities.PriceRecommendation.filter({ user_property_id: propertyId }),
+          base44.entities.UserProperty.get(propertyId),
         ]);
 
-        if (briefData.status === "fulfilled") setBriefs(briefData.value);
-        if (compData.status === "fulfilled") setCompetitors(compData.value);
-        if (propData.status === "fulfilled") setProperty(propData.value);
+        if (recsResult.status === "fulfilled") {
+          const recs = (recsResult.value || []).map((r) => mapRecommendation(r));
+          setBriefs(recs);
+          // Competitor data lives on the recommendation entity as competitor_data
+          const latestWithComps = recs.find((r) => r.competitor_data);
+          if (latestWithComps?.competitor_data) {
+            const cd = latestWithComps.competitor_data;
+            setCompetitors(Array.isArray(cd) ? cd : cd.competitors || []);
+          }
+        }
+
+        if (propResult.status === "fulfilled" && propResult.value) {
+          setProperty(mapUserProperty(propResult.value));
+        }
       } catch {
         setError(true);
       } finally {
@@ -171,9 +182,9 @@ export default function Analytics() {
     );
   }
 
-  const briefHistory = Array.isArray(briefs) ? briefs : briefs?.history || [];
-  const competitorList = Array.isArray(competitors) ? competitors : competitors?.competitors || [];
-  const latestBrief = Array.isArray(briefs) ? briefs[0] : briefs?.latest || null;
+  const briefHistory = Array.isArray(briefs) ? briefs : [];
+  const competitorList = Array.isArray(competitors) ? competitors : [];
+  const latestBrief = briefHistory.length > 0 ? briefHistory[0] : null;
 
   return (
     <div className="pt-24 pb-24 px-[2%] md:px-[4%] max-w-[1400px] mx-auto">

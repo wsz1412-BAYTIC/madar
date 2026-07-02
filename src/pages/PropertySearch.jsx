@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { madarApi } from "@/api/madarApi";
+import { base44 } from "@/api/base44Client";
+import { mapUserProperty, previewToEntity } from "@/lib/entityMappers";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useToast } from "@/components/ui/use-toast";
 import PropertyCard from "../components/PropertyCard";
@@ -41,11 +43,8 @@ function AddPropertyModal({ open, onClose, onSaved }) {
     if (!preview) return;
     setSaving(true);
     try {
-      const payload = {
-        ...preview,
-        platform_urls: [url, ...extraUrls],
-      };
-      await madarApi.createProperty(payload);
+      const payload = previewToEntity(preview, url);
+      await base44.entities.UserProperty.create(payload);
       toast({ title: t("common.save") });
       onSaved();
       handleClose();
@@ -260,8 +259,8 @@ export default function PropertySearch() {
   const loadProperties = async () => {
     setLoading(true);
     try {
-      const data = await madarApi.getProperties();
-      setProperties(Array.isArray(data) ? data : data?.properties || []);
+      const entities = await base44.entities.UserProperty.list();
+      setProperties((entities || []).map(mapUserProperty));
     } catch (err) {
       toast({ title: err.message || t("common.error"), variant: "destructive" });
     } finally {

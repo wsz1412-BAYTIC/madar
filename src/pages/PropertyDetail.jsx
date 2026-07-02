@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { madarApi } from "@/api/madarApi";
+import { base44 } from "@/api/base44Client";
+import { mapUserProperty, mapRecommendation } from "@/lib/entityMappers";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -109,20 +110,19 @@ export default function PropertyDetail() {
     const load = async () => {
       setLoading(true);
       try {
-        const [propResult, briefResult] = await Promise.allSettled([
-          madarApi.getProperty(id),
-          madarApi.getLatestBriefs(),
+        const [propResult, recsResult] = await Promise.allSettled([
+          base44.entities.UserProperty.get(id),
+          base44.entities.PriceRecommendation.filter({ user_property_id: id }),
         ]);
 
-        if (propResult.status === "fulfilled") {
-          setProperty(propResult.value);
+        if (propResult.status === "fulfilled" && propResult.value) {
+          setProperty(mapUserProperty(propResult.value));
         }
-        if (briefResult.status === "fulfilled") {
-          const briefs = Array.isArray(briefResult.value)
-            ? briefResult.value
-            : briefResult.value?.briefs || [];
-          const found = briefs.find((b) => b.property_id === id);
-          setBrief(found);
+        if (recsResult.status === "fulfilled") {
+          const recs = (recsResult.value || []).map((r) => mapRecommendation(r));
+          // Latest brief = most recently created recommendation
+          const latest = recs.length > 0 ? recs[0] : null;
+          setBrief(latest);
         }
       } catch (err) {
         toast({ title: err.message || t("common.error"), variant: "destructive" });
