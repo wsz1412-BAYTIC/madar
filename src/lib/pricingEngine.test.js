@@ -70,6 +70,10 @@ describe('calculateNetRevenue', () => {
     expect(calculateNetRevenue({ grossRevenue: 5000 })).toBe(5000);
   });
 
+  it('treats a negative operatingCosts as invalid input, not as a revenue boost', () => {
+    expect(calculateNetRevenue({ grossRevenue: 5000, operatingCosts: -500 })).toBe(5000);
+  });
+
   it('returns null when grossRevenue is not finite', () => {
     expect(calculateNetRevenue({ grossRevenue: undefined })).toBeNull();
   });

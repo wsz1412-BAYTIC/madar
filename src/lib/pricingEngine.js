@@ -53,8 +53,9 @@ export function calculateRevPAR({ adr, occupancyRate, roomRevenue, availableNigh
  */
 export function calculateNetRevenue({ grossRevenue, operatingCosts = 0, platformFeeRate = 0 }) {
   if (!Number.isFinite(grossRevenue)) return null;
+  const costs = Math.max(operatingCosts || 0, 0); // a negative cost is invalid input, never a revenue boost
   const fees = grossRevenue * Math.min(Math.max(platformFeeRate, 0), 1);
-  return round2(grossRevenue - (operatingCosts || 0) - fees);
+  return round2(grossRevenue - costs - fees);
 }
 
 /**
