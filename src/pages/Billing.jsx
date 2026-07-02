@@ -1,9 +1,6 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useSubscription } from "@/lib/SubscriptionContext";
-import { useToast } from "@/components/ui/use-toast";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
 
 const tierOrder = ["free", "starter", "growth", "pro"];
@@ -35,7 +32,7 @@ const tierFeatures = {
   ],
 };
 
-function TierCard({ tier, isCurrent, isUserTier, onUpgrade, upgrading, t }) {
+function TierCard({ tier, isCurrent, isUserTier, t }) {
   const tierLabel = t(`billing.tiers.${tier}`);
   const features = tierFeatures[tier] || [];
   const userTierIndex = tierOrder.indexOf(isUserTier);
@@ -69,13 +66,17 @@ function TierCard({ tier, isCurrent, isUserTier, onUpgrade, upgrading, t }) {
       </div>
 
       {canUpgradeTo && !isCurrent && (
-        <button
-          onClick={() => onUpgrade(tier)}
-          disabled={upgrading}
-          className="ghost-btn w-full text-center text-xs disabled:opacity-50"
-        >
-          {upgrading ? t("billing.upgrading") : t("billing.upgrade")}
-        </button>
+        <div>
+          <button
+            disabled
+            className="ghost-btn w-full text-center text-xs opacity-50 cursor-not-allowed"
+          >
+            {t("billing.upgrade")}
+          </button>
+          <p className="font-body text-xs text-muted-foreground text-center mt-3 leading-relaxed">
+            {t("billing.paidUpgradeUnavailable")}
+          </p>
+        </div>
       )}
 
       {isCurrent && (
@@ -89,29 +90,11 @@ function TierCard({ tier, isCurrent, isUserTier, onUpgrade, upgrading, t }) {
 
 export default function Billing() {
   const { t, lang } = useLanguage();
-  const { subscription, tier, refresh } = useSubscription();
-  const { toast } = useToast();
-  const [upgrading, setUpgrading] = useState(false);
+  const { subscription, tier } = useSubscription();
 
   const usageStats = [
     { label: t("billing.propertiesUsed"), used: subscription?.usage_count ?? 0, limit: subscription?.usage_limit ?? 0 },
   ];
-
-  const handleUpgrade = async (targetTier) => {
-    setUpgrading(true);
-    try {
-      await base44.functions.invoke("manageSubscription", {
-        action: "upgrade",
-        new_plan: targetTier,
-      });
-      await refresh();
-      toast({ title: t("billing.upgradeSuccess") });
-    } catch (err) {
-      toast({ title: err.message || t("common.error"), variant: "destructive" });
-    } finally {
-      setUpgrading(false);
-    }
-  };
 
   if (!subscription) {
     return (
@@ -150,8 +133,8 @@ export default function Billing() {
             </p>
             <div className="flex items-center gap-4">
               <Sparkles size={24} className="text-accent" strokeWidth={1} />
-              <span className="font-display text-display-md font-light capitalize">
-                {t(`billing.tiers.${tier}`)}
+              <span className="font-display text-display-md font-light">
+                {tier === "free" ? t("billing.freePlanLabel") : t(`billing.tiers.${tier}`)}
               </span>
             </div>
           </div>
@@ -203,8 +186,6 @@ export default function Billing() {
               tier={tierName}
               isCurrent={tier === tierName}
               isUserTier={tier}
-              onUpgrade={handleUpgrade}
-              upgrading={upgrading}
               t={t}
             />
           ))}

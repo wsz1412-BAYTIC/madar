@@ -31,62 +31,45 @@ Deno.serve(async (req) => {
       pro: { properties: 100 }
     };
 
+    // ── Idempotent: creates free subscription if none exists, returns existing if present ──
+    const ensureSubscription = async () => {
+      const subs = await sr.entities.UserSubscription.filter({ owner_id: user.id });
+      if (subs && subs.length > 0) return subs[0];
+
+      const newSub = await sr.entities.UserSubscription.create({
+        owner_id: user.id,
+        plan: 'free',
+        status: 'active',
+        usage_count: 0,
+        usage_limit: PLAN_LIMITS.free.properties,
+        payment_status: 'not_required',
+        started_at: new Date().toISOString(),
+        renewal_date: null
+      });
+      await logAction(newSub.id, 'UserSubscription', 'subscription_change', null, {
+        plan: 'free', status: 'active', note: 'Auto-provisioned free plan'
+      });
+      return newSub;
+    };
+
     switch (action) {
       case 'get_current': {
-        const subs = await sr.entities.UserSubscription.filter({ owner_id: user.id });
-        if (!subs || subs.length === 0) {
-          return Response.json({ subscription: { plan: 'free', status: 'active', usage_limit: PLAN_LIMITS.free.properties, usage_count: 0 } });
-        }
-        return Response.json({ subscription: subs[0] });
-      }
-
-      case 'upgrade': {
-        const { new_plan } = body;
-        if (!['starter', 'growth', 'pro'].includes(new_plan)) {
-          return Response.json({ error: 'Invalid plan. Allowed: starter, growth, pro' }, { status: 400 });
-        }
-
-        // Find existing subscription
-        const subs = await sr.entities.UserSubscription.filter({ owner_id: user.id });
-        let sub = subs && subs.length > 0 ? subs[0] : null;
-
-        if (!sub) {
-          // Create new subscription (service role bypasses RLS create rule)
-          sub = await sr.entities.UserSubscription.create({
-            owner_id: user.id,
-            plan: new_plan,
-            status: 'active',
-            payment_status: 'pending',
-            usage_limit: PLAN_LIMITS[new_plan].properties,
-            usage_count: 0
-          });
-          await logAction(sub.id, 'UserSubscription', 'subscription_change', null, { plan: new_plan, status: 'active' });
-        } else {
-          const prev = { plan: sub.plan, status: sub.status, usage_limit: sub.usage_limit };
-          sub = await sr.entities.UserSubscription.update(sub.id, {
-            plan: new_plan,
-            status: 'active',
-            usage_limit: PLAN_LIMITS[new_plan].properties
-          });
-          await logAction(sub.id, 'UserSubscription', 'subscription_change', prev, { plan: new_plan, usage_limit: PLAN_LIMITS[new_plan].properties });
-        }
-
+        // Auto-provisions free subscription on first call — serves as login/dashboard fallback
+        const sub = await ensureSubscription();
         return Response.json({ subscription: sub });
       }
 
       case 'check_property_limit': {
-        // Enforce plan limits on property creation
-        const subs = await sr.entities.UserSubscription.filter({ owner_id: user.id });
-        const plan = subs && subs.length > 0 ? subs[0].plan : 'free';
-        const limit = PLAN_LIMITS[plan] ? PLAN_LIMITS[plan].properties : 1;
+        const sub = await ensureSubscription();
+        const limit = PLAN_LIMITS[sub.plan] ? PLAN_LIMITS[sub.plan].properties : 1;
 
         const properties = await base44.entities.UserProperty.list();
         const count = properties.length;
 
         if (count >= limit) {
-          return Response.json({ allowed: false, plan, limit, count, message: 'Property limit reached for your plan' });
+          return Response.json({ allowed: false, plan: sub.plan, limit, count, message: 'Property limit reached for your plan' });
         }
-        return Response.json({ allowed: true, plan, limit, count });
+        return Response.json({ allowed: true, plan: sub.plan, limit, count });
       }
 
       case 'accept_recommendation': {
@@ -106,7 +89,6 @@ Deno.serve(async (req) => {
           current_price: accepted_price || rec.recommended_price
         });
 
-        // Create history record (user-scoped, RLS allows)
         await base44.entities.RecommendationHistory.create({
           recommendation_id: recommendation_id,
           user_property_id: rec.user_property_id,
@@ -117,6 +99,16 @@ Deno.serve(async (req) => {
 
         await logAction(recommendation_id, 'PriceRecommendation', 'manual_pricing_override', prev, { status: 'accepted', current_price: accepted_price || rec.recommended_price });
         return Response.json({ recommendation: updated });
+      }
+
+      case 'upgrade': {
+        // Paid checkout is not implemented yet.
+        // Plan changes must go through a trusted backend function with payment verification.
+        // Direct self-upgrade is disabled for security.
+        return Response.json({
+          error: 'الترقية المدفوعة غير متاحة حاليًا',
+          error_en: 'Paid upgrades are currently unavailable'
+        }, { status: 501 });
       }
 
       default:

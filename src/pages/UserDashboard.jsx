@@ -12,7 +12,7 @@ import OpportunityWallet from "@/components/dashboard/OpportunityWallet";
 import WhatWouldMadarDo from "@/components/dashboard/WhatWouldMadarDo";
 import ActionCenter from "@/components/dashboard/ActionCenter";
 import MarketStatus from "@/components/dashboard/MarketStatus";
-import { Building2, BarChart3, MapPin } from "lucide-react";
+import { Building2, BarChart3, MapPin, Sparkles } from "lucide-react";
 
 function DashboardLink({ to, icon: Icon, label }) {
   return (
@@ -31,7 +31,7 @@ function DashboardLink({ to, icon: Icon, label }) {
 export default function UserDashboard() {
   const { t, lang } = useLanguage();
   const { user } = useAuth();
-  const { subscription } = useSubscription();
+  const { subscription, tier } = useSubscription();
   const { toast } = useToast();
 
   const [opportunities, setOpportunities] = useState(null);
@@ -121,6 +121,14 @@ export default function UserDashboard() {
         <h1 className="font-display text-display-lg font-light">
           {t("dashboard.greeting")}, {userName}
         </h1>
+        {tier && (
+          <span className="inline-flex items-center gap-2 mt-4 px-4 py-2 border border-border/50 rounded-full">
+            <Sparkles size={14} className="text-accent" strokeWidth={1} />
+            <span className="font-body text-sm text-muted-foreground">
+              {tier === "free" ? t("billing.freePlanLabel") : t(`billing.tiers.${tier}`)}
+            </span>
+          </span>
+        )}
       </motion.div>
 
       {opportunities && opportunities.length > 0 ? (

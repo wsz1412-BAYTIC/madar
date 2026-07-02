@@ -90,10 +90,24 @@
         "paid",
         "pending",
         "failed",
-        "none"
+        "none",
+        "not_required"
       ],
       "title": "Payment Status",
       "default": "none",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Subscription Start Date",
       "rls": {
         "read": true,
         "write": {
