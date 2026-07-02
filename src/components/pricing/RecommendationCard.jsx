@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
+import { assessAppliedPrice } from '@/lib/recommendationWorkflow';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Sparkles, ShieldAlert, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { Sparkles, ShieldAlert, CheckCircle2, XCircle, Clock, AlertTriangle } from 'lucide-react';
+
+const APPLY_ERROR_LABEL = {
+  not_a_number: { en: 'Enter a valid number.', ar: 'الرجاء إدخال رقم صحيح.' },
+  non_positive: { en: 'Price must be greater than zero.', ar: 'يجب أن يكون السعر أكبر من صفر.' },
+  unrealistic: {
+    en: 'This price is far outside the recommended range and was rejected — please double-check it.',
+    ar: 'هذا السعر بعيد جداً عن النطاق الموصى به وتم رفضه — يرجى التحقق منه.',
+  },
+};
 
 const STATUS_LABEL = {
   pending_review: { en: 'Pending Review', ar: 'بانتظار المراجعة', variant: 'secondary' },
@@ -38,6 +48,30 @@ export default function RecommendationCard({ recommendation, onApprove, onReject
   const [appliedPrice, setAppliedPrice] = useState('');
   const [showRejectForm, setShowRejectForm] = useState(false);
   const [showApplyForm, setShowApplyForm] = useState(false);
+  const [applyError, setApplyError] = useState(null);
+  const [pendingOverridePrice, setPendingOverridePrice] = useState(null);
+
+  const handleApplyClick = () => {
+    const price = Number(appliedPrice);
+    const assessment = assessAppliedPrice(price, recommendation.recommendedPriceMin, recommendation.recommendedPriceMax);
+    if (assessment.status === 'invalid') {
+      setApplyError(assessment.reason);
+      return;
+    }
+    setApplyError(null);
+    if (assessment.status === 'needs_confirmation') {
+      setPendingOverridePrice(price);
+      return;
+    }
+    onApply(price, false);
+  };
+
+  const handleConfirmOverride = () => {
+    onApply(pendingOverridePrice, true);
+    setPendingOverridePrice(null);
+  };
+
+  const handleCancelOverride = () => setPendingOverridePrice(null);
 
   const status = STATUS_LABEL[recommendation.status] || STATUS_LABEL.pending_review;
   const confidence = CONFIDENCE_LABEL[recommendation.confidence] || CONFIDENCE_LABEL.medium;
@@ -159,6 +193,27 @@ export default function RecommendationCard({ recommendation, onApprove, onReject
               <Button size="sm" onClick={() => setShowApplyForm(true)}>
                 {lang === 'ar' ? 'تسجيل تطبيق السعر' : 'Record price applied'}
               </Button>
+            ) : pendingOverridePrice !== null ? (
+              <div dir="rtl" className="flex flex-col gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-right">
+                <div className="flex items-center gap-2 text-amber-800">
+                  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                  <p className="text-sm font-medium">
+                    السعر المدخل ({pendingOverridePrice} {recommendation.currency}) خارج النطاق الموصى به
+                    ({recommendation.recommendedPriceMin} - {recommendation.recommendedPriceMax} {recommendation.currency}).
+                  </p>
+                </div>
+                <p className="text-xs text-amber-700">
+                  سيتم تسجيل هذا كتجاوز يدوي (Manual Override) للنطاق الموصى به مع حفظ النطاق الأصلي. هل أنت متأكد من المتابعة؟
+                </p>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="destructive" disabled={isMutating} onClick={handleConfirmOverride}>
+                    نعم، طبّق هذا السعر
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={handleCancelOverride}>
+                    إلغاء
+                  </Button>
+                </div>
+              </div>
             ) : (
               <div className="flex flex-col gap-2">
                 <Input
@@ -166,17 +221,18 @@ export default function RecommendationCard({ recommendation, onApprove, onReject
                   min="0"
                   placeholder={lang === 'ar' ? 'السعر المطبق فعلياً' : 'Actual price applied'}
                   value={appliedPrice}
-                  onChange={(e) => setAppliedPrice(e.target.value)}
+                  onChange={(e) => { setAppliedPrice(e.target.value); setApplyError(null); }}
                 />
+                {applyError && (
+                  <p className="text-xs text-red-600">
+                    {lang === 'ar' ? APPLY_ERROR_LABEL[applyError].ar : APPLY_ERROR_LABEL[applyError].en}
+                  </p>
+                )}
                 <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    disabled={isMutating || !appliedPrice || Number(appliedPrice) <= 0}
-                    onClick={() => onApply(Number(appliedPrice))}
-                  >
+                  <Button size="sm" disabled={isMutating || !appliedPrice} onClick={handleApplyClick}>
                     {lang === 'ar' ? 'تأكيد التطبيق' : 'Confirm applied'}
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setShowApplyForm(false)}>
+                  <Button size="sm" variant="ghost" onClick={() => { setShowApplyForm(false); setApplyError(null); }}>
                     {lang === 'ar' ? 'إلغاء' : 'Cancel'}
                   </Button>
                 </div>
@@ -186,9 +242,19 @@ export default function RecommendationCard({ recommendation, onApprove, onReject
         )}
 
         {recommendation.status === 'applied' && recommendation.appliedPrice != null && (
-          <p className="text-sm">
-            {lang === 'ar' ? 'السعر المطبق' : 'Applied price'}: <strong>{recommendation.appliedPrice} {recommendation.currency}</strong>
-          </p>
+          <div className="text-sm space-y-1">
+            <p>
+              {lang === 'ar' ? 'السعر المطبق' : 'Applied price'}: <strong>{recommendation.appliedPrice} {recommendation.currency}</strong>
+            </p>
+            {recommendation.isManualOverride && (
+              <p className="text-xs text-amber-700 flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                {lang === 'ar'
+                  ? `تجاوز يدوي للنطاق الموصى به (${recommendation.appliedPriceRangeMin} - ${recommendation.appliedPriceRangeMax} ${recommendation.currency})`
+                  : `Manual override of the recommended range (${recommendation.appliedPriceRangeMin} - ${recommendation.appliedPriceRangeMax} ${recommendation.currency})`}
+              </p>
+            )}
+          </div>
         )}
 
         {recommendation.status === 'rejected' && recommendation.rejectionReason && (

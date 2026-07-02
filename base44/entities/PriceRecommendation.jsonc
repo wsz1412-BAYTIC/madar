@@ -89,6 +89,19 @@
     "appliedPrice": {
       "type": "number"
     },
+    "isManualOverride": {
+      "type": "boolean",
+      "default": false,
+      "description": "true when appliedPrice was outside [recommendedPriceMin, recommendedPriceMax] and the human explicitly confirmed applying it anyway"
+    },
+    "appliedPriceRangeMin": {
+      "type": ["number", "null"],
+      "description": "Snapshot of recommendedPriceMin at the moment appliedPrice was recorded"
+    },
+    "appliedPriceRangeMax": {
+      "type": ["number", "null"],
+      "description": "Snapshot of recommendedPriceMax at the moment appliedPrice was recorded"
+    },
     "appliedBy": {
       "type": "string"
     },

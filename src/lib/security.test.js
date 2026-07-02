@@ -29,6 +29,11 @@ describe('PriceRecommendation entity RLS', () => {
     expect(entity.properties.recommendedPriceMin.type).toEqual(['number', 'null']);
     expect(entity.properties.recommendedPriceMax.type).toEqual(['number', 'null']);
   });
+
+  it('declares appliedPriceRangeMin/Max as nullable too, since applyTransition writes null when no recommended range existed at apply time', () => {
+    expect(entity.properties.appliedPriceRangeMin.type).toEqual(['number', 'null']);
+    expect(entity.properties.appliedPriceRangeMax.type).toEqual(['number', 'null']);
+  });
 });
 
 describe('OPENAI_API_KEY handling in the backend function', () => {
