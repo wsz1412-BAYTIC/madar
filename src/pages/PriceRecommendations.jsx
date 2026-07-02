@@ -10,6 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
+const REVIEW_ERROR_LABEL = {
+  invalid_price: { en: 'Invalid price.', ar: 'سعر غير صالح.' },
+  unrealistic_price: {
+    en: 'This price is far outside the recommended range and was rejected.',
+    ar: 'هذا السعر بعيد جداً عن النطاق الموصى به وتم رفضه.',
+  },
+  override_confirmation_required: {
+    en: 'Please confirm the price override again — the recommendation may have changed.',
+    ar: 'يرجى تأكيد تجاوز السعر مرة أخرى — قد تكون التوصية قد تغيرت.',
+  },
+};
+
 function PriceRecommendationsContent() {
   const { lang } = useLang();
   const { user } = useAuth();
@@ -52,8 +64,13 @@ function PriceRecommendationsContent() {
   const review = async (recommendationId, action, payload) => {
     try {
       await reviewMutation.mutateAsync({ recommendationId, action, ...payload });
-    } catch {
-      toast({ variant: 'destructive', description: lang === 'ar' ? 'تعذر تنفيذ العملية' : 'Action failed' });
+    } catch (err) {
+      const code = err?.response?.data?.code;
+      const label = REVIEW_ERROR_LABEL[code];
+      toast({
+        variant: 'destructive',
+        description: label ? (lang === 'ar' ? label.ar : label.en) : (lang === 'ar' ? 'تعذر تنفيذ العملية' : 'Action failed'),
+      });
     }
   };
 
@@ -108,7 +125,7 @@ function PriceRecommendationsContent() {
             isMutating={reviewMutation.isPending}
             onApprove={() => review(rec.id, 'approve')}
             onReject={(rejectionReason) => review(rec.id, 'reject', { rejectionReason })}
-            onApply={(appliedPrice) => review(rec.id, 'apply', { appliedPrice })}
+            onApply={(appliedPrice, confirmOverride) => review(rec.id, 'apply', { appliedPrice, confirmOverride })}
           />
         ))}
       </div>
