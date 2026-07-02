@@ -15,17 +15,19 @@ const ERROR_STATUS = {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const [user, body] = await Promise.all([base44.auth.me(), req.json()]);
     if (!user) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { recommendationId, action, ...payload } = await req.json();
+    const { recommendationId, action, ...payload } = body;
     if (!recommendationId || typeof recommendationId !== "string") {
       return Response.json({ error: "recommendationId is required" }, { status: 400 });
     }
 
-    const record = await base44.asServiceRole.entities.PriceRecommendation.get(recommendationId);
+    // .get() may resolve null/undefined OR throw on a missing id depending on
+    // SDK version, so normalize both to a clean 404 instead of a raw 500.
+    const record = await base44.asServiceRole.entities.PriceRecommendation.get(recommendationId).catch(() => null);
     if (!record) {
       return Response.json({ error: "Recommendation not found" }, { status: 404 });
     }
