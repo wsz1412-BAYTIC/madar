@@ -124,6 +124,24 @@ describe('validateAiResponse - security guardrails', () => {
     expect(result.reason).toBe('hallucinated_number');
   });
 
+  it('rejects a fabricated number written in Eastern Arabic-Indic digits (not just ASCII)', () => {
+    const result = validateAiResponse(
+      validResponse({ summaryAr: 'يمكن رفع السعر إلى ٩٩٩٩ ريال بناءً على تحليل السوق.' }),
+      snapshot
+    );
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('hallucinated_number');
+  });
+
+  it('rejects a small fabricated percentage that is not grounded in any evidence value (no generic small-number carve-out)', () => {
+    const result = validateAiResponse(
+      validResponse({ summaryAr: 'يمكن رفع السعر بنسبة 20% اعتماداً على تحليل السوق.' }),
+      snapshot
+    );
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('hallucinated_number');
+  });
+
   it('accepts numbers that legitimately derive from the snapshot (e.g. occupancy as a percentage)', () => {
     const occPct = Math.round(snapshot.occupancyRate * 100);
     const result = validateAiResponse(

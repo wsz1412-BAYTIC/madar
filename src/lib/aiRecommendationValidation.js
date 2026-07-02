@@ -76,17 +76,41 @@ export function buildUserPrompt(snapshot, propertyContext = {}) {
 const isNonEmptyString = (v) => typeof v === 'string' && v.trim().length > 0;
 const isStringArray = (v) => Array.isArray(v) && v.every((s) => typeof s === 'string');
 
+// Eastern Arabic-Indic (U+0660-0669) and Extended Arabic-Indic/Persian
+// (U+06F0-06F9) digits, normalized to ASCII so a model that writes numbers
+// in Arabic numerals can't slip a fabricated number past the ASCII-only
+// \d check below.
+const ARABIC_INDIC_DIGIT_OFFSET = 0x0660;
+const EXTENDED_ARABIC_INDIC_DIGIT_OFFSET = 0x06f0;
+
+function normalizeDigits(text) {
+  return text.replace(/[٠-٩۰-۹]/g, (ch) => {
+    const code = ch.codePointAt(0);
+    const offset = code >= EXTENDED_ARABIC_INDIC_DIGIT_OFFSET ? EXTENDED_ARABIC_INDIC_DIGIT_OFFSET : ARABIC_INDIC_DIGIT_OFFSET;
+    return String(code - offset);
+  });
+}
+
 /**
  * Pulls numeric tokens (integers/decimals) out of Arabic/English text so we
  * can check the model didn't fabricate a number that isn't one of our
- * allowed values.
+ * allowed values. Handles both ASCII and Arabic-Indic digits.
  */
 export function extractNumericTokens(text) {
   if (typeof text !== 'string') return [];
-  const matches = text.match(/\d+(?:\.\d+)?/g);
+  const matches = normalizeDigits(text).match(/\d+(?:\.\d+)?/g);
   return matches ? matches.map(Number) : [];
 }
 
+/**
+ * The only numbers the AI is allowed to mention are ones that trace back to
+ * a real evidence value (as itself, or as a rounded percentage of it, e.g.
+ * 65 for an occupancyRate of 0.65). There is deliberately no "small integer"
+ * carve-out for generic language: a false rejection just falls back to the
+ * deterministic recommendation (safe), while allowing an unguarded range
+ * would let exactly the small percentages/price deltas a model is most
+ * likely to fabricate slip through.
+ */
 function buildAllowedNumbers(snapshot) {
   const numbers = new Set();
   for (const entry of snapshot.evidence) {
@@ -95,8 +119,6 @@ function buildAllowedNumbers(snapshot) {
       numbers.add(Math.round(entry.value * 100)); // percentages expressed as e.g. 65 for 0.65
     }
   }
-  // Small integers are allowed as generic language (counts, "2-3 nights", list numbering, etc.)
-  for (let i = 0; i <= 31; i++) numbers.add(i);
   return numbers;
 }
 
@@ -105,8 +127,8 @@ function numbersAreAllowed(text, allowedNumbers, tolerance = 1) {
   for (const token of tokens) {
     const rounded = Math.round(token);
     let ok = false;
-    for (const allowed of allowedNumbers) {
-      if (Math.abs(allowed - rounded) <= tolerance) {
+    for (let delta = -tolerance; delta <= tolerance; delta++) {
+      if (allowedNumbers.has(rounded + delta)) {
         ok = true;
         break;
       }
