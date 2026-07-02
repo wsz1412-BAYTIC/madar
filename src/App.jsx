@@ -48,6 +48,7 @@ import Reports from '@/pages/Reports';
 import PricingPage from '@/pages/PricingPage';
 import PropertyAnalysis from '@/pages/PropertyAnalysis';
 import Opportunities from '@/pages/Opportunities';
+import PriceRecommendations from '@/pages/PriceRecommendations';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -80,6 +81,7 @@ const AuthenticatedApp = () => {
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/properties" element={<Properties />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/pricing-recommendations" element={<PriceRecommendations />} />
         <Route path="/revenue" element={<Revenue />} />
         <Route path="/alerts" element={<Alerts />} />
         <Route path="/market" element={<Market />} />

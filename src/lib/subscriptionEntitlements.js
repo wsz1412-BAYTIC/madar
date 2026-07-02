@@ -414,7 +414,7 @@ export function getNavigationItems(planName, addOns = [], lang = 'en') {
   if (entitlements.features.pricing.recommendations) {
     items.push({
       label: isAr ? 'التسعير الذكي' : 'Smart Pricing',
-      href: '/pricing',
+      href: '/pricing-recommendations',
       icon: 'TrendingUp',
       visible: true,
     });
