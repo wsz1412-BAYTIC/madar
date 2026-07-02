@@ -111,5 +111,26 @@
     "userId",
     "name",
     "type"
-  ]
+  ],
+  "rls": {
+    "create": { "data.userId": "{{user.id}}" },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "delete": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    }
+  }
 }
