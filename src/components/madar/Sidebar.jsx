@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
-import { useMadarAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/lib/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Building2, BarChart3, DollarSign, Bell, Globe2,
@@ -31,7 +31,7 @@ const bottomItems = [
 
 export default function Sidebar() {
   const { t, toggleLang, isRTL } = useLang();
-  const { logout } = useMadarAuth();
+  const { logout } = useAuth();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

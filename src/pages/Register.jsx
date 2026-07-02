@@ -42,8 +42,16 @@ export default function Register() {
     setLoading(true);
     try {
       const result = await base44.auth.verifyOtp({ email, otpCode });
+      // Per the Base44 SDK's documented registration flow, verifyOtp only
+      // verifies the email; the authenticated session is established by a
+      // subsequent login. If verifyOtp already returned a token, use it;
+      // otherwise complete the flow with an explicit login so the new user
+      // actually ends up signed in (previously they were redirected with no
+      // session and bounced back to /login).
       if (result?.access_token) {
         base44.auth.setToken(result.access_token);
+      } else {
+        await base44.auth.loginViaEmailPassword(email, password);
       }
       window.location.href = "/";
     } catch (err) {

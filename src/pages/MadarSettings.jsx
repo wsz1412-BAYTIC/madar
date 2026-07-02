@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { useMadarAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/lib/AuthContext';
 import { User, Bell, Globe, Save } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { FadeIn } from '@/components/madar/Motion';
 
 export default function MadarSettings() {
   const { t, lang, setLang } = useLang();
-  const { user } = useMadarAuth();
+  const { user } = useAuth();
   const [form, setForm] = useState({
     name: user?.full_name || '',
     email: user?.email || '',

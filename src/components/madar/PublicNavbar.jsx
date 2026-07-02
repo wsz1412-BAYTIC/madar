@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
-import { useMadarAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/lib/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Menu, X, Globe, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +10,7 @@ const LOGO_URL = 'https://media.base44.com/images/public/6a43dd3026ba0773af35c60
 
 export default function PublicNavbar() {
   const { t, toggleLang, isRTL, lang } = useLang();
-  const { isAuthenticated } = useMadarAuth();
+  const { isAuthenticated } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

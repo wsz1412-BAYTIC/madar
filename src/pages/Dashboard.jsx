@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { useMadarAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/lib/AuthContext';
 import { TrendingUp, Home, DollarSign, BarChart3, ArrowUpRight, ArrowDownRight, Sparkles } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { motion } from 'framer-motion';
@@ -26,7 +26,7 @@ const mockRecommendations = [
 
 export default function Dashboard() {
   const { t, lang, isRTL } = useLang();
-  const { user } = useMadarAuth();
+  const { user } = useAuth();
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
   return (
