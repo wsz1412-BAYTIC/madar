@@ -6,13 +6,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Building2, BarChart3, DollarSign, Bell, Globe2,
   CalendarDays, Settings, CreditCard, Calculator, Link2, Gift,
-  ShieldCheck, LogOut, ChevronLeft, ChevronRight, Menu, X, Globe
+  ShieldCheck, LogOut, ChevronLeft, ChevronRight, Menu, X, Globe, TrendingUp
 } from 'lucide-react';
 
 const navItems = [
   { key: 'dashboard', path: '/dashboard', icon: LayoutDashboard },
   { key: 'properties', path: '/properties', icon: Building2 },
   { key: 'analytics', path: '/analytics', icon: BarChart3 },
+  { key: 'aiRecommendations', path: '/pricing-recommendations', icon: TrendingUp },
   { key: 'revenue', path: '/revenue', icon: DollarSign },
   { key: 'alerts', path: '/alerts', icon: Bell },
   { key: 'market', path: '/market', icon: Globe2 },
