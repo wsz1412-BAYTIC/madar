@@ -21,7 +21,7 @@ export function SubscriptionProvider({ children }) {
     setLoading(true);
     try {
       const data = await madarApi.getSubscription();
-      setSubscription(data);
+      setSubscription({ tier: data.plan || "free", ...data });
     } catch {
       // If subscription fetch fails, default to free tier
       setSubscription({ tier: "free" });

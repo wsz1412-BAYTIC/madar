@@ -232,7 +232,7 @@ export const madarApi = {
   getMarket: (city) => request(`/market/${encodeURIComponent(city)}`),
 
   // ── Subscription ──
-  getSubscription: () => request("/subscription"),
+  getSubscription: () => request("/auth/me"),
   upgradeSubscription: () =>
     request("/subscription/upgrade", { method: "POST" }),
 
