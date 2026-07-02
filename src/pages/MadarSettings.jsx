@@ -1,30 +1,46 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useAuth } from '@/lib/AuthContext';
-import { User, Bell, Globe, Save } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { base44 } from '@/api/base44Client';
+import { useToast } from '@/components/ui/use-toast';
+import { User, Globe, Save, Loader2 } from 'lucide-react';
 import { FadeIn } from '@/components/madar/Motion';
 
 export default function MadarSettings() {
   const { t, lang, setLang } = useLang();
-  const { user } = useAuth();
+  const { user, checkUserAuth } = useAuth();
+  const { toast } = useToast();
   const [form, setForm] = useState({
     name: user?.full_name || '',
-    email: user?.email || '',
     phone: user?.phone || '+966',
     language: lang,
-    emailNotif: true,
-    smsNotif: false,
-    pushNotif: true,
   });
+  const [saving, setSaving] = useState(false);
 
   const update = (key, val) => setForm(prev => ({ ...prev, [key]: val }));
 
-  const handleSave = () => {
-    setLang(form.language);
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      // Persist the editable profile fields to the Base44 user. Language is a
+      // local UI preference and is applied immediately.
+      await base44.auth.updateMe({ full_name: form.name, phone: form.phone });
+      setLang(form.language);
+      // Refresh the session user so the rest of the app reflects the change.
+      if (checkUserAuth) await checkUserAuth();
+      toast({ description: lang === 'ar' ? 'تم حفظ التغييرات' : 'Changes saved' });
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        description: (lang === 'ar' ? 'تعذر حفظ التغييرات' : 'Failed to save changes') + (err?.message ? `: ${err.message}` : ''),
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const inputClass = "w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all";
+  const readonlyInputClass = inputClass + " opacity-60 cursor-not-allowed";
 
   return (
     <div className="space-y-8 max-w-2xl">
@@ -42,16 +58,17 @@ export default function MadarSettings() {
           </div>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('fullName')}</label>
-              <input value={form.name} onChange={e => update('name', e.target.value)} className={inputClass} />
+              <label htmlFor="profile-name" className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('fullName')}</label>
+              <input id="profile-name" value={form.name} onChange={e => update('name', e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('email')}</label>
-              <input value={form.email} onChange={e => update('email', e.target.value)} type="email" className={inputClass} />
+              <label htmlFor="profile-email" className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('email')}</label>
+              {/* Email is the account identity and is not editable here. */}
+              <input id="profile-email" value={user?.email || ''} type="email" className={readonlyInputClass} readOnly disabled />
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('phone')}</label>
-              <input value={form.phone} onChange={e => update('phone', e.target.value)} type="tel" dir="ltr" className={inputClass} />
+              <label htmlFor="profile-phone" className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('phone')}</label>
+              <input id="profile-phone" value={form.phone} onChange={e => update('phone', e.target.value)} type="tel" dir="ltr" className={inputClass} />
             </div>
           </div>
         </div>
@@ -75,30 +92,12 @@ export default function MadarSettings() {
         </div>
       </FadeIn>
 
-      <FadeIn delay={0.3}>
-        <div className="glass rounded-2xl p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center border border-white/[0.06]">
-              <Bell className="w-4 h-4 text-[#F7F5F0]/70" />
-            </div>
-            <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('notifications')}</h2>
-          </div>
-          <div className="space-y-4">
-            {['emailNotif', 'smsNotif', 'pushNotif'].map(key => (
-              <div key={key} className="flex items-center justify-between py-2">
-                <span className="text-sm text-[#F7F5F0]/60">{t(key)}</span>
-                <button onClick={() => update(key, !form[key])} className={`w-11 h-6 rounded-full relative transition-all ${form[key] ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A]' : 'bg-white/[0.08]'}`}>
-                  <motion.div animate={{ x: form[key] ? 22 : 3 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} className="absolute top-[3px] w-[18px] h-[18px] bg-white rounded-full shadow" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </FadeIn>
+      {/* Notification preferences intentionally removed until they have a real
+          persistence layer — do not display non-functional settings. */}
 
-      <FadeIn delay={0.4}>
-        <button onClick={handleSave} className="group relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all text-sm overflow-hidden">
-          <Save className="w-4 h-4 relative z-10" />
+      <FadeIn delay={0.3}>
+        <button onClick={handleSave} disabled={saving} className="group relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all text-sm overflow-hidden disabled:opacity-60">
+          {saving ? <Loader2 className="w-4 h-4 relative z-10 animate-spin" /> : <Save className="w-4 h-4 relative z-10" />}
           <span className="relative z-10">{t('saveChanges')}</span>
           <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
         </button>
