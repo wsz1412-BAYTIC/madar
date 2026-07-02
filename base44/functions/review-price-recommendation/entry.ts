@@ -8,8 +8,11 @@ const ERROR_STATUS = {
   unknown_action: 400,
   missing_actor: 400,
   missing_field: 400,
+  invalid_price: 400,
+  unrealistic_price: 400,
   invalid_transition: 409,
   expired: 409,
+  override_confirmation_required: 409,
 };
 
 Deno.serve(async (req) => {
