@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import PropertySearch from "./pages/PropertySearch";
 import PropertyDetail from "./pages/PropertyDetail";
 import MarketInsights from "./pages/MarketInsights";
+import UserDashboard from "./pages/UserDashboard";
 import Billing from "./pages/Billing";
 import Analytics from "./pages/Analytics";
 import Assistant from "./pages/Assistant";
@@ -55,7 +56,7 @@ function MadarRoutes() {
         <Route path="/property/:id" element={<ProtectedRoute><PropertyDetail /></ProtectedRoute>} />
         <Route path="/analytics/:propertyId" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
         <Route path="/market" element={<ProtectedRoute><MarketInsights /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><MarketInsights /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
         <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
         <Route path="/assistant" element={<ProtectedRoute><Assistant /></ProtectedRoute>} />
 
