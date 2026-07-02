@@ -14,7 +14,12 @@ const authMock = vi.hoisted(() => ({
   loginWithProvider: vi.fn(),
   logout: vi.fn(),
   me: vi.fn(),
+  register: vi.fn(),
+  verifyOtp: vi.fn(),
+  resendOtp: vi.fn(),
+  setToken: vi.fn(),
 }));
+vi.mock('@/components/ui/use-toast', () => ({ toast: vi.fn(), useToast: () => ({ toast: vi.fn() }) }));
 vi.mock('@/api/base44Client', () => ({ base44: { auth: authMock } }));
 
 // --- controllable mock of the Base44 useAuth hook ---------------------------
@@ -23,8 +28,21 @@ vi.mock('@/lib/AuthContext', () => ({
   useAuth: () => authState,
 }));
 
+// jsdom lacks a couple of DOM APIs the OTP input (input-otp) touches.
+globalThis.ResizeObserver =
+  globalThis.ResizeObserver ||
+  class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+if (typeof document !== 'undefined' && !document.elementFromPoint) {
+  document.elementFromPoint = () => null;
+}
+
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Login from '@/pages/Login';
+import Register from '@/pages/Register';
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -121,6 +139,57 @@ describe('login: credentials are actually sent to Base44 (fixes the broken legac
     fireEvent.click(screen.getByRole('button', { name: /log in/i }));
 
     expect(await screen.findByText('Invalid email or password')).toBeTruthy();
+  });
+});
+
+describe('registration: a verified new user actually ends up signed in', () => {
+  async function registerAndVerify() {
+    render(
+      <MemoryRouter>
+        <Register />
+      </MemoryRouter>
+    );
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'new@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Str0ngPass!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'Str0ngPass!' } });
+    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    await waitFor(() => expect(authMock.register).toHaveBeenCalledWith({ email: 'new@example.com', password: 'Str0ngPass!' }));
+    // OTP screen appears
+    const otp = await screen.findByRole('textbox');
+    fireEvent.change(otp, { target: { value: '123456' } });
+    fireEvent.click(screen.getByRole('button', { name: /^verify$/i }));
+  }
+
+  it('when verifyOtp does NOT return a token, it completes the flow with an explicit login (the fix)', async () => {
+    authMock.register.mockResolvedValueOnce({});
+    authMock.verifyOtp.mockResolvedValueOnce({}); // no access_token — the common case
+    authMock.loginViaEmailPassword.mockResolvedValueOnce({ access_token: 't', user: { id: 'u' } });
+    await registerAndVerify();
+    await waitFor(() =>
+      expect(authMock.loginViaEmailPassword).toHaveBeenCalledWith('new@example.com', 'Str0ngPass!')
+    );
+  });
+
+  it('when verifyOtp DOES return a token, it sets it and does not double-login', async () => {
+    authMock.register.mockResolvedValueOnce({});
+    authMock.verifyOtp.mockResolvedValueOnce({ access_token: 'tok123' });
+    await registerAndVerify();
+    await waitFor(() => expect(authMock.setToken).toHaveBeenCalledWith('tok123'));
+    expect(authMock.loginViaEmailPassword).not.toHaveBeenCalled();
+  });
+
+  it('rejects mismatched passwords before calling the backend', async () => {
+    render(
+      <MemoryRouter>
+        <Register />
+      </MemoryRouter>
+    );
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'x@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'aaaaaa1!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'bbbbbb2!' } });
+    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    expect(await screen.findByText('Passwords do not match')).toBeTruthy();
+    expect(authMock.register).not.toHaveBeenCalled();
   });
 });
 
