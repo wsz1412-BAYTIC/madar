@@ -71,18 +71,21 @@ async function callOpenAI(snapshot, propertyContext, apiKey) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
+    const [user, body] = await Promise.all([base44.auth.me(), req.json()]);
     if (!user) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { propertyId } = await req.json();
+    const { propertyId } = body;
     if (!propertyId || typeof propertyId !== "string") {
       return Response.json({ error: "propertyId is required" }, { status: 400 });
     }
 
     // Always re-fetch server-side; never trust metrics sent by the client.
-    const property = await base44.asServiceRole.entities.UserProperty.get(propertyId);
+    // .get() may resolve null/undefined OR throw on a missing id depending
+    // on SDK version, so normalize both to a clean 404 rather than leaking
+    // a raw SDK error through the outer catch below.
+    const property = await base44.asServiceRole.entities.UserProperty.get(propertyId).catch(() => null);
     if (!property) {
       return Response.json({ error: "Property not found" }, { status: 404 });
     }
@@ -135,7 +138,6 @@ Deno.serve(async (req) => {
       summaryAr: recommendation.summaryAr,
       actionsAr: recommendation.actionsAr,
       caveatsAr: recommendation.caveatsAr,
-      evidence: snapshot.evidence,
       citedMetricKeys: recommendation.citedMetricKeys,
       generatedAt: now.toISOString(),
       validUntil: validUntil.toISOString(),

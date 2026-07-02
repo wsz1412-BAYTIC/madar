@@ -22,7 +22,8 @@
       "description": "Whether the narrative came from OpenAI or the deterministic fallback"
     },
     "aiModel": {
-      "type": "string"
+      "type": ["string", "null"],
+      "description": "null when source is \"fallback\" (no AI call was made)"
     },
     "confidence": {
       "type": "string",
@@ -40,10 +41,12 @@
       "items": { "type": "string" }
     },
     "recommendedPriceMin": {
-      "type": "number"
+      "type": ["number", "null"],
+      "description": "null when operatingCosts is missing on the property, so no break-even price could be computed"
     },
     "recommendedPriceMax": {
-      "type": "number"
+      "type": ["number", "null"],
+      "description": "null when operatingCosts is missing on the property, so no break-even price could be computed"
     },
     "currency": {
       "type": "string",
@@ -60,19 +63,6 @@
     "caveatsAr": {
       "type": "array",
       "items": { "type": "string" }
-    },
-    "evidence": {
-      "type": "array",
-      "description": "Every metric key/value the recommendation is allowed to reference",
-      "items": {
-        "type": "object",
-        "properties": {
-          "key": { "type": "string" },
-          "label": { "type": "string" },
-          "labelAr": { "type": "string" },
-          "value": { "type": "number" }
-        }
-      }
     },
     "citedMetricKeys": {
       "type": "array",
@@ -134,14 +124,14 @@
   },
   "required": ["userId", "propertyId", "status", "source", "inputMetrics", "generatedAt", "validUntil"],
   "rls": {
-    "create": false,
+    "create": { "user_condition": { "role": "admin" } },
     "read": {
       "$or": [
         { "data.userId": "{{user.id}}" },
         { "user_condition": { "role": "admin" } }
       ]
     },
-    "update": false,
+    "update": { "user_condition": { "role": "admin" } },
     "delete": false
   }
 }

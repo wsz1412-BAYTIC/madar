@@ -10,9 +10,9 @@ describe('PriceRecommendation entity RLS', () => {
   // This entity file contains no // comments, so it is valid JSON as-is.
   const entity = JSON.parse(read('base44/entities/PriceRecommendation.jsonc'));
 
-  it('blocks direct client create/update/delete (writes only via service-role backend functions)', () => {
-    expect(entity.rls.create).toBe(false);
-    expect(entity.rls.update).toBe(false);
+  it('blocks delete entirely, and restricts create/update to admin (asServiceRole sets role=admin but does NOT bypass RLS, so plain `false` would also block the backend functions themselves)', () => {
+    expect(entity.rls.create).toEqual({ user_condition: { role: 'admin' } });
+    expect(entity.rls.update).toEqual({ user_condition: { role: 'admin' } });
     expect(entity.rls.delete).toBe(false);
   });
 
@@ -22,6 +22,12 @@ describe('PriceRecommendation entity RLS', () => {
     const clauses = JSON.stringify(readRule);
     expect(clauses).toContain('{{user.id}}');
     expect(clauses).toContain('"role":"admin"');
+  });
+
+  it('declares aiModel/recommendedPriceMin/recommendedPriceMax as nullable, since the generator writes null on realistic paths (no API key configured, or missing operatingCosts)', () => {
+    expect(entity.properties.aiModel.type).toEqual(['string', 'null']);
+    expect(entity.properties.recommendedPriceMin.type).toEqual(['number', 'null']);
+    expect(entity.properties.recommendedPriceMax.type).toEqual(['number', 'null']);
   });
 });
 
@@ -81,6 +87,6 @@ describe('generate-price-recommendation never trusts client-supplied metrics', (
   it('recomputes the snapshot from the server-fetched property, not from the request body', () => {
     expect(entrySource).toMatch(/buildMetricsSnapshot\(property, \{\}\)/);
     // the only field trusted from the request body is the propertyId used to look the record up
-    expect(entrySource).toMatch(/const \{ propertyId \} = await req\.json\(\)/);
+    expect(entrySource).toMatch(/const \{ propertyId \} = body/);
   });
 });
