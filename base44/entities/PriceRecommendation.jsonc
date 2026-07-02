@@ -1,0 +1,105 @@
+{
+  "name": "PriceRecommendation",
+  "type": "object",
+  "properties": {
+    "user_property_id": {
+      "type": "string",
+      "title": "User Property ID"
+    },
+    "recommended_price": {
+      "type": "number",
+      "title": "Recommended Price (SAR)"
+    },
+    "current_price": {
+      "type": "number",
+      "title": "Current Price (SAR)"
+    },
+    "min_price": {
+      "type": "number",
+      "title": "Minimum Price (SAR)"
+    },
+    "max_price": {
+      "type": "number",
+      "title": "Maximum Price (SAR)"
+    },
+    "confidence_score": {
+      "type": "number",
+      "title": "Confidence Score (0-1)"
+    },
+    "reasoning": {
+      "type": "string",
+      "title": "AI Reasoning"
+    },
+    "revenue_impact": {
+      "type": "number",
+      "title": "Projected Revenue Impact (SAR/month)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "rejected",
+        "expired"
+      ],
+      "title": "Status",
+      "default": "pending"
+    },
+    "period": {
+      "type": "string",
+      "title": "Recommendation Period"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Expires At"
+    },
+    "competitor_data": {
+      "type": "object",
+      "title": "Competitor Data"
+    }
+  },
+  "required": [
+    "user_property_id",
+    "recommended_price"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

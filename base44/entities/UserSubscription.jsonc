@@ -1,0 +1,180 @@
+{
+  "name": "UserSubscription",
+  "type": "object",
+  "properties": {
+    "plan": {
+      "type": "string",
+      "enum": [
+        "free",
+        "starter",
+        "growth",
+        "pro"
+      ],
+      "title": "Subscription Plan",
+      "default": "free",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "suspended",
+        "cancelled",
+        "past_due",
+        "trialing"
+      ],
+      "title": "Subscription Status",
+      "default": "active",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "renewal_date": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Renewal Date",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "usage_limit": {
+      "type": "number",
+      "title": "Usage Limit (properties)",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "usage_count": {
+      "type": "number",
+      "title": "Current Usage Count",
+      "default": 0,
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "paid",
+        "pending",
+        "failed",
+        "none"
+      ],
+      "title": "Payment Status",
+      "default": "none",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "title": "Stripe Customer ID",
+      "rls": {
+        "read": {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "stripe_subscription_id": {
+      "type": "string",
+      "title": "Stripe Subscription ID",
+      "rls": {
+        "read": {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "trial_ends_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Trial End Date",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "plan",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "system"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "system"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

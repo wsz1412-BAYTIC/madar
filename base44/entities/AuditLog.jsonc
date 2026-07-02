@@ -1,0 +1,79 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "acting_user_id": {
+      "type": "string",
+      "title": "Acting User ID"
+    },
+    "acting_user_email": {
+      "type": "string",
+      "title": "Acting User Email"
+    },
+    "target_record_id": {
+      "type": "string",
+      "title": "Target Record ID"
+    },
+    "target_entity": {
+      "type": "string",
+      "title": "Target Entity"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "role_change",
+        "account_suspension",
+        "account_activation",
+        "subscription_change",
+        "manual_pricing_override",
+        "admin_data_access",
+        "admin_data_modification",
+        "user_deletion"
+      ],
+      "title": "Action"
+    },
+    "previous_value": {
+      "type": "object",
+      "title": "Previous Value"
+    },
+    "new_value": {
+      "type": "object",
+      "title": "New Value"
+    },
+    "ip_address": {
+      "type": "string",
+      "title": "IP Address"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Additional Notes"
+    }
+  },
+  "required": [
+    "acting_user_id",
+    "target_entity",
+    "action"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "system"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "system"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "name": "MarketSignal",
+  "type": "object",
+  "properties": {
+    "city": {
+      "type": "string",
+      "title": "City"
+    },
+    "neighborhood": {
+      "type": "string",
+      "title": "Neighborhood"
+    },
+    "signal_type": {
+      "type": "string",
+      "enum": [
+        "demand_surge",
+        "demand_drop",
+        "price_increase",
+        "price_decrease",
+        "event",
+        "regulation"
+      ],
+      "title": "Signal Type"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ],
+      "title": "Severity"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "data": {
+      "type": "object",
+      "title": "Signal Data"
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Valid Until"
+    }
+  },
+  "required": [
+    "city",
+    "signal_type",
+    "title"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

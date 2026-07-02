@@ -1,0 +1,88 @@
+{
+  "name": "PropertyPerformance",
+  "type": "object",
+  "properties": {
+    "user_property_id": {
+      "type": "string",
+      "title": "User Property ID"
+    },
+    "period_start": {
+      "type": "string",
+      "format": "date",
+      "title": "Period Start"
+    },
+    "period_end": {
+      "type": "string",
+      "format": "date",
+      "title": "Period End"
+    },
+    "occupancy_rate": {
+      "type": "number",
+      "title": "Occupancy Rate (%)"
+    },
+    "adr": {
+      "type": "number",
+      "title": "Average Daily Rate (SAR)"
+    },
+    "revpar": {
+      "type": "number",
+      "title": "Revenue Per Available Room (SAR)"
+    },
+    "total_revenue": {
+      "type": "number",
+      "title": "Total Revenue (SAR)"
+    },
+    "total_bookings": {
+      "type": "number",
+      "title": "Total Bookings"
+    },
+    "average_length_of_stay": {
+      "type": "number",
+      "title": "Average Length of Stay (nights)"
+    }
+  },
+  "required": [
+    "user_property_id",
+    "period_start",
+    "period_end"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

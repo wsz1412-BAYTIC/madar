@@ -1,0 +1,66 @@
+{
+  "name": "RecommendationHistory",
+  "type": "object",
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "title": "Price Recommendation ID"
+    },
+    "user_property_id": {
+      "type": "string",
+      "title": "User Property ID"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "rejected",
+        "modified",
+        "expired",
+        "regenerated"
+      ],
+      "title": "Action Taken"
+    },
+    "previous_price": {
+      "type": "number",
+      "title": "Previous Price (SAR)"
+    },
+    "new_price": {
+      "type": "number",
+      "title": "New Price (SAR)"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "recommendation_id",
+    "action"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
