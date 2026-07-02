@@ -10,32 +10,18 @@ import OpportunityWallet from "@/components/dashboard/OpportunityWallet";
 import WhatWouldMadarDo from "@/components/dashboard/WhatWouldMadarDo";
 import ActionCenter from "@/components/dashboard/ActionCenter";
 import MarketStatus from "@/components/dashboard/MarketStatus";
-import { ChevronDown, Building2, BarChart3, MapPin } from "lucide-react";
+import { Building2, BarChart3, MapPin } from "lucide-react";
 
-function ExpandableLink({ to, icon: Icon, label, defaultOpen = false, children }) {
-  const [open, setOpen] = useState(defaultOpen);
+function DashboardLink({ to, icon: Icon, label }) {
   return (
     <div className="border-b border-border/30">
-      <div className="flex items-center justify-between py-5">
-        <Link
-          to={to}
-          className="flex items-center gap-3 font-display text-lg font-light hover:text-accent transition-colors"
-        >
-          <Icon size={18} strokeWidth={1.5} className="text-muted-foreground" />
-          {label}
-        </Link>
-        {children && (
-          <button
-            onClick={() => setOpen(!open)}
-            className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ChevronDown
-              size={18}
-              className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-            />
-          </button>
-        )}
-      </div>
+      <Link
+        to={to}
+        className="flex items-center gap-3 py-5 font-display text-lg font-light hover:text-accent transition-colors"
+      >
+        <Icon size={18} strokeWidth={1.5} className="text-muted-foreground" />
+        {label}
+      </Link>
     </div>
   );
 }
@@ -46,33 +32,54 @@ export default function UserDashboard() {
   const { subscription } = useSubscription();
   const { toast } = useToast();
 
-  const [briefs, setBriefs] = useState(null);
+  const [opportunities, setOpportunities] = useState(null);
   const [market, setMarket] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const userCity = subscription?.city || user?.city || null;
 
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      setError(null);
       try {
-        const [briefsData, marketData] = await Promise.all([
-          madarApi.getLatestBriefs().catch(() => []),
-          userCity
-            ? madarApi.getMarket(userCity).catch(() => null)
-            : Promise.resolve(null),
+        const [propsResult, oppsResult, marketResult] = await Promise.allSettled([
+          madarApi.getProperties(),
+          madarApi.getOpportunities(),
+          userCity ? madarApi.getMarket(userCity) : Promise.resolve(null),
         ]);
-        setBriefs(Array.isArray(briefsData) ? briefsData : []);
-        setMarket(marketData);
-      } catch (err) {
-        if (err instanceof MadarError && err.type === "tier") {
-          setError("tier");
-        } else {
-          setError("error");
-          toast({ title: t("common.error"), variant: "destructive" });
+
+        // Build property lookup map for client-side join
+        const propertyMap = {};
+        if (propsResult.status === "fulfilled") {
+          const props = Array.isArray(propsResult.value)
+            ? propsResult.value
+            : propsResult.value?.properties || [];
+          props.forEach((p) => {
+            propertyMap[p.id] = p;
+          });
         }
+
+        // Enrich opportunities with joined property data
+        let enriched = [];
+        if (oppsResult.status === "fulfilled") {
+          const opps = Array.isArray(oppsResult.value)
+            ? oppsResult.value
+            : oppsResult.value?.opportunities || [];
+          enriched = opps.map((opp) => ({
+            ...opp,
+            property: propertyMap[opp.property_id] || null,
+          }));
+        }
+        setOpportunities(enriched);
+
+        if (marketResult.status === "fulfilled") {
+          setMarket(marketResult.value);
+        }
+      } catch (err) {
+        if (!(err instanceof MadarError && err.type === "tier")) {
+          toast({ title: err.message || t("common.error"), variant: "destructive" });
+        }
+        setOpportunities([]);
       } finally {
         setLoading(false);
       }
@@ -88,16 +95,18 @@ export default function UserDashboard() {
     );
   }
 
-  const userName = user?.name || (lang === "ar" ? "مرحباً" : "Welcome");
+  const userName = user?.name || (lang === "ar" ? "ضيف" : "Guest");
   const today = new Date().toLocaleDateString(lang === "ar" ? "ar-SA" : "en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
   });
 
-  // Top recommendation = highest confidence or highest opportunity
-  const topBrief = briefs && briefs.length > 0
-    ? [...briefs].sort((a, b) => (b.confidence_score ?? 0) - (a.confidence_score ?? 0))[0]
+  // Top opportunity = highest revenue_impact
+  const topOpportunity = opportunities && opportunities.length > 0
+    ? [...opportunities].sort(
+        (a, b) => (b.revenue_impact ?? 0) - (a.revenue_impact ?? 0)
+      )[0]
     : null;
 
   return (
@@ -117,21 +126,21 @@ export default function UserDashboard() {
         </h1>
       </motion.div>
 
-      {briefs && briefs.length > 0 ? (
+      {opportunities && opportunities.length > 0 ? (
         <div className="space-y-8 md:space-y-12">
           {/* 1. Opportunity Wallet */}
-          <OpportunityWallet briefs={briefs} />
+          <OpportunityWallet opportunities={opportunities} />
 
           {/* 2. What Would Madar Do */}
-          <WhatWouldMadarDo brief={topBrief} />
+          <WhatWouldMadarDo opportunity={topOpportunity} />
 
           {/* 3. Action Center */}
-          <ActionCenter briefs={briefs} />
+          <ActionCenter opportunities={opportunities} />
 
           {/* 4. Market Status */}
           <MarketStatus market={market} city={userCity} />
 
-          {/* 5. Expandable links to other pages */}
+          {/* 5. Links to other pages */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -139,21 +148,9 @@ export default function UserDashboard() {
             className="mt-12"
           >
             <div className="hairline mb-2" />
-            <ExpandableLink
-              to="/properties"
-              icon={Building2}
-              label={t("dashboard.viewProperties")}
-            />
-            <ExpandableLink
-              to="/market"
-              icon={MapPin}
-              label={t("dashboard.viewMarketInsights")}
-            />
-            <ExpandableLink
-              to="/properties"
-              icon={BarChart3}
-              label={t("analytics.title")}
-            />
+            <DashboardLink to="/properties" icon={Building2} label={t("properties.title")} />
+            <DashboardLink to="/market" icon={MapPin} label={t("market.title")} />
+            <DashboardLink to="/properties" icon={BarChart3} label={t("analytics.title")} />
           </motion.div>
         </div>
       ) : (
@@ -169,10 +166,7 @@ export default function UserDashboard() {
             <p className="font-body text-sm text-muted-foreground/60 max-w-md mx-auto mb-8">
               {t("dashboard.noRecommendationsHint")}
             </p>
-            <Link
-              to="/properties"
-              className="ghost-btn inline-block"
-            >
+            <Link to="/properties" className="ghost-btn inline-block">
               {t("nav.addProperty")}
             </Link>
           </motion.div>

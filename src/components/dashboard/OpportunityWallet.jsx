@@ -2,21 +2,15 @@ import { motion } from "framer-motion";
 import { TrendingUp } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
-function getCurrentPrice(brief) {
-  return brief.current_price ?? brief.listing_price ?? brief.property_current_price ?? null;
-}
-
-export default function OpportunityWallet({ briefs }) {
+export default function OpportunityWallet({ opportunities }) {
   const { t } = useLanguage();
 
-  const totalOpportunity = (briefs || []).reduce((sum, brief) => {
-    const recommended = brief.recommended_price ?? 0;
-    const current = getCurrentPrice(brief) ?? 0;
-    const uplift = Math.max(0, recommended - current);
-    return sum + uplift * 30;
-  }, 0);
+  const total = (opportunities || []).reduce(
+    (sum, opp) => sum + (opp.revenue_impact ?? 0),
+    0
+  );
 
-  const formatted = new Intl.NumberFormat("en-US").format(Math.round(totalOpportunity));
+  const formatted = new Intl.NumberFormat("en-US").format(Math.round(total));
 
   return (
     <motion.section

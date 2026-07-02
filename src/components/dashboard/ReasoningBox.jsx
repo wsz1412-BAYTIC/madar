@@ -2,13 +2,13 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
-export default function ReasoningBox({ brief }) {
+export default function ReasoningBox({ opportunity }) {
   const { t, pickLangField } = useLanguage();
   const [expanded, setExpanded] = useState(false);
 
-  const reasoning = pickLangField(brief, "reasoning") || brief?.reasoning || "";
+  const reason = pickLangField(opportunity, "reason") || opportunity?.reason || "";
 
-  if (!reasoning) return null;
+  if (!reason) return null;
 
   return (
     <div className="mt-3">
@@ -23,8 +23,8 @@ export default function ReasoningBox({ brief }) {
         {expanded ? t("dashboard.hideWhy") : t("dashboard.why")}
       </button>
       {expanded && (
-        <p className="mt-2 font-body text-xs text-muted-foreground leading-relaxed pl-5 border-s border-border/40">
-          {reasoning}
+        <p className="mt-2 font-body text-xs text-muted-foreground leading-relaxed ps-5 border-s border-border/40">
+          {reason}
         </p>
       )}
     </div>

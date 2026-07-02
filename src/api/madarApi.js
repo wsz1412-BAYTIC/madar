@@ -223,6 +223,9 @@ export const madarApi = {
 
   // ── Briefs (AI pricing recommendations) ──
   getLatestBriefs: () => request("/briefs/latest"),
+
+  // ── Opportunities (portfolio-wide pending actions) ──
+  getOpportunities: () => request("/opportunities/"),
   getPropertyBriefs: (propertyId) => request(`/briefs/${propertyId}`),
 
   // ── Competitors ──

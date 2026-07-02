@@ -54,6 +54,7 @@ export const i18n = {
     "dashboard.noActionsHint": "توصياتك ستظهر هنا فور توفّرها",
     "dashboard.marketStatus": "حالة السوق",
     "dashboard.more": "المزيد",
+    "dashboard.viewMarketInsights": "عرض رؤى السوق",
     "dashboard.noRecommendations": "لا توجد توصيات متاحة بعد",
     "dashboard.noRecommendationsHint": "أضف عقاراتك وسيقوم مدار بتحليلها وتقديم توصيات تسعير يومية",
 
@@ -220,6 +221,7 @@ export const i18n = {
     "dashboard.noActionsHint": "Your recommendations will appear here once available",
     "dashboard.marketStatus": "Market Status",
     "dashboard.more": "More",
+    "dashboard.viewMarketInsights": "View Market Insights",
     "dashboard.noRecommendations": "No recommendations available yet",
     "dashboard.noRecommendationsHint": "Add your properties and Madar will analyze them and provide daily pricing recommendations",
 

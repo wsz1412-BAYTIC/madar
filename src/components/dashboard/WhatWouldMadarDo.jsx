@@ -3,24 +3,16 @@ import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/lib/LanguageContext";
 
-export default function WhatWouldMadarDo({ brief }) {
+export default function WhatWouldMadarDo({ opportunity }) {
   const { t, pickLangField, lang } = useLanguage();
 
-  if (!brief) return null;
+  if (!opportunity) return null;
 
-  const title = brief.property_title || brief.property?.title || "—";
-  const city = brief.property_city || brief.property?.city || "";
-  const recommended = brief.recommended_price;
-  const current = brief.current_price ?? brief.listing_price ?? brief.property_current_price;
-  const reasoning = pickLangField(brief, "reasoning") || brief.reasoning || "";
-  const propertyId = brief.property_id || brief.property?.id || brief.id;
-
-  const delta = recommended && current ? recommended - current : 0;
-  const deltaPct = current > 0 ? Math.round((delta / current) * 100) : 0;
-
-  const direction = delta >= 0
-    ? (lang === "ar" ? "ارفع" : "Raise")
-    : (lang === "ar" ? "خفّض" : "Lower");
+  const propertyName = opportunity.property?.title || "—";
+  const city = opportunity.property?.city || "";
+  const action = pickLangField(opportunity, "action") || "";
+  const reason = pickLangField(opportunity, "reason") || "";
+  const propertyId = opportunity.property_id || opportunity.property?.id;
 
   const cityLabel = city ? (lang === "ar" ? `في ${city}` : `in ${city}`) : "";
 
@@ -39,20 +31,20 @@ export default function WhatWouldMadarDo({ brief }) {
       </div>
 
       <p className="font-display text-2xl md:text-4xl font-light leading-snug max-w-3xl">
-        {direction}{" "}
-        <span className="text-accent">{title}</span>{" "}
-        {cityLabel}
-        {deltaPct !== 0 && (
-          <>
-            {lang === "ar" ? "بنسبة" : "by"}{" "}
-            <span className="text-accent">{Math.abs(deltaPct)}%</span>
-          </>
-        )}
+        {action || (lang === "ar" ? "تابع تحليل عقاراتك" : "Keep optimizing your properties")}
       </p>
 
-      {reasoning && (
+      {(propertyName !== "—" || cityLabel) && (
+        <p className="mt-4 font-body text-sm text-background/50">
+          {propertyName !== "—" ? propertyName : ""}
+          {propertyName !== "—" && cityLabel ? " " : ""}
+          {cityLabel}
+        </p>
+      )}
+
+      {reason && (
         <p className="mt-6 font-body text-sm text-background/60 leading-relaxed max-w-2xl">
-          {reasoning}
+          {reason}
         </p>
       )}
 

@@ -9,16 +9,14 @@ function formatPrice(price) {
   return new Intl.NumberFormat("en-US").format(price);
 }
 
-function ActionCard({ brief, index }) {
-  const { t, lang } = useLanguage();
+function ActionCard({ opportunity, index }) {
+  const { t, pickLangField } = useLanguage();
 
-  const title = brief.property_title || brief.property?.title || "—";
-  const city = brief.property_city || brief.property?.city || "";
-  const recommended = brief.recommended_price;
-  const current = brief.current_price ?? brief.listing_price ?? brief.property_current_price;
-  const propertyId = brief.property_id || brief.property?.id || brief.id;
-
-  const delta = recommended && current ? recommended - current : 0;
+  const propertyName = opportunity.property?.title || "—";
+  const city = opportunity.property?.city || "";
+  const revenueImpact = opportunity.revenue_impact;
+  const action = pickLangField(opportunity, "action") || t("dashboard.applyPriceChange");
+  const propertyId = opportunity.property_id || opportunity.property?.id;
 
   return (
     <motion.div
@@ -30,26 +28,15 @@ function ActionCard({ brief, index }) {
       <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-1">
         {city}
       </p>
-      <h3 className="font-display text-lg font-light mb-3 line-clamp-1">{title}</h3>
+      <h3 className="font-display text-lg font-light mb-4 line-clamp-1">{propertyName}</h3>
 
-      <div className="flex items-center gap-4 mb-4">
-        <div>
-          <p className="font-body text-[10px] tracking-label uppercase text-muted-foreground mb-0.5">
-            {lang === "ar" ? "الحالي" : "Current"}
-          </p>
-          <span className="font-display text-base font-light text-muted-foreground">
-            {formatPrice(current)} {t("common.sar")}
-          </span>
-        </div>
-        <ArrowRight size={14} className="text-muted-foreground/40 shrink-0" />
-        <div>
-          <p className="font-body text-[10px] tracking-label uppercase text-muted-foreground mb-0.5">
-            {t("dashboard.recommendedPrice")}
-          </p>
-          <span className="font-display text-base font-light text-accent">
-            {formatPrice(recommended)} {t("common.sar")}
-          </span>
-        </div>
+      <div className="mb-4">
+        <p className="font-body text-[10px] tracking-label uppercase text-muted-foreground mb-0.5">
+          {t("dashboard.potentialMonthlyRevenue")}
+        </p>
+        <span className="font-display text-2xl font-light text-accent">
+          +{formatPrice(revenueImpact)} {t("common.sar")}
+        </span>
       </div>
 
       <div className="mt-auto">
@@ -57,21 +44,21 @@ function ActionCard({ brief, index }) {
           to={`/property/${propertyId}`}
           className="block text-center w-full py-2.5 rounded-full bg-foreground text-background font-body text-xs tracking-label uppercase hover:bg-foreground/90 transition-colors"
         >
-          {t("dashboard.applyPriceChange")}
+          {action}
         </Link>
-        <ReasoningBox brief={brief} />
+        <ReasoningBox opportunity={opportunity} />
       </div>
     </motion.div>
   );
 }
 
-export default function ActionCenter({ briefs }) {
-  const { t, lang } = useLanguage();
+export default function ActionCenter({ opportunities }) {
+  const { t } = useLanguage();
 
-  const actions = (briefs || []).filter(
-    (b) => b.recommended_price != null
+  const sorted = [...(opportunities || [])].sort(
+    (a, b) => (b.revenue_impact ?? 0) - (a.revenue_impact ?? 0)
   );
-  const top3 = actions.slice(0, 3);
+  const top3 = sorted.slice(0, 3);
 
   return (
     <motion.section
@@ -83,7 +70,7 @@ export default function ActionCenter({ briefs }) {
         <h2 className="font-display text-display-sm font-light">
           {t("dashboard.actionCenter")}
         </h2>
-        {actions.length > 3 && (
+        {sorted.length > 3 && (
           <Link
             to="/properties"
             className="flex items-center gap-1 font-body text-xs tracking-label uppercase text-muted-foreground hover:text-foreground transition-colors"
@@ -106,8 +93,8 @@ export default function ActionCenter({ briefs }) {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {top3.map((brief, i) => (
-            <ActionCard key={brief.id || i} brief={brief} index={i} />
+          {top3.map((opp, i) => (
+            <ActionCard key={opp.id || i} opportunity={opp} index={i} />
           ))}
         </div>
       )}
