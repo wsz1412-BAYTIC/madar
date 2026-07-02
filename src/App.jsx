@@ -55,6 +55,7 @@ function MadarRoutes() {
         <Route path="/property/:id" element={<ProtectedRoute><PropertyDetail /></ProtectedRoute>} />
         <Route path="/analytics/:propertyId" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
         <Route path="/market" element={<ProtectedRoute><MarketInsights /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><MarketInsights /></ProtectedRoute>} />
         <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
         <Route path="/assistant" element={<ProtectedRoute><Assistant /></ProtectedRoute>} />
 
