@@ -60,7 +60,7 @@ export default function Hero() {
             {t["hero.ctaSecondary"]}
           </button>
           <Link
-            to="/login"
+            to="/login?mode=signup"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#F76C54] text-white font-body font-medium text-sm md:text-base hover:bg-[#FF8264] transition-all duration-300 shadow-xl shadow-[#F76C54]/30"
           >
             {t["hero.ctaPrimary"]}

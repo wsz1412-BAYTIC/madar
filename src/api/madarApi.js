@@ -198,6 +198,11 @@ export const madarApi = {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({ username: email, password }).toString(),
     }),
+  register: (name, email, password) =>
+    request("/auth/register", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password }),
+    }),
   logout: () => {
     // If the API has a logout endpoint, call it; otherwise just clear locally
     try {

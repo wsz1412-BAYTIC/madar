@@ -10,27 +10,49 @@ import { MadarFullLogo } from "@/components/Logo";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useMadarAuth();
+  const { login, register } = useMadarAuth();
   const { lang, toggleLang, t } = useLanguage();
+  const urlMode = new URLSearchParams(location.search).get("mode");
+  const [mode, setMode] = useState(urlMode === "signup" ? "signup" : "signin"); // "signin" | "signup"
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const nextUrl = new URLSearchParams(location.search).get("next") || "/dashboard";
 
+  const isSignup = mode === "signup";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+
+    if (isSignup && password !== confirmPassword) {
+      setError(t("login.passwordMismatch"));
+      return;
+    }
+
+    setLoading(true);
     try {
-      await login(email, password);
+      if (isSignup) {
+        await register(name, email, password);
+      } else {
+        await login(email, password);
+      }
       navigate(nextUrl, { replace: true });
     } catch (err) {
-      setError(err.message || t("login.error"));
+      setError(isSignup ? (err.message || t("login.signupError")) : (err.message || t("login.error")));
     } finally {
       setLoading(false);
     }
+  };
+
+  const switchMode = () => {
+    setMode(isSignup ? "signin" : "signup");
+    setError("");
+    setConfirmPassword("");
   };
 
   return (
@@ -58,13 +80,29 @@ export default function Login() {
           className="w-full max-w-md"
         >
           <h1 className="font-display text-display-md font-light mb-3">
-            {t("login.title")}
+            {isSignup ? t("login.signupTitle") : t("login.title")}
           </h1>
           <p className="font-body text-sm text-muted-foreground leading-relaxed mb-10">
-            {t("login.subtitle")}
+            {isSignup ? t("login.signupSubtitle") : t("login.subtitle")}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {isSignup && (
+              <div>
+                <label className="block font-body text-xs tracking-label uppercase text-muted-foreground mb-2">
+                  {t("login.name")}
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  disabled={loading}
+                  className="w-full bg-transparent border-b border-border py-3 font-body text-sm text-foreground focus:outline-none focus:border-accent transition-colors disabled:opacity-50"
+                />
+              </div>
+            )}
+
             <div>
               <label className="block font-body text-xs tracking-label uppercase text-muted-foreground mb-2">
                 {t("login.email")}
@@ -95,6 +133,23 @@ export default function Login() {
               />
             </div>
 
+            {isSignup && (
+              <div>
+                <label className="block font-body text-xs tracking-label uppercase text-muted-foreground mb-2">
+                  {t("login.confirmPassword")}
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                  className="w-full bg-transparent border-b border-border py-3 font-body text-sm text-foreground focus:outline-none focus:border-accent transition-colors disabled:opacity-50"
+                  dir="ltr"
+                />
+              </div>
+            )}
+
             {error && (
               <p className="font-body text-sm text-destructive">{error}</p>
             )}
@@ -104,13 +159,23 @@ export default function Login() {
               disabled={loading}
               className="ghost-btn w-full text-center disabled:opacity-50"
             >
-              {loading ? t("login.signingIn") : t("login.submit")}
+              {loading
+                ? (isSignup ? t("login.signingUp") : t("login.signingIn"))
+                : (isSignup ? t("login.submitSignup") : t("login.submit"))}
             </button>
           </form>
 
-          <p className="font-body text-xs text-muted-foreground mt-8 text-center">
-            {t("login.demoHint")}
-          </p>
+          <div className="mt-8 text-center">
+            <span className="font-body text-xs text-muted-foreground">
+              {isSignup ? t("login.haveAccount") : t("login.noAccount")}{" "}
+            </span>
+            <button
+              onClick={switchMode}
+              className="font-body text-xs tracking-label uppercase text-accent hover:text-foreground transition-colors underline underline-offset-4"
+            >
+              {isSignup ? t("login.signin") : t("login.signup")}
+            </button>
+          </div>
         </motion.div>
       </div>
     </div>

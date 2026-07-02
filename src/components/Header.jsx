@@ -110,18 +110,28 @@ export default function Header() {
                   {t("nav.logout")}
                 </button>
               ) : (
-                <Link
-                  to="/login"
-                  className={`font-body text-xs tracking-label uppercase transition-colors ${
-                    isHomepage ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {t("nav.login")}
-                </Link>
+                <>
+                  <Link
+                    to="/login"
+                    className={`font-body text-xs tracking-label uppercase transition-colors ${
+                      isHomepage ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {t("nav.login")}
+                  </Link>
+                  <Link
+                    to="/login?mode=signup"
+                    className={`font-body text-xs tracking-label uppercase transition-colors ${
+                      isHomepage ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {t("nav.signup")}
+                  </Link>
+                </>
               )}
 
               <Link
-                to={isAuthenticated ? "/properties" : "/login"}
+                to={isAuthenticated ? "/properties" : "/login?mode=signup"}
                 className={`text-xs px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full border ${
                   isHomepage
                     ? "border-white bg-white text-black hover:bg-white/80"
@@ -175,12 +185,19 @@ export default function Header() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
+                  className="flex flex-col gap-4"
                 >
                   <Link
                     to="/login"
                     className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors text-left"
                   >
                     {t("nav.login")}
+                  </Link>
+                  <Link
+                    to="/login?mode=signup"
+                    className="font-display text-display-md text-foreground hover:text-[#976620] transition-colors text-left"
+                  >
+                    {t("nav.signup")}
                   </Link>
                 </motion.div>
               )}

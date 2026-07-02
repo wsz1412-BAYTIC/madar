@@ -35,6 +35,17 @@ export function MadarAuthProvider({ children }) {
     return json;
   }, []);
 
+  const register = useCallback(async (name, email, password) => {
+    const data = await madarApi.register(name, email, password);
+    setToken(data.access_token);
+    setUser({ email, name: data.name, plan: data.plan, id: data.subscriber_id });
+    setIsAuthenticated(true);
+    if (window.location.pathname !== '/dashboard') {
+      window.location.href = '/dashboard';
+    }
+    return data;
+  }, []);
+
   const logout = useCallback(() => {
     madarApi.logout();
     clearTokens();
@@ -43,7 +54,7 @@ export function MadarAuthProvider({ children }) {
 
   return (
     <MadarAuthContext.Provider
-      value={{ isAuthenticated, loading, login, logout, user }}
+      value={{ isAuthenticated, loading, login, register, logout, user }}
     >
       {children}
     </MadarAuthContext.Provider>
