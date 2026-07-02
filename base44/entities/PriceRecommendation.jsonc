@@ -1,0 +1,137 @@
+{
+  "name": "PriceRecommendation",
+  "description": "AI-assisted pricing recommendation for a property, generated from deterministic calculations and reviewed/applied by a human.",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "Owner of the property this recommendation is for"
+    },
+    "propertyId": {
+      "type": "string",
+      "description": "UserProperty this recommendation was generated for"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending_review", "approved", "rejected", "applied", "expired"],
+      "default": "pending_review"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["ai", "fallback"],
+      "description": "Whether the narrative came from OpenAI or the deterministic fallback"
+    },
+    "aiModel": {
+      "type": ["string", "null"],
+      "description": "null when source is \"fallback\" (no AI call was made)"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "inputMetrics": {
+      "type": "object",
+      "description": "Snapshot of the deterministic calculations used to generate this recommendation"
+    },
+    "dataQualityScore": {
+      "type": "number"
+    },
+    "dataQualityFlags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommendedPriceMin": {
+      "type": ["number", "null"],
+      "description": "null when operatingCosts is missing on the property, so no break-even price could be computed"
+    },
+    "recommendedPriceMax": {
+      "type": ["number", "null"],
+      "description": "null when operatingCosts is missing on the property, so no break-even price could be computed"
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR"
+    },
+    "summaryAr": {
+      "type": "string",
+      "format": "richtext"
+    },
+    "actionsAr": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "caveatsAr": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "citedMetricKeys": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "validUntil": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewedBy": {
+      "type": "string"
+    },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rejectionReason": {
+      "type": "string"
+    },
+    "appliedPrice": {
+      "type": "number"
+    },
+    "appliedBy": {
+      "type": "string"
+    },
+    "appliedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actualOccupancy": {
+      "type": "number"
+    },
+    "actualAdr": {
+      "type": "number"
+    },
+    "actualRevenue": {
+      "type": "number"
+    },
+    "actualResultsRecordedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "statusHistory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "byUserId": { "type": "string" },
+          "at": { "type": "string", "format": "date-time" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  },
+  "required": ["userId", "propertyId", "status", "source", "inputMetrics", "generatedAt", "validUntil"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": false
+  }
+}
