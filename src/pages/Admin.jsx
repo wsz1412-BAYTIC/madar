@@ -1,34 +1,97 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { ShieldCheck, Users, Zap, Server, Building2 } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { base44 } from '@/api/base44Client';
+import { ShieldCheck, Users, Building2, CreditCard, Sparkles, Loader2, AlertTriangle } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 
-const usageData = [
-  { hour: '00', users: 12 }, { hour: '04', users: 5 }, { hour: '08', users: 45 },
-  { hour: '12', users: 78 }, { hour: '16', users: 92 }, { hour: '20', users: 65 },
-];
-
-const subscribers = [
-  { name: 'Ahmed Al-Salem', email: 'ahmed@email.com', plan: 'Pro', properties: 12, status: 'active' },
-  { name: 'Fatima Al-Rashid', email: 'fatima@email.com', plan: 'Growth', properties: 7, status: 'active' },
-  { name: 'Mohammed Hassan', email: 'moh@email.com', plan: 'Basic', properties: 2, status: 'active' },
-  { name: 'Nora Al-Qahtani', email: 'nora@email.com', plan: 'Growth', properties: 5, status: 'trial' },
-  { name: 'Khalid Ibrahim', email: 'khalid@email.com', plan: 'Free', properties: 1, status: 'active' },
-];
-
 const planBadge = {
-  Free: 'bg-white/5 text-[#F7F5F0]/50',
-  Basic: 'bg-blue-500/10 text-blue-400',
-  Growth: 'bg-[#C8972A]/10 text-[#C8972A]',
-  Pro: 'bg-[#D95F3B]/10 text-[#D95F3B]',
+  premium: 'bg-[#D95F3B]/10 text-[#D95F3B]',
+  professional: 'bg-[#C8972A]/10 text-[#C8972A]',
+  basic: 'bg-blue-500/10 text-blue-400',
+  free: 'bg-white/5 text-[#F7F5F0]/50',
 };
+
+const statusBadge = {
+  active: 'bg-emerald-500/10 text-emerald-400',
+  trial: 'bg-amber-500/10 text-amber-400',
+  pending: 'bg-amber-500/10 text-amber-400',
+  cancelled: 'bg-red-500/10 text-red-400',
+  suspended: 'bg-red-500/10 text-red-400',
+  free: 'bg-white/5 text-[#F7F5F0]/50',
+};
+
+const fmt = (n) => new Intl.NumberFormat('en-US').format(Math.round(n || 0));
 
 export default function Admin() {
   const { t, lang } = useLang();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [data, setData] = useState({ customers: [], stats: null });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        setLoading(true);
+        setError(false);
+        // Admin-scoped reads. Entity RLS returns all records only to an admin;
+        // this page is behind AdminRoute + the RLS admin clause.
+        const [users, subscriptions, properties, recommendations] = await Promise.all([
+          base44.entities.User.list(),
+          base44.entities.UserSubscription.list(),
+          base44.entities.UserProperty.list(),
+          base44.entities.PriceRecommendation.list().catch(() => []),
+        ]);
+        if (cancelled) return;
+
+        const subByUser = new Map(subscriptions.map((s) => [s.userId, s]));
+        const propCountByUser = properties.reduce((acc, p) => {
+          acc.set(p.userId, (acc.get(p.userId) || 0) + 1);
+          return acc;
+        }, new Map());
+
+        const customers = users.map((u) => {
+          const sub = subByUser.get(u.id);
+          return {
+            id: u.id,
+            name: u.full_name || (lang === 'ar' ? 'بدون اسم' : 'Unnamed'),
+            email: u.email || '—',
+            plan: (sub?.planName || 'free').toLowerCase(),
+            status: sub?.status || 'free',
+            properties: propCountByUser.get(u.id) || 0,
+          };
+        });
+
+        const stats = {
+          totalUsers: users.length,
+          totalProperties: properties.length,
+          activeSubscriptions: subscriptions.filter((s) => s.status === 'active').length,
+          totalRecommendations: recommendations.length,
+        };
+
+        setData({ customers, stats });
+      } catch (err) {
+        if (!cancelled) setError(true);
+        // eslint-disable-next-line no-console
+        console.error('Failed to load admin data:', err?.message);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [lang]);
+
+  const statTiles = data.stats
+    ? [
+        { key: 'totalUsers', label: t('activeUsers'), value: data.stats.totalUsers, icon: Users, color: '#D95F3B' },
+        { key: 'totalProperties', label: t('totalProperties'), value: data.stats.totalProperties, icon: Building2, color: '#C8972A' },
+        { key: 'activeSubscriptions', label: lang === 'ar' ? 'اشتراكات نشطة' : 'Active Subscriptions', value: data.stats.activeSubscriptions, icon: CreditCard, color: '#D95F3B' },
+        { key: 'recommendations', label: lang === 'ar' ? 'التوصيات' : 'Recommendations', value: data.stats.totalRecommendations, icon: Sparkles, color: '#C8972A' },
+      ]
+    : [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 sm:p-8 max-w-6xl mx-auto">
       <FadeIn>
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl bg-white/[0.04] flex items-center justify-center border border-white/[0.06]">
@@ -41,80 +104,85 @@ export default function Admin() {
         </div>
       </FadeIn>
 
-      <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
-        {[
-          { key: 'activeUsers', value: '523', icon: Users, color: '#D95F3B' },
-          { key: 'totalProperties', value: '2,417', icon: Building2, color: '#C8972A' },
-          { key: 'apiLatency', value: '42ms', icon: Zap, color: '#D95F3B' },
-          { key: 'uptime', value: '99.97%', icon: Server, color: '#C8972A' },
-        ].map(stat => (
-          <StaggerItem key={stat.key}>
-            <div className="glass rounded-2xl p-5 hover:border-white/15 transition-all">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${stat.color}15` }}>
-                <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
+      {loading && (
+        <div className="flex items-center gap-2 text-sm text-[#F7F5F0]/50 py-10 justify-center">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          {lang === 'ar' ? 'جاري التحميل...' : 'Loading...'}
+        </div>
+      )}
+
+      {!loading && error && (
+        <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+          <AlertTriangle className="w-4 h-4" />
+          {lang === 'ar' ? 'تعذر تحميل بيانات الإدارة.' : 'Failed to load admin data.'}
+        </div>
+      )}
+
+      {!loading && !error && (
+        <>
+          <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
+            {statTiles.map((stat) => (
+              <StaggerItem key={stat.key}>
+                <div className="glass rounded-2xl p-5 hover:border-white/15 transition-all">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${stat.color}15` }}>
+                    <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
+                  </div>
+                  <div className="text-2xl font-bold text-[#F7F5F0] font-heading">{fmt(stat.value)}</div>
+                  <div className="text-xs text-[#F7F5F0]/40 mt-1">{stat.label}</div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <FadeIn delay={0.2}>
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('subscribers')}</h2>
+                <span className="text-xs text-[#F7F5F0]/40">
+                  {data.customers.length} {lang === 'ar' ? 'عميل' : 'customers'}
+                </span>
               </div>
-              <div className="text-2xl font-bold text-[#F7F5F0] font-heading">{stat.value}</div>
-              <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(stat.key)}</div>
+
+              {data.customers.length === 0 ? (
+                <p className="text-sm text-[#F7F5F0]/40 py-6 text-center">
+                  {lang === 'ar' ? 'لا يوجد عملاء بعد.' : 'No customers yet.'}
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-white/[0.04]">
+                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{lang === 'ar' ? 'الاسم' : 'Name'}</th>
+                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium hidden sm:table-cell">{t('email')}</th>
+                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{lang === 'ar' ? 'الخطة' : 'Plan'}</th>
+                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium hidden sm:table-cell">{t('properties')}</th>
+                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{t('status')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.customers.map((c) => (
+                        <tr key={c.id} className="border-b border-white/[0.04] last:border-0">
+                          <td className="py-3 font-medium text-[#F7F5F0]">{c.name}</td>
+                          <td className="py-3 text-[#F7F5F0]/50 hidden sm:table-cell">{c.email}</td>
+                          <td className="py-3">
+                            <span className={`text-xs font-medium px-2 py-1 rounded-full ${planBadge[c.plan] || planBadge.free}`}>{c.plan}</span>
+                          </td>
+                          <td className="py-3 text-[#F7F5F0]/50 hidden sm:table-cell">{c.properties}</td>
+                          <td className="py-3">
+                            <span className={`text-xs font-medium px-2 py-1 rounded-full ${statusBadge[c.status] || statusBadge.free}`}>
+                              {c.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
-          </StaggerItem>
-        ))}
-      </StaggerContainer>
-
-      <FadeIn delay={0.2}>
-        <div className="glass rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{lang === 'ar' ? 'المستخدمون النشطون حسب الساعة' : 'Active Users by Hour'}</h2>
-          <ResponsiveContainer width="100%" height={220}>
-            <AreaChart data={usageData}>
-              <defs>
-                <linearGradient id="usageGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#D95F3B" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#D95F3B" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="hour" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
-              <Tooltip contentStyle={{ background: '#14161D', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#F7F5F0', fontSize: 12 }} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
-              <Area type="monotone" dataKey="users" stroke="#D95F3B" strokeWidth={2} fill="url(#usageGrad)" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </FadeIn>
-
-      <FadeIn delay={0.3}>
-        <div className="glass rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('subscribers')}</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/[0.04]">
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{lang === 'ar' ? 'الاسم' : 'Name'}</th>
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium hidden sm:table-cell">{t('email')}</th>
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{lang === 'ar' ? 'الخطة' : 'Plan'}</th>
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium hidden sm:table-cell">{t('properties')}</th>
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{t('status')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {subscribers.map((sub, i) => (
-                  <tr key={i} className="border-b border-white/[0.04] last:border-0">
-                    <td className="py-3 font-medium text-[#F7F5F0]">{sub.name}</td>
-                    <td className="py-3 text-[#F7F5F0]/50 hidden sm:table-cell">{sub.email}</td>
-                    <td className="py-3">
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${planBadge[sub.plan]}`}>{sub.plan}</span>
-                    </td>
-                    <td className="py-3 text-[#F7F5F0]/50 hidden sm:table-cell">{sub.properties}</td>
-                    <td className="py-3">
-                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${sub.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`}>
-                        {sub.status === 'active' ? (lang === 'ar' ? 'نشط' : 'Active') : (lang === 'ar' ? 'تجريبي' : 'Trial')}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </FadeIn>
+          </FadeIn>
+        </>
+      )}
     </div>
   );
 }
