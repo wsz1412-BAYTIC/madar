@@ -4,6 +4,7 @@ import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/lib/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminRoute from '@/components/AdminRoute';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { CookieProvider } from '@/contexts/CookieContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -93,18 +94,23 @@ const AuthenticatedApp = () => {
           <Route path="/billing" element={<Billing />} />
           <Route path="/connect" element={<Connect />} />
           <Route path="/referral" element={<Referral />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          {/* Admin dashboard — gated on user.role === "admin" */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
         </Route>
 
-        {/* Admin routes - separate from app layout */}
-        <Route path="/admin/users" element={<Admin />} />
-        <Route path="/admin/properties" element={<Admin />} />
-        <Route path="/admin/subscriptions" element={<Admin />} />
-        <Route path="/admin/data" element={<Admin />} />
-        <Route path="/admin/content" element={<Admin />} />
-        <Route path="/admin/support" element={<Admin />} />
-        <Route path="/admin/logs" element={<Admin />} />
-        <Route path="/admin/settings" element={<Admin />} />
+        {/* Admin routes - separate from app layout, also admin-gated */}
+        <Route element={<AdminRoute />}>
+          <Route path="/admin/users" element={<Admin />} />
+          <Route path="/admin/properties" element={<Admin />} />
+          <Route path="/admin/subscriptions" element={<Admin />} />
+          <Route path="/admin/data" element={<Admin />} />
+          <Route path="/admin/content" element={<Admin />} />
+          <Route path="/admin/support" element={<Admin />} />
+          <Route path="/admin/logs" element={<Admin />} />
+          <Route path="/admin/settings" element={<Admin />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

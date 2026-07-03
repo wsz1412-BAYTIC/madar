@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { canAccessAdminDashboard } from '@/lib/permissions';
 import AdminNav from '@/components/admin/AdminNav';
 import AdminStats from '@/components/admin/AdminStats';
 import AdminOverview from '@/components/admin/AdminOverview';
-import { AlertTriangle, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminDashboard() {
@@ -30,16 +29,17 @@ export default function AdminDashboard() {
         const currentUser = await base44.auth.me();
         setUser(currentUser);
 
-        // Check admin status
-        const adminRecord = await base44.entities.AdminUser.filter({ userId: currentUser.id });
-        
-        if (!adminRecord || adminRecord.length === 0 || !canAccessAdminDashboard(adminRecord[0])) {
+        // Admin access is gated solely on User.role === "admin" (canonical;
+        // matches the entity RLS admin clause). The AdminUser table is not
+        // used for access control. This is a secondary defense — the route
+        // is already wrapped in <AdminRoute> — and the real boundary is RLS.
+        if (currentUser?.role !== 'admin') {
           setError('unauthorized');
           setLoading(false);
           return;
         }
 
-        setAdmin(adminRecord[0]);
+        setAdmin(currentUser);
 
         // Load admin stats
         const users = await base44.entities.User.list();
