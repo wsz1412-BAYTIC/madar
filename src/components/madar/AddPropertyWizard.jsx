@@ -52,7 +52,7 @@ function Stepper({ value, onChange, min, max, label }) {
   );
 }
 
-export default function AddPropertyWizard({ open, onClose, onCreated }) {
+export default function AddPropertyWizard({ open, onClose, onCreated, initial = null }) {
   const { lang, isRTL } = useLang();
   const { user } = useAuth();
   const { toast } = useToast();
@@ -62,6 +62,17 @@ export default function AddPropertyWizard({ open, onClose, onCreated }) {
     /** @type {Partial<Record<string, {en: string, ar: string}>>} */ ({})
   );
   const [saving, setSaving] = useState(false);
+
+  // Seed prefilled values (e.g. platform + listing URL handed over from the
+  // import-by-link flow) every time the wizard opens.
+  React.useEffect(() => {
+    if (open) {
+      setStepIndex(0);
+      setErrors({});
+      setForm({ ...EMPTY_FORM, ...(initial || {}) });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   const step = WIZARD_STEPS[stepIndex];
   const set = (key, val) => { setForm((p) => ({ ...p, [key]: val })); setErrors((e) => ({ ...e, [key]: undefined })); };
