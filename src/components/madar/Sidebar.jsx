@@ -43,7 +43,12 @@ export default function Sidebar() {
   const isActive = (path) => location.pathname === path;
 
   const NavLink = ({ item }) => (
-    <Link to={item.path} onClick={() => setMobileOpen(false)} className="group relative">
+    <Link
+      to={item.path}
+      onClick={() => setMobileOpen(false)}
+      className="group relative block"
+      title={collapsed ? t(item.key) : undefined}
+    >
       <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-300 ${
         isActive(item.path)
           ? 'text-[#F7F5F0] bg-white/[0.06]'
@@ -56,7 +61,7 @@ export default function Sidebar() {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         )}
-        <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-colors ${isActive(item.path) ? 'text-[#D95F3B]' : 'text-[#F7F5F0]/40 group-hover:text-[#F7F5F0]/70'}`} />
+        <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isActive(item.path) ? 'text-[#D95F3B]' : 'text-[#F7F5F0]/40 group-hover:text-[#F7F5F0]/70'}`} />
         {!collapsed && <span className="truncate relative z-10">{t(item.key)}</span>}
       </div>
     </Link>
