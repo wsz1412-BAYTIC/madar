@@ -73,7 +73,7 @@ export default function PropertyCard({ prop, index }) {
             <span className={`w-1.5 h-1.5 rounded-full ${pStyle.dot}`} />
             {prop.platform}
           </span>
-          {prop.status === 'paused' && (
+          {(prop.status === 'paused' || prop.status === 'inactive') && (
             <span className="text-[10px] font-semibold px-3 py-1 rounded-full bg-warning/90 text-white backdrop-blur-md shadow-sm">
               {isRTL ? 'متوقف' : 'Paused'}
             </span>

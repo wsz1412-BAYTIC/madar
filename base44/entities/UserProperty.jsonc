@@ -17,6 +17,26 @@
     "city": {
       "type": "string"
     },
+    "district": {
+      "type": ["string", "null"],
+      "description": "Neighborhood/district within the city (Add Property wizard)"
+    },
+    "platform": {
+      "type": ["string", "null"],
+      "enum": ["Airbnb", "Gathern", "Booking.com", "Other", null],
+      "description": "Primary listing platform"
+    },
+    "nightlyPrice": {
+      "type": ["number", "null"],
+      "description": "Base nightly price in SAR"
+    },
+    "platformUrl": {
+      "type": ["string", "null"],
+      "description": "Link to the live listing on the platform"
+    },
+    "notes": {
+      "type": ["string", "null"]
+    },
     "type": {
       "type": "string",
       "enum": [

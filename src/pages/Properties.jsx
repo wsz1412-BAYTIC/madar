@@ -9,6 +9,7 @@ import BulkActionsToolbar from '@/components/madar/BulkActionsToolbar';
 import { StatusChangeModal, AddLabelsModal, ArchiveConfirmModal, ActionResultsModal } from '@/components/madar/BulkActionModals';
 import FloorplanVisualizer from '@/components/madar/FloorplanVisualizer';
 import PropertiesFilter from '@/components/madar/PropertiesFilter';
+import AddPropertyWizard from '@/components/madar/AddPropertyWizard';
 
 const mockProperties = [
   { id: 1, name: 'Luxury Villa', nameAr: 'فيلا فاخرة', city: 'Riyadh', cityAr: 'الرياض', bedrooms: 4, bathrooms: 3, guests: 8, price: 850, status: 'active', platform: 'Airbnb', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop', occupancy: 0.85, tags: ['premium', 'family-friendly'] },
@@ -19,7 +20,11 @@ const mockProperties = [
 
 export default function Properties() {
   const { t, lang } = useLang();
+  const [showWizard, setShowWizard] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  // Properties created through the wizard in this session (real entity rows),
+  // shown ahead of the demo data.
+  const [myProperties, setMyProperties] = useState([]);
   const [importUrl, setImportUrl] = useState('');
   const [importing, setImporting] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({ cities: [], tags: [], performance: [] });
@@ -40,9 +45,11 @@ export default function Properties() {
   const [showLabelsModal, setShowLabelsModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
 
+  const allProperties = useMemo(() => [...myProperties, ...mockProperties], [myProperties]);
+
   // Apply filters
   const filteredProperties = useMemo(() => {
-    const list = mockProperties.filter(prop => {
+    const list = allProperties.filter(prop => {
       if (statusFilter !== 'all' && prop.status !== statusFilter) return false;
       return true;
     }).filter(prop => {
@@ -84,7 +91,7 @@ export default function Properties() {
       name: (a, b) => (a.name || '').localeCompare(b.name || ''),
     };
     return sorters[sortBy] ? [...list].sort(sorters[sortBy]) : list;
-  }, [selectedFilters, statusFilter, sortBy]);
+  }, [allProperties, selectedFilters, statusFilter, sortBy]);
 
   const handleImport = async (e) => {
     e.preventDefault();
@@ -109,7 +116,7 @@ export default function Properties() {
   };
 
   const selectAllProperties = () => {
-    setSelectedProps(new Set(mockProperties.map(p => p.id)));
+    setSelectedProps(new Set(allProperties.map(p => p.id)));
   };
 
   const clearSelection = () => {
@@ -120,7 +127,7 @@ export default function Properties() {
   const handleExport = async () => {
     setActionLoading(true);
     try {
-      const selected = mockProperties.filter(p => selectedProps.has(p.id));
+      const selected = allProperties.filter(p => selectedProps.has(p.id));
       const csvContent = [
         ['ID', 'Name', 'City', 'Bedrooms', 'Bathrooms', 'Guests', 'Price', 'Status', 'Platform'].join(','),
         ...selected.map(p => [p.id, p.name, p.city, p.bedrooms, p.bathrooms, p.guests, p.price, p.status, p.platform].join(','))
@@ -157,7 +164,7 @@ export default function Properties() {
     try {
       const results = [];
       for (const propId of selectedProps) {
-        const prop = mockProperties.find(p => p.id === propId);
+        const prop = allProperties.find(p => p.id === propId);
         results.push({
           name: prop.name,
           message: `${lang === 'ar' ? 'تم تحديث الحالة إلى' : 'Status updated to'} ${newStatus}`,
@@ -185,7 +192,7 @@ export default function Properties() {
     try {
       const results = [];
       for (const propId of selectedProps) {
-        const prop = mockProperties.find(p => p.id === propId);
+        const prop = allProperties.find(p => p.id === propId);
         results.push({
           name: prop.name,
           message: `${lang === 'ar' ? 'تم إضافة التسميات:' : 'Added labels:'} ${labels.join(', ')}`,
@@ -213,7 +220,7 @@ export default function Properties() {
     try {
       const results = [];
       for (const propId of selectedProps) {
-        const prop = mockProperties.find(p => p.id === propId);
+        const prop = allProperties.find(p => p.id === propId);
         results.push({
           name: prop.name,
           message: lang === 'ar' ? 'تم الأرشفة' : 'Archived',
@@ -242,13 +249,19 @@ export default function Properties() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="font-heading text-3xl font-bold text-foreground">{t('myProperties')}</h1>
-            <p className="text-sm text-foreground/40 mt-1">{mockProperties.length} {lang === 'ar' ? 'عقار' : 'properties'}</p>
+            <p className="text-sm text-foreground/40 mt-1">{allProperties.length} {lang === 'ar' ? 'عقار' : 'properties'}</p>
           </div>
-          <button onClick={() => setShowImport(true)} className="group relative flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
-            <Plus className="w-4 h-4 relative z-10" />
-            <span className="relative z-10">{t('addProperty')}</span>
-            <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setShowImport(true)} title={lang === 'ar' ? 'استيراد عبر رابط' : 'Import via link'} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground/60 hover:text-foreground hover:border-foreground/20 transition-all">
+              <Link2 className="w-4 h-4" />
+              <span className="hidden sm:inline">{lang === 'ar' ? 'استيراد' : 'Import'}</span>
+            </button>
+            <button onClick={() => setShowWizard(true)} className="group relative flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
+              <Plus className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">{t('addProperty')}</span>
+              <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+            </button>
+          </div>
         </div>
       </FadeIn>
 
@@ -295,6 +308,32 @@ export default function Properties() {
         )}
       </AnimatePresence>
 
+      {/* Step-by-step Add Property wizard (creates a real UserProperty row) */}
+      <AddPropertyWizard
+        open={showWizard}
+        onClose={() => setShowWizard(false)}
+        onCreated={(created) => {
+          // Map the entity row onto the card display shape and show it first.
+          setMyProperties(prev => [{
+            id: created.id || `local-${Date.now()}`,
+            name: created.name,
+            nameAr: created.name,
+            city: created.city,
+            cityAr: created.city,
+            district: created.district,
+            bedrooms: created.bedrooms,
+            bathrooms: created.bathrooms,
+            guests: created.guests,
+            price: created.nightlyPrice,
+            status: created.status,
+            platform: created.platform,
+            image: created.images?.[0] || null,
+            occupancy: 0,
+            tags: [],
+          }, ...prev]);
+        }}
+      />
+
       {/* Floorplan Visualizer */}
       <FadeIn delay={0.1}>
         <FloorplanVisualizer />
@@ -303,7 +342,7 @@ export default function Properties() {
       {/* Filters */}
       <FadeIn delay={0.1}>
         <PropertiesFilter
-          properties={mockProperties}
+          properties={allProperties}
           selectedFilters={selectedFilters}
           onFilter={setSelectedFilters}
         />
