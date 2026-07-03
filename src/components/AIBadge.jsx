@@ -32,7 +32,7 @@ export default function AIBadge({ confidence = 'medium', tooltipEn = 'AI-Generat
         initial={{ opacity: 0, y: -5 }}
         whileHover={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-[#0A0B10] text-white text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 z-50"
+        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-background text-white text-xs whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 z-50"
       >
         <p className="font-medium">{tooltipEn}</p>
         <p className="text-white/60 text-xs">{confidenceLabel[confidence]}</p>

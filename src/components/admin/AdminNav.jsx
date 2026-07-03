@@ -36,7 +36,7 @@ export default function AdminNav({ admin }) {
         isActive(item.href)
           ? 'bg-primary/20 text-primary'
           : theme === 'dark'
-            ? 'text-[#F7F5F0]/60 hover:text-[#F7F5F0] hover:bg-white/5'
+            ? 'text-foreground/60 hover:text-foreground hover:bg-foreground/5'
             : 'text-[#0A0B10]/60 hover:text-[#0A0B10] hover:bg-black/5'
       }`}
     >
@@ -52,7 +52,7 @@ export default function AdminNav({ admin }) {
         onClick={() => setOpen(!open)}
         className={`fixed top-6 ${isRTL ? 'left-6' : 'right-6'} z-50 lg:hidden p-2 rounded-lg ${
           theme === 'dark'
-            ? 'bg-card border border-white/[0.06]'
+            ? 'bg-card border border-foreground/[0.06]'
             : 'bg-white border border-[#0A0B10]/[0.06]'
         }`}
       >
@@ -78,7 +78,7 @@ export default function AdminNav({ admin }) {
         transition={{ type: 'spring', damping: 20 }}
         className={`fixed ${isRTL ? 'right-0' : 'left-0'} top-0 bottom-0 w-64 z-40 lg:static lg:translate-x-0 lg:w-64 border-r overflow-y-auto ${
           theme === 'dark'
-            ? 'bg-background border-white/[0.06]'
+            ? 'bg-background border-foreground/[0.06]'
             : 'bg-white border-[#0A0B10]/[0.06]'
         }`}
       >
@@ -89,7 +89,7 @@ export default function AdminNav({ admin }) {
               <Shield className="w-4 h-4 text-white" />
             </div>
             <span className={`font-heading font-bold ${
-              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
             }`}>
               {lang === 'ar' ? 'مسؤول' : 'Admin'}
             </span>
@@ -104,20 +104,20 @@ export default function AdminNav({ admin }) {
 
           {/* Divider */}
           <div className={`my-6 h-px ${
-            theme === 'dark' ? 'bg-white/[0.06]' : 'bg-[#0A0B10]/[0.06]'
+            theme === 'dark' ? 'bg-foreground/[0.06]' : 'bg-background/[0.06]'
           }`} />
 
           {/* Admin Info */}
           <div className={`p-3 rounded-lg ${
-            theme === 'dark' ? 'bg-white/[0.04]' : 'bg-[#0A0B10]/[0.04]'
+            theme === 'dark' ? 'bg-foreground/[0.04]' : 'bg-background/[0.04]'
           }`}>
             <p className={`text-xs font-medium mb-1 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+              theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
             }`}>
               {lang === 'ar' ? 'دورك' : 'Your Role'}
             </p>
             <p className={`text-sm font-semibold ${
-              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
             }`}>
               {admin?.role || 'Admin'}
             </p>

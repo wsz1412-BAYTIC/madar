@@ -39,29 +39,29 @@ export default function Revenue() {
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
   const chartTooltip = {
-    contentStyle: { background: '#14161D', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#F7F5F0', fontSize: 12 },
-    labelStyle: { color: 'rgba(247,245,240,0.5)' },
+    contentStyle: { background: 'var(--chart-tooltip-bg)', border: '1px solid var(--chart-tooltip-border)', borderRadius: 12, color: 'var(--chart-tooltip-text)', fontSize: 12 },
+    labelStyle: { color: 'var(--chart-tooltip-text)' },
     cursor: { fill: 'rgba(255,255,255,0.03)' },
   };
 
   return (
     <div className="space-y-8">
       <FadeIn>
-        <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('revenue')}</h1>
+        <h1 className="font-heading text-3xl font-bold text-foreground">{t('revenue')}</h1>
       </FadeIn>
 
       <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
         {summaryCards.map(card => (
           <StaggerItem key={card.key}>
-            <div className="glass rounded-2xl p-5 hover:border-white/15 transition-all">
+            <div className="glass rounded-2xl p-5 hover:border-foreground/15 transition-all">
               <div className="flex items-center justify-between mb-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
                   <card.icon className="w-4 h-4 text-[#D95F3B]" />
                 </div>
-                <span className={`text-xs font-medium ${card.up ? 'text-emerald-400' : 'text-[#F7F5F0]/30'}`}>{card.trend}</span>
+                <span className={`text-xs font-medium ${card.up ? 'text-emerald-400' : 'text-foreground/30'}`}>{card.trend}</span>
               </div>
-              <div className="text-xl font-bold text-[#F7F5F0] font-heading">{card.value} <span className="text-xs font-normal text-[#F7F5F0]/30">{sar}</span></div>
-              <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(card.key)}</div>
+              <div className="text-xl font-bold text-foreground font-heading">{card.value} <span className="text-xs font-normal text-foreground/30">{sar}</span></div>
+              <div className="text-xs text-foreground/40 mt-1">{t(card.key)}</div>
             </div>
           </StaggerItem>
         ))}
@@ -69,15 +69,15 @@ export default function Revenue() {
 
       <FadeIn delay={0.2}>
         <div className="glass rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('revenueBreakdown')}</h2>
+          <h2 className="font-heading font-semibold text-foreground mb-6">{t('revenueBreakdown')}</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={monthlyBreakdown}>
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
               <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`]} />
               <Bar dataKey="net" fill="#D95F3B" radius={[4, 4, 0, 0]} name={t('netRevenue')} />
               <Bar dataKey="fees" fill="#C8972A" radius={[4, 4, 0, 0]} name={t('platformFees')} />
-              <Bar dataKey="cleaning" fill="rgba(247,245,240,0.1)" radius={[4, 4, 0, 0]} name={t('cleaningFees')} />
+              <Bar dataKey="cleaning" fill='var(--chart-tick)' radius={[4, 4, 0, 0]} name={t('cleaningFees')} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -85,7 +85,7 @@ export default function Revenue() {
 
       <FadeIn delay={0.3}>
         <div className="glass rounded-2xl p-6">
-          <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('projections')}</h2>
+          <h2 className="font-heading font-semibold text-foreground mb-6">{t('projections')}</h2>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={allProjection}>
               <defs>
@@ -94,8 +94,8 @@ export default function Revenue() {
                   <stop offset="100%" stopColor="#C8972A" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
               <Tooltip {...chartTooltip} formatter={(v) => v ? [`${v.toLocaleString()} ${sar}`] : ['-']} />
               <Area type="monotone" dataKey="actual" stroke="#D95F3B" strokeWidth={2} fill="none" name={lang === 'ar' ? 'فعلي' : 'Actual'} />
               <Area type="monotone" dataKey="projected" stroke="#C8972A" strokeWidth={2} strokeDasharray="6 4" fill="url(#projGrad)" name={lang === 'ar' ? 'متوقع' : 'Projected'} />

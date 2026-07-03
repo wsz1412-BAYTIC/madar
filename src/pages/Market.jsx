@@ -41,11 +41,11 @@ export default function Market() {
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
 
   const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
+    ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
     : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
 
   const metrics = [
     {
@@ -142,8 +142,8 @@ export default function Market() {
                           selectedCity === city
                             ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
                             : theme === 'dark'
-                              ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                              : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                              ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]'
+                              : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
                         }`}
                       >
                         {city === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : city}
@@ -164,8 +164,8 @@ export default function Market() {
                           selectedSize === size
                             ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
                             : theme === 'dark'
-                              ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                              : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                              ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]'
+                              : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
                         }`}
                       >
                         {size === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : size}
@@ -228,7 +228,7 @@ export default function Market() {
                 </h2>
               </div>
               <div className="grid sm:grid-cols-3 gap-4">
-                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                <div className="p-4 rounded-lg bg-foreground/[0.02] border border-foreground/[0.06]">
                   <p className={`text-xs font-medium mb-2 ${textMuted}`}>
                     {lang === 'ar' ? 'متوسط أسعار المنافسين' : 'Competitor Avg'}
                   </p>
@@ -237,7 +237,7 @@ export default function Market() {
                   </p>
                   <p className="text-xs text-emerald-400 mt-1">+3.2% {lang === 'ar' ? 'أعلى من السوق' : 'vs Market'}</p>
                 </div>
-                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                <div className="p-4 rounded-lg bg-foreground/[0.02] border border-foreground/[0.06]">
                   <p className={`text-xs font-medium mb-2 ${textMuted}`}>
                     {lang === 'ar' ? 'السعر الأدنى' : 'Min Rate'}
                   </p>
@@ -246,7 +246,7 @@ export default function Market() {
                   </p>
                   <p className={`text-xs ${textMuted} mt-1`}>{lang === 'ar' ? 'في السوق' : 'in Market'}</p>
                 </div>
-                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                <div className="p-4 rounded-lg bg-foreground/[0.02] border border-foreground/[0.06]">
                   <p className={`text-xs font-medium mb-2 ${textMuted}`}>
                     {lang === 'ar' ? 'السعر الأقصى' : 'Max Rate'}
                   </p>
@@ -276,7 +276,7 @@ export default function Market() {
                     </span>
                     <span className="text-sm text-[#D95F3B] font-medium">82%</span>
                   </div>
-                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-foreground/[0.04] rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '82%'}} />
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export default function Market() {
                     </span>
                     <span className="text-sm text-[#D95F3B] font-medium">68%</span>
                   </div>
-                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-foreground/[0.04] rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '68%'}} />
                   </div>
                 </div>
@@ -298,12 +298,12 @@ export default function Market() {
                     </span>
                     <span className="text-sm text-[#D95F3B] font-medium">56%</span>
                   </div>
-                  <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-foreground/[0.04] rounded-full overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '56%'}} />
                   </div>
                 </div>
               </div>
-              <p className={`text-xs ${textMuted} mt-4 p-3 rounded-lg bg-white/[0.02]`}>
+              <p className={`text-xs ${textMuted} mt-4 p-3 rounded-lg bg-foreground/[0.02]`}>
                 {lang === 'ar'
                   ? '✨ التنبؤ مدعوم بالذكاء الاصطناعي ويأخذ في الاعتبار الأنماط الموسمية والأحداث المحلية والبيانات التاريخية'
                   : '✨ Forecast powered by AI analyzing seasonal patterns, local events, and historical data'}
@@ -340,7 +340,7 @@ export default function Market() {
                   { season: lang === 'ar' ? 'الربيع' : 'Spring', period: 'Mar-May', demand: lang === 'ar' ? 'متوسط' : 'Medium' },
                   { season: lang === 'ar' ? 'الخريف' : 'Fall', period: 'Sep-Nov', demand: lang === 'ar' ? 'منخفض' : 'Low' },
                 ].map((item, idx) => (
-                  <div key={idx} className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-white/[0.02] border border-white/[0.06]' : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'}`}>
+                  <div key={idx} className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-foreground/[0.02] border border-foreground/[0.06]' : 'bg-background/3 border border-[#0A0B10]/10'}`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className={`font-medium ${textColor}`}>{item.season}</p>

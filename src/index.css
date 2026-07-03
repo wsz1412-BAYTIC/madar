@@ -12,8 +12,21 @@
 @layer base {
   :root {
     /* Light Mode (Default for landing pages) */
-    --background: 0 0% 100%;
-    --foreground: 224 20% 13%;
+    --background: 40 20% 98%;
+    --foreground: 230 23% 10%;
+    /* Semantic surfaces: page < surface (cards/sidebar) < elevated (popovers/modals) */
+    --surface: 0 0% 100%;
+    --surface-elevated: 0 0% 100%;
+    /* Status colors — AA on light surfaces */
+    --success: 160 70% 30%;
+    --warning: 35 90% 38%;
+    --danger: 0 72% 45%;
+    /* Chart theming (recharts inline styles read these) */
+    --chart-tick: hsl(230 10% 45%);
+    --chart-grid: hsl(230 15% 88%);
+    --chart-tooltip-bg: hsl(0 0% 100%);
+    --chart-tooltip-border: hsl(230 15% 85%);
+    --chart-tooltip-text: hsl(230 23% 10%);
     --card: 0 0% 98%;
     --card-foreground: 224 20% 13%;
     --popover: 0 0% 100%;
@@ -52,9 +65,21 @@
   }
 
   .dark {
-    /* Dark Mode */
-    --background: 223 30% 8%;
-    --foreground: 40 20% 95%;
+    /* Dark Mode — values pinned to the previously hardcoded brand hexes so the
+       token migration is pixel-identical in dark: #0A0B10 bg, #0F1117 surface,
+       #F7F5F0 text. */
+    --background: 230 23% 5%;
+    --foreground: 43 30% 95%;
+    --surface: 225 21% 8%;
+    --surface-elevated: 227 18% 10%;
+    --success: 160 60% 45%;
+    --warning: 38 92% 55%;
+    --danger: 0 84% 60%;
+    --chart-tick: rgba(247, 245, 240, 0.35);
+    --chart-grid: rgba(247, 245, 240, 0.08);
+    --chart-tooltip-bg: #14161d;
+    --chart-tooltip-border: rgba(255, 255, 255, 0.08);
+    --chart-tooltip-text: #f7f5f0;
     --card: 223 25% 12%;
     --card-foreground: 40 20% 95%;
     --popover: 223 25% 12%;
@@ -154,8 +179,9 @@
   }
 
   .light .glass {
-    background: rgba(224, 223, 213, 0.4);
-    border: 1px solid rgba(10, 11, 16, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(15, 17, 23, 0.08);
+    box-shadow: 0 1px 2px rgba(15, 17, 23, 0.04), 0 10px 28px -16px rgba(15, 17, 23, 0.1);
   }
 
   .glass-strong {
@@ -171,8 +197,9 @@
   }
 
   .light .glass-strong {
-    background: rgba(224, 223, 213, 0.5);
-    border: 1px solid rgba(10, 11, 16, 0.1);
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(15, 17, 23, 0.1);
+    box-shadow: 0 1px 3px rgba(15, 17, 23, 0.05), 0 14px 36px -18px rgba(15, 17, 23, 0.14);
   }
 
   .text-gradient-gold {

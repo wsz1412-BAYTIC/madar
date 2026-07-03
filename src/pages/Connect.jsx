@@ -34,8 +34,8 @@ export default function Connect() {
             <Link2 className="w-5 h-5 text-[#D95F3B]" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('connectPlatforms')}</h1>
-            <p className="text-sm text-[#F7F5F0]/40">{t('connectDesc')}</p>
+            <h1 className="font-heading text-3xl font-bold text-foreground">{t('connectPlatforms')}</h1>
+            <p className="text-sm text-foreground/40">{t('connectDesc')}</p>
           </div>
         </div>
       </FadeIn>
@@ -46,15 +46,15 @@ export default function Connect() {
           const isLoading = connecting === platform.id;
           return (
             <FadeIn key={platform.id} delay={i * 0.1}>
-              <div className="glass rounded-2xl p-6 hover:border-white/15 transition-all">
+              <div className="glass rounded-2xl p-6 hover:border-foreground/15 transition-all">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-white/[0.06]" style={{ backgroundColor: `${platform.color}15` }}>
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-foreground/[0.06]" style={{ backgroundColor: `${platform.color}15` }}>
                       {platform.logo}
                     </div>
                     <div>
-                      <h3 className="font-heading font-semibold text-[#F7F5F0]">{platform.name}</h3>
-                      <p className="text-sm text-[#F7F5F0]/40">{platform.desc[lang]}</p>
+                      <h3 className="font-heading font-semibold text-foreground">{platform.name}</h3>
+                      <p className="text-sm text-foreground/40">{platform.desc[lang]}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -82,7 +82,7 @@ export default function Connect() {
 
       <FadeIn delay={0.3}>
         <div className="glass rounded-2xl p-6">
-          <h3 className="font-heading font-semibold text-[#F7F5F0] mb-4">{lang === 'ar' ? 'كيف يعمل الربط' : 'How it works'}</h3>
+          <h3 className="font-heading font-semibold text-foreground mb-4">{lang === 'ar' ? 'كيف يعمل الربط' : 'How it works'}</h3>
           <div className="space-y-3">
             {(lang === 'ar'
               ? ['انقر على "اربط الآن" للمنصة المطلوبة', 'سجل الدخول وامنح مدار الأذونات المطلوبة', 'ستتم مزامنة إعلاناتك وحجوزاتك تلقائياً']
@@ -90,7 +90,7 @@ export default function Connect() {
             ).map((step, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{i + 1}</div>
-                <span className="text-sm text-[#F7F5F0]/60">{step}</span>
+                <span className="text-sm text-foreground/60">{step}</span>
               </div>
             ))}
           </div>

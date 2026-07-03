@@ -41,7 +41,7 @@ export default function CookieConsentBanner() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#0A0B10] border border-white/[0.08] rounded-2xl overflow-hidden"
+              className="bg-background border border-foreground/[0.08] rounded-2xl overflow-hidden"
             >
               <div className="p-6 sm:p-8">
                 <div className="flex items-start justify-between gap-4 mb-6">
@@ -76,13 +76,13 @@ export default function CookieConsentBanner() {
                   </button>
                   <button
                     onClick={rejectNonEssential}
-                    className="px-4 py-3 bg-white/[0.04] text-white font-medium rounded-xl border border-white/[0.08] hover:bg-white/10 transition-all text-sm"
+                    className="px-4 py-3 bg-foreground/[0.04] text-white font-medium rounded-xl border border-foreground/[0.08] hover:bg-foreground/10 transition-all text-sm"
                   >
                     {lang === 'ar' ? 'رفض غير الأساسي' : 'Reject Non-Essential'}
                   </button>
                   <button
                     onClick={() => setShowCustomize(true)}
-                    className="px-4 py-3 bg-white/[0.04] text-white font-medium rounded-xl border border-white/[0.08] hover:bg-white/10 transition-all text-sm flex items-center justify-center gap-2"
+                    className="px-4 py-3 bg-foreground/[0.04] text-white font-medium rounded-xl border border-foreground/[0.08] hover:bg-foreground/10 transition-all text-sm flex items-center justify-center gap-2"
                   >
                     <Settings className="w-4 h-4" />
                     {lang === 'ar' ? 'تخصيص' : 'Customize'}
@@ -98,7 +98,7 @@ export default function CookieConsentBanner() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#0A0B10] border border-white/[0.08] rounded-2xl overflow-hidden"
+              className="bg-background border border-foreground/[0.08] rounded-2xl overflow-hidden"
             >
               <div className="p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-6">
@@ -116,7 +116,7 @@ export default function CookieConsentBanner() {
                 {/* Cookie Options */}
                 <div className="space-y-4 mb-8">
                   {/* Essential */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                  <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-white">
@@ -136,7 +136,7 @@ export default function CookieConsentBanner() {
                   </div>
 
                   {/* Performance */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                  <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-white">
@@ -156,7 +156,7 @@ export default function CookieConsentBanner() {
                   </div>
 
                   {/* Preferences */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                  <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-white">
@@ -176,7 +176,7 @@ export default function CookieConsentBanner() {
                   </div>
 
                   {/* Marketing */}
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+                  <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-white">
@@ -200,7 +200,7 @@ export default function CookieConsentBanner() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <button
                     onClick={() => setShowCustomize(false)}
-                    className="px-4 py-3 bg-white/[0.04] text-white font-medium rounded-xl border border-white/[0.08] hover:bg-white/10 transition-all"
+                    className="px-4 py-3 bg-foreground/[0.04] text-white font-medium rounded-xl border border-foreground/[0.08] hover:bg-foreground/10 transition-all"
                   >
                     {lang === 'ar' ? 'إلغاء' : 'Cancel'}
                   </button>

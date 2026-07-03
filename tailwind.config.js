@@ -10,8 +10,15 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
+  			background: 'hsl(var(--background) / <alpha-value>)',
+  			foreground: 'hsl(var(--foreground) / <alpha-value>)',
+  			surface: {
+  				DEFAULT: 'hsl(var(--surface) / <alpha-value>)',
+  				elevated: 'hsl(var(--surface-elevated) / <alpha-value>)'
+  			},
+  			success: 'hsl(var(--success) / <alpha-value>)',
+  			warning: 'hsl(var(--warning) / <alpha-value>)',
+  			danger: 'hsl(var(--danger) / <alpha-value>)',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'

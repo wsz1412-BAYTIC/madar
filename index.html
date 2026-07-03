@@ -16,6 +16,27 @@
     <meta name="description" content="Madar uses AI to optimize pricing, forecast demand, and maximize revenue for short-term rental hosts in Saudi Arabia." />
   </head>
   <body>
+    <script>
+      // Anti-FOUC: resolve the theme (stored preference or system) and stamp the
+      // class on <html> before first paint, so neither theme ever flashes.
+      (function () {
+        try {
+          var pref = localStorage.getItem('madar_theme');
+          var resolved =
+            pref === 'light' || pref === 'dark'
+              ? pref
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark';
+          var cl = document.documentElement.classList;
+          cl.add(resolved);
+          cl.remove(resolved === 'dark' ? 'light' : 'dark');
+          document.documentElement.style.colorScheme = resolved;
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

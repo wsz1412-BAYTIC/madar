@@ -56,8 +56,8 @@ export default function Calculator() {
             <CalcIcon className="w-5 h-5 text-[#C8972A]" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('investmentCalculator')}</h1>
-            <p className="text-sm text-[#F7F5F0]/40">{t('calcDesc')}</p>
+            <h1 className="font-heading text-3xl font-bold text-foreground">{t('investmentCalculator')}</h1>
+            <p className="text-sm text-foreground/40">{t('calcDesc')}</p>
           </div>
         </div>
       </FadeIn>
@@ -65,33 +65,33 @@ export default function Calculator() {
       {/* Dynamic Revenue Estimator */}
       <FadeIn delay={0.1}>
         <div className="glass rounded-2xl p-6 space-y-4">
-          <h2 className="font-heading text-lg font-semibold text-[#F7F5F0]">{lang === 'ar' ? 'مقدّر الإيرادات الديناميكي' : 'Dynamic Revenue Estimator'}</h2>
+          <h2 className="font-heading text-lg font-semibold text-foreground">{lang === 'ar' ? 'مقدّر الإيرادات الديناميكي' : 'Dynamic Revenue Estimator'}</h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{lang === 'ar' ? 'المدينة' : 'City'}</label>
-              <select value={dynForm.city} onChange={e => updateDyn('city', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+              <label className="block text-sm font-medium text-foreground/60 mb-1.5">{lang === 'ar' ? 'المدينة' : 'City'}</label>
+              <select value={dynForm.city} onChange={e => updateDyn('city', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
                 <option value="riyadh">{lang === 'ar' ? 'الرياض' : 'Riyadh'}</option>
                 <option value="jeddah">{lang === 'ar' ? 'جدة' : 'Jeddah'}</option>
                 <option value="dammam">{lang === 'ar' ? 'الدمام' : 'Dammam'}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{lang === 'ar' ? 'النوع' : 'Type'}</label>
-              <select value={dynForm.type} onChange={e => updateDyn('type', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+              <label className="block text-sm font-medium text-foreground/60 mb-1.5">{lang === 'ar' ? 'النوع' : 'Type'}</label>
+              <select value={dynForm.type} onChange={e => updateDyn('type', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
                 <option value="apartment">{lang === 'ar' ? 'شقة' : 'Apartment'}</option>
                 <option value="villa">{lang === 'ar' ? 'فيلا' : 'Villa'}</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{lang === 'ar' ? 'غرف النوم' : 'Bedrooms'}</label>
-              <select value={dynForm.bedrooms} onChange={e => updateDyn('bedrooms', Number(e.target.value))} className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+              <label className="block text-sm font-medium text-foreground/60 mb-1.5">{lang === 'ar' ? 'غرف النوم' : 'Bedrooms'}</label>
+              <select value={dynForm.bedrooms} onChange={e => updateDyn('bedrooms', Number(e.target.value))} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
                 {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
               </select>
             </div>
           </div>
           <button onClick={calculateDynamic} className="group relative w-full py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
             <span className="relative z-10">{t('calculate')}</span>
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+            <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </button>
         </div>
       </FadeIn>
@@ -99,22 +99,22 @@ export default function Calculator() {
       {dynResult && (
         <FadeIn delay={0.2}>
           <div className="glass rounded-2xl p-6">
-            <h2 className="font-heading text-lg font-semibold text-[#F7F5F0] mb-4">{lang === 'ar' ? 'المقارنة المتوقعة' : 'Projected Returns Comparison'}</h2>
+            <h2 className="font-heading text-lg font-semibold text-foreground mb-4">{lang === 'ar' ? 'المقارنة المتوقعة' : 'Projected Returns Comparison'}</h2>
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'الإيجار الشهري المقدّر' : 'Estimated Monthly Rent'}</div>
+              <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
+                <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'الإيجار الشهري المقدّر' : 'Estimated Monthly Rent'}</div>
                 <div className="text-2xl font-bold text-[#D95F3B] font-heading">{dynResult.estimatedRent.toLocaleString()} {sar}</div>
               </div>
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'الإيرادات السنوية' : 'Annual Revenue'}</div>
+              <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
+                <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'الإيرادات السنوية' : 'Annual Revenue'}</div>
                 <div className="text-2xl font-bold text-[#C8972A] font-heading">{dynResult.annualRevenue.toLocaleString()} {sar}</div>
               </div>
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'الربح السنوي' : 'Annual Profit'}</div>
+              <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
+                <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'الربح السنوي' : 'Annual Profit'}</div>
                 <div className="text-2xl font-bold text-[#D95F3B] font-heading">{dynResult.annualProfit.toLocaleString()} {sar}</div>
               </div>
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                <div className="text-xs text-[#F7F5F0]/40 mb-1">{lang === 'ar' ? 'العائد على الاستثمار' : 'ROI'}</div>
+              <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
+                <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'العائد على الاستثمار' : 'ROI'}</div>
                 <div className="text-2xl font-bold text-[#C8972A] font-heading">{dynResult.roi}%</div>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function Calculator() {
 
       <FadeIn delay={0.15}>
         <div className="glass rounded-2xl p-6 space-y-5">
-          <h2 className="font-heading text-lg font-semibold text-[#F7F5F0]">{lang === 'ar' ? 'حاسبة الاستثمار' : 'Investment Calculator'}</h2>
+          <h2 className="font-heading text-lg font-semibold text-foreground">{lang === 'ar' ? 'حاسبة الاستثمار' : 'Investment Calculator'}</h2>
           {[
              { key: 'propertyValue', val: form.propertyValue },
              { key: 'monthlyRent', val: form.monthlyRent },
@@ -132,19 +132,19 @@ export default function Calculator() {
              { key: 'monthlyExpenses', val: form.expenses },
            ].map(field => (
              <div key={field.key}>
-               <label className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t(field.key)}</label>
+               <label className="block text-sm font-medium text-foreground/60 mb-1.5">{t(field.key)}</label>
                <input
                  type="number"
                  value={field.val}
                  onChange={e => update(field.key === 'propertyValue' ? 'propertyValue' : field.key === 'monthlyRent' ? 'monthlyRent' : field.key === 'occupancyEst' ? 'occupancy' : 'expenses', e.target.value)}
-                 className="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
+                 className="w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
                  dir="ltr"
                />
              </div>
            ))}
            <button onClick={calculate} className="group relative w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
              <span className="relative z-10">{t('calculate')}</span>
-             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+             <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
            </button>
          </div>
        </FadeIn>
@@ -161,13 +161,13 @@ export default function Calculator() {
               <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style={{ backgroundColor: `${card.color}15` }}>
                 <card.icon className="w-4 h-4" style={{ color: card.color }} />
               </div>
-              <div className="text-xl font-bold text-[#F7F5F0] font-heading">
-                {card.value} {card.key !== 'roi' && <span className="text-xs font-normal text-[#F7F5F0]/30">{sar}</span>}
+              <div className="text-xl font-bold text-foreground font-heading">
+                {card.value} {card.key !== 'roi' && <span className="text-xs font-normal text-foreground/30">{sar}</span>}
               </div>
-              <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(card.key)}</div>
+              <div className="text-xs text-foreground/40 mt-1">{t(card.key)}</div>
             </div>
           ))}
-          <div className="col-span-2 relative rounded-2xl p-6 overflow-hidden border border-white/[0.08]">
+          <div className="col-span-2 relative rounded-2xl p-6 overflow-hidden border border-foreground/[0.08]">
             <div className="absolute inset-0 bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" />
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-2">
@@ -184,7 +184,7 @@ export default function Calculator() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0A0B10]">
+      <div className="min-h-screen bg-background">
         <PublicNavbar />
         <div className="pt-24 pb-16 px-4">{content}</div>
       </div>

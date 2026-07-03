@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import { useAuth } from '@/lib/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Building2, BarChart3, DollarSign, Bell, Globe2,
   CalendarDays, Settings, CreditCard, Calculator, Link2, Gift,
-  ShieldCheck, LogOut, ChevronLeft, ChevronRight, Menu, X, Globe, TrendingUp
+  ShieldCheck, LogOut, ChevronLeft, ChevronRight, Menu, X, Globe, TrendingUp,
+  Sun, Moon, Monitor
 } from 'lucide-react';
+
+// Theme control: Dark → Light → System cycle, shown in the sidebar footer on
+// desktop and next to the burger on mobile.
+const THEME_ORDER = ['dark', 'light', 'system'];
+const THEME_ICONS = { dark: Moon, light: Sun, system: Monitor };
 
 const navItems = [
   { key: 'dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -30,11 +37,24 @@ const bottomItems = [
 ];
 
 export default function Sidebar() {
-  const { t, toggleLang, isRTL } = useLang();
+  const { t, toggleLang, isRTL, lang } = useLang();
   const { logout } = useAuth();
+  const { preference, setPreference } = useTheme();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const cycleTheme = () => {
+    const next = THEME_ORDER[(THEME_ORDER.indexOf(preference) + 1) % THEME_ORDER.length];
+    setPreference(next);
+  };
+  const ThemeIcon = THEME_ICONS[preference] || Moon;
+  const themeLabel =
+    preference === 'dark'
+      ? (lang === 'ar' ? 'داكن' : 'Dark')
+      : preference === 'light'
+        ? (lang === 'ar' ? 'فاتح' : 'Light')
+        : (lang === 'ar' ? 'تلقائي (النظام)' : 'System');
 
   React.useEffect(() => {
     document.documentElement.style.setProperty('--sidebar-width', collapsed ? '72px' : '250px');
@@ -51,8 +71,8 @@ export default function Sidebar() {
     >
       <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-300 ${
         isActive(item.path)
-          ? 'text-[#F7F5F0] bg-white/[0.06]'
-          : 'text-[#F7F5F0]/50 hover:text-[#F7F5F0] hover:bg-white/[0.03]'
+          ? 'text-foreground bg-foreground/[0.06]'
+          : 'text-foreground/50 hover:text-foreground hover:bg-foreground/[0.03]'
       }`}>
         {isActive(item.path) && (
           <motion.div
@@ -61,7 +81,7 @@ export default function Sidebar() {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         )}
-        <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isActive(item.path) ? 'text-[#D95F3B]' : 'text-[#F7F5F0]/40 group-hover:text-[#F7F5F0]/70'}`} />
+        <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isActive(item.path) ? 'text-[#D95F3B]' : 'text-foreground/40 group-hover:text-foreground/70'}`} />
         {!collapsed && <span className="truncate relative z-10">{t(item.key)}</span>}
       </div>
     </Link>
@@ -69,7 +89,7 @@ export default function Sidebar() {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-5 h-20 border-b border-white/[0.06]">
+      <div className="flex items-center justify-between px-5 h-20 border-b border-foreground/[0.06]">
         <Link to="/dashboard" className="flex items-center gap-3 group" onClick={() => setMobileOpen(false)}>
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-xl blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
@@ -77,9 +97,9 @@ export default function Sidebar() {
               <span className="text-white font-bold text-sm font-heading">م</span>
             </div>
           </div>
-          {!collapsed && <span className="font-heading font-bold text-xl text-[#F7F5F0] tracking-tight">Madar</span>}
+          {!collapsed && <span className="font-heading font-bold text-xl text-foreground tracking-tight">Madar</span>}
         </Link>
-        <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:flex p-2 rounded-lg hover:bg-white/[0.04] text-[#F7F5F0]/30 hover:text-[#F7F5F0]/60 transition-all duration-500">
+        <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:flex p-2 rounded-lg hover:bg-foreground/[0.04] text-foreground/30 hover:text-foreground/60 transition-all duration-500">
           {collapsed ? (isRTL ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />) : (isRTL ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />)}
         </button>
       </div>
@@ -88,10 +108,19 @@ export default function Sidebar() {
         {navItems.map(item => <NavLink key={item.key} item={item} />)}
       </div>
 
-      <div className="px-3 py-4 border-t border-white/[0.04] space-y-1">
+      <div className="px-3 py-4 border-t border-foreground/[0.04] space-y-1">
         {bottomItems.map(item => <NavLink key={item.key} item={item} />)}
-        <button onClick={toggleLang} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#F7F5F0]/50 hover:bg-white/[0.03] hover:text-[#F7F5F0] transition-all w-full">
-          <Globe className="w-[18px] h-[18px] text-[#F7F5F0]/40" />
+        <button
+          onClick={cycleTheme}
+          title={themeLabel}
+          aria-label={lang === 'ar' ? `المظهر: ${themeLabel}` : `Theme: ${themeLabel}`}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-foreground/50 hover:bg-foreground/[0.03] hover:text-foreground transition-all w-full"
+        >
+          <ThemeIcon className="w-[18px] h-[18px] text-foreground/40" />
+          {!collapsed && <span>{themeLabel}</span>}
+        </button>
+        <button onClick={toggleLang} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-foreground/50 hover:bg-foreground/[0.03] hover:text-foreground transition-all w-full">
+          <Globe className="w-[18px] h-[18px] text-foreground/40" />
           {!collapsed && <span>{t('language')}</span>}
         </button>
         <button onClick={logout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition-all w-full">
@@ -105,7 +134,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 cinematic-blur bg-[#0A0B10]/80 border-b border-white/[0.06] h-16 flex items-center justify-between px-6">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 cinematic-blur bg-background/80 border-b border-foreground/[0.06] h-16 flex items-center justify-between px-6">
         <Link to="/dashboard" className="flex items-center gap-3 group">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-lg blur-sm opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
@@ -113,11 +142,21 @@ export default function Sidebar() {
               <span className="text-white font-bold text-xs font-heading">م</span>
             </div>
           </div>
-          <span className="font-heading font-bold text-lg text-[#F7F5F0] tracking-tight">Madar</span>
+          <span className="font-heading font-bold text-lg text-foreground tracking-tight">Madar</span>
         </Link>
-        <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-[#F7F5F0]/70 hover:text-[#F7F5F0] transition-colors duration-500">
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={cycleTheme}
+            title={themeLabel}
+            aria-label={lang === 'ar' ? `المظهر: ${themeLabel}` : `Theme: ${themeLabel}`}
+            className="p-2 text-foreground/60 hover:text-foreground transition-colors duration-500"
+          >
+            <ThemeIcon className="w-5 h-5" />
+          </button>
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-foreground/70 hover:text-foreground transition-colors duration-500">
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile overlay */}
@@ -135,7 +174,7 @@ export default function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: isRTL ? '100%' : '-100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="absolute top-16 w-72 h-[calc(100%-64px)] bg-[#0F1117] shadow-2xl"
+              className="absolute top-16 w-72 h-[calc(100%-64px)] bg-surface shadow-2xl"
               style={{ [isRTL ? 'right' : 'left']: 0 }}
               onClick={e => e.stopPropagation()}
             >
@@ -147,11 +186,11 @@ export default function Sidebar() {
 
       {/* Desktop sidebar */}
       <aside
-        className="hidden lg:flex flex-col fixed top-0 h-screen bg-[#0F1117] transition-all duration-300 z-40"
+        className="hidden lg:flex flex-col fixed top-0 h-screen bg-surface transition-all duration-300 z-40"
         style={{
           [isRTL ? 'right' : 'left']: 0,
           width: collapsed ? 72 : 250,
-          [isRTL ? 'borderLeft' : 'borderRight']: '1px solid rgba(255,255,255,0.04)',
+          [isRTL ? 'borderLeft' : 'borderRight']: '1px solid hsl(var(--foreground) / 0.06)',
         }}
       >
         {sidebarContent}

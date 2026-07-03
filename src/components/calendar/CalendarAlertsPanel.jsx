@@ -12,11 +12,11 @@ export default function CalendarAlertsPanel({ alerts }) {
     return (
       <div className={`p-6 rounded-xl text-center ${
         theme === 'dark'
-          ? 'bg-white/[0.03] border border-white/[0.06]'
+          ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
           : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
       }`}>
         <p className={`text-sm ${
-          theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+          theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
         }`}>{lang === 'ar' ? 'لا توجد تنبيهات' : 'No alerts'}</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function CalendarAlertsPanel({ alerts }) {
   return (
     <div className="space-y-3">
       <h3 className={`font-medium text-sm flex items-center gap-2 mb-4 ${
-        theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
       }`}>
         <AlertTriangle className="w-4 h-4" />
         {lang === 'ar' ? 'التنبيهات والفرص' : 'Alerts & Opportunities'} ({alerts.length})
@@ -61,10 +61,10 @@ export default function CalendarAlertsPanel({ alerts }) {
               {getAlertIcon(alert.type)}
               <div className="flex-1">
                 <p className={`font-medium text-sm mb-1 ${
-                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                 }`}>{alert.title}</p>
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                  theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
                 }`}>{alert.description}</p>
                 {alert.impact && (
                   <p className={`text-xs mt-2 font-medium ${

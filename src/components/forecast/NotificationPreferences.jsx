@@ -27,17 +27,17 @@ export default function NotificationPreferences({ onSave }) {
   };
 
   const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
+    ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
     : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
 
   const bgToggle = theme === 'dark'
-    ? 'bg-white/[0.04]'
-    : 'bg-[#0A0B10]/5';
+    ? 'bg-foreground/[0.04]'
+    : 'bg-background/5';
 
   return (
     <div className={`${bgCard} rounded-xl p-6 space-y-6`}>
       <h3 className={`font-heading font-bold text-lg ${
-        theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
       }`}>
         {lang === 'ar' ? 'تفضيلات الإخطارات' : 'Notification Preferences'}
       </h3>
@@ -45,7 +45,7 @@ export default function NotificationPreferences({ onSave }) {
       {/* Alert Threshold */}
       <div>
         <label className={`text-sm font-medium mb-3 block ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {lang === 'ar' ? 'حد التنبيه' : 'Alert Threshold'}
         </label>
@@ -64,7 +64,7 @@ export default function NotificationPreferences({ onSave }) {
           </span>
         </div>
         <p className={`text-xs mt-2 ${
-          theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+          theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
         }`}>
           {lang === 'ar'
             ? 'سيتم إرسال التنبيهات إذا كان الاشغال المتوقع أقل من هذه النسبة'
@@ -75,7 +75,7 @@ export default function NotificationPreferences({ onSave }) {
       {/* Notification Channels */}
       <div>
         <label className={`text-sm font-medium mb-4 block ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {lang === 'ar' ? 'قنوات الإخطار' : 'Notification Channels'}
         </label>
@@ -86,10 +86,10 @@ export default function NotificationPreferences({ onSave }) {
               <Bell className="w-5 h-5 text-[#D95F3B]" />
               <div>
                 <p className={`font-medium text-sm ${
-                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                 }`}>{lang === 'ar' ? 'لوحة المعلومات' : 'Dashboard'}</p>
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
                 }`}>{lang === 'ar' ? 'إخطارات مدمجة' : 'In-app notifications'}</p>
               </div>
             </div>
@@ -104,14 +104,14 @@ export default function NotificationPreferences({ onSave }) {
                 prefs.dashboard
                   ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A]'
                   : theme === 'dark'
-                    ? 'bg-white/[0.1]'
-                    : 'bg-[#0A0B10]/10'
+                    ? 'bg-foreground/[0.1]'
+                    : 'bg-background/10'
               }`} />
               <span className={`ml-3 text-xs font-medium ${
                 prefs.dashboard
                   ? 'text-[#D95F3B]'
                   : theme === 'dark'
-                    ? 'text-[#F7F5F0]/50'
+                    ? 'text-foreground/50'
                     : 'text-[#0A0B10]/50'
               }`}>
                 {prefs.dashboard ? 'On' : 'Off'}
@@ -125,10 +125,10 @@ export default function NotificationPreferences({ onSave }) {
               <Mail className="w-5 h-5 text-[#C8972A]" />
               <div>
                 <p className={`font-medium text-sm ${
-                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                 }`}>{lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}</p>
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
                 }`}>admin@baytic.app</p>
               </div>
             </div>
@@ -143,14 +143,14 @@ export default function NotificationPreferences({ onSave }) {
                 prefs.email
                   ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A]'
                   : theme === 'dark'
-                    ? 'bg-white/[0.1]'
-                    : 'bg-[#0A0B10]/10'
+                    ? 'bg-foreground/[0.1]'
+                    : 'bg-background/10'
               }`} />
               <span className={`ml-3 text-xs font-medium ${
                 prefs.email
                   ? 'text-[#D95F3B]'
                   : theme === 'dark'
-                    ? 'text-[#F7F5F0]/50'
+                    ? 'text-foreground/50'
                     : 'text-[#0A0B10]/50'
               }`}>
                 {prefs.email ? 'On' : 'Off'}
@@ -165,10 +165,10 @@ export default function NotificationPreferences({ onSave }) {
                 <MessageCircle className="w-5 h-5 text-[#FFB800]" />
                 <div>
                   <p className={`font-medium text-sm ${
-                    theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                    theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                   }`}>{lang === 'ar' ? 'واتساب' : 'WhatsApp'}</p>
                   <p className={`text-xs ${
-                    theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+                    theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
                   }`}>{lang === 'ar' ? 'يتطلب موافقة صريحة' : 'Requires explicit consent'}</p>
                 </div>
               </div>
@@ -184,7 +184,7 @@ export default function NotificationPreferences({ onSave }) {
             ) : (
               <div className="space-y-2">
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-[#F7F5F0]/70' : 'text-[#0A0B10]/70'
+                  theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
                 }`}>
                   {lang === 'ar'
                     ? 'أنت موافق على استقبال إخطارات على +966 53 810 0119'
@@ -201,8 +201,8 @@ export default function NotificationPreferences({ onSave }) {
                     prefs.whatsapp
                       ? 'bg-[#25D366]'
                       : theme === 'dark'
-                        ? 'bg-white/[0.1]'
-                        : 'bg-[#0A0B10]/10'
+                        ? 'bg-foreground/[0.1]'
+                        : 'bg-background/10'
                   }`} />
                 </label>
               </div>
@@ -214,7 +214,7 @@ export default function NotificationPreferences({ onSave }) {
       {/* Alert Frequency */}
       <div>
         <label className={`text-sm font-medium mb-3 block ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {lang === 'ar' ? 'تكرار الإخطارات' : 'Alert Frequency'}
         </label>
@@ -227,8 +227,8 @@ export default function NotificationPreferences({ onSave }) {
                 prefs.alertFrequency === freq
                   ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
                   : theme === 'dark'
-                    ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/10'
-                    : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                    ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/10'
+                    : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
               }`}
             >
               {freq === 'immediately' ? (lang === 'ar' ? 'فوري' : 'Immediately') :
@@ -242,10 +242,10 @@ export default function NotificationPreferences({ onSave }) {
       <div className={`p-4 rounded-lg ${bgToggle} flex items-center justify-between`}>
         <div>
           <p className={`font-medium text-sm ${
-            theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
           }`}>{lang === 'ar' ? 'تجميع التنبيهات' : 'Group Related Alerts'}</p>
           <p className={`text-xs ${
-            theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+            theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
           }`}>{lang === 'ar' ? 'دمج التنبيهات ذات الصلة لتقليل الضوضاء' : 'Combine related alerts to reduce noise'}</p>
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -259,8 +259,8 @@ export default function NotificationPreferences({ onSave }) {
             prefs.groupAlerts
               ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A]'
               : theme === 'dark'
-                ? 'bg-white/[0.1]'
-                : 'bg-[#0A0B10]/10'
+                ? 'bg-foreground/[0.1]'
+                : 'bg-background/10'
           }`} />
         </label>
       </div>

@@ -39,13 +39,13 @@ export default function MadarSettings() {
     }
   };
 
-  const inputClass = "w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all";
+  const inputClass = "w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all";
   const readonlyInputClass = inputClass + " opacity-60 cursor-not-allowed";
 
   return (
     <div className="space-y-8 max-w-2xl">
       <FadeIn>
-        <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('settings')}</h1>
+        <h1 className="font-heading text-3xl font-bold text-foreground">{t('settings')}</h1>
       </FadeIn>
 
       <FadeIn delay={0.1}>
@@ -54,20 +54,20 @@ export default function MadarSettings() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
               <User className="w-4 h-4 text-[#D95F3B]" />
             </div>
-            <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('profileSettings')}</h2>
+            <h2 className="font-heading font-semibold text-foreground">{t('profileSettings')}</h2>
           </div>
           <div className="space-y-4">
             <div>
-              <label htmlFor="profile-name" className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('fullName')}</label>
+              <label htmlFor="profile-name" className="block text-sm font-medium text-foreground/60 mb-1.5">{t('fullName')}</label>
               <input id="profile-name" value={form.name} onChange={e => update('name', e.target.value)} className={inputClass} />
             </div>
             <div>
-              <label htmlFor="profile-email" className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('email')}</label>
+              <label htmlFor="profile-email" className="block text-sm font-medium text-foreground/60 mb-1.5">{t('email')}</label>
               {/* Email is the account identity and is not editable here. */}
               <input id="profile-email" value={user?.email || ''} type="email" className={readonlyInputClass} readOnly disabled />
             </div>
             <div>
-              <label htmlFor="profile-phone" className="block text-sm font-medium text-[#F7F5F0]/60 mb-1.5">{t('phone')}</label>
+              <label htmlFor="profile-phone" className="block text-sm font-medium text-foreground/60 mb-1.5">{t('phone')}</label>
               <input id="profile-phone" value={form.phone} onChange={e => update('phone', e.target.value)} type="tel" dir="ltr" className={inputClass} />
             </div>
           </div>
@@ -80,11 +80,11 @@ export default function MadarSettings() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C8972A]/15 to-[#D95F3B]/10 flex items-center justify-center border border-[#C8972A]/15">
               <Globe className="w-4 h-4 text-[#C8972A]" />
             </div>
-            <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('languagePref')}</h2>
+            <h2 className="font-heading font-semibold text-foreground">{t('languagePref')}</h2>
           </div>
           <div className="flex gap-3">
             {[{ val: 'en', label: 'English' }, { val: 'ar', label: 'العربية' }].map(opt => (
-              <button key={opt.val} onClick={() => update('language', opt.val)} className={`flex-1 py-3 rounded-xl text-sm font-medium border transition-all ${form.language === opt.val ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent' : 'bg-white/[0.04] text-[#F7F5F0]/50 border-white/[0.08] hover:border-white/20'}`}>
+              <button key={opt.val} onClick={() => update('language', opt.val)} className={`flex-1 py-3 rounded-xl text-sm font-medium border transition-all ${form.language === opt.val ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent' : 'bg-foreground/[0.04] text-foreground/50 border-foreground/[0.08] hover:border-foreground/20'}`}>
                 {opt.label}
               </button>
             ))}
@@ -99,7 +99,7 @@ export default function MadarSettings() {
         <button onClick={handleSave} disabled={saving} className="group relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all text-sm overflow-hidden disabled:opacity-60">
           {saving ? <Loader2 className="w-4 h-4 relative z-10 animate-spin" /> : <Save className="w-4 h-4 relative z-10" />}
           <span className="relative z-10">{t('saveChanges')}</span>
-          <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+          <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
         </button>
       </FadeIn>
     </div>
