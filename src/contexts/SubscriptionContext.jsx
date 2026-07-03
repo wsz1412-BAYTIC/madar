@@ -14,16 +14,16 @@ export function SubscriptionProvider({ children }) {
     const loadSubscription = async () => {
       try {
         setLoading(true);
-        const user = await base44.auth.me();
-        
-        // Get user subscription
-        const subs = await base44.entities.UserSubscription.filter({ userId: user.id });
-        
-        if (subs && subs.length > 0) {
-          const sub = subs[0];
+
+        // Auto-provisions a Free subscription on first call (idempotent) and
+        // returns the user's real subscription. Normal users cannot create a
+        // subscription directly (admin-only RLS), so this must go through the
+        // trusted backend function rather than a client-side entity write.
+        const res = await base44.functions.invoke('manage-subscription', { action: 'get_current' });
+        const sub = res?.data?.subscription;
+
+        if (sub) {
           setSubscription(sub);
-          
-          // Parse add-ons (stored as JSON string or array)
           const addOnsData = sub.addOns || [];
           setAddOns(Array.isArray(addOnsData) ? addOnsData : []);
         } else {
@@ -35,7 +35,7 @@ export function SubscriptionProvider({ children }) {
           });
           setAddOns([]);
         }
-        
+
         setError(null);
       } catch (err) {
         console.error('Error loading subscription:', err);
@@ -83,12 +83,12 @@ export function SubscriptionProvider({ children }) {
   const refresh = async () => {
     try {
       setLoading(true);
-      const user = await base44.auth.me();
-      const subs = await base44.entities.UserSubscription.filter({ userId: user.id });
-      
-      if (subs && subs.length > 0) {
-        setSubscription(subs[0]);
-        setAddOns(subs[0].addOns || []);
+      const res = await base44.functions.invoke('manage-subscription', { action: 'get_current' });
+      const sub = res?.data?.subscription;
+
+      if (sub) {
+        setSubscription(sub);
+        setAddOns(sub.addOns || []);
       }
     } catch (err) {
       console.error('Error refreshing subscription:', err);
