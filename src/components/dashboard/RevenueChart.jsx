@@ -26,18 +26,18 @@ export default function RevenueChart({ properties }) {
       transition={{ duration: 0.5, delay: 0.1 }}
       className={`p-6 rounded-2xl border ${
         theme === 'dark'
-          ? 'bg-card border-white/[0.06]'
+          ? 'bg-card border-foreground/[0.06]'
           : 'bg-white border-[#0A0B10]/[0.06]'
       }`}
     >
       <div className="mb-6">
         <h2 className={`text-lg font-heading font-bold ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {lang === 'ar' ? 'اتجاه الإيرادات' : 'Revenue Trend'}
         </h2>
         <p className={`text-sm ${
-          theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+          theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
         }`}>
           {lang === 'ar' ? 'آخر 6 أشهر' : 'Last 6 months'}
         </p>

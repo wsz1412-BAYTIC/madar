@@ -33,7 +33,7 @@ export default function BulkActionsToolbar({
         {/* Selection Info */}
         <div className="flex items-center gap-4">
           <div>
-            <p className="text-sm text-[#F7F5F0]/60">
+            <p className="text-sm text-foreground/60">
               {selectedCount} {lang === 'ar' ? 'من' : 'of'} {totalCount} {lang === 'ar' ? 'عقار محدد' : 'selected'}
             </p>
           </div>
@@ -51,7 +51,7 @@ export default function BulkActionsToolbar({
         <div className="flex items-center gap-2">
           <button
             onClick={onClearSelection}
-            className="p-2 hover:bg-white/5 rounded-lg transition-colors text-[#F7F5F0]/50 hover:text-[#F7F5F0]"
+            className="p-2 hover:bg-foreground/5 rounded-lg transition-colors text-foreground/50 hover:text-foreground"
             title={lang === 'ar' ? 'إلغاء التحديد' : 'Clear selection'}
           >
             <X className="w-4 h-4" />
@@ -62,7 +62,7 @@ export default function BulkActionsToolbar({
             <button
               onClick={() => setShowActions(!showActions)}
               disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] rounded-lg text-sm text-[#F7F5F0] transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-foreground/[0.04] border border-foreground/[0.08] hover:bg-foreground/[0.08] rounded-lg text-sm text-foreground transition-all disabled:opacity-50"
             >
               {lang === 'ar' ? 'إجراءات' : 'Actions'}
               <ChevronDown className={`w-4 h-4 transition-transform ${showActions ? 'rotate-180' : ''}`} />
@@ -79,7 +79,7 @@ export default function BulkActionsToolbar({
                   <button
                     onClick={() => { onExport(); setShowActions(false); }}
                     disabled={isLoading}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#F7F5F0] hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-foreground/10 rounded-lg transition-colors disabled:opacity-50"
                   >
                     <Download className="w-4 h-4" />
                     {lang === 'ar' ? 'تصدير البيانات' : 'Export Data'}
@@ -88,7 +88,7 @@ export default function BulkActionsToolbar({
                   <button
                     onClick={() => { onChangeStatus(); setShowActions(false); }}
                     disabled={isLoading}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#F7F5F0] hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-foreground/10 rounded-lg transition-colors disabled:opacity-50"
                   >
                     <AlertCircle className="w-4 h-4" />
                     {lang === 'ar' ? 'تغيير الحالة' : 'Change Status'}
@@ -97,7 +97,7 @@ export default function BulkActionsToolbar({
                   <button
                     onClick={() => { onAddLabels(); setShowActions(false); }}
                     disabled={isLoading}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#F7F5F0] hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-foreground/10 rounded-lg transition-colors disabled:opacity-50"
                   >
                     <Tag className="w-4 h-4" />
                     {lang === 'ar' ? 'إضافة تسميات' : 'Add Labels'}
@@ -106,13 +106,13 @@ export default function BulkActionsToolbar({
                   <button
                     onClick={() => { onAddLabels(); setShowActions(false); }}
                     disabled={isLoading}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#F7F5F0] hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-foreground/10 rounded-lg transition-colors disabled:opacity-50"
                   >
                     <Layers className="w-4 h-4" />
                     {lang === 'ar' ? 'تعيين الفئات' : 'Assign Categories'}
                   </button>
 
-                  <div className="border-t border-white/[0.06] my-1" />
+                  <div className="border-t border-foreground/[0.06] my-1" />
 
                   <button
                     onClick={() => { onArchive(); setShowActions(false); }}

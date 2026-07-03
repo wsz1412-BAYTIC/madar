@@ -42,11 +42,11 @@ export default function WeeklyHealthReport({ property, weekData }) {
   }
 
   const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
+    ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
     : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
 
   const getTrendColor = (value) => {
     if (value > 0) return 'text-green-500';
@@ -79,8 +79,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
           <button
             className={`p-2 rounded-lg transition-colors ${
               theme === 'dark'
-                ? 'hover:bg-white/[0.08]'
-                : 'hover:bg-[#0A0B10]/5'
+                ? 'hover:bg-foreground/[0.08]'
+                : 'hover:bg-background/5'
             }`}
             title={lang === 'ar' ? 'تحميل' : 'Download'}
           >
@@ -89,8 +89,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
           <button
             className={`p-2 rounded-lg transition-colors ${
               theme === 'dark'
-                ? 'hover:bg-white/[0.08]'
-                : 'hover:bg-[#0A0B10]/5'
+                ? 'hover:bg-foreground/[0.08]'
+                : 'hover:bg-background/5'
             }`}
             title={lang === 'ar' ? 'مشاركة' : 'Share'}
           >
@@ -103,8 +103,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
-            ? 'bg-white/[0.03] border border-white/[0.06]'
-            : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+            ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
+            : 'bg-background/3 border border-[#0A0B10]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'الاشغال' : 'Occupancy'}
@@ -116,8 +116,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
 
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
-            ? 'bg-white/[0.03] border border-white/[0.06]'
-            : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+            ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
+            : 'bg-background/3 border border-[#0A0B10]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'إجمالي الإيرادات' : 'Total Revenue'}
@@ -129,8 +129,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
 
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
-            ? 'bg-white/[0.03] border border-white/[0.06]'
-            : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+            ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
+            : 'bg-background/3 border border-[#0A0B10]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'متوسط اليومي' : 'Daily Avg'}
@@ -142,8 +142,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
 
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
-            ? 'bg-white/[0.03] border border-white/[0.06]'
-            : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+            ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
+            : 'bg-background/3 border border-[#0A0B10]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'الاتجاه' : 'Trend'}
@@ -176,8 +176,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
                 </div>
                 <div className={`h-2 rounded-full overflow-hidden ${
                   theme === 'dark'
-                    ? 'bg-white/[0.05]'
-                    : 'bg-[#0A0B10]/5'
+                    ? 'bg-foreground/[0.05]'
+                    : 'bg-background/5'
                 }`}>
                   <motion.div
                     initial={{ width: 0 }}
@@ -204,8 +204,8 @@ export default function WeeklyHealthReport({ property, weekData }) {
               key={idx}
               className={`p-3 rounded-lg flex items-center justify-between ${
                 theme === 'dark'
-                  ? 'bg-white/[0.03] border border-white/[0.06]'
-                  : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+                  ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
+                  : 'bg-background/3 border border-[#0A0B10]/10'
               }`}
             >
               <div className="flex items-center gap-3">

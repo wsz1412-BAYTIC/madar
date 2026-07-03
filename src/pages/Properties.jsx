@@ -23,6 +23,8 @@ export default function Properties() {
   const [importUrl, setImportUrl] = useState('');
   const [importing, setImporting] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({ cities: [], tags: [], performance: [] });
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('default');
 
   // Bulk Management State
   const [selectedProps, setSelectedProps] = useState(new Set());
@@ -40,7 +42,10 @@ export default function Properties() {
 
   // Apply filters
   const filteredProperties = useMemo(() => {
-    return mockProperties.filter(prop => {
+    const list = mockProperties.filter(prop => {
+      if (statusFilter !== 'all' && prop.status !== statusFilter) return false;
+      return true;
+    }).filter(prop => {
       // City filter
       if (selectedFilters.cities?.length > 0 && !selectedFilters.cities.includes(prop.city)) {
         return false;
@@ -70,7 +75,16 @@ export default function Properties() {
 
       return true;
     });
-  }, [selectedFilters]);
+
+    const sorters = {
+      'price-desc': (a, b) => b.price - a.price,
+      'price-asc': (a, b) => a.price - b.price,
+      'occupancy-desc': (a, b) => (b.occupancy || 0) - (a.occupancy || 0),
+      'occupancy-asc': (a, b) => (a.occupancy || 0) - (b.occupancy || 0),
+      name: (a, b) => (a.name || '').localeCompare(b.name || ''),
+    };
+    return sorters[sortBy] ? [...list].sort(sorters[sortBy]) : list;
+  }, [selectedFilters, statusFilter, sortBy]);
 
   const handleImport = async (e) => {
     e.preventDefault();
@@ -227,13 +241,13 @@ export default function Properties() {
       <FadeIn>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('myProperties')}</h1>
-            <p className="text-sm text-[#F7F5F0]/40 mt-1">{mockProperties.length} {lang === 'ar' ? 'عقار' : 'properties'}</p>
+            <h1 className="font-heading text-3xl font-bold text-foreground">{t('myProperties')}</h1>
+            <p className="text-sm text-foreground/40 mt-1">{mockProperties.length} {lang === 'ar' ? 'عقار' : 'properties'}</p>
           </div>
           <button onClick={() => setShowImport(true)} className="group relative flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
             <Plus className="w-4 h-4 relative z-10" />
             <span className="relative z-10">{t('addProperty')}</span>
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+            <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </button>
         </div>
       </FadeIn>
@@ -257,18 +271,18 @@ export default function Properties() {
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('importListing')}</h2>
-                <button onClick={() => setShowImport(false)} className="p-1 hover:bg-white/5 rounded-lg"><X className="w-4 h-4 text-[#F7F5F0]/40" /></button>
+                <h2 className="font-heading font-semibold text-foreground">{t('importListing')}</h2>
+                <button onClick={() => setShowImport(false)} className="p-1 hover:bg-foreground/5 rounded-lg"><X className="w-4 h-4 text-foreground/40" /></button>
               </div>
-              <p className="text-sm text-[#F7F5F0]/40 mb-4">{t('pasteUrl')}</p>
+              <p className="text-sm text-foreground/40 mb-4">{t('pasteUrl')}</p>
               <form onSubmit={handleImport} className="space-y-4">
                 <div className="relative">
-                  <Link2 className="absolute top-1/2 -translate-y-1/2 left-3 w-4 h-4 text-[#F7F5F0]/25" />
+                  <Link2 className="absolute top-1/2 -translate-y-1/2 left-3 w-4 h-4 text-foreground/25" />
                   <input
                     value={importUrl}
                     onChange={e => setImportUrl(e.target.value)}
                     placeholder="https://airbnb.com/rooms/..."
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm text-[#F7F5F0] placeholder-[#F7F5F0]/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
                     required
                   />
                 </div>
@@ -309,6 +323,45 @@ export default function Properties() {
         allSelected={selectedProps.size === filteredProperties.length}
       />
 
+      {/* Status + sort controls */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-2" role="group" aria-label={lang === 'ar' ? 'تصفية حسب الحالة' : 'Filter by status'}>
+          {[
+            { key: 'all', en: 'All', ar: 'الكل' },
+            { key: 'active', en: 'Active', ar: 'نشط' },
+            { key: 'paused', en: 'Paused', ar: 'متوقف' },
+          ].map(s => (
+            <button
+              key={s.key}
+              onClick={() => setStatusFilter(s.key)}
+              aria-pressed={statusFilter === s.key}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                statusFilter === s.key
+                  ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-sm'
+                  : 'bg-foreground/[0.03] text-foreground/60 border-foreground/[0.08] hover:text-foreground hover:border-foreground/20'
+              }`}
+            >
+              {lang === 'ar' ? s.ar : s.en}
+            </button>
+          ))}
+        </div>
+        <label className="flex items-center gap-2 text-xs text-foreground/50">
+          <span>{lang === 'ar' ? 'ترتيب حسب' : 'Sort by'}</span>
+          <select
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
+            className="px-3 py-1.5 rounded-lg bg-surface border border-foreground/[0.1] text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/30"
+          >
+            <option value="default">{lang === 'ar' ? 'الافتراضي' : 'Default'}</option>
+            <option value="price-desc">{lang === 'ar' ? 'السعر: الأعلى أولاً' : 'Price: high → low'}</option>
+            <option value="price-asc">{lang === 'ar' ? 'السعر: الأدنى أولاً' : 'Price: low → high'}</option>
+            <option value="occupancy-desc">{lang === 'ar' ? 'الإشغال: الأعلى أولاً' : 'Occupancy: high → low'}</option>
+            <option value="occupancy-asc">{lang === 'ar' ? 'الإشغال: الأدنى أولاً' : 'Occupancy: low → high'}</option>
+            <option value="name">{lang === 'ar' ? 'الاسم' : 'Name'}</option>
+          </select>
+        </label>
+      </div>
+
       {/* Properties Grid */}
       <div>
         {filteredProperties.length > 0 ? (
@@ -325,7 +378,7 @@ export default function Properties() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-[#F7F5F0]/60 text-sm">
+            <p className="text-foreground/60 text-sm">
               {lang === 'ar' ? 'لا توجد عقارات تطابق التصفيات المختارة' : 'No properties match the selected filters'}
             </p>
           </div>

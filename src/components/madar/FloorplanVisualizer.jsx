@@ -75,22 +75,22 @@ export default function FloorplanVisualizer() {
   };
 
   return (
-    <div className="relative glass-strong rounded-3xl border border-white/[0.08] overflow-hidden">
+    <div className="relative glass-strong rounded-3xl border border-foreground/[0.08] overflow-hidden">
       {/* Header */}
-      <div className="relative z-10 p-6 border-b border-white/[0.06]">
+      <div className="relative z-10 p-6 border-b border-foreground/[0.06]">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-2xl blur-lg opacity-20" />
-              <div className="relative w-12 h-12 rounded-2xl glass flex items-center justify-center border border-white/10">
+              <div className="relative w-12 h-12 rounded-2xl glass flex items-center justify-center border border-foreground/10">
                 <Building2 className="w-5 h-5 text-[#D95F3B]" />
               </div>
             </div>
             <div>
-              <h2 className="font-heading text-xl font-bold text-[#F7F5F0]">
+              <h2 className="font-heading text-xl font-bold text-foreground">
                 {lang === 'ar' ? 'مخطط العقار التفاعلي' : 'Interactive Floorplan'}
               </h2>
-              <p className="text-xs text-[#F7F5F0]/40">
+              <p className="text-xs text-foreground/40">
                 {lang === 'ar' ? 'نظرة شاملة على حالة الحجوزات لكل وحدة' : 'Booking status at a glance for every unit'}
               </p>
             </div>
@@ -105,7 +105,7 @@ export default function FloorplanVisualizer() {
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-300 ${
                   filter === key
                     ? `${cfg.bg} ${cfg.border} ${cfg.accent}`
-                    : 'border-white/[0.06] text-[#F7F5F0]/30 hover:text-[#F7F5F0]/60'
+                    : 'border-foreground/[0.06] text-foreground/30 hover:text-foreground/60'
                 }`}
               >
                 <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
@@ -137,11 +137,11 @@ export default function FloorplanVisualizer() {
               >
                 {/* Floor label */}
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl glass flex items-center justify-center border border-white/10">
-                    <span className="text-xs font-bold text-[#F7F5F0]/50">{floor}F</span>
+                  <div className="w-10 h-10 rounded-xl glass flex items-center justify-center border border-foreground/10">
+                    <span className="text-xs font-bold text-foreground/50">{floor}F</span>
                   </div>
                   <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent" />
-                  <span className="text-[10px] text-[#F7F5F0]/20 uppercase tracking-wider font-medium">
+                  <span className="text-[10px] text-foreground/20 uppercase tracking-wider font-medium">
                     {floorUnits.length} {lang === 'ar' ? 'وحدات' : 'units'}
                   </span>
                 </div>
@@ -164,7 +164,7 @@ export default function FloorplanVisualizer() {
                         className={`group relative text-left p-4 rounded-2xl border transition-all duration-500 overflow-hidden ${
                           isHighlighted
                             ? `${cfg.bg} ${cfg.border} hover:${cfg.glow}`
-                            : 'opacity-30 border-white/[0.04] bg-white/[0.01]'
+                            : 'opacity-30 border-foreground/[0.04] bg-foreground/[0.01]'
                         }`}
                       >
                         {/* Hover glow */}
@@ -175,8 +175,8 @@ export default function FloorplanVisualizer() {
 
                         <div className="relative z-10 flex items-start justify-between mb-3">
                           <div>
-                            <div className="text-[10px] font-mono text-[#F7F5F0]/30 mb-0.5">{unit.id}</div>
-                            <div className="text-sm font-semibold text-[#F7F5F0] leading-tight">
+                            <div className="text-[10px] font-mono text-foreground/30 mb-0.5">{unit.id}</div>
+                            <div className="text-sm font-semibold text-foreground leading-tight">
                               {lang === 'ar' ? unit.nameAr : unit.name}
                             </div>
                           </div>
@@ -192,20 +192,20 @@ export default function FloorplanVisualizer() {
                             <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
                             {lang === 'ar' ? cfg.labelAr : cfg.labelEn}
                           </span>
-                          <span className="text-xs font-bold text-[#F7F5F0]/60">
-                            {unit.price} <span className="text-[9px] font-normal text-[#F7F5F0]/30">{lang === 'ar' ? 'ر.س' : 'SAR'}</span>
+                          <span className="text-xs font-bold text-foreground/60">
+                            {unit.price} <span className="text-[9px] font-normal text-foreground/30">{lang === 'ar' ? 'ر.س' : 'SAR'}</span>
                           </span>
                         </div>
 
                         {/* Mini room icons */}
-                        <div className="relative z-10 flex items-center gap-2 mt-3 pt-3 border-t border-white/[0.04]">
-                          <span className="flex items-center gap-1 text-[9px] text-[#F7F5F0]/25">
+                        <div className="relative z-10 flex items-center gap-2 mt-3 pt-3 border-t border-foreground/[0.04]">
+                          <span className="flex items-center gap-1 text-[9px] text-foreground/25">
                             <BedDouble className="w-3 h-3" />{unit.bedrooms}
                           </span>
-                          <span className="flex items-center gap-1 text-[9px] text-[#F7F5F0]/25">
+                          <span className="flex items-center gap-1 text-[9px] text-foreground/25">
                             <Bath className="w-3 h-3" />{unit.bathrooms}
                           </span>
-                          <span className="flex items-center gap-1 text-[9px] text-[#F7F5F0]/25">
+                          <span className="flex items-center gap-1 text-[9px] text-foreground/25">
                             <Users className="w-3 h-3" />{unit.capacity}
                           </span>
                         </div>
@@ -243,19 +243,19 @@ export default function FloorplanVisualizer() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-strong rounded-3xl border border-white/10 w-full max-w-md overflow-hidden"
+              className="glass-strong rounded-3xl border border-foreground/10 w-full max-w-md overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
               {/* Header */}
-              <div className={`relative p-6 border-b border-white/[0.06] ${statusConfig[selectedUnit.status].bg}`}>
+              <div className={`relative p-6 border-b border-foreground/[0.06] ${statusConfig[selectedUnit.status].bg}`}>
                 <button
                   onClick={() => setSelectedUnit(null)}
-                  className="absolute top-4 right-4 p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+                  className="absolute top-4 right-4 p-1.5 hover:bg-foreground/10 rounded-lg transition-colors"
                 >
-                  <X className="w-4 h-4 text-[#F7F5F0]/40" />
+                  <X className="w-4 h-4 text-foreground/40" />
                 </button>
-                <div className="text-xs font-mono text-[#F7F5F0]/30 mb-1">{selectedUnit.id}</div>
-                <h3 className="font-heading text-2xl font-bold text-[#F7F5F0] mb-2">
+                <div className="text-xs font-mono text-foreground/30 mb-1">{selectedUnit.id}</div>
+                <h3 className="font-heading text-2xl font-bold text-foreground mb-2">
                   {lang === 'ar' ? selectedUnit.nameAr : selectedUnit.name}
                 </h3>
                 <div className="flex items-center gap-2">
@@ -263,46 +263,46 @@ export default function FloorplanVisualizer() {
                     <span className={`w-1.5 h-1.5 rounded-full ${statusConfig[selectedUnit.status].dot}`} />
                     {lang === 'ar' ? statusConfig[selectedUnit.status].labelAr : statusConfig[selectedUnit.status].labelEn}
                   </span>
-                  <span className="text-xs text-[#F7F5F0]/30">•</span>
-                  <span className="text-xs text-[#F7F5F0]/40">{selectedUnit.platform}</span>
+                  <span className="text-xs text-foreground/30">•</span>
+                  <span className="text-xs text-foreground/40">{selectedUnit.platform}</span>
                 </div>
               </div>
 
               {/* Details */}
               <div className="p-6 space-y-4">
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="glass rounded-xl p-3 text-center border border-white/[0.06]">
-                    <BedDouble className="w-4 h-4 text-[#F7F5F0]/30 mx-auto mb-1.5" />
-                    <div className="text-lg font-bold text-[#F7F5F0]">{selectedUnit.bedrooms}</div>
-                    <div className="text-[9px] text-[#F7F5F0]/30 uppercase">{lang === 'ar' ? 'غرف' : 'Beds'}</div>
+                  <div className="glass rounded-xl p-3 text-center border border-foreground/[0.06]">
+                    <BedDouble className="w-4 h-4 text-foreground/30 mx-auto mb-1.5" />
+                    <div className="text-lg font-bold text-foreground">{selectedUnit.bedrooms}</div>
+                    <div className="text-[9px] text-foreground/30 uppercase">{lang === 'ar' ? 'غرف' : 'Beds'}</div>
                   </div>
-                  <div className="glass rounded-xl p-3 text-center border border-white/[0.06]">
-                    <Bath className="w-4 h-4 text-[#F7F5F0]/30 mx-auto mb-1.5" />
-                    <div className="text-lg font-bold text-[#F7F5F0]">{selectedUnit.bathrooms}</div>
-                    <div className="text-[9px] text-[#F7F5F0]/30 uppercase">{lang === 'ar' ? 'حمامات' : 'Baths'}</div>
+                  <div className="glass rounded-xl p-3 text-center border border-foreground/[0.06]">
+                    <Bath className="w-4 h-4 text-foreground/30 mx-auto mb-1.5" />
+                    <div className="text-lg font-bold text-foreground">{selectedUnit.bathrooms}</div>
+                    <div className="text-[9px] text-foreground/30 uppercase">{lang === 'ar' ? 'حمامات' : 'Baths'}</div>
                   </div>
-                  <div className="glass rounded-xl p-3 text-center border border-white/[0.06]">
-                    <Users className="w-4 h-4 text-[#F7F5F0]/30 mx-auto mb-1.5" />
-                    <div className="text-lg font-bold text-[#F7F5F0]">{selectedUnit.capacity}</div>
-                    <div className="text-[9px] text-[#F7F5F0]/30 uppercase">{lang === 'ar' ? 'ضيوف' : 'Guests'}</div>
+                  <div className="glass rounded-xl p-3 text-center border border-foreground/[0.06]">
+                    <Users className="w-4 h-4 text-foreground/30 mx-auto mb-1.5" />
+                    <div className="text-lg font-bold text-foreground">{selectedUnit.capacity}</div>
+                    <div className="text-[9px] text-foreground/30 uppercase">{lang === 'ar' ? 'ضيوف' : 'Guests'}</div>
                   </div>
                 </div>
 
                 {selectedUnit.guest ? (
-                  <div className="glass rounded-xl p-4 border border-white/[0.06]">
-                    <div className="flex items-center gap-2 text-xs text-[#F7F5F0]/40 mb-2">
+                  <div className="glass rounded-xl p-4 border border-foreground/[0.06]">
+                    <div className="flex items-center gap-2 text-xs text-foreground/40 mb-2">
                       <Calendar className="w-3.5 h-3.5" />
                       {lang === 'ar' ? 'الضيف الحالي' : 'Current Guest'}
                     </div>
-                    <div className="text-sm font-semibold text-[#F7F5F0]">{selectedUnit.guest}</div>
-                    <div className="text-xs text-[#F7F5F0]/40 mt-1">
+                    <div className="text-sm font-semibold text-foreground">{selectedUnit.guest}</div>
+                    <div className="text-xs text-foreground/40 mt-1">
                       {selectedUnit.nights} {lang === 'ar' ? 'ليالٍ' : 'nights'}
                     </div>
                   </div>
                 ) : null}
 
-                <div className="glass rounded-xl p-4 border border-white/[0.06] flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs text-[#F7F5F0]/40">
+                <div className="glass rounded-xl p-4 border border-foreground/[0.06] flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs text-foreground/40">
                     <DollarSign className="w-3.5 h-3.5" />
                     {lang === 'ar' ? 'سعر الليلة' : 'Nightly Rate'}
                   </div>

@@ -46,7 +46,7 @@ export default function AdminOverview({ admin }) {
   return (
     <div>
       <h2 className={`text-2xl font-heading font-bold mb-6 ${
-        theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
       }`}>
         {lang === 'ar' ? 'المقاطع الرئيسية' : 'Main Sections'}
       </h2>
@@ -63,7 +63,7 @@ export default function AdminOverview({ admin }) {
               to={section.href}
               className={`block p-6 rounded-2xl border transition-all hover:-translate-y-1 ${
                 theme === 'dark'
-                  ? 'bg-card border-white/[0.06] hover:border-primary/30'
+                  ? 'bg-card border-foreground/[0.06] hover:border-primary/30'
                   : 'bg-white border-[#0A0B10]/[0.06] hover:border-primary/30'
               }`}
             >
@@ -75,12 +75,12 @@ export default function AdminOverview({ admin }) {
                 </div>
               </div>
               <h3 className={`text-lg font-heading font-bold mb-2 ${
-                theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
               }`}>
                 {section.title}
               </h3>
               <p className={`text-sm ${
-                theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
               }`}>
                 {section.description}
               </p>

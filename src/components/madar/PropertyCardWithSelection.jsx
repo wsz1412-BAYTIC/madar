@@ -14,7 +14,7 @@ export default function PropertyCardWithSelection({
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="absolute top-3 left-3 z-20 bg-white/[0.04] border border-white/[0.12] rounded-lg p-1.5 backdrop-blur-sm"
+        className="absolute top-3 start-3 z-20 bg-surface/70 border border-foreground/[0.15] rounded-lg p-1.5 backdrop-blur-sm shadow-sm"
       >
         <input
           type="checkbox"

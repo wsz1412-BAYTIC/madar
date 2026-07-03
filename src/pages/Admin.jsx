@@ -8,7 +8,7 @@ const planBadge = {
   premium: 'bg-[#D95F3B]/10 text-[#D95F3B]',
   professional: 'bg-[#C8972A]/10 text-[#C8972A]',
   basic: 'bg-blue-500/10 text-blue-400',
-  free: 'bg-white/5 text-[#F7F5F0]/50',
+  free: 'bg-foreground/5 text-foreground/50',
 };
 
 const statusBadge = {
@@ -17,7 +17,7 @@ const statusBadge = {
   pending: 'bg-amber-500/10 text-amber-400',
   cancelled: 'bg-red-500/10 text-red-400',
   suspended: 'bg-red-500/10 text-red-400',
-  free: 'bg-white/5 text-[#F7F5F0]/50',
+  free: 'bg-foreground/5 text-foreground/50',
 };
 
 const fmt = (n) => new Intl.NumberFormat('en-US').format(Math.round(n || 0));
@@ -94,18 +94,18 @@ export default function Admin() {
     <div className="space-y-8 p-4 sm:p-8 max-w-6xl mx-auto">
       <FadeIn>
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-white/[0.04] flex items-center justify-center border border-white/[0.06]">
-            <ShieldCheck className="w-5 h-5 text-[#F7F5F0]/70" />
+          <div className="w-11 h-11 rounded-xl bg-foreground/[0.04] flex items-center justify-center border border-foreground/[0.06]">
+            <ShieldCheck className="w-5 h-5 text-foreground/70" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('adminPanel')}</h1>
-            <p className="text-sm text-[#F7F5F0]/40">{lang === 'ar' ? 'عمليات النظام الداخلية' : 'Internal system operations'}</p>
+            <h1 className="font-heading text-3xl font-bold text-foreground">{t('adminPanel')}</h1>
+            <p className="text-sm text-foreground/40">{lang === 'ar' ? 'عمليات النظام الداخلية' : 'Internal system operations'}</p>
           </div>
         </div>
       </FadeIn>
 
       {loading && (
-        <div className="flex items-center gap-2 text-sm text-[#F7F5F0]/50 py-10 justify-center">
+        <div className="flex items-center gap-2 text-sm text-foreground/50 py-10 justify-center">
           <Loader2 className="w-4 h-4 animate-spin" />
           {lang === 'ar' ? 'جاري التحميل...' : 'Loading...'}
         </div>
@@ -123,12 +123,12 @@ export default function Admin() {
           <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
             {statTiles.map((stat) => (
               <StaggerItem key={stat.key}>
-                <div className="glass rounded-2xl p-5 hover:border-white/15 transition-all">
+                <div className="glass rounded-2xl p-5 hover:border-foreground/15 transition-all">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${stat.color}15` }}>
                     <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
                   </div>
-                  <div className="text-2xl font-bold text-[#F7F5F0] font-heading">{fmt(stat.value)}</div>
-                  <div className="text-xs text-[#F7F5F0]/40 mt-1">{stat.label}</div>
+                  <div className="text-2xl font-bold text-foreground font-heading">{fmt(stat.value)}</div>
+                  <div className="text-xs text-foreground/40 mt-1">{stat.label}</div>
                 </div>
               </StaggerItem>
             ))}
@@ -137,37 +137,37 @@ export default function Admin() {
           <FadeIn delay={0.2}>
             <div className="glass rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('subscribers')}</h2>
-                <span className="text-xs text-[#F7F5F0]/40">
+                <h2 className="font-heading font-semibold text-foreground">{t('subscribers')}</h2>
+                <span className="text-xs text-foreground/40">
                   {data.customers.length} {lang === 'ar' ? 'عميل' : 'customers'}
                 </span>
               </div>
 
               {data.customers.length === 0 ? (
-                <p className="text-sm text-[#F7F5F0]/40 py-6 text-center">
+                <p className="text-sm text-foreground/40 py-6 text-center">
                   {lang === 'ar' ? 'لا يوجد عملاء بعد.' : 'No customers yet.'}
                 </p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-white/[0.04]">
-                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{lang === 'ar' ? 'الاسم' : 'Name'}</th>
-                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium hidden sm:table-cell">{t('email')}</th>
-                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{lang === 'ar' ? 'الخطة' : 'Plan'}</th>
-                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium hidden sm:table-cell">{t('properties')}</th>
-                        <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{t('status')}</th>
+                      <tr className="border-b border-foreground/[0.04]">
+                        <th className="text-start py-3 text-foreground/30 font-medium">{lang === 'ar' ? 'الاسم' : 'Name'}</th>
+                        <th className="text-start py-3 text-foreground/30 font-medium hidden sm:table-cell">{t('email')}</th>
+                        <th className="text-start py-3 text-foreground/30 font-medium">{lang === 'ar' ? 'الخطة' : 'Plan'}</th>
+                        <th className="text-start py-3 text-foreground/30 font-medium hidden sm:table-cell">{t('properties')}</th>
+                        <th className="text-start py-3 text-foreground/30 font-medium">{t('status')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {data.customers.map((c) => (
-                        <tr key={c.id} className="border-b border-white/[0.04] last:border-0">
-                          <td className="py-3 font-medium text-[#F7F5F0]">{c.name}</td>
-                          <td className="py-3 text-[#F7F5F0]/50 hidden sm:table-cell">{c.email}</td>
+                        <tr key={c.id} className="border-b border-foreground/[0.04] last:border-0">
+                          <td className="py-3 font-medium text-foreground">{c.name}</td>
+                          <td className="py-3 text-foreground/50 hidden sm:table-cell">{c.email}</td>
                           <td className="py-3">
                             <span className={`text-xs font-medium px-2 py-1 rounded-full ${planBadge[c.plan] || planBadge.free}`}>{c.plan}</span>
                           </td>
-                          <td className="py-3 text-[#F7F5F0]/50 hidden sm:table-cell">{c.properties}</td>
+                          <td className="py-3 text-foreground/50 hidden sm:table-cell">{c.properties}</td>
                           <td className="py-3">
                             <span className={`text-xs font-medium px-2 py-1 rounded-full ${statusBadge[c.status] || statusBadge.free}`}>
                               {c.status}

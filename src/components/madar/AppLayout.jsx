@@ -28,7 +28,7 @@ export default function AppLayout() {
     : {};
 
   return (
-    <div className="min-h-screen bg-[#0A0B10]">
+    <div className="min-h-screen bg-background">
       <Sidebar />
       <main className="pt-16 lg:pt-0 min-h-screen transition-all duration-300" style={marginStyle}>
         {/* Cross-page transition: opacity-only cross-fade. Deliberately NOT
