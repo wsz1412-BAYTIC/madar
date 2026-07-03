@@ -58,6 +58,30 @@
         "string",
         "null"
       ]
+    },
+    "paymentStatus": {
+      "type": "string",
+      "enum": [
+        "paid",
+        "pending",
+        "failed",
+        "none",
+        "not_required"
+      ],
+      "default": "none",
+      "description": "Payment state for the current plan. Free plans are 'not_required'. Set by trusted backend functions only."
+    },
+    "usageCount": {
+      "type": "number",
+      "default": 0,
+      "description": "Current property usage count, maintained server-side."
+    },
+    "usageLimit": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Property cap resolved from the plan, enforced server-side."
     }
   },
   "required": [

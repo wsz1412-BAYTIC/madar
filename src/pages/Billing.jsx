@@ -1,41 +1,64 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { CreditCard, Check, ArrowUpRight, X, Power } from 'lucide-react';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { base44 } from '@/api/base44Client';
+import { selectCurrentPlanKey } from '@/lib/subscriptionProvisioning';
+import { CreditCard, ArrowUpRight, X, Power, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 
 const plans = [
   { key: 'free', price: 0, yearlyPrice: 0, features: 3 },
   { key: 'basic', price: 99, yearlyPrice: 950, features: 4 },
-  { key: 'growth', price: 199, yearlyPrice: 1910, features: 6, current: true },
+  { key: 'growth', price: 199, yearlyPrice: 1910, features: 6 },
   { key: 'pro', price: 349, yearlyPrice: 3350, features: 7 },
-];
-
-const paymentHistory = [
-  { date: '2025-06-01', amount: 199, status: 'paid' },
-  { date: '2025-05-01', amount: 199, status: 'paid' },
-  { date: '2025-04-01', amount: 199, status: 'paid' },
-  { date: '2025-03-01', amount: 99, status: 'paid' },
-  { date: '2025-02-01', amount: 99, status: 'paid' },
 ];
 
 export default function Billing() {
   const { t, lang } = useLang();
   const { theme } = useTheme();
+  const { subscription } = useSubscription();
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
   const [billingPeriod, setBillingPeriod] = useState('monthly');
   const [autoRenew, setAutoRenew] = useState(true);
   const [upgradeModal, setUpgradeModal] = useState(null);
+  const [upgradeState, setUpgradeState] = useState({ loading: false, message: null });
+
+  // Real current plan from the (auto-provisioned) subscription — defaults to Free.
+  const currentPlanKey = selectCurrentPlanKey(subscription);
+  const currentPlan = plans.find(p => p.key === currentPlanKey) || plans[0];
 
   const getPrice = (plan) => billingPeriod === 'monthly' ? plan.price : Math.round(plan.yearlyPrice / 12);
 
-  const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+  const openUpgrade = (planKey) => {
+    setUpgradeState({ loading: false, message: null });
+    setUpgradeModal(planKey);
+  };
+  const closeUpgrade = () => {
+    setUpgradeState({ loading: false, message: null });
+    setUpgradeModal(null);
+  };
+
+  // Paid upgrades are blocked server-side (HTTP 501) until a payment-verified
+  // path exists. Surface the backend's bilingual message rather than pretending
+  // to check out.
+  const handleUpgrade = async () => {
+    setUpgradeState({ loading: true, message: null });
+    const fallback = lang === 'ar'
+      ? 'الترقية المدفوعة غير متاحة حاليًا'
+      : 'Paid upgrades are currently unavailable';
+    const pick = (data) => (lang === 'ar' ? (data.error || fallback) : (data.error_en || data.error || fallback));
+    try {
+      const res = await base44.functions.invoke('manage-subscription', { action: 'upgrade' });
+      setUpgradeState({ loading: false, message: pick(res?.data || {}) });
+    } catch (err) {
+      const data = err?.response?.data || err?.data || {};
+      setUpgradeState({ loading: false, message: pick(data) });
+    }
+  };
 
   const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
 
   return (
     <div className="space-y-8 max-w-5xl">
@@ -47,7 +70,7 @@ export default function Billing() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-            onClick={() => setUpgradeModal(null)}
+            onClick={closeUpgrade}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
@@ -60,54 +83,63 @@ export default function Billing() {
                 <h2 className={`font-heading text-2xl font-bold text-[#F7F5F0]`}>
                   {lang === 'ar' ? 'ترقية الخطة' : 'Upgrade Plan'}
                 </h2>
-                <button onClick={() => setUpgradeModal(null)} className={`p-1.5 hover:bg-white/5 rounded-lg transition-colors`}>
+                <button onClick={closeUpgrade} className={`p-1.5 hover:bg-white/5 rounded-lg transition-colors`}>
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {upgradeModal && (
-                <div className="space-y-6">
-                  <div className={`p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]`}>
-                    <p className={`text-sm font-medium mb-2 text-[#F7F5F0]/70`}>
-                      {lang === 'ar' ? 'الخطة المختارة' : 'Selected Plan'}
-                    </p>
-                    <p className={`text-2xl font-bold font-heading mb-2 text-[#F7F5F0]`}>
-                      {t(upgradeModal)}
-                    </p>
-                    <p className={`text-[#F7F5F0]/50`}>
-                      {billingPeriod === 'monthly'
-                        ? `${getPrice(plans.find(p => p.key === upgradeModal))} ${sar}/${lang === 'ar' ? 'شهر' : 'month'}`
-                        : `${plans.find(p => p.key === upgradeModal)?.yearlyPrice} ${sar}/${lang === 'ar' ? 'سنة' : 'year'}`}
-                    </p>
-                  </div>
+              <div className="space-y-6">
+                <div className={`p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]`}>
+                  <p className={`text-sm font-medium mb-2 text-[#F7F5F0]/70`}>
+                    {lang === 'ar' ? 'الخطة المختارة' : 'Selected Plan'}
+                  </p>
+                  <p className={`text-2xl font-bold font-heading mb-2 text-[#F7F5F0]`}>
+                    {t(upgradeModal)}
+                  </p>
+                  <p className={`text-[#F7F5F0]/50`}>
+                    {billingPeriod === 'monthly'
+                      ? `${getPrice(plans.find(p => p.key === upgradeModal))} ${sar}/${lang === 'ar' ? 'شهر' : 'month'}`
+                      : `${plans.find(p => p.key === upgradeModal)?.yearlyPrice} ${sar}/${lang === 'ar' ? 'سنة' : 'year'}`}
+                  </p>
+                </div>
 
+                {upgradeState.message ? (
+                  <div className={`p-4 rounded-xl border-l-4 border-[#C8972A] bg-[#C8972A]/5`}>
+                    <p className={`text-sm text-[#F7F5F0]/80`}>{upgradeState.message}</p>
+                  </div>
+                ) : (
                   <div className={`p-4 rounded-xl border-l-4 border-[#D95F3B] bg-[#D95F3B]/5`}>
                     <p className={`text-sm text-[#F7F5F0]/60`}>
                       {lang === 'ar'
-                        ? 'تشمل الخطة تجربة مجانية لمدة 14 يوم. يمكنك الإلغاء في أي وقت قبل بدء الدفع.'
-                        : 'This plan includes a 14-day free trial. You can cancel anytime before your paid subscription begins.'}
+                        ? 'الترقية المدفوعة قيد الإعداد. سيتم تفعيل الدفع قريبًا.'
+                        : 'Paid upgrades are being set up. Checkout will be enabled soon.'}
                     </p>
                   </div>
+                )}
 
-                  <div className="space-y-3">
-                    <button
-                      className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
-                    >
-                      {lang === 'ar' ? 'متابعة الدفع' : 'Proceed to Checkout'}
-                    </button>
-                    <button
-                      onClick={() => setUpgradeModal(null)}
-                      className={`w-full py-3 font-medium rounded-lg transition-all bg-white/[0.04] text-[#F7F5F0] hover:bg-white/[0.08]`}
-                    >
-                      {lang === 'ar' ? 'إلغاء' : 'Cancel'}
-                    </button>
-                  </div>
+                <div className="space-y-3">
+                  <button
+                    onClick={handleUpgrade}
+                    disabled={upgradeState.loading}
+                    className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+                  >
+                    {upgradeState.loading
+                      ? (lang === 'ar' ? 'جارٍ التحقق...' : 'Checking...')
+                      : (lang === 'ar' ? 'متابعة الدفع' : 'Proceed to Checkout')}
+                  </button>
+                  <button
+                    onClick={closeUpgrade}
+                    className={`w-full py-3 font-medium rounded-lg transition-all bg-white/[0.04] text-[#F7F5F0] hover:bg-white/[0.08]`}
+                  >
+                    {lang === 'ar' ? 'إغلاق' : 'Close'}
+                  </button>
                 </div>
-              )}
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
       <FadeIn>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('billingPayments')}</h1>
@@ -134,88 +166,83 @@ export default function Billing() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-[#F7F5F0]/40 text-sm mb-1">{t('currentSubscription')}</p>
-                <h2 className="font-heading text-2xl font-bold text-[#F7F5F0]">{t('growth')}</h2>
+                <h2 className="font-heading text-2xl font-bold text-[#F7F5F0]">{t(currentPlan.key)}</h2>
               </div>
               <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
                 <CreditCard className="w-6 h-6 text-[#C8972A]" />
               </div>
             </div>
             <div className="flex items-baseline gap-1 mb-6">
-               <span className="text-4xl font-bold text-[#F7F5F0] font-heading">199</span>
+               <span className="text-4xl font-bold text-[#F7F5F0] font-heading">{getPrice(currentPlan)}</span>
                <span className="text-[#F7F5F0]/40 text-sm">{sar} {billingPeriod === 'monthly' ? t('mo') : `/${lang === 'ar' ? 'سنة' : 'year'}`}</span>
              </div>
-             <div className="flex items-center gap-3">
-               <Power className="w-4 h-4 text-[#C8972A]" />
-               <label className="flex items-center gap-2 cursor-pointer">
-                 <input
-                   type="checkbox"
-                   checked={autoRenew}
-                   onChange={(e) => setAutoRenew(e.target.checked)}
-                   className="w-4 h-4 rounded accent-[#D95F3B] cursor-pointer"
-                 />
-                 <span className="text-sm text-[#F7F5F0]/70">
-                   {lang === 'ar' ? 'تجديد تلقائي عند الانتهاء' : 'Auto-renew when subscription ends'}
-                 </span>
-               </label>
-             </div>
+             {currentPlan.key === 'free' ? (
+               <div className="flex items-center gap-2 text-sm text-[#F7F5F0]/60">
+                 <Info className="w-4 h-4 text-[#C8972A]" />
+                 <span>{lang === 'ar' ? 'أنت على الخطة المجانية — لا يوجد دفع مطلوب.' : 'You are on the Free plan — no payment required.'}</span>
+               </div>
+             ) : (
+               <div className="flex items-center gap-3">
+                 <Power className="w-4 h-4 text-[#C8972A]" />
+                 <label className="flex items-center gap-2 cursor-pointer">
+                   <input
+                     type="checkbox"
+                     checked={autoRenew}
+                     onChange={(e) => setAutoRenew(e.target.checked)}
+                     className="w-4 h-4 rounded accent-[#D95F3B] cursor-pointer"
+                   />
+                   <span className="text-sm text-[#F7F5F0]/70">
+                     {lang === 'ar' ? 'تجديد تلقائي عند الانتهاء' : 'Auto-renew when subscription ends'}
+                   </span>
+                 </label>
+               </div>
+             )}
           </div>
         </div>
       </FadeIn>
 
       <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
-        {plans.map(plan => (
-          <StaggerItem key={plan.key}>
-            <div className={`glass rounded-2xl border p-5 h-full ${plan.current ? 'border-[#D95F3B]/30 shadow-[0_0_30px_-12px_rgba(217,95,59,0.3)]' : 'border-white/[0.06]'}`}>
-              <h3 className="font-heading font-semibold text-[#F7F5F0] mb-1">{t(plan.key)}</h3>
-              <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-2xl font-bold text-[#F7F5F0] font-heading">{getPrice(plan)}</span>
-                <span className="text-xs text-[#F7F5F0]/30">
-                  {sar}{billingPeriod === 'monthly' ? `/${lang === 'ar' ? 'شهر' : 'mo'}` : `/${lang === 'ar' ? 'سنة' : 'yr'}`}
-                </span>
+        {plans.map(plan => {
+          const isCurrent = plan.key === currentPlanKey;
+          const isUpgrade = plan.price > currentPlan.price;
+          return (
+            <StaggerItem key={plan.key}>
+              <div className={`glass rounded-2xl border p-5 h-full ${isCurrent ? 'border-[#D95F3B]/30 shadow-[0_0_30px_-12px_rgba(217,95,59,0.3)]' : 'border-white/[0.06]'}`}>
+                <h3 className="font-heading font-semibold text-[#F7F5F0] mb-1">{t(plan.key)}</h3>
+                <div className="flex items-baseline gap-1 mb-4">
+                  <span className="text-2xl font-bold text-[#F7F5F0] font-heading">{getPrice(plan)}</span>
+                  <span className="text-xs text-[#F7F5F0]/30">
+                    {sar}{billingPeriod === 'monthly' ? `/${lang === 'ar' ? 'شهر' : 'mo'}` : `/${lang === 'ar' ? 'سنة' : 'yr'}`}
+                  </span>
+                </div>
+                {isCurrent ? (
+                  <div className="px-3 py-2 bg-[#D95F3B]/10 text-[#D95F3B] text-xs font-medium rounded-lg text-center">{t('currentPlan')}</div>
+                ) : isUpgrade ? (
+                  <button
+                    onClick={() => openUpgrade(plan.key)}
+                    className="w-full px-3 py-2 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 flex items-center justify-center gap-1 transition-all"
+                  >
+                    <ArrowUpRight className="w-3 h-3" />{t('upgrade')}
+                  </button>
+                ) : (
+                  <button disabled className="w-full px-3 py-2 bg-white/[0.04] text-[#F7F5F0]/40 text-xs font-medium rounded-lg cursor-not-allowed">{t('downgrade')}</button>
+                )}
               </div>
-              {plan.current ? (
-                <div className="px-3 py-2 bg-[#D95F3B]/10 text-[#D95F3B] text-xs font-medium rounded-lg text-center">{t('currentPlan')}</div>
-              ) : plan.price > 199 ? (
-                <button
-                  onClick={() => setUpgradeModal(plan.key)}
-                  className="w-full px-3 py-2 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 flex items-center justify-center gap-1 transition-all"
-                >
-                  <ArrowUpRight className="w-3 h-3" />{t('upgrade')}
-                </button>
-              ) : (
-                <button className="w-full px-3 py-2 bg-white/[0.04] text-[#F7F5F0]/40 text-xs font-medium rounded-lg hover:bg-white/[0.08] transition-all">{t('downgrade')}</button>
-              )}
-            </div>
-          </StaggerItem>
-        ))}
+            </StaggerItem>
+          );
+        })}
       </StaggerContainer>
 
       <FadeIn delay={0.3}>
         <div className="glass rounded-2xl p-6">
           <h2 className="font-heading font-semibold text-[#F7F5F0] mb-6">{t('paymentHistory')}</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/[0.04]">
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{t('date')}</th>
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{t('amount')}</th>
-                  <th className="text-start py-3 text-[#F7F5F0]/30 font-medium">{t('status')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paymentHistory.map((p, i) => (
-                  <tr key={i} className="border-b border-white/[0.04] last:border-0">
-                    <td className="py-3 text-[#F7F5F0]/60">{p.date}</td>
-                    <td className="py-3 font-medium text-[#F7F5F0]">{p.amount} {sar}</td>
-                    <td className="py-3">
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">
-                        <Check className="w-3 h-3" />{t(p.status)}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className={`flex flex-col items-center justify-center py-10 text-center ${textColor}`}>
+            <CreditCard className="w-8 h-8 text-[#F7F5F0]/30 mb-3" />
+            <p className="text-sm text-[#F7F5F0]/50">
+              {lang === 'ar'
+                ? 'لا توجد فواتير بعد. ستظهر سجلات الدفع هنا بعد أول اشتراك مدفوع.'
+                : 'No invoices yet. Payment records will appear here after your first paid subscription.'}
+            </p>
           </div>
         </div>
       </FadeIn>
