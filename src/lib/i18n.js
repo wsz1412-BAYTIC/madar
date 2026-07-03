@@ -20,6 +20,7 @@ export const i18n = {
     "nav.logout": "تسجيل الخروج",
     "nav.dashboard": "الرئيسية",
     "nav.addProperty": "إضافة عقار",
+    "nav.commits": "التحديثات",
 
     // Hero
     "hero.title1": "ذكاء التسعير",
@@ -203,6 +204,7 @@ export const i18n = {
     "nav.logout": "Logout",
     "nav.dashboard": "Dashboard",
     "nav.addProperty": "Add Property",
+    "nav.commits": "Commits",
 
     // Hero
     "hero.title1": "Pricing Intelligence",

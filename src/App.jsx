@@ -20,6 +20,7 @@ import Accessibility from "./pages/Accessibility";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import PricingRecommendations from "./pages/PricingRecommendations";
+import CommitHistory from "./pages/CommitHistory";
 
 function LoadingScreen() {
   return (
@@ -59,6 +60,7 @@ function MadarRoutes() {
         <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
         <Route path="/assistant" element={<ProtectedRoute><Assistant /></ProtectedRoute>} />
         <Route path="/pricing-recommendations" element={<ProtectedRoute><PricingRecommendations /></ProtectedRoute>} />
+        <Route path="/commits" element={<ProtectedRoute><CommitHistory /></ProtectedRoute>} />
 
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/privacy" element={<Privacy />} />
