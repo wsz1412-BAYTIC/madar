@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;800;900&display=swap');
+/* Fonts load via <link> in index.html (preconnect + display=swap) instead of a
+   render-blocking @import chain. Type system:
+   — Fraunces (Latin display serif, optical sizing) + Amiri (Arabic Naskh serif)
+     share the heading stack, so each script keeps a true serif voice.
+   — Readex Pro was drawn for Arabic and Latin together: one body family keeps
+     bilingual text on the same rhythm and weight in both directions. */
 
 @tailwind base;
 @tailwind components;
@@ -32,9 +37,9 @@
     --chart-4: 160 60% 45%;
     --chart-5: 0 84% 60%;
     --radius: 1rem;
-    --font-heading: 'Playfair Display', ui-serif, Georgia, serif;
-    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+    --font-heading: 'Fraunces', 'Amiri', ui-serif, Georgia, serif;
+    --font-body: 'Readex Pro', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Fraunces', 'Amiri', ui-serif, Georgia, serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 224 20% 35%;
@@ -92,10 +97,46 @@
     @apply bg-background text-foreground font-body;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Fraunces is a variable optical-size serif — let the browser pick the right
+     optical master per size, and tighten large sizes slightly. */
+  .font-heading,
+  .font-display {
+    font-optical-sizing: auto;
+    font-variant-numeric: lining-nums;
+  }
+
+  /* Arabic: Naskh ligatures break under Latin letter-spacing utilities, and the
+     script needs more vertical air. Neutralize tracking and lift line-height
+     whenever the document is in Arabic. */
+  html[lang='ar'] body {
+    letter-spacing: 0;
+    line-height: 1.75;
+  }
+  html[lang='ar'] .tracking-tighter,
+  html[lang='ar'] .tracking-tight,
+  html[lang='ar'] .tracking-normal,
+  html[lang='ar'] .tracking-wide,
+  html[lang='ar'] .tracking-wider,
+  html[lang='ar'] .tracking-widest {
+    letter-spacing: 0 !important;
+  }
+  html[lang='ar'] .font-heading,
+  html[lang='ar'] .font-display {
+    line-height: 1.4;
+  }
+
+  /* Visible, on-brand keyboard focus without touching mouse interactions. */
+  :focus-visible {
+    outline: 2px solid hsl(16 64% 54% / 0.7);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
@@ -114,7 +155,7 @@
 
   .light .glass {
     background: rgba(224, 223, 213, 0.4);
-    border: 1px solid rgba(224, 20, 13, 0.08);
+    border: 1px solid rgba(10, 11, 16, 0.08);
   }
 
   .glass-strong {
@@ -131,7 +172,7 @@
 
   .light .glass-strong {
     background: rgba(224, 223, 213, 0.5);
-    border: 1px solid rgba(224, 20, 13, 0.1);
+    border: 1px solid rgba(10, 11, 16, 0.1);
   }
 
   .text-gradient-gold {
@@ -163,6 +204,62 @@
   }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Film-grain overlay: breaks up flat gradient panels on hero/stat surfaces.
+     Pure SVG data-URI — no asset, no network. Apply to a `relative` parent. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  /* Hover lift for cards: GPU transform + deepened shadow, spring-like ease. */
+  .card-lift {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.35s ease;
+    will-change: transform;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.45), 0 0 30px -14px rgba(217, 95, 59, 0.25);
+  }
+
+  /* Animated underline reveal for inline links / nav items. RTL-safe (scales
+     from the logical start via transform-origin swap). */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: -2px;
+    height: 1.5px;
+    background: linear-gradient(90deg, #D95F3B, #C8972A);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [dir='rtl'] .link-underline::after {
+    transform-origin: right;
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* KPI numerals: fixed-width lining figures so animated counters and tables
+     don't jitter as digits change. */
+  .nums {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
 
   /* Smooth theme transition */
   * {
@@ -220,4 +317,18 @@
 .light::selection {
   background: rgba(217, 95, 59, 0.2);
   color: #0A0B10;
+}
+
+/* Accessibility: collapse decorative motion for users who ask for less. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
