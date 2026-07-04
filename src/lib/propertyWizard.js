@@ -60,6 +60,9 @@ export const EMPTY_FORM = Object.freeze({
   amenities: [],
   photoUrl: '',
   platformUrl: '',
+  // Listing links across platforms: [{ platform, url, addedAt }] — at most
+  // one per platform, unique canonical URLs (see listingImport.js dedupe).
+  links: [],
   notes: '',
 });
 
@@ -127,6 +130,8 @@ export function validateAll(form) {
  */
 export function buildPropertyPayload(userId, form) {
   if (!userId) throw new Error('buildPropertyPayload requires the authenticated userId');
+  const links = (form.links || []).filter((l) => l && l.platform && l.url);
+  const platformUrl = form.platformUrl ? form.platformUrl.trim() : (links[0]?.url || null);
   return {
     userId,
     name: form.name.trim(),
@@ -141,7 +146,8 @@ export function buildPropertyPayload(userId, form) {
     status: form.status,
     amenities: form.amenities || [],
     images: form.photoUrl ? [form.photoUrl.trim()] : [],
-    platformUrl: form.platformUrl ? form.platformUrl.trim() : null,
+    platformUrl,
+    links,
     notes: form.notes ? form.notes.trim() : null,
   };
 }
