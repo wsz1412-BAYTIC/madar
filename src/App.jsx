@@ -37,6 +37,7 @@ import Contact from '@/pages/Contact';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import Terms from '@/pages/Terms';
 import AIDisclaimer from '@/pages/AIDisclaimer';
+import DataAiPolicy from '@/pages/DataAiPolicy';
 import CookiePolicy from '@/pages/CookiePolicy';
 import SubscriptionPolicy from '@/pages/SubscriptionPolicy';
 import AcceptableUsePolicy from '@/pages/AcceptableUsePolicy';
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/ai-disclaimer" element={<AIDisclaimer />} />
+      <Route path="/data-ai-policy" element={<DataAiPolicy />} />
       <Route path="/cookies" element={<CookiePolicy />} />
       <Route path="/subscription" element={<SubscriptionPolicy />} />
       <Route path="/aup" element={<AcceptableUsePolicy />} />

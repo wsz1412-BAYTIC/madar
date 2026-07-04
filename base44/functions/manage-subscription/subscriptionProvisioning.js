@@ -14,7 +14,7 @@
 //   • Paid upgrades are blocked until a trusted, payment-verified path exists.
 
 // Property caps per plan, enforced server-side. Mirrors the entitlement caps in
-// src/lib/subscriptionEntitlements.js (free:1, basic:5, growth:25, pro:100).
+// src/lib/subscriptionEntitlements.js (free:1, basic:2, growth:5, pro:15).
 export const PLAN_LIMITS = Object.freeze({
   free: 1,
   basic: 2,

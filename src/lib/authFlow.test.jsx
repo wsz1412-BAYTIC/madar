@@ -21,7 +21,10 @@ const authMock = vi.hoisted(() => ({
   updateMe: vi.fn().mockResolvedValue({}),
 }));
 vi.mock('@/components/ui/use-toast', () => ({ toast: vi.fn(), useToast: () => ({ toast: vi.fn() }) }));
-vi.mock('@/api/base44Client', () => ({ base44: { auth: authMock } }));
+const entitiesMock = vi.hoisted(() => ({
+  ConsentRecord: { create: vi.fn() },
+}));
+vi.mock('@/api/base44Client', () => ({ base44: { auth: authMock, entities: entitiesMock } }));
 
 // --- controllable mock of the Base44 useAuth hook ---------------------------
 let authState;
@@ -160,7 +163,9 @@ describe('registration: a verified new user actually ends up signed in', () => {
     if (telegram) {
       fireEvent.change(screen.getByLabelText('Telegram username'), { target: { value: telegram } });
     }
-    fireEvent.click(screen.getByRole('checkbox')); // legal consent
+    // Required legal consents (Terms + Privacy); notifications stays opt-out.
+    fireEvent.click(screen.getByLabelText('Accept the Terms of Use'));
+    fireEvent.click(screen.getByLabelText('Accept the Privacy Policy'));
     fireEvent.click(screen.getByRole('button', { name: /create account/i }));
     await waitFor(() => expect(authMock.register).toHaveBeenCalledWith({ email: 'new@example.com', password: 'Str0ngPass!' }));
     // OTP screen appears
@@ -187,6 +192,24 @@ describe('registration: a verified new user actually ends up signed in', () => {
     expect(authMock.loginViaEmailPassword).not.toHaveBeenCalled();
   });
 
+  it('persists immutable ConsentRecords (terms + privacy, versioned, source=signup) after verification', async () => {
+    authMock.register.mockResolvedValueOnce({});
+    authMock.verifyOtp.mockResolvedValueOnce({ access_token: 'tok123' });
+    authMock.me.mockResolvedValue({ id: 'user-1' });
+    entitiesMock.ConsentRecord.create.mockResolvedValue({});
+    await registerAndVerify();
+    await waitFor(() => expect(entitiesMock.ConsentRecord.create).toHaveBeenCalledTimes(2));
+    const rows = entitiesMock.ConsentRecord.create.mock.calls.map(([r]) => r);
+    expect(rows.map((r) => r.policyKey).sort()).toEqual(['privacy', 'terms']);
+    for (const row of rows) {
+      expect(row.userId).toBe('user-1');
+      expect(row.source).toBe('signup');
+      expect(row.policyVersion).toBe('1.0');
+      expect(typeof row.consentedAt).toBe('string');
+      expect(row.withdrawn).toBe(false);
+    }
+  });
+
   it('rejects mismatched passwords before calling the backend', async () => {
     render(
       <MemoryRouter>
@@ -199,7 +222,8 @@ describe('registration: a verified new user actually ends up signed in', () => {
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'x@example.com' } });
     fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'aaaaaa1!' } });
     fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'bbbbbb2!' } });
-    fireEvent.click(screen.getByRole('checkbox'));
+    fireEvent.click(screen.getByLabelText('Accept the Terms of Use'));
+    fireEvent.click(screen.getByLabelText('Accept the Privacy Policy'));
     fireEvent.click(screen.getByRole('button', { name: /create account/i }));
     expect(await screen.findByText('Passwords do not match')).toBeTruthy();
     expect(authMock.register).not.toHaveBeenCalled();
@@ -218,7 +242,25 @@ describe('registration: a verified new user actually ends up signed in', () => {
     fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'aaaaaa1!' } });
     fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'aaaaaa1!' } });
     fireEvent.click(screen.getByRole('button', { name: /create account/i }));
-    expect(await screen.findByText(/Terms and Privacy Policy/)).toBeTruthy();
+    expect(await screen.findByText(/You must accept: Terms of Use, Privacy Policy/)).toBeTruthy();
+    expect(authMock.register).not.toHaveBeenCalled();
+  });
+
+  it('accepting only one required consent still blocks and names the missing one', async () => {
+    render(
+      <MemoryRouter>
+        <LanguageProvider>
+          <Register />
+        </LanguageProvider>
+      </MemoryRouter>
+    );
+    fireEvent.change(screen.getByLabelText('Full Name'), { target: { value: 'Sara' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'x@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'aaaaaa1!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'aaaaaa1!' } });
+    fireEvent.click(screen.getByLabelText('Accept the Terms of Use'));
+    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    expect(await screen.findByText(/You must accept: Privacy Policy/)).toBeTruthy();
     expect(authMock.register).not.toHaveBeenCalled();
   });
 
