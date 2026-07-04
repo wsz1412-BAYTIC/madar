@@ -17,6 +17,8 @@ const pairs = [
   ['src/lib/recommendationWorkflow.js', 'base44/functions/review-price-recommendation/recommendationWorkflow.js'],
   ['src/lib/subscriptionProvisioning.js', 'base44/functions/manage-subscription/subscriptionProvisioning.js'],
   ['src/lib/adminMutations.js', 'base44/functions/admin-operations/adminMutations.js'],
+  ['src/lib/trialManagement.js', 'base44/functions/manage-subscription/trialManagement.js'],
+  ['src/lib/madarReport.js', 'base44/functions/manage-subscription/madarReport.js'],
 ];
 
 describe('backend function mirrors stay in sync with canonical src/lib modules', () => {

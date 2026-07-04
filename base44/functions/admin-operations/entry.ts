@@ -155,6 +155,37 @@ Deno.serve(async (req) => {
         return Response.json({ recommendations });
       }
 
+      // ── Trial re-activation approval ──
+      // One trial per account is the rule; only an admin can clear the
+      // trial-used flag so the customer may activate once more. Logged.
+      case "approve_trial_reactivation": {
+        const { target_user_id, reason } = body;
+        if (!target_user_id) {
+          return Response.json({ error: "target_user_id required" }, { status: 400 });
+        }
+        const subs = await sr.entities.UserSubscription.filter({ userId: target_user_id });
+        if (!subs || subs.length === 0) {
+          return Response.json({ error: "Subscription not found for this user" }, { status: 404 });
+        }
+        const sub = subs[0];
+        if (sub.paymentStatus === "paid") {
+          return Response.json({ error: "User has an active paid subscription" }, { status: 409 });
+        }
+        const prev = { trialStatus: sub.trialStatus, trialUsedAt: sub.trialUsedAt };
+        const updates = { trialStatus: "none", trialUsedAt: null, trialStartedAt: null, trialEndsAt: null, trialRemindersSent: [] };
+        const updated = await sr.entities.UserSubscription.update(sub.id, updates);
+        await audit({
+          action: "subscription_change",
+          targetType: "UserSubscription",
+          targetId: sub.id,
+          targetName: target_user_id,
+          previousValue: prev,
+          newValue: updates,
+          details: { reason: reason || "Trial re-activation approved by admin" },
+        });
+        return Response.json({ subscription: updated });
+      }
+
       // ── Audit logs ──
       case "list_audit_logs": {
         const limit = body.limit || 100;

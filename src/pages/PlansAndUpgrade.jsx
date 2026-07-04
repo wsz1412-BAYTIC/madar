@@ -3,7 +3,6 @@ import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { SUBSCRIPTION_ENTITLEMENTS, AVAILABLE_ADDONS } from '@/lib/subscriptionEntitlements';
-import AppLayout from '@/components/madar/AppLayout';
 import { Check, X, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -30,7 +29,6 @@ export default function PlansAndUpgrade() {
   };
 
   return (
-    <AppLayout>
       <div className={`p-4 sm:p-6 lg:p-8 min-h-screen ${
         theme === 'dark' ? 'bg-background' : 'bg-[#F2EFE8]'
       }`}>
@@ -341,6 +339,5 @@ export default function PlansAndUpgrade() {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 }

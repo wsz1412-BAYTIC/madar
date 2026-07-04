@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
-import AppLayout from '@/components/madar/AppLayout';
+import PlanBadge from '@/components/madar/PlanBadge';
 import FeatureGuard from '@/components/FeatureGuard';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import RecentAlerts from '@/components/dashboard/RecentAlerts';
@@ -71,19 +71,16 @@ export default function UserDashboard() {
 
   if (loading) {
     return (
-      <AppLayout>
-        <div className={`p-6 space-y-6 ${theme === 'dark' ? 'bg-background' : 'bg-white'}`}>
-          <Skeleton className="h-40 w-full" />
-          <Skeleton className="h-96 w-full" />
-        </div>
-      </AppLayout>
+      <div className={`p-6 space-y-6 ${theme === 'dark' ? 'bg-background' : 'bg-white'}`}>
+        <Skeleton className="h-40 w-full" />
+        <Skeleton className="h-96 w-full" />
+      </div>
     );
   }
 
   const currentPlan = getPlanName();
 
   return (
-    <AppLayout>
       <div className={`p-4 sm:p-6 lg:p-8 min-h-screen ${
         theme === 'dark' ? 'bg-background' : 'bg-[#F2EFE8]'
       }`}>
@@ -95,15 +92,7 @@ export default function UserDashboard() {
             }`}>
               {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
             </h1>
-            <span className={`text-xs px-3 py-1.5 rounded-full ${
-              currentPlan === 'free'
-                ? theme === 'dark'
-                  ? 'bg-foreground/10 text-foreground/70'
-                  : 'bg-background/10 text-[#0A0B10]/70'
-                : 'bg-primary/20 text-primary'
-            }`}>
-              {currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1)} Plan
-            </span>
+            <PlanBadge subscription={subscriptionData} />
           </div>
           <p className={`text-sm ${
             theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
@@ -261,6 +250,5 @@ export default function UserDashboard() {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 }

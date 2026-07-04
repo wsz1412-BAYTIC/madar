@@ -314,8 +314,19 @@ export const SUBSCRIPTION_STATUS = {
 /**
  * Get entitlements for a subscription plan
  */
+// The entitlement tiers were authored as professional/premium, but the rest
+// of the app (Billing, subscription records, PLAN_LIMITS) uses growth/pro.
+// Without this alias every growth/pro lookup silently fell back to FREE
+// entitlements — paid customers would have been locked out of their features.
+const PLAN_ALIASES = { growth: 'professional', pro: 'premium' };
+
 export function getPlanEntitlements(planName) {
-  return SUBSCRIPTION_ENTITLEMENTS[planName] || SUBSCRIPTION_ENTITLEMENTS.free;
+  const key = String(planName || '').toLowerCase();
+  return (
+    SUBSCRIPTION_ENTITLEMENTS[key] ||
+    SUBSCRIPTION_ENTITLEMENTS[PLAN_ALIASES[key]] ||
+    SUBSCRIPTION_ENTITLEMENTS.free
+  );
 }
 
 /**
