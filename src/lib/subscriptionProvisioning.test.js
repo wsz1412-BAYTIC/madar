@@ -73,8 +73,11 @@ describe('subscription provisioning', () => {
     });
     it('blocks when at or over the limit', () => {
       expect(assessPropertyLimit('free', 1).allowed).toBe(false);
-      expect(assessPropertyLimit('basic', 5).allowed).toBe(false);
-      expect(assessPropertyLimit('basic', 4).allowed).toBe(true);
+      expect(assessPropertyLimit('basic', 2).allowed).toBe(false);
+      expect(assessPropertyLimit('basic', 1).allowed).toBe(true);
+      expect(assessPropertyLimit('growth', 5).allowed).toBe(false);
+      expect(assessPropertyLimit('pro', 14).allowed).toBe(true);
+      expect(assessPropertyLimit('pro', 15).allowed).toBe(false);
     });
     it('treats non-finite counts as 0', () => {
       expect(assessPropertyLimit('free', NaN).count).toBe(0);

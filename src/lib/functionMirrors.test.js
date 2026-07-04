@@ -19,6 +19,11 @@ const pairs = [
   ['src/lib/adminMutations.js', 'base44/functions/admin-operations/adminMutations.js'],
   ['src/lib/trialManagement.js', 'base44/functions/manage-subscription/trialManagement.js'],
   ['src/lib/madarReport.js', 'base44/functions/manage-subscription/madarReport.js'],
+  ['src/lib/aiUsagePolicy.js', 'base44/functions/ai-assistant/aiUsagePolicy.js'],
+  ['src/lib/trialManagement.js', 'base44/functions/ai-assistant/trialManagement.js'],
+  ['src/lib/notificationScheduler.js', 'base44/functions/telegram-alerts/notificationScheduler.js'],
+  ['src/lib/trialManagement.js', 'base44/functions/telegram-alerts/trialManagement.js'],
+  ['src/lib/telegramNotifications.js', 'base44/functions/telegram-alerts/telegramNotifications.js'],
 ];
 
 describe('backend function mirrors stay in sync with canonical src/lib modules', () => {

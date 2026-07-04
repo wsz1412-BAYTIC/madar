@@ -95,6 +95,18 @@
       "items": { "type": "string" },
       "description": "Reminder offsets already sent ('7d','3d','1d','0d') — dedupe log."
     },
+    "aiUsageDayKey": {
+      "type": ["string", "null"],
+      "description": "Riyadh calendar day ('YYYY-MM-DD') the daily AI counter belongs to. A stale key means the counter is zero — that is the daily reset."
+    },
+    "aiUsageCountToday": {
+      "type": ["number", "null"],
+      "description": "AI questions used on aiUsageDayKey. Maintained by the ai-assistant backend function only."
+    },
+    "aiTrialQuestionsUsed": {
+      "type": ["number", "null"],
+      "description": "Total AI questions used during the Growth trial (35 max for the whole trial)."
+    },
     "usageCount": {
       "type": "number",
       "default": 0,

@@ -21,7 +21,7 @@ export const TRIAL_DAYS = 14;
 export const REMINDER_OFFSETS_DAYS = [7, 3, 1, 0];
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-const GROWTH_PROPERTY_LIMIT = 25;
+const GROWTH_PROPERTY_LIMIT = 5;
 const FREE_PROPERTY_LIMIT = 1;
 
 const isPaid = (sub) => Boolean(sub) && sub.paymentStatus === 'paid';

@@ -1,0 +1,24 @@
+{
+  "name": "NotificationLog",
+  "description": "Every outbound notification attempt (Telegram/email), with a dedupeKey that guarantees the same logical message is never sent twice.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "channel": { "type": "string", "enum": ["telegram", "email", "in_app"] },
+    "kind": {
+      "type": "string",
+      "enum": ["weekly_digest", "ai_recommendation", "urgent_action", "market_update", "billing_issue", "basic_report", "daily_pro_report", "trial_reminder"]
+    },
+    "dedupeKey": { "type": "string", "description": "Unique per logical send (e.g. weekly-2026-W27-<userId>). Checked before sending." },
+    "status": { "type": "string", "enum": ["sent", "failed", "pending_integration", "skipped"] },
+    "sentAt": { "type": "string", "format": "date-time" },
+    "details": { "type": ["object", "null"] }
+  },
+  "required": ["userId", "channel", "kind", "dedupeKey", "status", "sentAt"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": { "user_condition": { "role": "admin" } },
+    "update": false,
+    "delete": false
+  }
+}
