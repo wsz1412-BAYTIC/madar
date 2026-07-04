@@ -20,6 +20,10 @@ import Login from "./pages/Login";
 import Accessibility from "./pages/Accessibility";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Subscription from "./pages/Subscription";
+import DataAIPolicy from "./pages/DataAIPolicy";
+import Cookies from "./pages/Cookies";
+import Contact from "./pages/Contact";
 import PricingRecommendations from "./pages/PricingRecommendations";
 import CommitHistory from "./pages/CommitHistory";
 import Settings from "./pages/Settings";
@@ -68,6 +72,10 @@ function MadarRoutes() {
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/subscription" element={<Subscription />} />
+        <Route path="/data-ai-policy" element={<DataAIPolicy />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

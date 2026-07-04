@@ -1,56 +1,109 @@
-import { motion } from "framer-motion";
+import LegalPageLayout from "@/components/LegalPageLayout";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Terms() {
-  const sections = [
+  const { lang } = useLanguage();
+  const isRTL = lang === "ar";
+
+  const sections = isRTL ? [
     {
-      title: "A legal disclaimer",
-      text: "The explanations and information provided on this page are only general and high-level explanations and information on how to write your own document of Terms & Conditions. You should not rely on this article as legal advice or as recommendations regarding what you should actually do, because we cannot know in advance what are the specific terms you wish to establish between your business and your customers and visitors. We recommend that you seek legal advice to help you understand and to assist you in the creation of your own Terms & Conditions.",
+      title: "1. قبول الشروط",
+      text: "باستخدامك لمنصة مدار وموقعها الإلكتروني وخدماتها، فإنك توافق على الالتزام بشروط الاستخدام هذه. إذا كنت لا توافق على أي جزء من هذه الشروط، فيجب عليك عدم استخدام خدماتنا.",
     },
     {
-      title: "Terms & Conditions - the basics",
-      text: "Having said that, Terms and Conditions (\"T&C\") are a set of legally binding terms defined by you, as the owner of this website. The T&C set forth the legal boundaries governing the activities of the website visitors, or your customers, while they visit or engage with this website. The T&C are meant to establish the legal relationship between the site visitors and you as the website owner.\n\nT&C should be defined according to the specific needs and nature of each website. For example, a website offering products to customers in e-commerce transactions requires T&C that are different from the T&C of a website only providing information (like a blog, a landing page, and so on).\n\nT&C provide you as the website owner the ability to protect yourself from potential legal exposure, but this may differ from jurisdiction to jurisdiction, so make sure to receive local legal advice if you are trying to protect yourself from legal exposure.",
+      title: "2. وصف الخدمة",
+      text: "مدار منصة لذكاء التسعير العقاري توفر توصيات أسعار مدعومة بالذكاء الاصطناعي لعقارات الإيجار قصير الأجل في المملكة العربية السعودية. تشمل الخدمات تحليل السوق، ومقارنة المنافسين، والمساعد الذكي، وتوصيات التسعير.",
     },
     {
-      title: "What to include in the T&C document",
-      text: "Generally speaking, T&C often address these types of issues: Who is allowed to use the website; the possible payment methods; a declaration that the website owner may change his or her offering in the future; the types of warranties the website owner gives his or her customers; a reference to issues of intellectual property or copyrights, where relevant; the website owner's right to suspend or cancel a member's account; and much, much more.",
+      title: "3. طبيعة الاستشارة فقط",
+      text: "جميع توصيات الذكاء الاصطناعي والمخرجات التحليلية التي تقدمها مدار هي لأغراض استشارية فقط. لا تشكل أي نصيحة قانونية أو ضريبية أو استثمارية أو مالية. يجب عليك إجراء بحثك الخاص والتشاور مع متخصصين قبل اتخاذ أي قرار تسعيري أو استثماري.",
+    },
+    {
+      title: "4. عدم وجود ضمانات",
+      text: "تُقدم الخدمات \"كما هي\" دون أي ضمانات صريحة أو ضمنية. نحن لا نضمن:",
+      items: [
+        "أي إيرادات أو إشغال أو ترتيب أو موافقة أو حجوزات محددة.",
+        "دقة أو اكتمال بيانات السوق أو توصيات الذكاء الاصطناعي.",
+        "أن الخدمات ستكون متاحة دون انقطاع أو خالية من الأخطاء.",
+        "نتائج محددة من اتباع توصياتنا.",
+      ],
+    },
+    {
+      title: "5. مسؤولية المستخدم",
+      text: "أنت مسؤول عن:",
+      items: [
+        "تقديم معلومات دقيقة وعملية عن عقاراتك.",
+        "مراجعة وتقييم توصيات الذكاء الاصطناعي قبل تطبيقها.",
+        "الامتثال لشروط منصات الإعلانات (Airbnb، Gathern، Booking.com).",
+        "الحفاظ على سرية بيانات حسابك.",
+      ],
+    },
+    {
+      title: "6. حقوق الملكية الفكرية",
+      text: "جميع حقوق الملكية الفكرية المتعلقة بمنصة مدار، بما في ذلك البرمجيات والتصميم والخوارزميات والعلامات التجارية، مملوكة لمدار أو مرخصة لها. لا يُمنح أي ترخيص ضمني باستخدام أي حقوق ملكية فكرية.",
+    },
+    {
+      title: "7. تعليق الحساب وإنهاؤه",
+      text: "نحتفظ بالحق في تعليق أو إنهاء حسابك في حال انتهاك هذه الشروط أو استخدام الخدمات بطريقة غير مصرح بها أو ضارة. يمكنك إلغاء حسابك في أي وقت عبر التواصل معنا.",
+    },
+    {
+      title: "8. حدود المسؤولية",
+      text: "بأقصى حد يسمح به القانون، لن تكون مدار مسؤولة عن أي أضرار غير مباشرة أو عرضية أو تبعية أو عقابية ناتجة عن استخدامك للخدمات. إجمالي مسؤوليتنا لا يتجاوز المبلغ الذي دفعته للاشتراك خلال الثلاثة أشهر السابقة للحدث.",
+    },
+    {
+      title: "9. تغيير الشروط",
+      text: "قد نقوم بتحديث هذه الشروط من وقت لآخر. سنخطرك بالتغييرات الجوهرية عبر البريد الإلكتروني أو داخل التطبيق. استمرارك في استخدام الخدمات بعد التغييرات يعني موافقتك على الشروط المحدثة.",
+    },
+  ] : [
+    {
+      title: "1. Acceptance of Terms",
+      text: "By using the Madar platform, website, and services, you agree to be bound by these Terms of Use. If you do not agree to any part of these terms, you must not use our services.",
+    },
+    {
+      title: "2. Service Description",
+      text: "Madar is a rental pricing intelligence platform that provides AI-powered pricing recommendations for short-term rental properties in the Kingdom of Saudi Arabia. Services include market analysis, competitor comparison, an AI assistant, and pricing recommendations.",
+    },
+    {
+      title: "3. Advisory-Only Nature",
+      text: "All AI recommendations and analytical outputs provided by Madar are for advisory purposes only. They do not constitute legal, tax, investment, or financial advice. You should conduct your own research and consult with professionals before making any pricing or investment decisions.",
+    },
+    {
+      title: "4. No Guarantees",
+      text: "Services are provided \"as is\" without any express or implied warranties. We do not guarantee:",
+      items: [
+        "Any revenue, occupancy, ranking, approval, bookings, or compliance.",
+        "The accuracy or completeness of market data or AI recommendations.",
+        "That services will be uninterrupted or error-free.",
+        "Specific results from following our recommendations.",
+      ],
+    },
+    {
+      title: "5. User Responsibilities",
+      text: "You are responsible for:",
+      items: [
+        "Providing accurate and current information about your properties.",
+        "Reviewing and evaluating AI recommendations before applying them.",
+        "Complying with the terms of listing platforms (Airbnb, Gathern, Booking.com).",
+        "Maintaining the confidentiality of your account credentials.",
+      ],
+    },
+    {
+      title: "6. Intellectual Property",
+      text: "All intellectual property rights related to the Madar platform, including software, design, algorithms, and trademarks, are owned by or licensed to Madar. No implicit license is granted to use any intellectual property rights.",
+    },
+    {
+      title: "7. Account Suspension and Termination",
+      text: "We reserve the right to suspend or terminate your account if you violate these Terms or use the services in an unauthorized or harmful manner. You may cancel your account at any time by contacting us.",
+    },
+    {
+      title: "8. Limitation of Liability",
+      text: "To the maximum extent permitted by law, Madar shall not be liable for any indirect, incidental, consequential, or punitive damages arising from your use of the services. Our total liability shall not exceed the amount you paid for your subscription in the three months preceding the event.",
+    },
+    {
+      title: "9. Changes to Terms",
+      text: "We may update these Terms from time to time. We will notify you of material changes via email or within the app. Your continued use of the services after changes constitutes acceptance of the updated Terms.",
     },
   ];
 
-  return (
-    <div className="min-h-screen">
-      <section className="pt-40 pb-24 px-[4%] md:px-[2%] max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-[760px]"
-        >
-          <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-4">Legal</p>
-          <h1 className="font-display text-display-lg font-light mb-16">
-            Terms &amp; Conditions
-          </h1>
-
-          <div className="space-y-14">
-            {sections.map((section, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="hairline mb-8" />
-                <h2 className="font-display text-display-sm font-light mb-4">{section.title}</h2>
-                {section.text.split("\n\n").map((para, j) => (
-                  <p key={j} className="font-body text-sm text-muted-foreground leading-relaxed mb-4 last:mb-0">
-                    {para}
-                  </p>
-                ))}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-    </div>
-  );
+  return <LegalPageLayout policyKey="terms" sections={sections} />;
 }

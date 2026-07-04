@@ -100,9 +100,13 @@ export default function Footer() {
             <span className="font-body text-xs text-background/40 mx-auto">
               {t("footer.rights")}
             </span>
-            <div className="flex gap-4 lg:ml-0 self-center lg:self-auto">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 lg:ml-0 self-center lg:self-auto">
               <Link to="/privacy" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Privacy Policy</Link>
-              <Link to="/terms" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Terms &amp; Conditions</Link>
+              <Link to="/terms" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Terms of Use</Link>
+              <Link to="/subscription" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Subscription Terms</Link>
+              <Link to="/data-ai-policy" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Data &amp; AI Policy</Link>
+              <Link to="/cookies" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Cookies</Link>
+              <Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Contact</Link>
               <Link to="/accessibility" onClick={() => window.scrollTo(0, 0)} className="font-body text-xs text-background/40 hover:text-background/70 transition-colors">Accessibility</Link>
             </div>
           </div>

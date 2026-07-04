@@ -227,6 +227,23 @@ export const i18n = {
     "footer.follow": "تابعنا",
     "footer.rights": "© 2025 مدار. جميع الحقوق محفوظة.",
 
+    // Consent
+    "consent.termsRequired": "يجب الموافقة على شروط الاستخدام للمتابعة",
+    "consent.privacyRequired": "يجب الموافقة على سياسة الخصوصية للمتابعة",
+    "consent.subscriptionRequired": "يجب الموافقة على شروط الاشتراك لتفعيل التجربة",
+    "consent.acceptTerms": "أوافق على شروط الاستخدام",
+    "consent.acceptPrivacy": "أوافق على سياسة الخصوصية",
+    "consent.acceptSubscription": "أوافق على شروط الاشتراك",
+    "consent.acceptServiceNotifications": "أرغب في تلقي إشعارات الخدمة وتوصيات الذكاء الاصطناعي",
+    "consent.required": "(مطلوب)",
+    "consent.optional": "(اختياري)",
+
+    // Legal nav
+    "legal.subscription": "شروط الاشتراك",
+    "legal.dataAiPolicy": "سياسة البيانات والذكاء الاصطناعي",
+    "legal.cookies": "ملفات تعريف الارتباط",
+    "legal.contact": "تواصل وشكاوى",
+
     // Common
     "common.loading": "جاري التحميل...",
     "common.error": "حدث خطأ. حاول مرة أخرى.",
@@ -459,6 +476,23 @@ export const i18n = {
     "footer.contact": "Contact",
     "footer.follow": "Follow",
     "footer.rights": "© 2025 Madar. All rights reserved.",
+
+    // Consent
+    "consent.termsRequired": "You must accept the Terms of Use to continue",
+    "consent.privacyRequired": "You must accept the Privacy Policy to continue",
+    "consent.subscriptionRequired": "You must accept the Subscription Terms to activate the trial",
+    "consent.acceptTerms": "I accept the Terms of Use",
+    "consent.acceptPrivacy": "I accept the Privacy Policy",
+    "consent.acceptSubscription": "I accept the Subscription Terms",
+    "consent.acceptServiceNotifications": "I'd like to receive service notifications and AI recommendations",
+    "consent.required": "(required)",
+    "consent.optional": "(optional)",
+
+    // Legal nav
+    "legal.subscription": "Subscription Terms",
+    "legal.dataAiPolicy": "Data & AI Policy",
+    "legal.cookies": "Cookies",
+    "legal.contact": "Contact",
 
     // Common
     "common.loading": "Loading...",

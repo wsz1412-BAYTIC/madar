@@ -5,6 +5,8 @@ import { useSubscription } from "@/lib/SubscriptionContext";
 import { base44 } from "@/api/base44Client";
 import { useToast } from "@/components/ui/use-toast";
 import { Check, ArrowRight, Sparkles, Gift, Clock, Loader2, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
+import { validateRequiredConsents, buildConsentRecords } from "@/lib/consentManagement";
 
 const tierOrder = ["free", "starter", "growth", "pro"];
 
@@ -74,6 +76,7 @@ export default function Billing() {
   const { subscription, tier, refresh } = useSubscription();
   const { toast } = useToast();
   const [activating, setActivating] = useState(false);
+  const [subscriptionConsent, setSubscriptionConsent] = useState(false);
 
   const usageStats = [
     { label: t("billing.propertiesUsed"), used: subscription?.usage_count ?? 0, limit: subscription?.usage_limit ?? 0 },
@@ -87,12 +90,31 @@ export default function Billing() {
   const canActivateTrial = tier === "free" && !trialUsedAt && !isTrialActive;
 
   const handleActivateTrial = async () => {
+    const consentCheck = validateRequiredConsents({ subscription: subscriptionConsent }, "subscription");
+    if (!consentCheck.valid) {
+      toast({ title: lang === "ar" ? consentCheck.error.ar : consentCheck.error.en, variant: "destructive" });
+      return;
+    }
     setActivating(true);
     try {
       const res = await base44.functions.invoke("manageSubscription", { action: "activate_trial" });
       if (res.data?.error) {
         toast({ title: res.data.error, variant: "destructive" });
       } else {
+        try {
+          const user = await base44.auth.me();
+          if (user?.id) {
+            const records = buildConsentRecords(user.id, { subscription: true }, {
+              source: "subscription",
+              userAgent: navigator.userAgent,
+            });
+            if (records.length > 0) {
+              await base44.entities.ConsentRecord.bulkCreate(records);
+            }
+          }
+        } catch {
+          /* consent persistence failure should never block trial activation */
+        }
         toast({ title: t("trial.activated") });
         await refresh();
       }
@@ -221,23 +243,37 @@ export default function Billing() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={handleActivateTrial}
-              disabled={activating}
-              className="flex items-center gap-2 px-6 h-10 rounded-full bg-accent text-accent-foreground font-body text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60 flex-shrink-0"
-            >
-              {activating ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" strokeWidth={1.5} />
-                  {t("trial.activating")}
-                </>
-              ) : (
-                <>
-                  <Zap size={16} strokeWidth={1.5} />
-                  {t("trial.activate")}
-                </>
-              )}
-            </button>
+            <div className="flex flex-col items-stretch md:items-end gap-3 flex-shrink-0">
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={subscriptionConsent}
+                  onChange={(e) => setSubscriptionConsent(e.target.checked)}
+                  className="mt-0.5 accent-accent"
+                />
+                <span className="font-body text-xs text-muted-foreground leading-relaxed">
+                  {t("consent.acceptSubscription")} <span className="text-destructive">{t("consent.required")}</span>{" "}
+                  <Link to="/subscription" target="_blank" className="text-accent hover:underline">↗</Link>
+                </span>
+              </label>
+              <button
+                onClick={handleActivateTrial}
+                disabled={activating || !subscriptionConsent}
+                className="flex items-center gap-2 px-6 h-10 rounded-full bg-accent text-accent-foreground font-body text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60 flex-shrink-0"
+              >
+                {activating ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" strokeWidth={1.5} />
+                    {t("trial.activating")}
+                  </>
+                ) : (
+                  <>
+                    <Zap size={16} strokeWidth={1.5} />
+                    {t("trial.activate")}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </motion.div>
       )}

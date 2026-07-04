@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -7,15 +7,20 @@ import {
   isValidTelegramUsername,
   normalizeTelegramUsername,
 } from "@/lib/telegramNotifications";
+import {
+  validateRequiredConsents,
+  buildConsentRecords,
+} from "@/lib/consentManagement";
 import { MadarFullLogo } from "@/components/Logo";
-import { Send, Loader2, ArrowRight, Check, Sparkles } from "lucide-react";
+import { Send, ArrowRight, Check, Sparkles } from "lucide-react";
 
 const STORAGE_KEY = "madar_pending_telegram";
+const CONSENT_STORAGE_KEY = "madar_pending_consents";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, lang } = useLanguage();
   const params = new URLSearchParams(location.search);
   const isSignup = params.get("mode") === "signup";
   const nextUrl = params.get("next") || "/dashboard";
@@ -24,15 +29,21 @@ export default function Login() {
   const [touched, setTouched] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [persisting, setPersisting] = useState(false);
+  const [consents, setConsents] = useState({
+    terms: false,
+    privacy: false,
+    service_notifications: false,
+  });
 
   useEffect(() => {
     base44.auth.isAuthenticated().then(async (authed) => {
       if (authed) {
         const stored = sessionStorage.getItem(STORAGE_KEY);
-        if (stored) {
+        const storedConsents = sessionStorage.getItem(CONSENT_STORAGE_KEY);
+        if (stored || storedConsents) {
           setPersisting(true);
           try {
-            if (isValidTelegramUsername(stored)) {
+            if (stored && isValidTelegramUsername(stored)) {
               await base44.auth.updateMe({
                 telegram_username: normalizeTelegramUsername(stored),
               });
@@ -40,7 +51,25 @@ export default function Login() {
           } catch {
             /* user can set it later in Settings */
           }
+          try {
+            if (storedConsents) {
+              const parsed = JSON.parse(storedConsents);
+              const user = await base44.auth.me();
+              if (user?.id) {
+                const records = buildConsentRecords(user.id, parsed, {
+                  source: "signup",
+                  userAgent: navigator.userAgent,
+                });
+                if (records.length > 0) {
+                  await base44.entities.ConsentRecord.bulkCreate(records);
+                }
+              }
+            }
+          } catch {
+            /* consent persistence failure should never block signup */
+          }
           sessionStorage.removeItem(STORAGE_KEY);
+          sessionStorage.removeItem(CONSENT_STORAGE_KEY);
           setPersisting(false);
         }
         navigate(nextUrl, { replace: true });
@@ -60,11 +89,15 @@ export default function Login() {
     ? normalizeTelegramUsername(telegramInput)
     : null;
 
+  const consentValidation = validateRequiredConsents(consents, "signup");
+
   const handleContinue = (e) => {
     e.preventDefault();
     setTouched(true);
     if (!isValidTelegramUsername(telegramInput)) return;
+    if (!consentValidation.valid) return;
     sessionStorage.setItem(STORAGE_KEY, normalizeTelegramUsername(telegramInput));
+    sessionStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(consents));
     base44.auth.redirectToLogin(
       window.location.pathname + window.location.search
     );
@@ -161,9 +194,61 @@ export default function Login() {
             </p>
           </div>
 
+          {/* Required consents */}
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="consent-terms"
+                checked={consents.terms}
+                onChange={(e) => setConsents({ ...consents, terms: e.target.checked })}
+                className="mt-0.5 accent-accent"
+              />
+              <label htmlFor="consent-terms" className="font-body text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                {t("consent.acceptTerms")} <span className="text-destructive">{t("consent.required")}</span>{" "}
+                <Link to="/terms" target="_blank" className="text-accent hover:underline">↗</Link>
+              </label>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="consent-privacy"
+                checked={consents.privacy}
+                onChange={(e) => setConsents({ ...consents, privacy: e.target.checked })}
+                className="mt-0.5 accent-accent"
+              />
+              <label htmlFor="consent-privacy" className="font-body text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                {t("consent.acceptPrivacy")} <span className="text-destructive">{t("consent.required")}</span>{" "}
+                <Link to="/privacy" target="_blank" className="text-accent hover:underline">↗</Link>
+              </label>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="consent-service"
+                checked={consents.service_notifications}
+                onChange={(e) => setConsents({ ...consents, service_notifications: e.target.checked })}
+                className="mt-0.5 accent-accent"
+              />
+              <label htmlFor="consent-service" className="font-body text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                {t("consent.acceptServiceNotifications")} <span className="text-muted-foreground/60">{t("consent.optional")}</span>
+              </label>
+            </div>
+          </div>
+
+          {touched && !consentValidation.valid && consentValidation.error && (
+            <div className="p-3 border border-destructive/30 bg-destructive/5 rounded-xl">
+              <p className="font-body text-xs text-destructive">
+                {lang === "ar" ? consentValidation.error.ar : consentValidation.error.en}
+              </p>
+            </div>
+          )}
+
           <button
             type="submit"
-            disabled={!isValidTelegramUsername(telegramInput)}
+            disabled={!isValidTelegramUsername(telegramInput) || !consentValidation.valid}
             className="ghost-btn w-full text-xs flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {t("signup.continue")}
