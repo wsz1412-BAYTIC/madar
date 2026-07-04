@@ -18,6 +18,7 @@ const authMock = vi.hoisted(() => ({
   verifyOtp: vi.fn(),
   resendOtp: vi.fn(),
   setToken: vi.fn(),
+  updateMe: vi.fn().mockResolvedValue({}),
 }));
 vi.mock('@/components/ui/use-toast', () => ({ toast: vi.fn(), useToast: () => ({ toast: vi.fn() }) }));
 vi.mock('@/api/base44Client', () => ({ base44: { auth: authMock } }));
@@ -144,7 +145,7 @@ describe('login: credentials are actually sent to Base44 (fixes the broken legac
 });
 
 describe('registration: a verified new user actually ends up signed in', () => {
-  async function registerAndVerify() {
+  async function registerAndVerify({ telegram = '' } = {}) {
     render(
       <MemoryRouter>
         <LanguageProvider>
@@ -152,9 +153,14 @@ describe('registration: a verified new user actually ends up signed in', () => {
         </LanguageProvider>
       </MemoryRouter>
     );
+    fireEvent.change(screen.getByLabelText('Full Name'), { target: { value: 'Sara Alotaibi' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'new@example.com' } });
     fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Str0ngPass!' } });
     fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'Str0ngPass!' } });
+    if (telegram) {
+      fireEvent.change(screen.getByLabelText('Telegram username'), { target: { value: telegram } });
+    }
+    fireEvent.click(screen.getByRole('checkbox')); // legal consent
     fireEvent.click(screen.getByRole('button', { name: /create account/i }));
     await waitFor(() => expect(authMock.register).toHaveBeenCalledWith({ email: 'new@example.com', password: 'Str0ngPass!' }));
     // OTP screen appears
@@ -189,12 +195,59 @@ describe('registration: a verified new user actually ends up signed in', () => {
         </LanguageProvider>
       </MemoryRouter>
     );
+    fireEvent.change(screen.getByLabelText('Full Name'), { target: { value: 'Sara' } });
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'x@example.com' } });
     fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'aaaaaa1!' } });
     fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'bbbbbb2!' } });
+    fireEvent.click(screen.getByRole('checkbox'));
     fireEvent.click(screen.getByRole('button', { name: /create account/i }));
     expect(await screen.findByText('Passwords do not match')).toBeTruthy();
     expect(authMock.register).not.toHaveBeenCalled();
+  });
+
+  it('requires legal consent before calling the backend', async () => {
+    render(
+      <MemoryRouter>
+        <LanguageProvider>
+          <Register />
+        </LanguageProvider>
+      </MemoryRouter>
+    );
+    fireEvent.change(screen.getByLabelText('Full Name'), { target: { value: 'Sara' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'x@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'aaaaaa1!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password'), { target: { value: 'aaaaaa1!' } });
+    fireEvent.click(screen.getByRole('button', { name: /create account/i }));
+    expect(await screen.findByText(/Terms and Privacy Policy/)).toBeTruthy();
+    expect(authMock.register).not.toHaveBeenCalled();
+  });
+
+  it('signup WITHOUT Telegram succeeds and saves only the name', async () => {
+    authMock.register.mockResolvedValueOnce({});
+    authMock.verifyOtp.mockResolvedValueOnce({ access_token: 't1' });
+    await registerAndVerify();
+    await waitFor(() => expect(authMock.updateMe).toHaveBeenCalledTimes(1));
+    expect(authMock.updateMe).toHaveBeenCalledWith({ full_name: 'Sara Alotaibi' });
+  });
+
+  it('signup WITH a valid Telegram saves the normalized handle', async () => {
+    authMock.register.mockResolvedValueOnce({});
+    authMock.verifyOtp.mockResolvedValueOnce({ access_token: 't2' });
+    await registerAndVerify({ telegram: 'sara_riyadh' });
+    await waitFor(() => expect(authMock.updateMe).toHaveBeenCalledTimes(1));
+    expect(authMock.updateMe).toHaveBeenCalledWith({
+      full_name: 'Sara Alotaibi',
+      telegram_username: '@sara_riyadh',
+    });
+  });
+
+  it('an INVALID Telegram never blocks registration — it is skipped', async () => {
+    authMock.register.mockResolvedValueOnce({});
+    authMock.verifyOtp.mockResolvedValueOnce({ access_token: 't3' });
+    await registerAndVerify({ telegram: '@ab' }); // too short — invalid
+    // registration proceeded to OTP + verify regardless
+    await waitFor(() => expect(authMock.updateMe).toHaveBeenCalledTimes(1));
+    expect(authMock.updateMe).toHaveBeenCalledWith({ full_name: 'Sara Alotaibi' });
   });
 });
 
