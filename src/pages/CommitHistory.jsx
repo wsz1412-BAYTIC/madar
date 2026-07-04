@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { GitCommit, ExternalLink, RefreshCw, Github } from "lucide-react";
+import { GitCommit, ExternalLink, RefreshCw, Github, GitPullRequest, ArrowDown } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 
@@ -57,7 +57,7 @@ export default function CommitHistory() {
     );
   }
 
-  const { repo, branch, commits } = data || {};
+  const { repo, branch, commits, marker_commit, since_pr } = data || {};
 
   return (
     <div className="pt-32 pb-24 px-[4%] md:px-[4%] max-w-[1000px] mx-auto">
@@ -96,9 +96,33 @@ export default function CommitHistory() {
         </div>
       </motion.div>
 
+      {/* Summary banner */}
+      {commits && commits.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-8 p-5 border border-accent/20 bg-accent/5 flex items-center gap-4"
+        >
+          <GitPullRequest size={20} strokeWidth={1.5} className="text-accent flex-shrink-0" />
+          <div className="flex-1">
+            <p className="font-body text-sm text-foreground">
+              {lang === "ar"
+                ? `${commits.length} تحديثات بعد PR #${since_pr}`
+                : `${commits.length} commits after PR #${since_pr}`}
+            </p>
+            <p className="font-body text-xs text-muted-foreground mt-0.5">
+              {lang === "ar"
+                ? "أحدث التغييرات المدمجة في الفرع الرئيسي"
+                : "Latest changes merged to main"}
+            </p>
+          </div>
+        </motion.div>
+      )}
+
       <div className="hairline mb-8" />
 
-      {/* Commit list */}
+      {/* Commit list — after PR #17 */}
       <div className="space-y-1">
         {commits?.map((commit, i) => (
           <motion.a
@@ -108,7 +132,7 @@ export default function CommitHistory() {
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: Math.min(i * 0.03, 0.6) }}
+            transition={{ duration: 0.3, delay: Math.min(i * 0.05, 0.6) }}
             className="group flex items-start gap-4 py-5 border-b border-border/30 hover:border-accent/30 transition-colors"
           >
             <div className="flex-shrink-0 mt-0.5">
@@ -116,7 +140,7 @@ export default function CommitHistory() {
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="font-body text-sm text-foreground leading-relaxed mb-2 line-clamp-2">
+              <p className="font-body text-sm text-foreground leading-relaxed mb-2">
                 {commit.message}
               </p>
               <div className="flex items-center gap-3 flex-wrap">
@@ -147,6 +171,58 @@ export default function CommitHistory() {
           </motion.a>
         ))}
       </div>
+
+      {/* PR #17 divider */}
+      {marker_commit && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-6"
+        >
+          <div className="flex items-center gap-3 py-4">
+            <ArrowDown size={16} strokeWidth={1.5} className="text-muted-foreground/50" />
+            <p className="font-body text-xs tracking-label uppercase text-muted-foreground">
+              {lang === "ar" ? `قبل PR #${since_pr}` : `Before PR #${since_pr}`}
+            </p>
+            <div className="flex-1 h-px bg-border/40" />
+          </div>
+
+          <motion.a
+            href={marker_commit.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-start gap-4 py-5 border-b border-border/30 opacity-60 hover:opacity-100 transition-opacity"
+          >
+            <div className="flex-shrink-0 mt-0.5">
+              <GitPullRequest size={18} strokeWidth={1.5} className="text-muted-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-body text-sm text-foreground leading-relaxed mb-2">
+                {marker_commit.message}
+              </p>
+              <div className="flex items-center gap-3 flex-wrap">
+                {marker_commit.author_avatar && (
+                  <img
+                    src={marker_commit.author_avatar}
+                    alt={marker_commit.author_name}
+                    className="w-5 h-5 rounded-full"
+                  />
+                )}
+                <span className="font-body text-xs text-muted-foreground">
+                  {marker_commit.author_name}
+                </span>
+                <span className="font-mono text-xs text-muted-foreground/60">
+                  {marker_commit.short_sha}
+                </span>
+                <span className="font-body text-xs text-muted-foreground/60">
+                  {formatDate(marker_commit.date)}
+                </span>
+              </div>
+            </div>
+          </motion.a>
+        </motion.div>
+      )}
 
       {commits?.length === 0 && (
         <p className="font-body text-sm text-muted-foreground text-center py-12">

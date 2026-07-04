@@ -3,11 +3,18 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 const REPO = 'wsz1412-BAYTIC/madar';
 const BRANCH = 'main';
 
+// PR #17 merge commit — all commits after this are "recent updates"
+const SINCE_SHA = '42ef64bba9c44ed6c330ab8c0b946f1344970aa5';
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const body = await req.json().catch(() => ({}));
+    const sinceSha = body.since_sha || SINCE_SHA;
+    const all = body.all === true;
 
     const url = `https://api.github.com/repos/${REPO}/commits?sha=${BRANCH}&per_page=30`;
     const response = await fetch(url, {
@@ -29,7 +36,8 @@ Deno.serve(async (req) => {
     const mapped = commits.map((c) => ({
       sha: c.sha,
       short_sha: c.sha.substring(0, 7),
-      message: c.commit.message,
+      message: c.commit.message.split('\n')[0],
+      full_message: c.commit.message,
       author_name: c.commit.author?.name || c.author?.login || 'Unknown',
       author_login: c.author?.login || null,
       author_avatar: c.author?.avatar_url || null,
@@ -37,11 +45,25 @@ Deno.serve(async (req) => {
       html_url: c.html_url,
     }));
 
+    // Filter: only commits AFTER the since_sha (newer commits precede it in the array)
+    let filtered = mapped;
+    let markerIndex = -1;
+    if (!all && sinceSha) {
+      markerIndex = mapped.findIndex((c) => c.sha === sinceSha);
+      if (markerIndex >= 0) {
+        filtered = mapped.slice(0, markerIndex);
+      }
+    }
+
     return Response.json({
       repo: REPO,
       branch: BRANCH,
-      total: mapped.length,
-      commits: mapped,
+      since_sha: sinceSha,
+      since_pr: 17,
+      total: filtered.length,
+      total_all: mapped.length,
+      commits: filtered,
+      marker_commit: markerIndex >= 0 ? mapped[markerIndex] : null,
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
