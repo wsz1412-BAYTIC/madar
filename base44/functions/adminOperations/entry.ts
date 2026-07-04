@@ -120,6 +120,28 @@ Deno.serve(async (req) => {
         return Response.json({ performance: perfs });
       }
 
+      // ── Trial reactivation approval ──
+      case 'approve_trial_reactivation': {
+        const { target_user_id, reason } = body;
+        if (!target_user_id) return Response.json({ error: 'target_user_id required' }, { status: 400 });
+
+        const subs = await sr.entities.UserSubscription.filter({ owner_id: target_user_id });
+        if (!subs || subs.length === 0) {
+          return Response.json({ error: 'Subscription not found for this user' }, { status: 404 });
+        }
+        const sub = subs[0];
+        const prev = { trial_used_at: sub.trial_used_at, trial_status: sub.trial_status };
+
+        const updated = await sr.entities.UserSubscription.update(sub.id, {
+          trial_used_at: null,
+          trial_status: 'none'
+        });
+        await logAction(sub.id, 'UserSubscription', 'subscription_change', prev, {
+          trial_used_at: null, trial_status: 'none', note: reason || 'Trial reactivation approved by admin'
+        });
+        return Response.json({ subscription: updated });
+      }
+
       // ── Audit logs ──
       case 'list_audit_logs': {
         const limit = body.limit || 100;

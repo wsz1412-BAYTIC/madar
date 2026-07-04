@@ -169,6 +169,31 @@ export const i18n = {
     "settings.saving": "جاري الحفظ...",
     "settings.saved": "تم حفظ التغييرات بنجاح",
 
+    // Signup (Telegram capture)
+    "signup.title": "ابدأ مع مدار",
+    "signup.subtitle": "اربط حساب تيليجرام لتلقي توصيات الأسعار وتنبيهات السوق فوراً",
+    "signup.telegramLabel": "اسم مستخدم تيليجرام",
+    "signup.telegramPlaceholder": "@username",
+    "signup.telegramInvalid": "اسم مستخدم غير صالح (5-32 حرفاً، أحرف وأرقام و _ فقط)",
+    "signup.verifiedAs": "سيتم التحقق:",
+    "signup.verificationNote": "بعد إنشاء حسابك، سنتحقق من اسم تيليجرام الخاص بك بإرسال رسالة ترحيب. يمكنك تغييره لاحقاً من الإعدادات.",
+    "signup.continue": "متابعة إنشاء الحساب",
+    "signup.haveAccount": "لديك حساب بالفعل؟ تسجيل الدخول",
+    "signup.preparing": "جاري تجهيز حسابك...",
+
+    // Trial
+    "trial.active": "تجربة نشطة",
+    "trial.daysLeft": "يوم متبقٍ",
+    "trial.endsOn": "تنتهي في",
+    "trial.activate": "فعّل تجربة Growth المجانية لمدة 14 يوماً",
+    "trial.activateDesc": "احصل على جميع مزايا Growth مجاناً لمدة 14 يوماً — بدون بطاقة ائتمان",
+    "trial.used": "تم استخدام التجربة المجانية",
+    "trial.usedDesc": "تم استخدام فترة التجنربة على هذا الحساب. تواصل مع الدعم لإعادة التفعيل.",
+    "trial.expired": "انتهت التجربة",
+    "trial.activating": "جاري التفعيل...",
+    "trial.activated": "تم تفعيل التجربة! استمتع بجميع مزايا Growth",
+    "trial.badge": "تجربة Growth",
+
     // Login
     "login.title": "مرحباً بعودتك",
     "login.subtitle": "سجّل الدخول للوصول إلى لوحة تحكم مدار",
@@ -376,6 +401,31 @@ export const i18n = {
     "settings.save": "Save Changes",
     "settings.saving": "Saving...",
     "settings.saved": "Changes saved successfully",
+
+    // Signup (Telegram capture)
+    "signup.title": "Get Started with Madar",
+    "signup.subtitle": "Link your Telegram to receive pricing recommendations and market alerts instantly",
+    "signup.telegramLabel": "Telegram Username",
+    "signup.telegramPlaceholder": "@username",
+    "signup.telegramInvalid": "Invalid username (5-32 chars, letters, numbers and _ only)",
+    "signup.verifiedAs": "Will be verified as:",
+    "signup.verificationNote": "After creating your account, we'll verify your Telegram username by sending a welcome message. You can change it later in Settings.",
+    "signup.continue": "Continue to Sign Up",
+    "signup.haveAccount": "Already have an account? Log in",
+    "signup.preparing": "Preparing your account...",
+
+    // Trial
+    "trial.active": "Trial Active",
+    "trial.daysLeft": "days left",
+    "trial.endsOn": "Ends on",
+    "trial.activate": "Activate 14-Day Free Growth Trial",
+    "trial.activateDesc": "Get all Growth features free for 14 days — no credit card required",
+    "trial.used": "Trial Already Used",
+    "trial.usedDesc": "The free trial has already been used on this account. Contact support for reactivation.",
+    "trial.expired": "Trial Expired",
+    "trial.activating": "Activating...",
+    "trial.activated": "Trial activated! Enjoy all Growth features",
+    "trial.badge": "Growth Trial",
 
     // Login
     "login.title": "Welcome Back",

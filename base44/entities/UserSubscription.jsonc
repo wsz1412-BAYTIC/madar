@@ -91,7 +91,8 @@
         "pending",
         "failed",
         "none",
-        "not_required"
+        "not_required",
+        "trial"
       ],
       "title": "Payment Status",
       "default": "none",
@@ -153,6 +154,50 @@
       "type": "string",
       "format": "date-time",
       "title": "Trial End Date",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "trial_status": {
+      "type": "string",
+      "enum": [
+        "none",
+        "active",
+        "expired"
+      ],
+      "title": "Trial Status",
+      "default": "none",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "trial_started_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Trial Start Date",
+      "rls": {
+        "read": true,
+        "write": {
+          "user_condition": {
+            "role": "system"
+          }
+        }
+      }
+    },
+    "trial_used_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Trial Used At (one-trial-per-account lock)",
       "rls": {
         "read": true,
         "write": {

@@ -1,5 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
+const TRIAL_DAYS = 14;
+
+const PLAN_LIMITS = {
+  free: { properties: 1 },
+  starter: { properties: 5 },
+  growth: { properties: 25 },
+  pro: { properties: 100 }
+};
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -10,7 +19,6 @@ Deno.serve(async (req) => {
     const { action } = body;
     const sr = base44.asServiceRole;
 
-    // ── Audit log helper ──
     const logAction = async (targetId, targetEntity, actionType, prevVal, newVal) => {
       await sr.entities.AuditLog.create({
         acting_user_id: user.id,
@@ -23,19 +31,31 @@ Deno.serve(async (req) => {
       });
     };
 
-    // ── Plan limits (enforced server-side) ──
-    const PLAN_LIMITS = {
-      free: { properties: 1 },
-      starter: { properties: 5 },
-      growth: { properties: 25 },
-      pro: { properties: 100 }
+    // ── Entitlement resolution: paid > active trial > free ──
+    const resolveEntitlementPlan = (sub) => {
+      if (!sub) return 'free';
+      if (sub.payment_status === 'paid') return sub.plan;
+      if (sub.trial_status === 'active' && sub.trial_ends_at) {
+        if (new Date(sub.trial_ends_at).getTime() > Date.now()) return 'growth';
+      }
+      return 'free';
     };
 
-    // ── Idempotent: creates free subscription if none exists, returns existing if present ──
+    // ── Auto-expire stale trials ──
+    const expireTrialIfNeeded = async (sub) => {
+      if (sub.trial_status === 'active' && sub.trial_ends_at &&
+          new Date(sub.trial_ends_at).getTime() <= Date.now()) {
+        return await sr.entities.UserSubscription.update(sub.id, { trial_status: 'expired' });
+      }
+      return sub;
+    };
+
+    // ── Idempotent: creates free subscription if none exists ──
     const ensureSubscription = async () => {
       const subs = await sr.entities.UserSubscription.filter({ owner_id: user.id });
-      if (subs && subs.length > 0) return subs[0];
-
+      if (subs && subs.length > 0) {
+        return await expireTrialIfNeeded(subs[0]);
+      }
       const newSub = await sr.entities.UserSubscription.create({
         owner_id: user.id,
         plan: 'free',
@@ -43,6 +63,7 @@ Deno.serve(async (req) => {
         usage_count: 0,
         usage_limit: PLAN_LIMITS.free.properties,
         payment_status: 'not_required',
+        trial_status: 'none',
         started_at: new Date().toISOString(),
         renewal_date: null
       });
@@ -54,57 +75,92 @@ Deno.serve(async (req) => {
 
     switch (action) {
       case 'get_current': {
-        // Auto-provisions free subscription on first call — serves as login/dashboard fallback
         const sub = await ensureSubscription();
-        return Response.json({ subscription: sub });
+        return Response.json({
+          subscription: sub,
+          effective_plan: resolveEntitlementPlan(sub)
+        });
+      }
+
+      case 'activate_trial': {
+        const sub = await ensureSubscription();
+
+        if (sub.payment_status === 'paid') {
+          return Response.json({ error: 'Paid subscribers cannot activate a trial' }, { status: 400 });
+        }
+        if (sub.trial_used_at) {
+          return Response.json({ error: 'Trial already used on this account' }, { status: 403 });
+        }
+        if (sub.trial_status === 'active' && sub.trial_ends_at &&
+            new Date(sub.trial_ends_at).getTime() > Date.now()) {
+          return Response.json({ error: 'Trial is already active' }, { status: 400 });
+        }
+
+        const now = new Date();
+        const trialEndsAt = new Date(now.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
+        const prev = {
+          plan: sub.plan, payment_status: sub.payment_status,
+          trial_status: sub.trial_status, trial_ends_at: sub.trial_ends_at
+        };
+
+        const updated = await sr.entities.UserSubscription.update(sub.id, {
+          plan: 'growth',
+          payment_status: 'trial',
+          trial_status: 'active',
+          trial_started_at: now.toISOString(),
+          trial_ends_at: trialEndsAt.toISOString(),
+          trial_used_at: now.toISOString(),
+          usage_limit: PLAN_LIMITS.growth.properties
+        });
+
+        await logAction(sub.id, 'UserSubscription', 'subscription_change', prev, {
+          plan: 'growth', payment_status: 'trial', trial_status: 'active',
+          trial_ends_at: trialEndsAt.toISOString(), note: `${TRIAL_DAYS}-day Growth trial activated`
+        });
+
+        return Response.json({
+          subscription: updated,
+          effective_plan: 'growth',
+          trial_ends_at: trialEndsAt.toISOString()
+        });
       }
 
       case 'check_property_limit': {
         const sub = await ensureSubscription();
-        const limit = PLAN_LIMITS[sub.plan] ? PLAN_LIMITS[sub.plan].properties : 1;
-
+        const effectivePlan = resolveEntitlementPlan(sub);
+        const limit = PLAN_LIMITS[effectivePlan] ? PLAN_LIMITS[effectivePlan].properties : 1;
         const properties = await base44.entities.UserProperty.list();
         const count = properties.length;
-
         if (count >= limit) {
-          return Response.json({ allowed: false, plan: sub.plan, limit, count, message: 'Property limit reached for your plan' });
+          return Response.json({ allowed: false, plan: effectivePlan, limit, count, message: 'Property limit reached for your plan' });
         }
-        return Response.json({ allowed: true, plan: sub.plan, limit, count });
+        return Response.json({ allowed: true, plan: effectivePlan, limit, count });
       }
 
       case 'accept_recommendation': {
         const { recommendation_id, accepted_price } = body;
         if (!recommendation_id) return Response.json({ error: 'recommendation_id required' }, { status: 400 });
-
-        // User-scoped read — RLS ensures user can only access their own
         const recs = await base44.entities.PriceRecommendation.filter({ id: recommendation_id });
         if (!recs || recs.length === 0) {
           return Response.json({ error: 'Recommendation not found' }, { status: 404 });
         }
         const rec = recs[0];
-
         const prev = { status: rec.status, current_price: rec.current_price };
         const updated = await base44.entities.PriceRecommendation.update(recommendation_id, {
           status: 'accepted',
           current_price: accepted_price || rec.recommended_price
         });
-
         await base44.entities.RecommendationHistory.create({
-          recommendation_id: recommendation_id,
-          user_property_id: rec.user_property_id,
-          action: 'accepted',
-          previous_price: rec.current_price,
+          recommendation_id, user_property_id: rec.user_property_id,
+          action: 'accepted', previous_price: rec.current_price,
           new_price: accepted_price || rec.recommended_price
         });
-
-        await logAction(recommendation_id, 'PriceRecommendation', 'manual_pricing_override', prev, { status: 'accepted', current_price: accepted_price || rec.recommended_price });
+        await logAction(recommendation_id, 'PriceRecommendation', 'manual_pricing_override', prev,
+          { status: 'accepted', current_price: accepted_price || rec.recommended_price });
         return Response.json({ recommendation: updated });
       }
 
       case 'upgrade': {
-        // Paid checkout is not implemented yet.
-        // Plan changes must go through a trusted backend function with payment verification.
-        // Direct self-upgrade is disabled for security.
         return Response.json({
           error: 'الترقية المدفوعة غير متاحة حاليًا',
           error_en: 'Paid upgrades are currently unavailable'

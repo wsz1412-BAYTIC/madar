@@ -18,7 +18,8 @@ export function SubscriptionProvider({ children }) {
         action: "get_current",
       });
       const sub = response.data?.subscription || { plan: "free", status: "active", usage_limit: 1, usage_count: 0 };
-      setSubscription({ tier: sub.plan || "free", ...sub });
+      const effectivePlan = response.data?.effective_plan || sub.plan || "free";
+      setSubscription({ tier: effectivePlan, effective_tier: effectivePlan, ...sub });
     } catch {
       setSubscription({ tier: "free", status: "active", usage_limit: 1, usage_count: 0 });
     } finally {
