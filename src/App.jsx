@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { SubscriptionProvider } from "@/lib/SubscriptionContext";
+import { ThemeProvider } from "@/lib/ThemeContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import PropertySearch from "./pages/PropertySearch";
@@ -77,12 +78,14 @@ function App() {
     <AuthProvider>
       <LanguageProvider>
         <SubscriptionProvider>
+          <ThemeProvider>
           <QueryClientProvider client={queryClientInstance}>
             <Router>
               <MadarRoutes />
             </Router>
             <Toaster />
           </QueryClientProvider>
+          </ThemeProvider>
         </SubscriptionProvider>
       </LanguageProvider>
     </AuthProvider>

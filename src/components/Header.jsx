@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Languages, LogOut } from "lucide-react";
+import { Menu, X, Languages, LogOut, Sun, Moon, Monitor } from "lucide-react";
+import { useTheme } from "@/lib/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useAuth } from "@/lib/AuthContext";
@@ -15,6 +16,15 @@ export default function Header() {
   const navigate = useNavigate();
   const { lang, toggleLang, t } = useLanguage();
   const { isAuthenticated, logout } = useAuth();
+  const { theme, preference, setPreference } = useTheme();
+
+  const themeIcon = preference === "system" ? Monitor : theme === "dark" ? Moon : Sun;
+  const ThemeIcon = themeIcon;
+  const cycleTheme = () => {
+    const order = ["light", "dark", "system"];
+    const next = order[(order.indexOf(preference) + 1) % order.length];
+    setPreference(next);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,6 +98,17 @@ export default function Header() {
                     <span className="absolute bottom-0 left-0 w-full h-px bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                   </Link>
                 ))}
+
+              <button
+                onClick={cycleTheme}
+                className={`flex items-center gap-1.5 font-body text-xs tracking-label uppercase transition-colors ${
+                  isHomepage ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-label="Toggle theme"
+                title={preference}
+              >
+                <ThemeIcon size={14} />
+              </button>
 
               <button
                 onClick={toggleLang}
@@ -215,6 +236,13 @@ export default function Header() {
                 >
                   <Languages size={14} />
                   {lang === "ar" ? "English" : "العربية"}
+                </button>
+                <button
+                  onClick={cycleTheme}
+                  className="flex items-center gap-2 font-body text-xs tracking-label uppercase text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ThemeIcon size={14} />
+                  {preference === "light" ? (lang === "ar" ? "فاتح" : "Light") : preference === "dark" ? (lang === "ar" ? "داكن" : "Dark") : (lang === "ar" ? "النظام" : "System")}
                 </button>
                 {isAuthenticated && (
                   <button
