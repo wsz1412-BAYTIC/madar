@@ -17,6 +17,77 @@
           }
         }
       }
+    },
+    "telegram_username": {
+      "type": "string",
+      "title": "Telegram Username",
+      "rls": {
+        "read": {
+          "$or": [
+            {
+              "id": "{{user.id}}"
+            },
+            {
+              "user_condition": {
+                "role": "admin"
+              }
+            }
+          ]
+        },
+        "write": {
+          "$or": [
+            {
+              "id": "{{user.id}}"
+            },
+            {
+              "user_condition": {
+                "role": "admin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "notification_prefs": {
+      "type": "object",
+      "title": "Notification Preferences",
+      "properties": {
+        "aiRecommendations": {
+          "type": "boolean"
+        },
+        "marketNews": {
+          "type": "boolean"
+        },
+        "billingAlerts": {
+          "type": "boolean"
+        }
+      },
+      "rls": {
+        "read": {
+          "$or": [
+            {
+              "id": "{{user.id}}"
+            },
+            {
+              "user_condition": {
+                "role": "admin"
+              }
+            }
+          ]
+        },
+        "write": {
+          "$or": [
+            {
+              "id": "{{user.id}}"
+            },
+            {
+              "user_condition": {
+                "role": "admin"
+              }
+            }
+          ]
+        }
+      }
     }
   },
   "required": [

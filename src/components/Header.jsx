@@ -48,6 +48,7 @@ export default function Header() {
     { label: t("nav.billing"), path: "/billing" },
     { label: t("nav.assistant"), path: "/assistant" },
     { label: t("nav.commits"), path: "/commits" },
+    { label: t("nav.settings"), path: "/settings" },
   ];
 
   const isHomepage = location.pathname === "/";

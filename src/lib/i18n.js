@@ -21,6 +21,7 @@ export const i18n = {
     "nav.dashboard": "الرئيسية",
     "nav.addProperty": "إضافة عقار",
     "nav.commits": "التحديثات",
+    "nav.settings": "الإعدادات",
 
     // Hero
     "hero.title1": "ذكاء التسعير",
@@ -145,6 +146,29 @@ export const i18n = {
     "assistant.upgradeDesc": "ارتقِ إلى الباقة الاحترافية للوصول إلى المساعد الذكي",
     "assistant.welcome": "مرحباً! أنا مساعدك الذكي للتسعير العقاري. كيف يمكنني مساعدتك اليوم؟",
 
+    // Settings
+    "settings.title": "الإعدادات",
+    "settings.appearance": "المظهر",
+    "settings.appearanceDesc": "اختر كيف يظهر مدار لك",
+    "settings.system": "النظام",
+    "settings.systemDesc": "يتبع إعداد جهازك",
+    "settings.light": "فاتح",
+    "settings.lightDesc": "خلفية فاتحة",
+    "settings.dark": "داكن",
+    "settings.darkDesc": "خلفية داكنة",
+    "settings.telegram": "إشعارات تيليجرام",
+    "settings.telegramDesc": "اربط حساب تيليجرام لتلقي توصيات الذكاء الاصطناعي وتنبيهات السوق",
+    "settings.telegramLabel": "اسم مستخدم تيليجرام",
+    "settings.telegramPlaceholder": "@username",
+    "settings.telegramInvalid": "اسم مستخدم غير صالح (5-32 حرفاً، أحرف وأرقام و _ فقط)",
+    "settings.notifications": "تفضيلات الإشعارات",
+    "settings.aiRecommendations": "توصيات الذكاء الاصطناعي",
+    "settings.marketNews": "أخبار السوق",
+    "settings.billingAlerts": "تنبيهات الفوترة",
+    "settings.save": "حفظ التغييرات",
+    "settings.saving": "جاري الحفظ...",
+    "settings.saved": "تم حفظ التغييرات بنجاح",
+
     // Login
     "login.title": "مرحباً بعودتك",
     "login.subtitle": "سجّل الدخول للوصول إلى لوحة تحكم مدار",
@@ -205,6 +229,7 @@ export const i18n = {
     "nav.dashboard": "Dashboard",
     "nav.addProperty": "Add Property",
     "nav.commits": "Commits",
+    "nav.settings": "Settings",
 
     // Hero
     "hero.title1": "Pricing Intelligence",
@@ -328,6 +353,29 @@ export const i18n = {
     "assistant.upgrade": "AI Assistant is available on the Pro tier",
     "assistant.upgradeDesc": "Upgrade to the Pro tier to access the AI Assistant",
     "assistant.welcome": "Hi! I'm your rental pricing intelligence assistant. How can I help you today?",
+
+    // Settings
+    "settings.title": "Settings",
+    "settings.appearance": "Appearance",
+    "settings.appearanceDesc": "Choose how Madar looks to you",
+    "settings.system": "System",
+    "settings.systemDesc": "Follows your device setting",
+    "settings.light": "Light",
+    "settings.lightDesc": "Bright background",
+    "settings.dark": "Dark",
+    "settings.darkDesc": "Dimmed background",
+    "settings.telegram": "Telegram Notifications",
+    "settings.telegramDesc": "Link your Telegram to receive AI recommendations and market alerts",
+    "settings.telegramLabel": "Telegram Username",
+    "settings.telegramPlaceholder": "@username",
+    "settings.telegramInvalid": "Invalid username (5-32 chars, letters, numbers and _ only)",
+    "settings.notifications": "Notification Preferences",
+    "settings.aiRecommendations": "AI Recommendations",
+    "settings.marketNews": "Market News",
+    "settings.billingAlerts": "Billing Alerts",
+    "settings.save": "Save Changes",
+    "settings.saving": "Saving...",
+    "settings.saved": "Changes saved successfully",
 
     // Login
     "login.title": "Welcome Back",
