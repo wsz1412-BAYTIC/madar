@@ -3,8 +3,8 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 const REPO = 'wsz1412-BAYTIC/madar';
 const BRANCH = 'main';
 
-// PR #18 merge commit — all commits after this are "recent updates"
-const SINCE_SHA = '8c10120367c83bc358685b54a98dd8c2e3d700e6';
+// PR #20 merge commit — all commits after this are "recent updates" (#20–#24+)
+const SINCE_SHA = 'f23f0a96d52031b2637168237d2dc2ebef5bfb2c';
 
 Deno.serve(async (req) => {
   try {
@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
       repo: REPO,
       branch: BRANCH,
       since_sha: sinceSha,
-      since_pr: 18,
+      since_pr: 20,
       total: filtered.length,
       total_all: mapped.length,
       commits: filtered,
