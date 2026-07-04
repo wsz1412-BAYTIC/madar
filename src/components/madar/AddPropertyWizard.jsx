@@ -8,7 +8,14 @@ import {
   WIZARD_STEPS, CITIES, PLATFORMS, UNIT_TYPES, AVAILABILITY, AMENITIES,
   EMPTY_FORM, validateStep, buildPropertyPayload,
 } from '@/lib/propertyWizard';
-import { X, ChevronLeft, ChevronRight, Check, Loader2, Minus, Plus, Building2, Home, ListChecks } from 'lucide-react';
+import {
+  parseListingUrl, findDuplicateLink, buildLinkEntry, DUPLICATE_LINK, IMPORT_SUCCESS,
+} from '@/lib/listingImport';
+import { scanListing } from '@/lib/listingScan';
+import {
+  X, ChevronLeft, ChevronRight, Check, Loader2, Minus, Plus, Building2, Home, ListChecks,
+  Link2, Sparkles, Info, Trash2,
+} from 'lucide-react';
 
 const STEP_META = {
   basics: { icon: Building2, en: 'Basics', ar: 'الأساسيات' },
@@ -57,11 +64,23 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
   const { user } = useAuth();
   const { toast } = useToast();
   const [stepIndex, setStepIndex] = useState(0);
-  const [form, setForm] = useState({ ...EMPTY_FORM });
+  // Widened so scan autofill can merge string patches over the frozen
+  // EMPTY_FORM literals.
+  const [form, setForm] = useState(/** @type {Record<string, any>} */ ({ ...EMPTY_FORM }));
   const [errors, setErrors] = useState(
     /** @type {Partial<Record<string, {en: string, ar: string}>>} */ ({})
   );
   const [saving, setSaving] = useState(false);
+  // Listing-URL scan state (basics step): the URL box content, the in-flight
+  // flag, and a bilingual note about the last scan outcome.
+  const [scanUrl, setScanUrl] = useState('');
+  const [scanning, setScanning] = useState(false);
+  const [scanNote, setScanNote] = useState(
+    /** @type {{tone: 'success'|'warn'|'error', text: {en: string, ar: string}} | null} */ (null)
+  );
+  // Extras step: the "add another platform link" box.
+  const [newLinkUrl, setNewLinkUrl] = useState('');
+  const [linkError, setLinkError] = useState(/** @type {{en: string, ar: string} | null} */ (null));
 
   // Seed prefilled values (e.g. platform + listing URL handed over from the
   // import-by-link flow) every time the wizard opens.
@@ -70,6 +89,11 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
       setStepIndex(0);
       setErrors({});
       setForm({ ...EMPTY_FORM, ...(initial || {}) });
+      setScanUrl(initial?.platformUrl || '');
+      setScanning(false);
+      setScanNote(null);
+      setNewLinkUrl('');
+      setLinkError(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -79,8 +103,51 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
   const msg = (field) => errors[field] ? (lang === 'ar' ? errors[field].ar : errors[field].en) : null;
   const L = (opt) => (lang === 'ar' ? opt.ar : opt.en);
 
-  const reset = () => { setStepIndex(0); setForm({ ...EMPTY_FORM }); setErrors({}); };
+  const reset = () => {
+    setStepIndex(0); setForm({ ...EMPTY_FORM }); setErrors({});
+    setScanUrl(''); setScanning(false); setScanNote(null); setNewLinkUrl(''); setLinkError(null);
+  };
   const close = () => { reset(); onClose(); };
+
+  // ── Listing-URL scan (basics step) ──
+  // Local validation → backend extraction → auto-fill (still editable).
+  // Every failure shows a friendly bilingual note; raw errors never surface.
+  const handleScan = async () => {
+    if (scanning) return;
+    const parsed = parseListingUrl(scanUrl);
+    if (!parsed.valid) { setScanNote({ tone: 'error', text: parsed.error }); return; }
+    const dup = findDuplicateLink(form.links, parsed.url, parsed.platform);
+    if (dup) { setScanNote({ tone: 'error', text: DUPLICATE_LINK }); return; }
+    setScanning(true);
+    setScanNote(null);
+    const result = await scanListing(scanUrl);
+    setScanning(false);
+    if (!result.form) { setScanNote({ tone: 'error', text: result.error }); return; }
+    // Merge the scanned link into the existing list instead of replacing it.
+    const mergedLinks = [...(form.links || [])];
+    for (const link of result.form.links || []) {
+      if (!findDuplicateLink(mergedLinks, link.url, link.platform)) mergedLinks.push(link);
+    }
+    setForm((p) => ({ ...p, ...result.form, links: mergedLinks }));
+    setErrors({});
+    setScanNote(result.ok ? { tone: 'success', text: IMPORT_SUCCESS } : { tone: 'warn', text: result.message });
+  };
+
+  // ── Multi-platform links (extras step) ──
+  const addLink = () => {
+    const parsed = parseListingUrl(newLinkUrl);
+    if (!parsed.valid) { setLinkError(parsed.error); return; }
+    if (findDuplicateLink(form.links, parsed.url, parsed.platform)) {
+      setLinkError(DUPLICATE_LINK);
+      return;
+    }
+    setForm((p) => ({ ...p, links: [...(p.links || []), buildLinkEntry(parsed.platform, parsed.url)] }));
+    setNewLinkUrl('');
+    setLinkError(null);
+  };
+  const removeLink = (url) => {
+    setForm((p) => ({ ...p, links: (p.links || []).filter((l) => l.url !== url) }));
+  };
 
   const next = () => {
     const { valid, errors: errs } = validateStep(step, form);
@@ -167,6 +234,51 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
             <div className="p-6 space-y-5">
               {step === 'basics' && (
                 <>
+                  {/* Property URL — FIRST field, with Scan beside it. */}
+                  <div>
+                    <label htmlFor="wiz-scan-url" className={sectionLabel}>
+                      {lang === 'ar' ? 'رابط الإعلان' : 'Property URL'}
+                    </label>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1 min-w-0">
+                        <Link2 className="absolute top-1/2 -translate-y-1/2 start-3 w-4 h-4 text-foreground/25" />
+                        <input
+                          id="wiz-scan-url" value={scanUrl} dir="ltr"
+                          onChange={(e) => { setScanUrl(e.target.value); setScanNote(null); }}
+                          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleScan(); } }}
+                          placeholder="https://airbnb.com/rooms/…"
+                          className={`w-full ps-10 pe-3 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all ${
+                            scanNote?.tone === 'error' ? 'border-danger/60' : 'border-foreground/[0.08]'
+                          }`}
+                        />
+                      </div>
+                      <button
+                        type="button" onClick={handleScan} disabled={scanning}
+                        aria-label={lang === 'ar' ? 'معاينة' : 'Scan'}
+                        className="shrink-0 flex items-center gap-1.5 px-4 h-[46px] rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+                      >
+                        {scanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                        <span className="hidden sm:inline">{lang === 'ar' ? 'معاينة' : 'Scan'}</span>
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-foreground/40 mt-1.5">
+                      {lang === 'ar'
+                        ? 'الصق رابط Airbnb أو Gathern أو Booking.com وسنعبّئ البيانات المتاحة — أو تابع يدويًا.'
+                        : 'Paste an Airbnb, Gathern or Booking.com link and we will prefill what we can — or continue manually.'}
+                    </p>
+                    {scanNote && (
+                      <div className={`flex items-start gap-2 p-3 rounded-xl border mt-2 ${
+                        scanNote.tone === 'success' ? 'bg-success/10 border-success/25'
+                          : scanNote.tone === 'warn' ? 'bg-warning/10 border-warning/25'
+                            : 'bg-danger/10 border-danger/25'
+                      }`}>
+                        {scanNote.tone === 'success'
+                          ? <Check className="w-4 h-4 text-success mt-0.5 shrink-0" />
+                          : <Info className={`w-4 h-4 mt-0.5 shrink-0 ${scanNote.tone === 'warn' ? 'text-warning' : 'text-danger'}`} />}
+                        <p className="text-xs text-foreground/75">{lang === 'ar' ? scanNote.text.ar : scanNote.text.en}</p>
+                      </div>
+                    )}
+                  </div>
                   <div>
                     <label htmlFor="wiz-name" className={sectionLabel}>{lang === 'ar' ? 'اسم العقار *' : 'Property name *'}</label>
                     <input id="wiz-name" value={form.name} onChange={(e) => set('name', e.target.value)}
@@ -257,10 +369,44 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
                     {fieldError('photoUrl')}
                   </div>
                   <div>
-                    <label htmlFor="wiz-link" className={sectionLabel}>{lang === 'ar' ? 'رابط الإعلان على المنصة' : 'Listing link on the platform'}</label>
-                    <input id="wiz-link" value={form.platformUrl} onChange={(e) => set('platformUrl', e.target.value)} dir="ltr"
-                      placeholder="https://airbnb.com/rooms/…" className={inputClass('platformUrl')} />
-                    {fieldError('platformUrl')}
+                    <span className={sectionLabel}>{lang === 'ar' ? 'روابط المنصات' : 'Platform links'}</span>
+                    <p className="text-[11px] text-foreground/40 mb-2">
+                      {lang === 'ar'
+                        ? 'يمكن ربط العقار بأكثر من منصة: Airbnb وGathern وBooking.com — رابط واحد لكل منصة.'
+                        : 'A property can be linked on several platforms: Airbnb, Gathern and Booking.com — one link per platform.'}
+                    </p>
+                    {(form.links || []).length > 0 && (
+                      <ul className="space-y-1.5 mb-2">
+                        {form.links.map((link) => (
+                          <li key={link.url} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-foreground/[0.03] border border-foreground/[0.08]">
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-success/15 text-success shrink-0">{link.platform}</span>
+                            <span className="text-xs text-foreground/50 truncate flex-1" dir="ltr">{link.url}</span>
+                            <button type="button" onClick={() => removeLink(link.url)}
+                              aria-label={lang === 'ar' ? `حذف رابط ${link.platform}` : `Remove ${link.platform} link`}
+                              className="p-1 rounded-lg hover:bg-danger/10 text-foreground/35 hover:text-danger transition-colors shrink-0">
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <div className="flex gap-2">
+                      <input
+                        id="wiz-link" value={newLinkUrl} dir="ltr"
+                        onChange={(e) => { setNewLinkUrl(e.target.value); setLinkError(null); }}
+                        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addLink(); } }}
+                        aria-label={lang === 'ar' ? 'إضافة رابط منصة' : 'Add a platform link'}
+                        placeholder="https://gathern.co/unit/…"
+                        className={`flex-1 min-w-0 px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all ${
+                          linkError ? 'border-danger/60' : 'border-foreground/[0.08]'
+                        }`}
+                      />
+                      <button type="button" onClick={addLink}
+                        className="shrink-0 px-4 h-[46px] rounded-xl bg-foreground/[0.05] border border-foreground/[0.1] text-sm text-foreground/70 hover:text-foreground transition-all">
+                        {lang === 'ar' ? 'إضافة' : 'Add'}
+                      </button>
+                    </div>
+                    {linkError && <p className="text-xs text-danger mt-1">{lang === 'ar' ? linkError.ar : linkError.en}</p>}
                   </div>
                   <div>
                     <label htmlFor="wiz-notes" className={sectionLabel}>{lang === 'ar' ? 'ملاحظات' : 'Notes'}</label>
