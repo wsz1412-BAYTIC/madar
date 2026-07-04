@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { api } from '@/lib/api';
-import { Plus, Loader2, X, Link2 } from 'lucide-react';
+import { parseListingUrl, IMPORT_UNAVAILABLE } from '@/lib/listingImport';
+import { Plus, X, Link2, Info, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn } from '@/components/madar/Motion';
 import PropertyCardWithSelection from '@/components/madar/PropertyCardWithSelection';
@@ -26,7 +26,9 @@ export default function Properties() {
   // shown ahead of the demo data.
   const [myProperties, setMyProperties] = useState([]);
   const [importUrl, setImportUrl] = useState('');
-  const [importing, setImporting] = useState(false);
+  // Local preview result: {valid, platform, url} | {valid:false, error} | null
+  const [importPreview, setImportPreview] = useState(null);
+  const [wizardInitial, setWizardInitial] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState({ cities: [], tags: [], performance: [] });
   const [statusFilter, setStatusFilter] = useState('all');
   const [sortBy, setSortBy] = useState('default');
@@ -93,15 +95,28 @@ export default function Properties() {
     return sorters[sortBy] ? [...list].sort(sorters[sortBy]) : list;
   }, [allProperties, selectedFilters, statusFilter, sortBy]);
 
-  const handleImport = async (e) => {
+  // Preview validates the pasted link locally — the legacy POST
+  // /properties/import endpoint never existed (it returned a raw 405
+  // "Method Not Allowed"), and there is no scraping backend yet. Instead of
+  // failing, we detect the platform, say so honestly, and hand off to the
+  // manual wizard with platform + URL prefilled.
+  const handlePreview = (e) => {
     e.preventDefault();
-    setImporting(true);
-    try {
-      await api.post('/properties/import', { url: importUrl });
-      setShowImport(false);
-      setImportUrl('');
-    } catch { }
-    setImporting(false);
+    setImportPreview(parseListingUrl(importUrl));
+  };
+
+  const continueManually = () => {
+    if (!importPreview?.valid) return;
+    setWizardInitial({ platform: importPreview.platform, platformUrl: importPreview.url });
+    setShowImport(false);
+    setImportPreview(null);
+    setImportUrl('');
+    setShowWizard(true);
+  };
+
+  const closeImport = () => {
+    setShowImport(false);
+    setImportPreview(null);
   };
 
   // Selection Handlers
@@ -273,7 +288,7 @@ export default function Properties() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-            onClick={() => setShowImport(false)}
+            onClick={closeImport}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -285,23 +300,50 @@ export default function Properties() {
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-heading font-semibold text-foreground">{t('importListing')}</h2>
-                <button onClick={() => setShowImport(false)} className="p-1 hover:bg-foreground/5 rounded-lg"><X className="w-4 h-4 text-foreground/40" /></button>
+                <button onClick={closeImport} aria-label={lang === 'ar' ? 'إغلاق' : 'Close'} className="p-1 hover:bg-foreground/5 rounded-lg"><X className="w-4 h-4 text-foreground/40" /></button>
               </div>
               <p className="text-sm text-foreground/40 mb-4">{t('pasteUrl')}</p>
-              <form onSubmit={handleImport} className="space-y-4">
+              <form onSubmit={handlePreview} className="space-y-4">
                 <div className="relative">
-                  <Link2 className="absolute top-1/2 -translate-y-1/2 left-3 w-4 h-4 text-foreground/25" />
+                  <Link2 className="absolute top-1/2 -translate-y-1/2 start-3 w-4 h-4 text-foreground/25" />
                   <input
                     value={importUrl}
-                    onChange={e => setImportUrl(e.target.value)}
-                    placeholder="https://airbnb.com/rooms/..."
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
+                    onChange={e => { setImportUrl(e.target.value); setImportPreview(null); }}
+                    placeholder="https://ar.airbnb.com/rooms/1573422907379"
+                    dir="ltr"
+                    className={`w-full ps-10 pe-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 ${importPreview && !importPreview.valid ? 'border-danger/60' : 'border-foreground/[0.08]'}`}
                     required
                   />
                 </div>
-                <button type="submit" disabled={importing} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-50">
-                  {importing ? <><Loader2 className="w-4 h-4 animate-spin" />{t('importing')}</> : t('import')}
-                </button>
+
+                {importPreview && !importPreview.valid && (
+                  <p className="text-xs text-danger">{lang === 'ar' ? importPreview.error.ar : importPreview.error.en}</p>
+                )}
+
+                {importPreview?.valid ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-foreground/80">
+                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-success/15 text-success">
+                        {importPreview.platform}
+                      </span>
+                      <span className="text-xs text-foreground/45 truncate" dir="ltr">{importPreview.url}</span>
+                    </div>
+                    <div className="flex items-start gap-2 p-3 rounded-xl bg-warning/10 border border-warning/25">
+                      <Info className="w-4 h-4 text-warning mt-0.5 shrink-0" />
+                      <p className="text-xs text-foreground/70">
+                        {lang === 'ar' ? IMPORT_UNAVAILABLE.ar : IMPORT_UNAVAILABLE.en}
+                      </p>
+                    </div>
+                    <button type="button" onClick={continueManually} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
+                      {lang === 'ar' ? 'المتابعة يدويًا' : 'Continue manually'}
+                      {lang === 'ar' ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+                    </button>
+                  </div>
+                ) : (
+                  <button type="submit" className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
+                    {lang === 'ar' ? 'معاينة' : 'Preview'}
+                  </button>
+                )}
               </form>
             </motion.div>
           </motion.div>
@@ -311,7 +353,8 @@ export default function Properties() {
       {/* Step-by-step Add Property wizard (creates a real UserProperty row) */}
       <AddPropertyWizard
         open={showWizard}
-        onClose={() => setShowWizard(false)}
+        initial={wizardInitial}
+        onClose={() => { setShowWizard(false); setWizardInitial(null); }}
         onCreated={(created) => {
           // Map the entity row onto the card display shape and show it first.
           setMyProperties(prev => [{
