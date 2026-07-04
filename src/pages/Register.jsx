@@ -6,7 +6,7 @@ import { isValidTelegramUsername, normalizeTelegramUsername } from "@/lib/telegr
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserPlus, Mail, Lock, Loader2, Send, Inbox } from "lucide-react";
+import { UserPlus, Mail, Lock, Loader2, Send, Inbox, User } from "lucide-react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
@@ -33,15 +33,20 @@ function friendlyError(err, lang, fallbackEn, fallbackAr) {
 export default function Register() {
   const { lang } = useLang();
   const ar = lang === 'ar';
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [telegram, setTelegram] = useState("");
+  const [consent, setConsent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [cooldown, setCooldown] = useState(0);
+  // Whether the (optional) Telegram handle will actually be saved. An invalid
+  // handle NEVER blocks registration — it is simply skipped with a notice.
+  const [telegramSkipped, setTelegramSkipped] = useState(false);
 
   useEffect(() => {
     if (cooldown <= 0) return undefined;
@@ -52,21 +57,36 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!fullName.trim()) {
+      setError(ar ? 'أدخل اسمك الكامل' : 'Enter your full name');
+      return;
+    }
     if (password !== confirmPassword) {
       setError(ar ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match');
       return;
     }
-    if (telegram && !isValidTelegramUsername(telegram)) {
-      setError(ar
-        ? 'اسم مستخدم تيليجرام غير صالح — مثال: @username'
-        : 'Invalid Telegram username — e.g. @username');
+    if (!consent) {
+      setError(ar ? 'يجب الموافقة على الشروط وسياسة الخصوصية للمتابعة' : 'You must accept the Terms and Privacy Policy to continue');
       return;
     }
+    // Telegram is optional and NEVER blocks signup: empty is fine; an invalid
+    // value is skipped (saved later from Settings → Notifications if wanted).
+    const telegramInvalid = Boolean(telegram) && !isValidTelegramUsername(telegram);
+    setTelegramSkipped(telegramInvalid);
+
     setLoading(true);
     try {
       await base44.auth.register({ email, password });
       setShowOtp(true);
       setCooldown(RESEND_COOLDOWN_S);
+      if (telegramInvalid) {
+        toast({
+          title: ar ? 'تم تخطي تيليجرام' : 'Telegram skipped',
+          description: ar
+            ? 'اسم المستخدم لم يكن صالحًا — يمكنك إضافته لاحقًا من الإعدادات > التنبيهات.'
+            : "The username didn't look valid — you can add it later from Settings > Notifications.",
+        });
+      }
     } catch (err) {
       setError(friendlyError(err, lang, 'Registration failed', 'فشل إنشاء الحساب'));
     } finally {
@@ -81,23 +101,23 @@ export default function Register() {
       const result = await base44.auth.verifyOtp({ email, otpCode });
       // Per the Base44 SDK's documented registration flow, verifyOtp only
       // verifies the email; the authenticated session is established by a
-      // subsequent login. If verifyOtp already returned a token, use it;
-      // otherwise complete the flow with an explicit login so the new user
-      // actually ends up signed in. Unverified users never get a token, so
-      // the dashboard stays blocked until this step succeeds.
+      // subsequent login. Unverified users never get a token, so the
+      // dashboard stays blocked until this step succeeds.
       if (result?.access_token) {
         base44.auth.setToken(result.access_token);
       } else {
         await base44.auth.loginViaEmailPassword(email, password);
       }
-      // Best-effort: store the optional Telegram handle on the profile. A
-      // failure here must not block a successful signup.
-      if (telegram) {
-        try {
-          await base44.auth.updateMe({ telegram_username: normalizeTelegramUsername(telegram) });
-        } catch {
-          /* saved later from Settings → Notifications */
+      // Best-effort profile enrichment — never blocks a successful signup.
+      // Telegram is included only when present AND valid.
+      try {
+        const profile = { full_name: fullName.trim() };
+        if (telegram && !telegramSkipped && isValidTelegramUsername(telegram)) {
+          profile.telegram_username = normalizeTelegramUsername(telegram);
         }
+        await base44.auth.updateMe(profile);
+      } catch {
+        /* editable later from Settings */
       }
       window.location.href = "/";
     } catch (err) {
@@ -231,6 +251,23 @@ export default function Register() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
+          <Label htmlFor="fullname">{ar ? 'الاسم الكامل' : 'Full Name'}</Label>
+          <div className="relative">
+            <User className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+            <Input
+              id="fullname"
+              type="text"
+              autoComplete="name"
+              autoFocus
+              placeholder={ar ? 'مثال: سارة العتيبي' : 'e.g. Sara Alotaibi'}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="ps-10 h-12"
+              required
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
           <Label htmlFor="email">{ar ? 'البريد الإلكتروني' : 'Email'}</Label>
           <div className="relative">
             <Mail className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
@@ -238,7 +275,6 @@ export default function Register() {
               id="email"
               type="email"
               autoComplete="email"
-              autoFocus
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -282,28 +318,57 @@ export default function Register() {
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="telegram">
-            {ar ? 'اسم المستخدم في تيليجرام (اختياري)' : 'Telegram username (optional)'}
-          </Label>
-          <div className="relative">
-            <Send className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
-            <Input
-              id="telegram"
-              type="text"
-              placeholder="@username"
-              value={telegram}
-              onChange={(e) => setTelegram(e.target.value)}
-              className="ps-10 h-12"
-              dir="ltr"
-            />
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {ar
-              ? 'يُستخدم فقط للتنبيهات المهمة، مثل توصيات الأسعار الجديدة وتحديثات السوق الكبيرة.'
-              : 'Used for important alerts only, such as new AI recommendations or major market updates.'}
+
+        {/* Optional extras — clearly separated so nothing here feels required */}
+        <div className="pt-1">
+          <p className="text-[11px] uppercase tracking-wide text-muted-foreground/70 mb-2">
+            {ar ? 'اختياري' : 'Optional'}
           </p>
+          <div className="space-y-2">
+            <Label htmlFor="telegram" className="text-muted-foreground">
+              {ar ? 'اسم المستخدم في تيليجرام' : 'Telegram username'}
+            </Label>
+            <div className="relative">
+              <Send className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" aria-hidden="true" />
+              <Input
+                id="telegram"
+                type="text"
+                placeholder="@username"
+                value={telegram}
+                onChange={(e) => setTelegram(e.target.value)}
+                className="ps-10 h-12"
+                dir="ltr"
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {ar
+                ? 'للتنبيهات المهمة فقط — يمكنك تركه فارغًا وإضافته لاحقًا من الإعدادات > التنبيهات.'
+                : 'For important alerts only — leave empty and add it later from Settings > Notifications.'}
+            </p>
+          </div>
         </div>
+
+        {/* Legal consent */}
+        <label className="flex items-start gap-2.5 cursor-pointer select-none pt-1">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-0.5 w-4 h-4 rounded accent-primary cursor-pointer shrink-0"
+            aria-required="true"
+          />
+          <span className="text-xs text-muted-foreground leading-relaxed">
+            {ar ? 'أوافق على ' : 'I agree to the '}
+            <Link to="/terms" className="text-primary hover:underline" target="_blank">
+              {ar ? 'الشروط والأحكام' : 'Terms of Service'}
+            </Link>
+            {ar ? ' و' : ' and '}
+            <Link to="/privacy" className="text-primary hover:underline" target="_blank">
+              {ar ? 'سياسة الخصوصية' : 'Privacy Policy'}
+            </Link>
+          </span>
+        </label>
+
         <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
           {loading ? (
             <>
