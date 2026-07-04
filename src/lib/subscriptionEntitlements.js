@@ -38,6 +38,10 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
       },
       analytics: {
         basicOccupancy: true,
+        heatmap: false,
+        priorityInsightsLimited: false,
+        priorityInsightsFull: false,
+        competitorComparisonFull: false,
         basicRevenue: true,
         advancedCharts: false,
         lostRevenueAnalysis: false,
@@ -69,7 +73,7 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
         billingManagement: true,
       },
       properties: {
-        maxCount: 3,
+        maxCount: 2,
         canAdd: true,
         canEdit: true,
         canDelete: true,
@@ -95,6 +99,10 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
       },
       analytics: {
         basicOccupancy: true,
+        heatmap: false,
+        priorityInsightsLimited: false,
+        priorityInsightsFull: false,
+        competitorComparisonFull: false,
         basicRevenue: true,
         advancedCharts: false,
         lostRevenueAnalysis: false,
@@ -128,7 +136,7 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
         analyticsCenter: true,
       },
       properties: {
-        maxCount: 10,
+        maxCount: 5,
         canAdd: true,
         canEdit: true,
         canDelete: true,
@@ -160,6 +168,10 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
       },
       analytics: {
         basicOccupancy: true,
+        heatmap: true,
+        priorityInsightsLimited: true,
+        priorityInsightsFull: false,
+        competitorComparisonFull: false,
         basicRevenue: true,
         advancedCharts: true,
         lostRevenueAnalysis: true,
@@ -197,7 +209,7 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
         automationCenter: true,
       },
       properties: {
-        maxCount: Infinity,
+        maxCount: 15,
         canAdd: true,
         canEdit: true,
         canDelete: true,
@@ -233,6 +245,10 @@ export const SUBSCRIPTION_ENTITLEMENTS = {
       },
       analytics: {
         basicOccupancy: true,
+        heatmap: true,
+        priorityInsightsLimited: true,
+        priorityInsightsFull: true,
+        competitorComparisonFull: true,
         basicRevenue: true,
         advancedCharts: true,
         lostRevenueAnalysis: true,

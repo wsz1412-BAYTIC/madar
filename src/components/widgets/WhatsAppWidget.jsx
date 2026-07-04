@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const WHATSAPP_PHONE = '966538100119'; // +966 53 810 0119
+// Configurable via env (VITE_WHATSAPP_NUMBER, digits only with country code);
+// falls back to the official Madar support number.
+const WHATSAPP_PHONE = import.meta.env.VITE_WHATSAPP_NUMBER || '966538100119';
 const WHATSAPP_MESSAGE_EN = 'Hello Madar Support, I need assistance with my account or the platform.';
 const WHATSAPP_MESSAGE_AR = 'مرحبًا فريق دعم مدار، أحتاج إلى مساعدة بخصوص حسابي أو استخدام المنصة.';
 

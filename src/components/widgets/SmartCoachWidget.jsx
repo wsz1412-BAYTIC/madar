@@ -43,6 +43,8 @@ export default function SmartCoachWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  // Remaining questions in the current window (day or trial), from the server.
+  const [remaining, setRemaining] = useState(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef(null);
 
@@ -70,41 +72,35 @@ export default function SmartCoachWidget() {
     setLoading(true);
 
     try {
-      // Call AI with subscription context
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are Madar Smart Coach, a helpful assistant for the Madar platform (AI-powered revenue management for short-term rentals in Saudi Arabia).
-
-User's subscription plan: ${subscription?.planName || 'free'}
-
-Context: Help the user understand their dashboard, properties, pricing recommendations, market data, subscription features, and how to use Madar. 
-
-IMPORTANT RULES:
-1. Only explain or reference features included in their subscription plan
-2. Never reveal features from other paid plans
-3. Be concise and helpful
-4. If they ask about features not in their plan, suggest an upgrade
-5. Always remind them: "AI-generated answers may contain errors. Review important recommendations before making pricing, financial, or operational decisions."
-
-User question: ${text}`,
-        model: 'gemini_3_flash'
-      });
+      // All AI questions go through the quota-enforced backend function —
+      // daily plan limits, trial budget, word caps and private memory are
+      // applied server-side; the widget only renders the result.
+      const res = await base44.functions.invoke('ai-assistant', { question: text, lang });
+      const data = res?.data || {};
+      if (typeof data.remaining === 'number') setRemaining(data.remaining);
 
       const assistantMessage = {
         id: messages.length + 2,
         role: 'assistant',
-        content: response + '\n\n_AI-generated answers may contain errors. Review important recommendations before making pricing, financial, or operational decisions._',
+        content: (data.answer || '') + '\n\n_AI-generated answers may contain errors. Review important recommendations before making pricing, financial, or operational decisions._',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
+      const data = error?.response?.data || error?.data || {};
+      const limitHit = data.upgrade === true;
+      if (limitHit) setRemaining(0);
       const errorMessage = {
         id: messages.length + 2,
         role: 'assistant',
-        content: lang === 'ar'
-          ? 'عذرًا، حدث خطأ. يرجى محاولة مرة أخرى لاحقًا.'
-          : 'Sorry, something went wrong. Please try again later.',
+        content: limitHit
+          ? (lang === 'ar' ? data.error : data.error_en) || data.error
+          : lang === 'ar'
+            ? 'عذرًا، حدث خطأ. يرجى محاولة مرة أخرى لاحقًا.'
+            : 'Sorry, something went wrong. Please try again later.',
         timestamp: new Date(),
-        isError: true
+        isError: !limitHit,
+        isUpgradePrompt: limitHit
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
@@ -187,6 +183,11 @@ User question: ${text}`,
                     <span className="text-xs text-green-500 flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                       {lang === 'ar' ? 'متصل' : 'Online'}
+                      {remaining !== null && (
+                        <span className="text-foreground/40 nums" dir="ltr">
+                          · {remaining} {lang === 'ar' ? 'أسئلة متبقية' : 'left'}
+                        </span>
+                      )}
                     </span>
                   </div>
                 </div>
@@ -237,6 +238,11 @@ User question: ${text}`,
                       }`}>
                         <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
                           {msg.content}
+                          {msg.isUpgradePrompt && (
+                            <a href="/billing" className="block mt-2 text-xs font-semibold text-[#D95F3B] hover:underline">
+                              {lang === 'ar' ? 'عرض خطط الترقية ←' : 'View upgrade plans →'}
+                            </a>
+                          )}
                         </p>
                         <span className={`text-xs ${
                           msg.role === 'user'

@@ -17,9 +17,10 @@
 // src/lib/subscriptionEntitlements.js (free:1, basic:5, growth:25, pro:100).
 export const PLAN_LIMITS = Object.freeze({
   free: 1,
-  basic: 5,
-  growth: 25,
-  pro: 100,
+  basic: 2,
+  growth: 5,
+  pro: 15,
+  // Business/custom: 15+ by agreement — enforced per-account by admin.
 });
 
 export const FREE_PLAN = 'free';

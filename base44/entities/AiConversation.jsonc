@@ -1,0 +1,38 @@
+{
+  "name": "AiConversation",
+  "description": "Private AI-assistant memory, one row per user (optionally per property). Written only by the ai-assistant backend function; readable only by the owner (and admins). Never shared across users.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "propertyId": { "type": ["string", "null"], "description": "Set when the conversation is scoped to one property." },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": { "type": "string", "enum": ["user", "assistant"] },
+          "content": { "type": "string" },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "description": "Rolling window of the most recent turns (capped server-side)."
+    }
+  },
+  "required": ["userId"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    }
+  }
+}

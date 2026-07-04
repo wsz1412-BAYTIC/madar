@@ -14,38 +14,51 @@ const plans = [
     key: 'free', price: 0, yearlyPrice: 0,
     features: [
       { en: '1 property', ar: 'عقار واحد' },
-      { en: 'Basic analytics', ar: 'تحليلات أساسية' },
-      { en: 'Community support', ar: 'دعم المجتمع' },
+      { en: 'Basic dashboard + market preview', ar: 'لوحة أساسية ومعاينة محدودة للسوق' },
+      { en: 'AI: 5 questions/day (200-word answers)', ar: 'الذكاء: 5 أسئلة يوميًا (إجابة حتى 200 كلمة)' },
+      { en: 'Limited starting report', ar: 'تقرير بداية محدود' },
     ],
   },
   {
     key: 'basic', price: 99, yearlyPrice: 950,
     features: [
-      { en: 'Up to 5 properties', ar: 'حتى 5 عقارات' },
-      { en: 'Full analytics', ar: 'تحليلات كاملة' },
-      { en: 'Report downloads', ar: 'تنزيل التقارير' },
-      { en: 'Email support', ar: 'دعم بالبريد' },
+      { en: 'Up to 2 properties', ar: 'حتى عقارين' },
+      { en: 'Basic pricing insights & market overview', ar: 'رؤى تسعير أساسية ونظرة عامة على السوق' },
+      { en: 'AI: 25 questions/day (350-word answers)', ar: 'الذكاء: 25 سؤالًا يوميًا (حتى 350 كلمة)' },
+      { en: 'Starting report for all properties', ar: 'تقرير بداية لجميع العقارات' },
     ],
   },
   {
     key: 'growth', price: 199, yearlyPrice: 1910,
     features: [
-      { en: 'Up to 25 properties', ar: 'حتى 25 عقارًا' },
-      { en: 'AI price recommendations', ar: 'توصيات الأسعار بالذكاء الاصطناعي' },
-      { en: 'Market & competitor data', ar: 'بيانات السوق والمنافسين' },
-      { en: 'Priority support', ar: 'دعم ذو أولوية' },
+      { en: 'Up to 5 properties', ar: 'حتى 5 عقارات' },
+      { en: 'Pricing recommendations + heatmap', ar: 'توصيات تسعير وخريطة حرارية' },
+      { en: 'Limited competitor comparison & priority insights', ar: 'مقارنة منافسين ورؤى أولوية (محدودة)' },
+      { en: 'AI: 75 questions/day (500 words, memory)', ar: 'الذكاء: 75 سؤالًا يوميًا (500 كلمة، مع ذاكرة)' },
+      { en: 'Email reports Mon & Wed', ar: 'تقارير بريدية الإثنين والأربعاء' },
     ],
   },
   {
     key: 'pro', price: 349, yearlyPrice: 3350,
     features: [
-      { en: 'Up to 100 properties', ar: 'حتى 100 عقار' },
-      { en: 'Everything in Growth', ar: 'كل ما في خطة النمو' },
-      { en: 'Demand forecasting', ar: 'التنبؤ بالطلب' },
-      { en: 'Dedicated support', ar: 'دعم مخصص' },
+      { en: 'Up to 15 properties', ar: 'حتى 15 عقارًا' },
+      { en: 'Full competitor comparison + priority insights', ar: 'مقارنة منافسين كاملة ورؤى أولوية كاملة' },
+      { en: 'Advanced recommendations by Telegram/email', ar: 'توصيات متقدمة عبر تيليجرام والبريد' },
+      { en: 'AI: 250 questions/day (700 words, memory)', ar: 'الذكاء: 250 سؤالًا يوميًا (700 كلمة، مع ذاكرة)' },
+      { en: 'Professional daily email reports', ar: 'تقارير بريدية احترافية يومية' },
     ],
   },
 ];
+
+// Business/Custom tier — contact-managed, no self-service checkout.
+const BUSINESS_TIER = {
+  features: [
+    { en: '15+ properties', ar: 'أكثر من 15 عقارًا' },
+    { en: 'AI investment consultant + "Find New Investment"', ar: 'مستشار استثماري ذكي وخاصية «إيجاد استثمار جديد»' },
+    { en: 'Higher AI limits by approval', ar: 'حدود ذكاء أعلى (بموافقة)' },
+    { en: 'Custom reports + priority support + WhatsApp onboarding', ar: 'تقارير مخصصة ودعم أولوية وتفعيل عبر واتساب' },
+  ],
+};
 
 export default function Billing() {
   const { t, lang } = useLang();
@@ -361,6 +374,37 @@ export default function Billing() {
           );
         })}
       </StaggerContainer>
+
+      {/* Business / Custom tier — contact sales, no self-service checkout */}
+      <FadeIn delay={0.22}>
+        <div className="glass rounded-2xl p-6 border border-foreground/[0.08]">
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div>
+              <h3 className="font-heading font-semibold text-foreground mb-1">
+                {lang === 'ar' ? 'أعمال / مخصص' : 'Business / Custom'}
+              </h3>
+              <p className="text-xs text-foreground/50 mb-3">
+                {lang === 'ar' ? 'تسعير مخصص — تواصل معنا' : 'Custom pricing — talk to us'}
+              </p>
+              <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+                {BUSINESS_TIER.features.map((f, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs text-foreground/65">
+                    <Check className="w-3.5 h-3.5 mt-[1px] shrink-0 text-success" />
+                    <span>{lang === 'ar' ? f.ar : f.en}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a
+              href={`https://wa.me/${'966538100119'}?text=${encodeURIComponent(lang === 'ar' ? 'مرحبًا، أرغب بالاستفسار عن خطة الأعمال المخصصة في مدار.' : 'Hello, I would like to ask about the Madar Business/Custom plan.')}`}
+              target="_blank" rel="noreferrer"
+              className="shrink-0 inline-flex items-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+            >
+              {lang === 'ar' ? 'تواصل معنا' : 'Contact us'}
+            </a>
+          </div>
+        </div>
+      </FadeIn>
 
       {/* Madar Quick Report — top 3 fixes on trial/free, full list when paid */}
       <FadeIn delay={0.25}>
