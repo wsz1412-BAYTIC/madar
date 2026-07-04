@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useLang } from "@/contexts/LanguageContext";
 import { isValidTelegramUsername, normalizeTelegramUsername } from "@/lib/telegramNotifications";
+import { validateRequiredConsents, buildConsentRecords, missingConsentError } from "@/lib/consentManagement";
+import { POLICY_ROUTES } from "@/config/legal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,7 +40,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [telegram, setTelegram] = useState("");
-  const [consent, setConsent] = useState(false);
+  const [consents, setConsents] = useState({ terms: false, privacy: false, service_notifications: false });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
@@ -65,8 +67,10 @@ export default function Register() {
       setError(ar ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match');
       return;
     }
-    if (!consent) {
-      setError(ar ? 'يجب الموافقة على الشروط وسياسة الخصوصية للمتابعة' : 'You must accept the Terms and Privacy Policy to continue');
+    const acceptedKeys = Object.keys(consents).filter((k) => consents[k]);
+    const consentCheck = validateRequiredConsents(acceptedKeys, 'signup');
+    if (!consentCheck.valid) {
+      setError(missingConsentError(consentCheck.missing, lang));
       return;
     }
     // Telegram is optional and NEVER blocks signup: empty is fine; an invalid
@@ -118,6 +122,16 @@ export default function Register() {
         await base44.auth.updateMe(profile);
       } catch {
         /* editable later from Settings */
+      }
+      // Immutable consent records: what was accepted, which policy version,
+      // when, and from which flow. userId comes from the session.
+      try {
+        const me = await base44.auth.me();
+        const acceptedNow = Object.keys(consents).filter((k) => consents[k]);
+        const records = buildConsentRecords(me.id, acceptedNow, { source: 'signup' });
+        await Promise.all(records.map((r) => base44.entities.ConsentRecord.create(r)));
+      } catch {
+        /* consent UI state was still enforced; records retried on next consent-gated action */
       }
       window.location.href = "/";
     } catch (err) {
@@ -348,26 +362,57 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Legal consent */}
-        <label className="flex items-start gap-2.5 cursor-pointer select-none pt-1">
-          <input
-            type="checkbox"
-            checked={consent}
-            onChange={(e) => setConsent(e.target.checked)}
-            className="mt-0.5 w-4 h-4 rounded accent-primary cursor-pointer shrink-0"
-            aria-required="true"
-          />
-          <span className="text-xs text-muted-foreground leading-relaxed">
-            {ar ? 'أوافق على ' : 'I agree to the '}
-            <Link to="/terms" className="text-primary hover:underline" target="_blank">
-              {ar ? 'الشروط والأحكام' : 'Terms of Service'}
-            </Link>
-            {ar ? ' و' : ' and '}
-            <Link to="/privacy" className="text-primary hover:underline" target="_blank">
-              {ar ? 'سياسة الخصوصية' : 'Privacy Policy'}
-            </Link>
-          </span>
-        </label>
+        {/* Legal consents — required ones block signup; notifications are opt-in */}
+        <div className="space-y-2 pt-1">
+          <label className="flex items-start gap-2.5 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={consents.terms}
+              onChange={(e) => setConsents((c) => ({ ...c, terms: e.target.checked }))}
+              className="mt-0.5 w-4 h-4 rounded accent-primary cursor-pointer shrink-0"
+              aria-required="true"
+              aria-label={ar ? 'الموافقة على شروط الاستخدام' : 'Accept the Terms of Use'}
+            />
+            <span className="text-xs text-muted-foreground leading-relaxed">
+              {ar ? 'أوافق على ' : 'I agree to the '}
+              <Link to={POLICY_ROUTES.terms} className="text-primary hover:underline" target="_blank">
+                {ar ? 'شروط الاستخدام' : 'Terms of Use'}
+              </Link>
+              <span className="text-destructive"> *</span>
+            </span>
+          </label>
+          <label className="flex items-start gap-2.5 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={consents.privacy}
+              onChange={(e) => setConsents((c) => ({ ...c, privacy: e.target.checked }))}
+              className="mt-0.5 w-4 h-4 rounded accent-primary cursor-pointer shrink-0"
+              aria-required="true"
+              aria-label={ar ? 'الموافقة على سياسة الخصوصية' : 'Accept the Privacy Policy'}
+            />
+            <span className="text-xs text-muted-foreground leading-relaxed">
+              {ar ? 'أوافق على ' : 'I agree to the '}
+              <Link to={POLICY_ROUTES.privacy} className="text-primary hover:underline" target="_blank">
+                {ar ? 'سياسة الخصوصية' : 'Privacy Policy'}
+              </Link>
+              <span className="text-destructive"> *</span>
+            </span>
+          </label>
+          <label className="flex items-start gap-2.5 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={consents.service_notifications}
+              onChange={(e) => setConsents((c) => ({ ...c, service_notifications: e.target.checked }))}
+              className="mt-0.5 w-4 h-4 rounded accent-primary cursor-pointer shrink-0"
+              aria-label={ar ? 'الموافقة على إشعارات الخدمة' : 'Consent to service notifications'}
+            />
+            <span className="text-xs text-muted-foreground leading-relaxed">
+              {ar
+                ? 'أوافق على استلام إشعارات الخدمة والحساب (اختياري)'
+                : 'I agree to receive service & account notifications (optional)'}
+            </span>
+          </label>
+        </div>
 
         <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
           {loading ? (

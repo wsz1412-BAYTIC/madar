@@ -313,6 +313,15 @@ export default function ComprehensiveFooter() {
             }`}>
               {lang === 'ar' ? 'الكوكيز' : 'Cookies'}
             </Link>
+            <Link to="/subscription" className="transition-colors hover:text-[#D95F3B]">
+              {lang === 'ar' ? 'شروط الاشتراك' : 'Subscription Terms'}
+            </Link>
+            <Link to="/data-ai-policy" className="transition-colors hover:text-[#D95F3B]">
+              {lang === 'ar' ? 'البيانات والذكاء الاصطناعي' : 'Data & AI Policy'}
+            </Link>
+            <Link to="/contact" className="transition-colors hover:text-[#D95F3B]">
+              {lang === 'ar' ? 'الشكاوى وطلبات البيانات' : 'Complaints & Data Requests'}
+            </Link>
           </div>
         </div>
       </div>
