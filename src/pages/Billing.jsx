@@ -3,6 +3,8 @@ import { useLang } from '@/contexts/LanguageContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { base44 } from '@/api/base44Client';
 import { selectCurrentPlanKey } from '@/lib/subscriptionProvisioning';
+import PlanBadge from '@/components/madar/PlanBadge';
+import { FileText, Sparkles, Lock } from 'lucide-react';
 import { CreditCard, ArrowUpRight, X, Power, Info, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
@@ -47,12 +49,46 @@ const plans = [
 
 export default function Billing() {
   const { t, lang } = useLang();
-  const { subscription } = useSubscription();
+  const { subscription, trial, refresh } = useSubscription();
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
   const [billingPeriod, setBillingPeriod] = useState('monthly');
   const [autoRenew, setAutoRenew] = useState(true);
   const [upgradeModal, setUpgradeModal] = useState(null);
   const [upgradeState, setUpgradeState] = useState({ loading: false, message: null });
+  const [trialState, setTrialState] = useState({ loading: false, error: null });
+  const [report, setReport] = useState(null);
+  const [reportLoading, setReportLoading] = useState(false);
+
+  // Self-service trial activation — the server re-checks every rule
+  // (no duplicate trial, no overwrite of paid plans, one trial per account).
+  const activateTrial = async () => {
+    setTrialState({ loading: true, error: null });
+    try {
+      const res = await base44.functions.invoke('manage-subscription', { action: 'activate_trial' });
+      if (res?.data?.report) setReport(res.data.report);
+      await refresh();
+      setTrialState({ loading: false, error: null });
+    } catch (err) {
+      const data = err?.response?.data || err?.data || {};
+      setTrialState({
+        loading: false,
+        error: (lang === 'ar' ? data.error : data.error_en) || data.error ||
+          (lang === 'ar' ? 'تعذر تفعيل التجربة' : 'Could not activate the trial'),
+      });
+    }
+  };
+
+  const loadReport = async () => {
+    setReportLoading(true);
+    try {
+      const res = await base44.functions.invoke('manage-subscription', { action: 'get_report' });
+      setReport(res?.data?.report || null);
+    } catch {
+      setReport(null);
+    } finally {
+      setReportLoading(false);
+    }
+  };
 
   // Real current plan from the (auto-provisioned) subscription — defaults to Free.
   const currentPlanKey = selectCurrentPlanKey(subscription);
@@ -209,7 +245,10 @@ export default function Billing() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-foreground/40 text-sm mb-1">{t('currentSubscription')}</p>
-                <h2 className="font-heading text-2xl font-bold text-foreground">{t(currentPlan.key)}</h2>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <h2 className="font-heading text-2xl font-bold text-foreground">{t(currentPlan.key)}</h2>
+                  <PlanBadge subscription={subscription} />
+                </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-foreground/5 flex items-center justify-center border border-foreground/10">
                 <CreditCard className="w-6 h-6 text-[#C8972A]" />
@@ -219,10 +258,41 @@ export default function Billing() {
                <span className="text-4xl font-bold text-foreground font-heading">{getPrice(currentPlan)}</span>
                <span className="text-foreground/40 text-sm">{sar} {billingPeriod === 'monthly' ? t('mo') : `/${lang === 'ar' ? 'سنة' : 'year'}`}</span>
              </div>
-             {currentPlan.key === 'free' ? (
-               <div className="flex items-center gap-2 text-sm text-foreground/60">
-                 <Info className="w-4 h-4 text-[#C8972A]" />
-                 <span>{lang === 'ar' ? 'أنت على الخطة المجانية — لا يوجد دفع مطلوب.' : 'You are on the Free plan — no payment required.'}</span>
+             {trial?.state === 'trial_active' ? (
+               <div className="flex items-center gap-2 text-sm text-foreground/70">
+                 <Sparkles className="w-4 h-4 text-[#C8972A]" />
+                 <span className="nums">
+                   {lang === 'ar'
+                     ? `تجربة النمو نشطة — متبقٍ ${trial.daysRemaining} ${trial.daysRemaining === 1 ? 'يوم' : 'أيام'}. فعّل اشتراكًا مدفوعًا للاستمرار بعدها.`
+                     : `Growth trial active — ${trial.daysRemaining} ${trial.daysRemaining === 1 ? 'day' : 'days'} left. Activate a paid plan to keep access afterwards.`}
+                 </span>
+               </div>
+             ) : trial?.state === 'trial_expired' ? (
+               <div className="flex items-center gap-2 text-sm text-danger">
+                 <Lock className="w-4 h-4" />
+                 <span>{lang === 'ar' ? 'انتهت تجربتك — عدت إلى الخطة المجانية حتى يتم تأكيد الدفع.' : 'Your trial has ended — you are back on Free until payment is verified.'}</span>
+               </div>
+             ) : currentPlan.key === 'free' ? (
+               <div className="space-y-3">
+                 <div className="flex items-center gap-2 text-sm text-foreground/60">
+                   <Info className="w-4 h-4 text-[#C8972A]" />
+                   <span>{lang === 'ar' ? 'أنت على الخطة المجانية — لا يوجد دفع مطلوب.' : 'You are on the Free plan — no payment required.'}</span>
+                 </div>
+                 {!subscription?.trialUsedAt && (
+                   <div>
+                     <button
+                       onClick={activateTrial}
+                       disabled={trialState.loading}
+                       className="inline-flex items-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+                     >
+                       <Sparkles className="w-4 h-4" />
+                       {trialState.loading
+                         ? (lang === 'ar' ? 'جارٍ التفعيل…' : 'Activating…')
+                         : (lang === 'ar' ? 'تفعيل تجربة النمو 14 يومًا' : 'Activate 14-day Growth Trial')}
+                     </button>
+                     {trialState.error && <p className="text-xs text-danger mt-2">{trialState.error}</p>}
+                   </div>
+                 )}
                </div>
              ) : (
                <div className="flex items-center gap-3">
@@ -291,6 +361,64 @@ export default function Billing() {
           );
         })}
       </StaggerContainer>
+
+      {/* Madar Quick Report — top 3 fixes on trial/free, full list when paid */}
+      <FadeIn delay={0.25}>
+        <div className="glass rounded-2xl p-6">
+          <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
+                <FileText className="w-4 h-4 text-[#D95F3B]" />
+              </div>
+              <h2 className="font-heading font-semibold text-foreground">
+                {lang === 'ar' ? 'تقرير مدار السريع' : 'Madar Quick Report'}
+              </h2>
+            </div>
+            <button
+              onClick={loadReport}
+              disabled={reportLoading}
+              className="px-4 h-9 rounded-lg bg-foreground/[0.05] border border-foreground/[0.1] text-xs font-medium text-foreground/70 hover:text-foreground transition-all disabled:opacity-60"
+            >
+              {reportLoading
+                ? (lang === 'ar' ? 'جارٍ التحميل…' : 'Loading…')
+                : (lang === 'ar' ? (report ? 'تحديث التقرير' : 'عرض التقرير') : (report ? 'Refresh report' : 'View report'))}
+            </button>
+          </div>
+
+          {report ? (
+            <div className="space-y-4">
+              <p className="text-sm text-foreground/60">{lang === 'ar' ? report.summary.ar : report.summary.en}</p>
+              <ol className="space-y-3">
+                {report.issues.map((issue, i) => (
+                  <li key={issue.id} className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+                    <p className="text-sm font-semibold text-foreground mb-1 nums">
+                      {i + 1}. {lang === 'ar' ? issue.title.ar : issue.title.en}
+                    </p>
+                    <p className="text-xs text-foreground/65 mb-1.5">{lang === 'ar' ? issue.fix.ar : issue.fix.en}</p>
+                    <p className="text-xs text-success flex items-center gap-1">
+                      <Check className="w-3 h-3" />{lang === 'ar' ? issue.benefit.ar : issue.benefit.en}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+              {report.lockedCount > 0 && (
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-[#C8972A]/10 border border-[#C8972A]/25 text-xs text-foreground/70">
+                  <Lock className="w-3.5 h-3.5 text-[#C8972A] shrink-0" />
+                  {lang === 'ar'
+                    ? `${report.lockedCount} ملاحظات إضافية تُفتح مع الاشتراك المدفوع.`
+                    : `${report.lockedCount} more finding${report.lockedCount === 1 ? '' : 's'} unlock with a paid plan.`}
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-foreground/45">
+              {lang === 'ar'
+                ? 'أهم 3 إصلاحات لعقاراتك بلغة بسيطة — يُنشأ تلقائيًا عند تفعيل التجربة أو عند الطلب.'
+                : 'Your top 3 property fixes in plain language — generated automatically on trial activation, or on demand.'}
+            </p>
+          )}
+        </div>
+      </FadeIn>
 
       <FadeIn delay={0.3}>
         <div className="glass rounded-2xl p-6">

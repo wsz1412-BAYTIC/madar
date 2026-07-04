@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { SUBSCRIPTION_STATUS, hasFeatureAccess } from '@/lib/subscriptionEntitlements';
+import { assessTrialState, resolveEntitlementPlan } from '@/lib/trialManagement';
 
 const SubscriptionContext = createContext();
 
 export function SubscriptionProvider({ children }) {
   const [subscription, setSubscription] = useState(null);
+  // Server-computed trial state + effective entitlement plan (trial→growth,
+  // expired→free, paid→paid plan). Falls back to local resolution.
+  const [trial, setTrial] = useState(null);
+  const [entitlementPlan, setEntitlementPlan] = useState('free');
   const [addOns, setAddOns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,6 +29,8 @@ export function SubscriptionProvider({ children }) {
 
         if (sub) {
           setSubscription(sub);
+          setTrial(res?.data?.trial || assessTrialState(sub));
+          setEntitlementPlan(res?.data?.entitlementPlan || resolveEntitlementPlan(sub));
           const addOnsData = sub.addOns || [];
           setAddOns(Array.isArray(addOnsData) ? addOnsData : []);
         } else {
@@ -64,12 +71,14 @@ export function SubscriptionProvider({ children }) {
 
   const canAccessFeature = (featurePath) => {
     if (!subscription) return false;
-    
+
     const statusInfo = SUBSCRIPTION_STATUS[getStatus()];
     if (!statusInfo?.canAccess) return false;
 
-    // Check feature access
-    return hasFeatureAccess(getPlanName(), featurePath);
+    // Effective plan, not the stored label: an active trial gets exactly
+    // Growth entitlements (Pro stays locked); an expired trial gets Free.
+    // The backend enforces the same via resolveEntitlementPlan on every call.
+    return hasFeatureAccess(entitlementPlan || resolveEntitlementPlan(subscription), featurePath);
   };
 
   const hasAddOn = (addOnId) => {
@@ -88,6 +97,8 @@ export function SubscriptionProvider({ children }) {
 
       if (sub) {
         setSubscription(sub);
+        setTrial(res?.data?.trial || assessTrialState(sub));
+        setEntitlementPlan(res?.data?.entitlementPlan || resolveEntitlementPlan(sub));
         setAddOns(sub.addOns || []);
       }
     } catch (err) {
@@ -101,6 +112,8 @@ export function SubscriptionProvider({ children }) {
     <SubscriptionContext.Provider
       value={{
         subscription,
+        trial,
+        entitlementPlan,
         addOns,
         loading,
         error,

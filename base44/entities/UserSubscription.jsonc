@@ -66,10 +66,34 @@
         "pending",
         "failed",
         "none",
-        "not_required"
+        "not_required",
+        "trial"
       ],
       "default": "none",
-      "description": "Payment state for the current plan. Free plans are 'not_required'. Set by trusted backend functions only."
+      "description": "Payment state for the current plan. Free plans are 'not_required'; trials are 'trial' (never 'paid'). Set by trusted backend functions only."
+    },
+    "trialStatus": {
+      "type": ["string", "null"],
+      "enum": ["none", "active", "expired", "converted", null],
+      "description": "14-day Growth trial lifecycle. Set by backend functions only."
+    },
+    "trialStartedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "trialEndsAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "trialUsedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Once set, re-activating a trial requires admin approval (one trial per account)."
+    },
+    "trialRemindersSent": {
+      "type": ["array", "null"],
+      "items": { "type": "string" },
+      "description": "Reminder offsets already sent ('7d','3d','1d','0d') — dedupe log."
     },
     "usageCount": {
       "type": "number",
