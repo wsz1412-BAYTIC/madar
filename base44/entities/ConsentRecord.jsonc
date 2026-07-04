@@ -1,0 +1,30 @@
+{
+  "name": "ConsentRecord",
+  "description": "Immutable record of a user's acceptance of a policy version (signup, subscription activation, or settings). Rows are never updated or deleted; consent withdrawal is a NEW row with withdrawn=true.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "policyKey": {
+      "type": "string",
+      "enum": ["terms", "privacy", "subscription", "dataAi", "cookies", "service_notifications", "telegram_notifications"]
+    },
+    "policyVersion": { "type": "string" },
+    "consentedAt": { "type": "string", "format": "date-time" },
+    "source": { "type": "string", "enum": ["signup", "subscription", "settings"] },
+    "userAgent": { "type": ["string", "null"] },
+    "ipAddress": { "type": ["string", "null"], "description": "Only set when captured server-side; never collected client-side." },
+    "withdrawn": { "type": "boolean", "default": false }
+  },
+  "required": ["userId", "policyKey", "policyVersion", "consentedAt", "source"],
+  "rls": {
+    "create": { "data.userId": "{{user.id}}" },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": false,
+    "delete": false
+  }
+}

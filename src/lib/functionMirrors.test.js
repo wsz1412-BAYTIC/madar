@@ -24,6 +24,7 @@ const pairs = [
   ['src/lib/notificationScheduler.js', 'base44/functions/telegram-alerts/notificationScheduler.js'],
   ['src/lib/trialManagement.js', 'base44/functions/telegram-alerts/trialManagement.js'],
   ['src/lib/telegramNotifications.js', 'base44/functions/telegram-alerts/telegramNotifications.js'],
+  ['src/lib/listingImport.js', 'base44/functions/import-listing/listingImport.js'],
 ];
 
 describe('backend function mirrors stay in sync with canonical src/lib modules', () => {

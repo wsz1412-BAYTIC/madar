@@ -1,0 +1,123 @@
+// Draft legal content — pending review by qualified Saudi counsel.
+export default {
+  key: 'terms',
+  title: { en: 'Terms of Use', ar: 'شروط الاستخدام' },
+  intro: {
+    en: 'These Terms of Use (the "Terms") constitute a legally binding agreement between you and [Legal Entity Name], the operator of the Madar platform ("Madar", "we", "us"), and govern your access to and use of the Madar website, applications, dashboards, analytics, and related services (collectively, the "Platform"). By creating an account, accessing, or using the Platform, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree to these Terms, you must not access or use the Platform.',
+    ar: 'تُشكّل شروط الاستخدام هذه ("الشروط") اتفاقيةً ملزمةً قانونًا بينك وبين [اسم الكيان القانوني]، الجهة المشغّلة لمنصة مدار ("مدار"، "نحن")، وتحكم وصولك إلى الموقع الإلكتروني لمنصة مدار وتطبيقاتها ولوحات التحكم والتحليلات والخدمات المرتبطة بها واستخدامك لها (ويُشار إليها مجتمعةً بـ"المنصة"). وبإنشائك حسابًا أو بوصولك إلى المنصة أو استخدامك لها، فإنك تُقرّ بأنك قد قرأت هذه الشروط وفهمتها ووافقت على الالتزام بها. وإذا لم توافق على هذه الشروط، فيجب عليك عدم الوصول إلى المنصة أو استخدامها.',
+  },
+  sections: [
+    {
+      id: 'acceptance-and-eligibility',
+      heading: { en: '1. Acceptance and Eligibility', ar: '1. القبول والأهلية' },
+      body: {
+        en: 'You may use the Platform only if you are at least eighteen (18) years of age, possess full legal capacity to enter into binding contracts under the laws of the Kingdom of Saudi Arabia, and use the Platform for business or professional purposes in connection with the management of short-term rental properties. The Platform is not intended for personal, family, or household use, nor for use by consumers acting outside a commercial context.\n\nBy registering, you represent and warrant that all information you provide to Madar — including your name, contact details, business information, and property information — is accurate, current, and complete, and you undertake to keep such information updated at all times. Madar may decline, suspend, or close any account where the information provided is found to be false, misleading, or incomplete.',
+        ar: 'لا يجوز لك استخدام المنصة إلا إذا كنت قد أتممت الثامنة عشرة (18) من عمرك على الأقل، وتتمتع بالأهلية القانونية الكاملة لإبرام العقود الملزمة وفقًا لأنظمة المملكة العربية السعودية، وكنت تستخدم المنصة لأغراض تجارية أو مهنية تتصل بإدارة وحدات الإيجار قصير المدة. فالمنصة غير مُعدّة للاستخدام الشخصي أو العائلي أو المنزلي، ولا لاستخدام المستهلكين خارج السياق التجاري.\n\nوبتسجيلك في المنصة، فإنك تُقرّ وتضمن أن جميع المعلومات التي تقدّمها إلى مدار — بما في ذلك اسمك وبيانات التواصل الخاصة بك ومعلومات نشاطك التجاري ومعلومات وحداتك العقارية — صحيحة وحديثة وكاملة، وتتعهد بتحديث هذه المعلومات في جميع الأوقات. ويجوز لمدار رفض أي حساب أو تعليقه أو إغلاقه متى تبيّن أن المعلومات المقدَّمة كاذبة أو مضلِّلة أو ناقصة.',
+      },
+    },
+    {
+      id: 'account-registration-and-security',
+      heading: { en: '2. Account Registration and Security', ar: '2. تسجيل الحساب وأمنه' },
+      body: {
+        en: 'Access to the Platform requires a registered account. You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account, whether or not authorized by you. You must notify Madar immediately upon becoming aware of any unauthorized access to, or use of, your account or any other breach of security. Madar shall not be liable for any loss arising from your failure to safeguard your credentials.\n\nEach person may register and maintain only one (1) account, unless Madar agrees otherwise in writing. You may not share, transfer, or assign your account, nor permit any third party to access the Platform through your credentials, except for authorized members of your team where the applicable plan permits such access.',
+        ar: 'يتطلب الوصول إلى المنصة حسابًا مسجلًا. وأنت مسؤول عن المحافظة على سرية بيانات الدخول الخاصة بك وعن جميع الأنشطة التي تتم من خلال حسابك، سواء أكانت بتصريح منك أم بغير تصريح. ويجب عليك إخطار مدار فورًا عند علمك بأي وصول أو استخدام غير مصرّح به لحسابك أو بأي إخلال آخر بالأمن. ولا تتحمل مدار أي مسؤولية عن أي خسارة تنشأ عن إخفاقك في حماية بيانات الدخول الخاصة بك.\n\nولا يجوز لكل شخص أن يسجّل أو يحتفظ إلا بحساب واحد (1) فقط، ما لم توافق مدار على خلاف ذلك كتابةً. ولا يجوز لك مشاركة حسابك أو نقله أو التنازل عنه، ولا السماح لأي طرف ثالث بالوصول إلى المنصة عبر بيانات الدخول الخاصة بك، باستثناء أعضاء فريقك المصرّح لهم متى كانت الباقة المطبَّقة تسمح بذلك.',
+      },
+    },
+    {
+      id: 'service-description',
+      heading: { en: '3. Description of the Service', ar: '3. وصف الخدمة' },
+      body: {
+        en: 'Madar is a software-as-a-service platform that provides analytics, market insights, dashboards, and artificial-intelligence-assisted pricing recommendations for hosts and operators of short-term rental properties. The Platform is an analytical and decision-support tool only; it does not manage properties, process bookings, list units, or act on your behalf on any listing platform.\n\nAll outputs generated by the Platform — including pricing recommendations, occupancy estimates, market analytics, and any other AI-generated content — are advisory only and are provided to assist, not replace, your own judgment. You remain solely and exclusively responsible for all pricing, commercial, and business decisions you make, including whether and how to apply any recommendation produced by the Platform. Madar does not provide legal, financial, tax, or investment advice.',
+        ar: 'مدار منصة برمجية تُقدَّم كخدمة، وتوفّر تحليلات ورؤى سوقية ولوحات تحكم وتوصيات تسعير مدعومة بالذكاء الاصطناعي لمضيفي ومشغّلي وحدات الإيجار قصير المدة. والمنصة أداة تحليلية وأداة دعمٍ لاتخاذ القرار فحسب؛ فهي لا تدير العقارات، ولا تعالج الحجوزات، ولا تدرج الوحدات، ولا تتصرف نيابةً عنك على أي منصة إدراج.\n\nوجميع المخرجات التي تولّدها المنصة — بما في ذلك توصيات التسعير وتقديرات الإشغال والتحليلات السوقية وأي محتوى آخر يولّده الذكاء الاصطناعي — ذات طابع استشاري فقط، وتُقدَّم لمساعدتك لا لتحلّ محلّ تقديرك الخاص. وتظل أنت وحدك المسؤول حصريًا عن جميع قرارات التسعير والقرارات التجارية وقرارات الأعمال التي تتخذها، بما في ذلك تقرير ما إذا كنت ستطبّق أي توصية تنتجها المنصة وكيفية تطبيقها. ولا تُقدّم مدار أي استشارات قانونية أو مالية أو ضريبية أو استثمارية.',
+      },
+    },
+    {
+      id: 'no-guarantees',
+      heading: { en: '4. No Guarantees of Results', ar: '4. عدم ضمان النتائج' },
+      body: {
+        en: 'Madar makes no representation, warranty, or guarantee of any kind regarding the results of your use of the Platform. Without limitation, Madar does not guarantee: (a) any level of revenue, income, or profitability; (b) any occupancy rate; (c) the ranking, visibility, or performance of your listings on any third-party platform; (d) approval, activation, or continued availability of your listings on any third-party platform; (e) any number or value of bookings; or (f) that your rental activity complies with any law, regulation, licensing requirement, or municipal rule applicable to you.\n\nYou acknowledge that market outcomes depend on numerous factors beyond the control of Madar, including demand, seasonality, competition, the condition and location of your properties, and the policies of third-party platforms. Compliance of your rental operations with applicable laws and regulations — including tourism licensing and municipal requirements in the Kingdom of Saudi Arabia — is your sole responsibility.',
+        ar: 'لا تُقدّم مدار أي إقرار أو ضمان أو تعهد من أي نوع فيما يتعلق بنتائج استخدامك للمنصة. ودون حصر، لا تضمن مدار: (أ) أي مستوى من الإيرادات أو الدخل أو الربحية؛ (ب) أي معدل إشغال؛ (ج) ترتيب قوائم عرضك أو ظهورها أو أداءها على أي منصة خارجية؛ (د) الموافقة على قوائم عرضك أو تفعيلها أو استمرار توافرها على أي منصة خارجية؛ (هـ) أي عدد أو قيمة من الحجوزات؛ (و) امتثال نشاطك الإيجاري لأي نظام أو لائحة أو اشتراط ترخيص أو قاعدة بلدية تنطبق عليك.\n\nوتُقرّ بأن نتائج السوق تعتمد على عوامل عديدة خارجة عن سيطرة مدار، ومنها الطلب والموسمية والمنافسة وحالة وحداتك العقارية وموقعها وسياسات المنصات الخارجية. ويظل امتثال عملياتك الإيجارية للأنظمة واللوائح المعمول بها — بما في ذلك تراخيص السياحة والاشتراطات البلدية في المملكة العربية السعودية — مسؤوليتك وحدك.',
+      },
+    },
+    {
+      id: 'third-party-platforms',
+      heading: { en: '5. Third-Party Platforms and Data', ar: '5. المنصات الخارجية وبياناتها' },
+      body: {
+        en: 'Madar is an independent service. Madar is not affiliated with, endorsed by, sponsored by, or in partnership with Airbnb, Gathern, Booking.com, or any other listing, booking, or hospitality platform. All third-party names, trademarks, logos, and brands referenced on the Platform are the property of their respective owners and are used solely for identification and descriptive purposes; no such reference implies any association or endorsement.\n\nCertain analytics on the Platform rely on data relating to external platforms and public market sources. You acknowledge that such data may be incomplete, delayed, estimated, or inaccurate, and that third-party platforms may change their data, interfaces, or policies at any time. Madar shall not be liable for any unavailability, interruption, or failure of any third-party platform or service, nor for any decision you make in reliance on third-party data presented through the Platform.',
+        ar: 'مدار خدمة مستقلة. ولا ترتبط مدار بأي علاقة تبعية أو رعاية أو اعتماد أو شراكة مع Airbnb أو Gathern (جاذرن) أو Booking.com أو أي منصة أخرى للإدراج أو الحجز أو الضيافة. وجميع الأسماء والعلامات التجارية والشعارات والهويات التجارية العائدة للغير والمشار إليها في المنصة هي ملك لأصحابها، ولا تُستخدم إلا لأغراض التعريف والوصف؛ ولا تعني أي إشارة إليها وجود أي ارتباط أو اعتماد.\n\nوتعتمد بعض التحليلات في المنصة على بيانات تتعلق بمنصات خارجية ومصادر سوقية عامة. وتُقرّ بأن هذه البيانات قد تكون ناقصة أو متأخرة أو تقديرية أو غير دقيقة، وبأن المنصات الخارجية قد تُغيّر بياناتها أو واجهاتها أو سياساتها في أي وقت. ولا تتحمل مدار أي مسؤولية عن عدم توافر أي منصة أو خدمة خارجية أو انقطاعها أو تعطلها، ولا عن أي قرار تتخذه اعتمادًا على بيانات الغير المعروضة عبر المنصة.',
+      },
+    },
+    {
+      id: 'acceptable-use',
+      heading: { en: '6. Acceptable Use', ar: '6. الاستخدام المقبول' },
+      body: {
+        en: 'You agree to use the Platform only for lawful purposes and in accordance with these Terms. Without limitation, you shall not: (a) scrape, crawl, harvest, or otherwise extract data from the Platform by automated means, or use robots, spiders, or similar tools against the Platform; (b) reverse engineer, decompile, disassemble, or attempt to derive the source code, models, or underlying algorithms of the Platform; (c) upload, transmit, or store any content that is unlawful, infringing, defamatory, or otherwise contrary to the laws of the Kingdom of Saudi Arabia; (d) interfere with or disrupt the integrity, security, or performance of the Platform, its servers, or its networks, or circumvent any access controls or usage limits; or (e) resell, sublicense, rent, or otherwise make the Platform or your access to it available to any third party, or use the Platform to build a competing product or service.\n\nMadar may monitor usage for security and compliance purposes and may investigate any suspected violation of this Section.',
+        ar: 'توافق على استخدام المنصة للأغراض المشروعة فقط ووفقًا لهذه الشروط. ودون حصر، يُحظر عليك: (أ) كشط بيانات المنصة أو الزحف إليها أو حصادها أو استخراجها بأي وسيلة آلية، أو استخدام الروبوتات أو برامج الزحف أو ما يماثلها ضد المنصة؛ (ب) إجراء هندسة عكسية للمنصة أو فك تجميعها أو تفكيكها أو محاولة استخلاص شفرتها المصدرية أو نماذجها أو خوارزمياتها الأساسية؛ (ج) رفع أو نقل أو تخزين أي محتوى غير مشروع أو منتهك لحقوق الغير أو تشهيري أو مخالف على أي نحو آخر لأنظمة المملكة العربية السعودية؛ (د) التدخل في سلامة المنصة أو أمنها أو أدائها أو خوادمها أو شبكاتها أو تعطيلها، أو تجاوز أي ضوابط وصول أو حدود استخدام؛ (هـ) إعادة بيع المنصة أو ترخيصها من الباطن أو تأجيرها أو إتاحتها أو إتاحة وصولك إليها لأي طرف ثالث بأي شكل، أو استخدام المنصة لبناء منتج أو خدمة منافسة.\n\nويجوز لمدار مراقبة الاستخدام لأغراض الأمن والامتثال، والتحقيق في أي اشتباه بمخالفة أحكام هذه المادة.',
+      },
+    },
+    {
+      id: 'suspension-and-termination',
+      heading: { en: '7. Suspension and Termination', ar: '7. التعليق وإنهاء الخدمة' },
+      body: {
+        en: 'Madar may suspend or restrict your access to the Platform, in whole or in part, or terminate your account, with or without prior notice, where Madar reasonably believes that: (a) you have violated these Terms or applicable law; (b) your use poses a security, legal, or operational risk to Madar, the Platform, or other users; or (c) suspension is required by a competent authority. Where practicable, Madar will provide notice and an opportunity to remedy the violation before termination.\n\nYou may stop using the Platform and close your account at any time. Upon termination, your right to access the Platform ceases immediately; provisions of these Terms which by their nature should survive termination — including intellectual property, disclaimers, limitation of liability, indemnity, and governing law — shall so survive. Data retention and deletion following termination are governed by the Madar Privacy Policy.',
+        ar: 'يجوز لمدار تعليق وصولك إلى المنصة أو تقييده، كليًا أو جزئيًا، أو إنهاء حسابك، بإشعار مسبق أو بدونه، متى قامت لدى مدار أسباب معقولة للاعتقاد بأنك: (أ) خالفت هذه الشروط أو الأنظمة المعمول بها؛ (ب) أو أن استخدامك يُشكّل خطرًا أمنيًا أو قانونيًا أو تشغيليًا على مدار أو المنصة أو المستخدمين الآخرين؛ (ج) أو أن التعليق مطلوب من جهة مختصة. وستُقدّم مدار، حيثما أمكن عمليًا، إشعارًا وفرصةً لمعالجة المخالفة قبل الإنهاء.\n\nويجوز لك التوقف عن استخدام المنصة وإغلاق حسابك في أي وقت. وعند الإنهاء، يتوقف حقك في الوصول إلى المنصة فورًا؛ وتظل أحكام هذه الشروط التي تقتضي طبيعتها البقاء بعد الإنهاء — بما فيها أحكام الملكية الفكرية وإخلاء المسؤولية وتحديد المسؤولية والتعويض والقانون الواجب التطبيق — سارية المفعول. وتخضع مسائل الاحتفاظ بالبيانات وحذفها بعد الإنهاء لسياسة الخصوصية الخاصة بمدار.',
+      },
+    },
+    {
+      id: 'intellectual-property',
+      heading: { en: '8. Intellectual Property', ar: '8. الملكية الفكرية' },
+      body: {
+        en: 'The Platform — including its software, source code, models, algorithms, databases, designs, interfaces, documentation, trademarks, and all related intellectual property rights — is and shall remain the exclusive property of [Legal Entity Name] and its licensors. Subject to these Terms and your applicable subscription, Madar grants you a limited, non-exclusive, non-transferable, revocable license to access and use the Platform for your internal business purposes. No rights are granted to you other than as expressly set out in these Terms.\n\nYou may not copy, modify, distribute, publicly display, or create derivative works of the Platform or any part of it, nor remove or obscure any proprietary notices.',
+        ar: 'تُعدّ المنصة — بما تشمله من برمجيات وشفرة مصدرية ونماذج وخوارزميات وقواعد بيانات وتصاميم وواجهات ووثائق وعلامات تجارية وجميع حقوق الملكية الفكرية المتصلة بها — ملكًا حصريًا لـ[اسم الكيان القانوني] والمرخِّصين له، وتظل كذلك. ومع مراعاة هذه الشروط واشتراكك الساري، تمنحك مدار ترخيصًا محدودًا وغير حصري وغير قابل للنقل وقابلًا للإلغاء للوصول إلى المنصة واستخدامها لأغراض أعمالك الداخلية. ولا يُمنح لك أي حق آخر غير ما نُصّ عليه صراحةً في هذه الشروط.\n\nولا يجوز لك نسخ المنصة أو أي جزء منها أو تعديلها أو توزيعها أو عرضها علنًا أو إنشاء أعمال مشتقة منها، ولا إزالة أي إشعارات ملكية أو طمسها.',
+      },
+    },
+    {
+      id: 'user-data-and-license',
+      heading: { en: '9. Your Data and License to Madar', ar: '9. بياناتك والترخيص الممنوح لمدار' },
+      body: {
+        en: 'You retain all rights, title, and interest in and to the data, content, and information you submit to the Platform, including property details, pricing history, and operational data ("User Data"). You grant Madar a worldwide, non-exclusive, royalty-free license to host, store, process, analyze, and display User Data solely to the extent necessary to provide, maintain, secure, and improve the Platform and to comply with legal obligations.\n\nMadar may derive aggregated and de-identified statistics from User Data for analytics and service improvement, provided that such statistics do not identify you or any specific property. The collection and processing of personal data are governed by the Madar Privacy Policy and the Saudi Personal Data Protection Law and its implementing regulations.',
+        ar: 'تحتفظ بجميع الحقوق وسند الملكية والمصالح في البيانات والمحتوى والمعلومات التي تُقدّمها إلى المنصة، بما في ذلك تفاصيل الوحدات العقارية وسجلات التسعير والبيانات التشغيلية ("بيانات المستخدم"). وتمنح مدار ترخيصًا عالميًا وغير حصري ومعفى من الرسوم لاستضافة بيانات المستخدم وتخزينها ومعالجتها وتحليلها وعرضها، وذلك في الحدود اللازمة فقط لتقديم المنصة وصيانتها وتأمينها وتحسينها وللامتثال للالتزامات النظامية.\n\nويجوز لمدار استخلاص إحصاءات مجمَّعة ومجهولة الهوية من بيانات المستخدم لأغراض التحليل وتحسين الخدمة، شريطة ألا تُحدّد هذه الإحصاءات هويتك أو هوية أي وحدة عقارية بعينها. ويخضع جمع البيانات الشخصية ومعالجتها لسياسة الخصوصية الخاصة بمدار ولنظام حماية البيانات الشخصية السعودي ولوائحه التنفيذية.',
+      },
+    },
+    {
+      id: 'disclaimers',
+      heading: { en: '10. Disclaimers', ar: '10. إخلاء المسؤولية' },
+      body: {
+        en: 'To the maximum extent permitted by applicable law, the Platform and all content, analytics, and recommendations provided through it are made available on an "as is" and "as available" basis, without warranties of any kind, whether express, implied, or statutory, including any implied warranties of merchantability, fitness for a particular purpose, accuracy, or non-infringement. Madar does not warrant that the Platform will be uninterrupted, error-free, secure, or free of harmful components, nor that any data, forecast, or recommendation will be accurate, complete, or reliable.\n\nNothing in these Terms excludes or limits any warranty or right that cannot be excluded or limited under the mandatory laws of the Kingdom of Saudi Arabia.',
+        ar: 'إلى أقصى حد يجيزه النظام المعمول به، تُتاح المنصة وجميع ما يُقدَّم من خلالها من محتوى وتحليلات وتوصيات على أساس "كما هي" و"حسب توافرها"، دون أي ضمانات من أي نوع، سواء أكانت صريحة أم ضمنية أم نظامية، بما في ذلك أي ضمانات ضمنية تتعلق بالصلاحية للتسويق أو الملاءمة لغرض معين أو الدقة أو عدم الانتهاك. ولا تضمن مدار أن تعمل المنصة دون انقطاع أو خلوّها من الأخطاء أو أمنها أو خلوّها من المكونات الضارة، ولا دقة أو اكتمال أو موثوقية أي بيانات أو توقعات أو توصيات.\n\nولا يتضمن أي حكم في هذه الشروط استبعادًا أو تقييدًا لأي ضمان أو حق لا يجوز استبعاده أو تقييده بموجب الأحكام الآمرة في أنظمة المملكة العربية السعودية.',
+      },
+    },
+    {
+      id: 'limitation-of-liability',
+      heading: { en: '11. Limitation of Liability', ar: '11. تحديد المسؤولية' },
+      body: {
+        en: 'To the maximum extent permitted by applicable law, Madar shall not be liable for any indirect, incidental, special, consequential, or exemplary damages, nor for any loss of profits, revenue, bookings, goodwill, business opportunity, or data, arising out of or in connection with the Platform or these Terms, even if Madar has been advised of the possibility of such damages.\n\nTo the maximum extent permitted by applicable law, the aggregate liability of Madar arising out of or in connection with the Platform or these Terms shall not exceed the total fees actually paid by you to Madar during the twelve (12) months immediately preceding the event giving rise to the claim. This limitation does not apply to liability that cannot be limited under the mandatory laws of the Kingdom of Saudi Arabia.',
+        ar: 'إلى أقصى حد يجيزه النظام المعمول به، لا تتحمل مدار أي مسؤولية عن أي أضرار غير مباشرة أو عرضية أو خاصة أو تبعية أو جزائية، ولا عن أي خسارة في الأرباح أو الإيرادات أو الحجوزات أو السمعة التجارية أو الفرص التجارية أو البيانات، تنشأ عن المنصة أو هذه الشروط أو تتصل بهما، حتى وإن أُخطرت مدار باحتمال وقوع مثل هذه الأضرار.\n\nوإلى أقصى حد يجيزه النظام المعمول به، لا يتجاوز إجمالي مسؤولية مدار الناشئة عن المنصة أو هذه الشروط أو المتصلة بهما مجموعَ الرسوم التي دفعتها فعليًا إلى مدار خلال الاثني عشر (12) شهرًا السابقة مباشرةً للواقعة التي نشأت عنها المطالبة. ولا يسري هذا التحديد على أي مسؤولية لا يجوز تحديدها بموجب الأحكام الآمرة في أنظمة المملكة العربية السعودية.',
+      },
+    },
+    {
+      id: 'indemnification',
+      heading: { en: '12. Indemnification', ar: '12. التعويض' },
+      body: {
+        en: 'You agree to indemnify, defend, and hold harmless [Legal Entity Name], its directors, officers, employees, and agents from and against any claims, demands, liabilities, damages, losses, fines, and expenses (including reasonable legal fees) arising out of or in connection with: (a) your rental operations and properties, including guest claims, licensing, taxes, and regulatory compliance; (b) your use of the Platform in violation of these Terms or applicable law; (c) your User Data or its use as permitted under these Terms; or (d) your infringement of any rights of a third party.',
+        ar: 'توافق على تعويض [اسم الكيان القانوني] وأعضاء مجلس إدارته ومسؤوليه وموظفيه ووكلائه والدفاع عنهم وإبراء ذمتهم من أي مطالبات أو طلبات أو مسؤوليات أو أضرار أو خسائر أو غرامات أو نفقات (بما في ذلك أتعاب المحاماة المعقولة) تنشأ عمّا يلي أو تتصل به: (أ) عملياتك الإيجارية ووحداتك العقارية، بما في ذلك مطالبات الضيوف والتراخيص والضرائب والامتثال التنظيمي؛ (ب) استخدامك للمنصة بما يخالف هذه الشروط أو الأنظمة المعمول بها؛ (ج) بيانات المستخدم الخاصة بك أو استخدامها على النحو المسموح به بموجب هذه الشروط؛ (د) انتهاكك لأي حق من حقوق الغير.',
+      },
+    },
+    {
+      id: 'changes-to-terms',
+      heading: { en: '13. Changes to These Terms', ar: '13. التعديلات على هذه الشروط' },
+      body: {
+        en: 'Madar may amend these Terms from time to time to reflect changes in the Platform, its services, or applicable law. Where a change is material, Madar will provide reasonable prior notice by email or through the Platform before the amended Terms take effect. Your continued use of the Platform after the effective date of the amended Terms constitutes your acceptance of them; if you do not agree to the amended Terms, you must stop using the Platform and may close your account.',
+        ar: 'يجوز لمدار تعديل هذه الشروط من وقت إلى آخر بما يعكس التغييرات في المنصة أو خدماتها أو الأنظمة المعمول بها. وفي حال كان التعديل جوهريًا، ستُقدّم مدار إشعارًا مسبقًا معقولًا عبر البريد الإلكتروني أو من خلال المنصة قبل نفاذ الشروط المعدَّلة. ويُعدّ استمرارك في استخدام المنصة بعد تاريخ نفاذ الشروط المعدَّلة قبولًا منك لها؛ فإذا لم توافق على الشروط المعدَّلة، فيجب عليك التوقف عن استخدام المنصة، ويجوز لك إغلاق حسابك.',
+      },
+    },
+    {
+      id: 'governing-law-and-general',
+      heading: { en: '14. Governing Law, Severability, and Contact', ar: '14. القانون الواجب التطبيق وقابلية الفصل والتواصل' },
+      body: {
+        en: 'These Terms shall be governed by and construed in accordance with the laws and regulations of the Kingdom of Saudi Arabia. Any dispute arising out of or in connection with these Terms or the Platform shall be subject to the exclusive jurisdiction of the competent courts and judicial committees in the city of Riyadh, Kingdom of Saudi Arabia [venue placeholder — to be confirmed].\n\nIf any provision of these Terms is held to be invalid or unenforceable, that provision shall be enforced to the maximum extent permissible and the remaining provisions shall remain in full force and effect. These Terms, together with the Subscription Terms and the Privacy Policy, constitute the entire agreement between you and Madar regarding the Platform.\n\nFor questions regarding these Terms, please contact [Legal Entity Name] at [contact email placeholder].',
+        ar: 'تخضع هذه الشروط لأنظمة ولوائح المملكة العربية السعودية وتُفسَّر وفقًا لها. ويخضع أي نزاع ينشأ عن هذه الشروط أو المنصة أو يتصل بهما للاختصاص الحصري للمحاكم واللجان القضائية المختصة في مدينة الرياض بالمملكة العربية السعودية [جهة الاختصاص — قيد التأكيد].\n\nوإذا قُضي ببطلان أي حكم من أحكام هذه الشروط أو بعدم قابليته للنفاذ، فيُنفَّذ ذلك الحكم إلى أقصى حد جائز، وتظل بقية الأحكام سارية بكامل قوتها وأثرها. وتُشكّل هذه الشروط، مع شروط الاشتراك وسياسة الخصوصية، كامل الاتفاق بينك وبين مدار فيما يتعلق بالمنصة.\n\nوللاستفسارات المتعلقة بهذه الشروط، يُرجى التواصل مع [اسم الكيان القانوني] عبر [البريد الإلكتروني للتواصل — قيد التحديد].',
+      },
+    },
+  ],
+};

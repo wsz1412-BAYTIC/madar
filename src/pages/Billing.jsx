@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { base44 } from '@/api/base44Client';
 import { selectCurrentPlanKey } from '@/lib/subscriptionProvisioning';
+import { validateRequiredConsents, buildConsentRecords, missingConsentError } from '@/lib/consentManagement';
+import { POLICY_ROUTES } from '@/config/legal';
 import PlanBadge from '@/components/madar/PlanBadge';
 import { FileText, Sparkles, Lock } from 'lucide-react';
 import { CreditCard, ArrowUpRight, X, Power, Info, Check } from 'lucide-react';
@@ -69,16 +72,36 @@ export default function Billing() {
   const [upgradeModal, setUpgradeModal] = useState(null);
   const [upgradeState, setUpgradeState] = useState({ loading: false, message: null });
   const [trialState, setTrialState] = useState({ loading: false, error: null });
+  const [subscriptionConsent, setSubscriptionConsent] = useState(false);
   const [report, setReport] = useState(null);
   const [reportLoading, setReportLoading] = useState(false);
 
+  // Store the accepted Subscription Terms version as an immutable
+  // ConsentRecord. Best-effort: acceptance is already enforced by the UI gate.
+  const recordSubscriptionConsent = async () => {
+    try {
+      const me = await base44.auth.me();
+      const records = buildConsentRecords(me.id, ['subscription'], { source: 'subscription' });
+      await Promise.all(records.map((r) => base44.entities.ConsentRecord.create(r)));
+    } catch {
+      /* non-blocking */
+    }
+  };
+
   // Self-service trial activation — the server re-checks every rule
   // (no duplicate trial, no overwrite of paid plans, one trial per account).
+  // Blocked until the Subscription Terms are explicitly accepted.
   const activateTrial = async () => {
+    const check = validateRequiredConsents(subscriptionConsent ? ['subscription'] : [], 'subscription');
+    if (!check.valid) {
+      setTrialState({ loading: false, error: missingConsentError(check.missing, lang) });
+      return;
+    }
     setTrialState({ loading: true, error: null });
     try {
       const res = await base44.functions.invoke('manage-subscription', { action: 'activate_trial' });
       if (res?.data?.report) setReport(res.data.report);
+      await recordSubscriptionConsent();
       await refresh();
       setTrialState({ loading: false, error: null });
     } catch (err) {
@@ -195,9 +218,25 @@ export default function Billing() {
                 )}
 
                 <div className="space-y-3">
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={subscriptionConsent}
+                      onChange={(e) => setSubscriptionConsent(e.target.checked)}
+                      aria-label={lang === 'ar' ? 'الموافقة على شروط الاشتراك' : 'Accept the Subscription Terms'}
+                      className="w-4 h-4 mt-0.5 rounded accent-[#D95F3B] cursor-pointer shrink-0"
+                    />
+                    <span className="text-xs text-foreground/60 leading-relaxed">
+                      {lang === 'ar' ? (
+                        <>أوافق على <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">شروط الاشتراك</Link> <span className="text-danger">*</span></>
+                      ) : (
+                        <>I agree to the <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">Subscription Terms</Link> <span className="text-danger">*</span></>
+                      )}
+                    </span>
+                  </label>
                   <button
                     onClick={handleUpgrade}
-                    disabled={upgradeState.loading}
+                    disabled={upgradeState.loading || !subscriptionConsent}
                     className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
                   >
                     {upgradeState.loading
@@ -292,7 +331,23 @@ export default function Billing() {
                    <span>{lang === 'ar' ? 'أنت على الخطة المجانية — لا يوجد دفع مطلوب.' : 'You are on the Free plan — no payment required.'}</span>
                  </div>
                  {!subscription?.trialUsedAt && (
-                   <div>
+                   <div className="space-y-2.5">
+                     <label className="flex items-start gap-2 cursor-pointer max-w-md">
+                       <input
+                         type="checkbox"
+                         checked={subscriptionConsent}
+                         onChange={(e) => setSubscriptionConsent(e.target.checked)}
+                         aria-label={lang === 'ar' ? 'الموافقة على شروط الاشتراك' : 'Accept the Subscription Terms'}
+                         className="w-4 h-4 mt-0.5 rounded accent-[#D95F3B] cursor-pointer shrink-0"
+                       />
+                       <span className="text-xs text-foreground/60 leading-relaxed">
+                         {lang === 'ar' ? (
+                           <>أوافق على <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">شروط الاشتراك</Link> <span className="text-danger">*</span></>
+                         ) : (
+                           <>I agree to the <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">Subscription Terms</Link> <span className="text-danger">*</span></>
+                         )}
+                       </span>
+                     </label>
                      <button
                        onClick={activateTrial}
                        disabled={trialState.loading}

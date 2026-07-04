@@ -34,6 +34,22 @@
       "type": ["string", "null"],
       "description": "Link to the live listing on the platform"
     },
+    "links": {
+      "type": "array",
+      "description": "Listing links across platforms — at most one per platform, unique canonical URLs (Add Property flow)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": ["Airbnb", "Gathern", "Booking.com", "Other"]
+          },
+          "url": { "type": "string" },
+          "addedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["platform", "url"]
+      }
+    },
     "notes": {
       "type": ["string", "null"]
     },

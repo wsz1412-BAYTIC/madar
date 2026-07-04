@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { parseListingUrl, IMPORT_UNAVAILABLE } from '@/lib/listingImport';
-import { Plus, X, Link2, Info, ArrowRight, ArrowLeft } from 'lucide-react';
+import { IMPORT_SUCCESS } from '@/lib/listingImport';
+import { scanListing } from '@/lib/listingScan';
+import { Plus, X, Link2, Info, ArrowRight, ArrowLeft, Loader2, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn } from '@/components/madar/Motion';
 import PropertyCardWithSelection from '@/components/madar/PropertyCardWithSelection';
@@ -26,8 +27,10 @@ export default function Properties() {
   // shown ahead of the demo data.
   const [myProperties, setMyProperties] = useState([]);
   const [importUrl, setImportUrl] = useState('');
-  // Local preview result: {valid, platform, url} | {valid:false, error} | null
+  // Scan result from listingScan: {ok, platform, url, form, message?} |
+  // {ok:false, error} | null. Plus an in-flight flag for the loading state.
   const [importPreview, setImportPreview] = useState(null);
+  const [importScanning, setImportScanning] = useState(false);
   const [wizardInitial, setWizardInitial] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState({ cities: [], tags: [], performance: [] });
   const [statusFilter, setStatusFilter] = useState('all');
@@ -95,19 +98,24 @@ export default function Properties() {
     return sorters[sortBy] ? [...list].sort(sorters[sortBy]) : list;
   }, [allProperties, selectedFilters, statusFilter, sortBy]);
 
-  // Preview validates the pasted link locally — the legacy POST
-  // /properties/import endpoint never existed (it returned a raw 405
-  // "Method Not Allowed"), and there is no scraping backend yet. Instead of
-  // failing, we detect the platform, say so honestly, and hand off to the
-  // manual wizard with platform + URL prefilled.
-  const handlePreview = (e) => {
+  // Preview/Scan: validate the link locally, then ask the import-listing
+  // backend function to fetch the PUBLIC listing page and extract safe fields
+  // (the legacy POST /properties/import endpoint never existed and used to
+  // surface a raw 405 "Method Not Allowed"). Every failure maps to a friendly
+  // bilingual message with a manual-entry fallback.
+  const handlePreview = async (e) => {
     e.preventDefault();
-    setImportPreview(parseListingUrl(importUrl));
+    if (importScanning) return;
+    setImportScanning(true);
+    setImportPreview(null);
+    const result = await scanListing(importUrl);
+    setImportScanning(false);
+    setImportPreview(result);
   };
 
-  const continueManually = () => {
-    if (!importPreview?.valid) return;
-    setWizardInitial({ platform: importPreview.platform, platformUrl: importPreview.url });
+  const continueToWizard = () => {
+    if (!importPreview?.form) return;
+    setWizardInitial(importPreview.form);
     setShowImport(false);
     setImportPreview(null);
     setImportUrl('');
@@ -311,16 +319,16 @@ export default function Properties() {
                     onChange={e => { setImportUrl(e.target.value); setImportPreview(null); }}
                     placeholder="https://ar.airbnb.com/rooms/1573422907379"
                     dir="ltr"
-                    className={`w-full ps-10 pe-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 ${importPreview && !importPreview.valid ? 'border-danger/60' : 'border-foreground/[0.08]'}`}
+                    className={`w-full ps-10 pe-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 ${importPreview && !importPreview.ok && !importPreview.form ? 'border-danger/60' : 'border-foreground/[0.08]'}`}
                     required
                   />
                 </div>
 
-                {importPreview && !importPreview.valid && (
+                {importPreview && !importPreview.ok && !importPreview.form && (
                   <p className="text-xs text-danger">{lang === 'ar' ? importPreview.error.ar : importPreview.error.en}</p>
                 )}
 
-                {importPreview?.valid ? (
+                {importPreview?.form ? (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-sm text-foreground/80">
                       <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-success/15 text-success">
@@ -328,20 +336,34 @@ export default function Properties() {
                       </span>
                       <span className="text-xs text-foreground/45 truncate" dir="ltr">{importPreview.url}</span>
                     </div>
-                    <div className="flex items-start gap-2 p-3 rounded-xl bg-warning/10 border border-warning/25">
-                      <Info className="w-4 h-4 text-warning mt-0.5 shrink-0" />
-                      <p className="text-xs text-foreground/70">
-                        {lang === 'ar' ? IMPORT_UNAVAILABLE.ar : IMPORT_UNAVAILABLE.en}
-                      </p>
-                    </div>
-                    <button type="button" onClick={continueManually} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
-                      {lang === 'ar' ? 'المتابعة يدويًا' : 'Continue manually'}
+                    {importPreview.ok ? (
+                      <div className="flex items-start gap-2 p-3 rounded-xl bg-success/10 border border-success/25">
+                        <Check className="w-4 h-4 text-success mt-0.5 shrink-0" />
+                        <p className="text-xs text-foreground/70">
+                          {lang === 'ar' ? IMPORT_SUCCESS.ar : IMPORT_SUCCESS.en}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex items-start gap-2 p-3 rounded-xl bg-warning/10 border border-warning/25">
+                        <Info className="w-4 h-4 text-warning mt-0.5 shrink-0" />
+                        <p className="text-xs text-foreground/70">
+                          {lang === 'ar' ? importPreview.message.ar : importPreview.message.en}
+                        </p>
+                      </div>
+                    )}
+                    <button type="button" onClick={continueToWizard} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
+                      {importPreview.ok
+                        ? (lang === 'ar' ? 'متابعة ومراجعة البيانات' : 'Continue & review details')
+                        : (lang === 'ar' ? 'المتابعة يدويًا' : 'Continue manually')}
                       {lang === 'ar' ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
                     </button>
                   </div>
                 ) : (
-                  <button type="submit" className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
-                    {lang === 'ar' ? 'معاينة' : 'Preview'}
+                  <button type="submit" disabled={importScanning} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                    {importScanning && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {importScanning
+                      ? (lang === 'ar' ? 'جارٍ الفحص…' : 'Scanning…')
+                      : (lang === 'ar' ? 'معاينة' : 'Preview')}
                   </button>
                 )}
               </form>
