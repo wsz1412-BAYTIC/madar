@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
 import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
+import { resolvePostLoginRoute, isUnverifiedLoginError, verifyEmailRoute } from "@/lib/postLoginRouting";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,9 +20,16 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await base44.auth.loginViaEmailPassword(email, password);
-      window.location.href = "/";
+      const res = await base44.auth.loginViaEmailPassword(email, password);
+      // Verified user → dashboard, admin → admin dashboard, unverified →
+      // verification screen. Full reload so the auth context re-initializes
+      // from the freshly stored token.
+      window.location.href = resolvePostLoginRoute(res?.user);
     } catch (err) {
+      if (isUnverifiedLoginError(err)) {
+        window.location.href = verifyEmailRoute(email);
+        return;
+      }
       setError(err.message || "Invalid email or password");
     } finally {
       setLoading(false);
@@ -29,7 +37,7 @@ export default function Login() {
   };
 
   const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", "/");
+    base44.auth.loginWithProvider("google", "/dashboard");
   };
 
   return (

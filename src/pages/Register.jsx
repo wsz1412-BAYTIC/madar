@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useLang } from "@/contexts/LanguageContext";
 import { isValidTelegramUsername, normalizeTelegramUsername } from "@/lib/telegramNotifications";
@@ -47,12 +47,24 @@ export default function Register() {
   // Whether the (optional) Telegram handle will actually be saved. An invalid
   // handle NEVER blocks registration — it is simply skipped with a notice.
   const [telegramSkipped, setTelegramSkipped] = useState(false);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (cooldown <= 0) return undefined;
     const id = setInterval(() => setCooldown((c) => c - 1), 1000);
     return () => clearInterval(id);
   }, [cooldown]);
+
+  // Deep link from Login for unverified accounts (?verify=1&email=…): jump
+  // straight to the OTP screen so the user can request a code and verify.
+  useEffect(() => {
+    if (searchParams.get('verify') === '1') {
+      const linkedEmail = searchParams.get('email') || '';
+      if (linkedEmail) setEmail(linkedEmail);
+      setShowOtp(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,8 +117,13 @@ export default function Register() {
       // dashboard stays blocked until this step succeeds.
       if (result?.access_token) {
         base44.auth.setToken(result.access_token);
-      } else {
+      } else if (password) {
         await base44.auth.loginViaEmailPassword(email, password);
+      } else {
+        // Arrived via the ?verify deep link (no password in memory): the
+        // email is now verified — finish with an explicit login.
+        window.location.href = "/login";
+        return;
       }
       // Best-effort profile enrichment — never blocks a successful signup.
       // Telegram is included only when present AND valid.
@@ -119,7 +136,9 @@ export default function Register() {
       } catch {
         /* editable later from Settings */
       }
-      window.location.href = "/";
+      // Verified + authenticated → straight to the dashboard, not the
+      // public landing page.
+      window.location.href = "/dashboard";
     } catch (err) {
       setError(friendlyError(err, lang, 'Invalid verification code', 'رمز التحقق غير صحيح'));
     } finally {
@@ -143,7 +162,7 @@ export default function Register() {
   };
 
   const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", "/");
+    base44.auth.loginWithProvider("google", "/dashboard");
   };
 
   if (showOtp) {

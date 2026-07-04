@@ -110,6 +110,12 @@ export const AuthProvider = ({ children }) => {
           type: 'auth_required',
           message: 'Authentication required'
         });
+        // Drop the dead token so the next load starts clean instead of
+        // re-sending it forever. (Not SDK logout() — that would navigate.)
+        try {
+          window.localStorage.removeItem('base44_access_token');
+          window.localStorage.removeItem('token');
+        } catch { /* storage unavailable */ }
       }
     }
   };
