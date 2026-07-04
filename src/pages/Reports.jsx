@@ -61,19 +61,19 @@ export default function Reports() {
     return (
       <div className={`p-8 rounded-xl text-center ${
         theme === 'dark'
-          ? 'bg-white/[0.03] border border-white/[0.06]'
+          ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
           : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
       }`}>
         <AlertTriangle className={`w-12 h-12 mx-auto mb-4 ${
           theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
         }`} />
         <h2 className={`font-heading font-bold text-lg mb-2 ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {lang === 'ar' ? 'ميزة غير متاحة' : 'Feature Not Available'}
         </h2>
         <p className={`text-sm ${
-          theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+          theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
         }`}>
           {lang === 'ar'
             ? 'التقارير الأسبوعية متاحة فقط في خطط Growth و Pro'
@@ -84,11 +84,11 @@ export default function Reports() {
   }
 
   const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
+    ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
     : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
 
   return (
     <div className="space-y-8">
@@ -124,8 +124,8 @@ export default function Reports() {
                       selectedPeriod === period
                         ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
                         : theme === 'dark'
-                          ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                          : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                          ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]'
+                          : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
                     }`}
                   >
                     {period === 'current' && (lang === 'ar' ? 'الأسبوع الحالي' : 'This Week')}
@@ -142,16 +142,16 @@ export default function Reports() {
               title={lang === 'ar' ? 'تحميل' : 'Download'}
               className={`p-2.5 rounded-lg transition-colors ${
                 theme === 'dark'
-                  ? 'hover:bg-white/[0.08]'
-                  : 'hover:bg-[#0A0B10]/5'
+                  ? 'hover:bg-foreground/[0.08]'
+                  : 'hover:bg-background/5'
               }`}
             >
               <Download className="w-4 h-4" />
             </button>
             <label className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
               theme === 'dark'
-                ? 'hover:bg-white/[0.08]'
-                : 'hover:bg-[#0A0B10]/5'
+                ? 'hover:bg-foreground/[0.08]'
+                : 'hover:bg-background/5'
             }`}>
               <input
                 type="checkbox"

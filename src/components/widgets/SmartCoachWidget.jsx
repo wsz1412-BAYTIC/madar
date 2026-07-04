@@ -158,7 +158,7 @@ User question: ${text}`,
             transition={{ duration: 0.3 }}
             className={`fixed z-40 w-96 max-h-[600px] rounded-2xl shadow-2xl flex flex-col overflow-hidden ${
               theme === 'dark'
-                ? 'bg-card border border-white/[0.06]'
+                ? 'bg-card border border-foreground/[0.06]'
                 : 'bg-white border border-[#0A0B10]/[0.06]'
             }`}
             style={{
@@ -170,7 +170,7 @@ User question: ${text}`,
             {/* Header */}
             <div className={`px-4 py-4 border-b ${
               theme === 'dark'
-                ? 'border-white/[0.06] bg-card'
+                ? 'border-foreground/[0.06] bg-card'
                 : 'border-[#0A0B10]/[0.06] bg-white'
             }`}>
               <div className="flex items-center justify-between">
@@ -180,7 +180,7 @@ User question: ${text}`,
                   </div>
                   <div>
                     <h3 className={`font-heading font-bold text-sm ${
-                      theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                     }`}>
                       {lang === 'ar' ? 'مدار سمارت كوتش' : 'Madar Smart Coach'}
                     </h3>
@@ -195,8 +195,8 @@ User question: ${text}`,
                     onClick={() => setIsMinimized(!isMinimized)}
                     className={`p-2 rounded-lg transition-colors ${
                       theme === 'dark'
-                        ? 'hover:bg-white/5 text-[#F7F5F0]/50'
-                        : 'hover:bg-[#0A0B10]/5 text-[#0A0B10]/50'
+                        ? 'hover:bg-foreground/5 text-foreground/50'
+                        : 'hover:bg-background/5 text-[#0A0B10]/50'
                     }`}
                   >
                     {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
@@ -205,8 +205,8 @@ User question: ${text}`,
                     onClick={() => setIsOpen(false)}
                     className={`p-2 rounded-lg transition-colors ${
                       theme === 'dark'
-                        ? 'hover:bg-white/5 text-[#F7F5F0]/50'
-                        : 'hover:bg-[#0A0B10]/5 text-[#0A0B10]/50'
+                        ? 'hover:bg-foreground/5 text-foreground/50'
+                        : 'hover:bg-background/5 text-[#0A0B10]/50'
                     }`}
                   >
                     <X className="w-4 h-4" />
@@ -232,8 +232,8 @@ User question: ${text}`,
                         msg.role === 'user'
                           ? 'bg-primary text-white'
                           : theme === 'dark'
-                            ? 'bg-white/[0.08] text-[#F7F5F0]'
-                            : 'bg-[#0A0B10]/[0.08] text-[#0A0B10]'
+                            ? 'bg-foreground/[0.08] text-foreground'
+                            : 'bg-background/[0.08] text-[#0A0B10]'
                       }`}>
                         <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
                           {msg.content}
@@ -242,7 +242,7 @@ User question: ${text}`,
                           msg.role === 'user'
                             ? 'text-white/60'
                             : theme === 'dark'
-                              ? 'text-[#F7F5F0]/40'
+                              ? 'text-foreground/40'
                               : 'text-[#0A0B10]/40'
                         } block mt-1`}>
                           {msg.timestamp.toLocaleTimeString(lang === 'ar' ? 'ar' : 'en', { hour: '2-digit', minute: '2-digit' })}
@@ -254,8 +254,8 @@ User question: ${text}`,
                     <div className="flex justify-start">
                       <div className={`px-4 py-2 rounded-lg ${
                         theme === 'dark'
-                          ? 'bg-white/[0.08] text-[#F7F5F0]'
-                          : 'bg-[#0A0B10]/[0.08] text-[#0A0B10]'
+                          ? 'bg-foreground/[0.08] text-foreground'
+                          : 'bg-background/[0.08] text-[#0A0B10]'
                       }`}>
                         <div className="flex items-center gap-2">
                           <Loader className="w-4 h-4 animate-spin" />
@@ -271,11 +271,11 @@ User question: ${text}`,
                 {showSuggestions && messages.length === 1 && (
                   <div className={`px-4 py-3 border-t ${
                     theme === 'dark'
-                      ? 'border-white/[0.06]'
+                      ? 'border-foreground/[0.06]'
                       : 'border-[#0A0B10]/[0.06]'
                   }`}>
                     <p className={`text-xs font-medium mb-2 ${
-                      theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+                      theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
                     }`}>
                       {lang === 'ar' ? 'الأسئلة المقترحة:' : 'Suggested questions:'}
                     </p>
@@ -286,8 +286,8 @@ User question: ${text}`,
                           onClick={() => handleSendMessage(q)}
                           className={`block w-full text-left text-xs p-2 rounded transition-colors ${
                             theme === 'dark'
-                              ? 'hover:bg-white/5 text-[#F7F5F0]/70'
-                              : 'hover:bg-[#0A0B10]/5 text-[#0A0B10]/70'
+                              ? 'hover:bg-foreground/5 text-foreground/70'
+                              : 'hover:bg-background/5 text-[#0A0B10]/70'
                           }`}
                         >
                           {q}
@@ -300,7 +300,7 @@ User question: ${text}`,
                 {/* Input */}
                 <div className={`px-4 py-3 border-t flex items-end gap-2 ${
                   theme === 'dark'
-                    ? 'border-white/[0.06] bg-card'
+                    ? 'border-foreground/[0.06] bg-card'
                     : 'border-[#0A0B10]/[0.06] bg-white'
                 }`}>
                   <input
@@ -312,8 +312,8 @@ User question: ${text}`,
                     disabled={loading}
                     className={`flex-1 text-sm px-3 py-2 rounded-lg outline-none ${
                       theme === 'dark'
-                        ? 'bg-white/[0.05] border border-white/[0.06] text-[#F7F5F0] placeholder-[#F7F5F0]/40'
-                        : 'bg-[#0A0B10]/[0.05] border border-[#0A0B10]/[0.06] text-[#0A0B10] placeholder-[#0A0B10]/40'
+                        ? 'bg-foreground/[0.05] border border-foreground/[0.06] text-foreground placeholder-foreground/40'
+                        : 'bg-background/[0.05] border border-[#0A0B10]/[0.06] text-[#0A0B10] placeholder-[#0A0B10]/40'
                     }`}
                   />
                   <button
@@ -331,8 +331,8 @@ User question: ${text}`,
                     onClick={handleClearHistory}
                     className={`p-2 rounded-lg transition-colors ${
                       theme === 'dark'
-                        ? 'hover:bg-white/5 text-[#F7F5F0]/50'
-                        : 'hover:bg-[#0A0B10]/5 text-[#0A0B10]/50'
+                        ? 'hover:bg-foreground/5 text-foreground/50'
+                        : 'hover:bg-background/5 text-[#0A0B10]/50'
                     }`}
                     title={lang === 'ar' ? 'مسح المحادثة' : 'Clear conversation'}
                   >

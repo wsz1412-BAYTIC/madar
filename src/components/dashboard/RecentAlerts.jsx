@@ -38,12 +38,12 @@ export default function RecentAlerts({ properties }) {
       transition={{ duration: 0.5, delay: 0.3 }}
       className={`p-6 rounded-2xl border ${
         theme === 'dark'
-          ? 'bg-card border-white/[0.06]'
+          ? 'bg-card border-foreground/[0.06]'
           : 'bg-white border-[#0A0B10]/[0.06]'
       }`}
     >
       <h2 className={`text-lg font-heading font-bold mb-4 ${
-        theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
       }`}>
         {lang === 'ar' ? 'التنبيهات الأخيرة' : 'Recent Alerts'}
       </h2>
@@ -56,19 +56,19 @@ export default function RecentAlerts({ properties }) {
               key={alert.id}
               className={`flex items-start gap-3 p-3 rounded-lg ${
                 theme === 'dark'
-                  ? 'bg-white/[0.04]'
-                  : 'bg-[#0A0B10]/[0.04]'
+                  ? 'bg-foreground/[0.04]'
+                  : 'bg-background/[0.04]'
               }`}
             >
               <IconComponent className={`w-4 h-4 mt-0.5 flex-shrink-0 ${getColor(alert.severity)}`} />
               <div className="flex-1 min-w-0">
                 <p className={`text-sm font-medium ${
-                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                 }`}>
                   {alert.title}
                 </p>
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+                  theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
                 }`}>
                   {alert.property}
                 </p>

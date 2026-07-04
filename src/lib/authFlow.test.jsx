@@ -41,6 +41,7 @@ if (typeof document !== 'undefined' && !document.elementFromPoint) {
 }
 
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 
@@ -146,7 +147,9 @@ describe('registration: a verified new user actually ends up signed in', () => {
   async function registerAndVerify() {
     render(
       <MemoryRouter>
-        <Register />
+        <LanguageProvider>
+          <Register />
+        </LanguageProvider>
       </MemoryRouter>
     );
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'new@example.com' } });
@@ -181,7 +184,9 @@ describe('registration: a verified new user actually ends up signed in', () => {
   it('rejects mismatched passwords before calling the backend', async () => {
     render(
       <MemoryRouter>
-        <Register />
+        <LanguageProvider>
+          <Register />
+        </LanguageProvider>
       </MemoryRouter>
     );
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'x@example.com' } });

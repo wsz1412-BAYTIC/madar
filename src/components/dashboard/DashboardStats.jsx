@@ -15,7 +15,7 @@ const StatCard = ({ icon: Icon, label, value, suffix, color, trend }) => {
       transition={{ duration: 0.5 }}
       className={`p-5 rounded-xl border ${
         theme === 'dark'
-          ? 'bg-card border-white/[0.06]'
+          ? 'bg-card border-foreground/[0.06]'
           : 'bg-white border-[#0A0B10]/[0.06]'
       }`}
     >
@@ -42,12 +42,12 @@ const StatCard = ({ icon: Icon, label, value, suffix, color, trend }) => {
         )}
       </div>
       <p className={`text-sm ${
-        theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+        theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
       }`}>
         {label}
       </p>
       <p className={`text-2xl font-bold mt-2 ${
-        theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
       }`}>
         {value}{suffix}
       </p>

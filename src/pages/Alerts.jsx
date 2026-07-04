@@ -71,7 +71,7 @@ const severityConfig = {
 };
 
 const filterConfig = {
-  all: { icon: BellRing, color: 'text-[#F7F5F0]' },
+  all: { icon: BellRing, color: 'text-foreground' },
   critical: { icon: AlertTriangle, color: 'text-red-400' },
   warning: { icon: AlertTriangle, color: 'text-amber-400' },
   opportunity: { icon: Sparkles, color: 'text-emerald-400' },
@@ -134,11 +134,11 @@ export default function Alerts() {
   };
 
   const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
+    ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
     : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
 
   return (
     <div className="space-y-8">
@@ -155,7 +155,7 @@ export default function Alerts() {
               <h2 className={`font-heading font-bold text-lg ${textColor}`}>
                 {lang === 'ar' ? 'إعدادات التنبيهات' : 'Alert Settings'}
               </h2>
-              <button onClick={() => setShowConfig(false)} className={`p-1 hover:bg-white/5 rounded-lg transition-colors`}>
+              <button onClick={() => setShowConfig(false)} className={`p-1 hover:bg-foreground/5 rounded-lg transition-colors`}>
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -181,14 +181,14 @@ export default function Alerts() {
                     max={item.max}
                     value={thresholds[item.key]}
                     onChange={(e) => setThresholds(prev => ({ ...prev, [item.key]: parseInt(e.target.value) }))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#D95F3B]"
+                    className="w-full h-2 bg-foreground/10 rounded-lg appearance-none cursor-pointer accent-[#D95F3B]"
                   />
                 </div>
               ))}
             </div>
 
             {/* Notification Channels */}
-            <div className="space-y-4 pt-4 border-t border-white/10">
+            <div className="space-y-4 pt-4 border-t border-foreground/10">
               <h3 className={`font-medium ${textColor}`}>
                 {lang === 'ar' ? 'قنوات الإشعارات' : 'Notification Channels'}
               </h3>
@@ -201,7 +201,7 @@ export default function Alerts() {
                   const Icon = item.icon;
                   return (
                     <label key={item.key} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
-                      channels[item.key] ? 'bg-white/5' : 'hover:bg-white/3'
+                      channels[item.key] ? 'bg-foreground/5' : 'hover:bg-foreground/3'
                     }`}>
                       <input
                         type="checkbox"
@@ -238,14 +238,14 @@ export default function Alerts() {
               </div>
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('smartAlerts')}</h1>
-              <p className="text-sm text-[#F7F5F0]/40">{t('alertsDesc')}</p>
+              <h1 className="font-heading text-3xl font-bold text-foreground">{t('smartAlerts')}</h1>
+              <p className="text-sm text-foreground/40">{t('alertsDesc')}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowConfig(!showConfig)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full glass hover:bg-white/5 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-full glass hover:bg-foreground/5 transition-colors"
               title={lang === 'ar' ? 'إعدادات التنبيهات' : 'Alert Settings'}
             >
               <Settings className="w-4 h-4" />
@@ -257,7 +257,7 @@ export default function Alerts() {
                 transition={{ duration: 1.5, repeat: Infinity }}
                 className="w-2 h-2 rounded-full bg-emerald-400"
               />
-              <span className="text-xs text-[#F7F5F0]/50">{lang === 'ar' ? 'مراقبة نشطة' : 'Live monitoring'}</span>
+              <span className="text-xs text-foreground/50">{lang === 'ar' ? 'مراقبة نشطة' : 'Live monitoring'}</span>
             </div>
           </div>
         </div>
@@ -274,14 +274,14 @@ export default function Alerts() {
                 className={`relative w-full text-left p-5 rounded-2xl overflow-hidden transition-all duration-500 group ${
                   filter === card.key
                     ? `glass-strong border ${cfg.border} ${cfg.glow}`
-                    : `glass border ${cfg.border} hover:border-white/15`
+                    : `glass border ${cfg.border} hover:border-foreground/15`
                 }`}
               >
                 <div className={`absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br ${cfg.accent} rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
                 <div className="relative z-10 flex items-center justify-between">
                   <div>
-                    <div className="text-3xl font-bold font-heading text-[#F7F5F0]">{card.count}</div>
-                    <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(card.labelKey)}</div>
+                    <div className="text-3xl font-bold font-heading text-foreground">{card.count}</div>
+                    <div className="text-xs text-foreground/40 mt-1">{t(card.labelKey)}</div>
                   </div>
                   <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} border ${card.border} flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
                     <card.icon className={`w-4 h-4 ${card.iconColor}`} />
@@ -305,7 +305,7 @@ export default function Alerts() {
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-500 ${
-                  isActive ? 'text-white' : 'text-[#F7F5F0]/40 hover:text-[#F7F5F0]'
+                  isActive ? 'text-white' : 'text-foreground/40 hover:text-foreground'
                 }`}
               >
                 {isActive && (
@@ -318,7 +318,7 @@ export default function Alerts() {
                 <FilterIcon className={`w-3.5 h-3.5 relative z-10 ${isActive ? 'text-white' : fcfg.color}`} />
                 <span className="relative z-10">{f === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : t(f)}</span>
                 {f !== 'all' && (
-                  <span className={`relative z-10 text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20' : 'bg-white/5'}`}>
+                  <span className={`relative z-10 text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-foreground/20' : 'bg-foreground/5'}`}>
                     {alerts.filter(a => a.severity === f).length}
                   </span>
                 )}
@@ -390,13 +390,13 @@ export default function Alerts() {
                           {lang === 'ar' ? 'جديد' : 'New'}
                         </motion.span>
                       )}
-                      <span className="text-[10px] text-[#F7F5F0]/20">•</span>
-                      <span className="text-xs text-[#F7F5F0]/40 font-medium">{alert.property}</span>
+                      <span className="text-[10px] text-foreground/20">•</span>
+                      <span className="text-xs text-foreground/40 font-medium">{alert.property}</span>
                     </div>
-                    <p className="text-sm text-[#F7F5F0]/75 leading-relaxed">{lang === 'ar' ? alert.messageAr : alert.message}</p>
+                    <p className="text-sm text-foreground/75 leading-relaxed">{lang === 'ar' ? alert.messageAr : alert.message}</p>
                     <div className="flex items-center gap-1.5 mt-2.5">
-                      <Clock className="w-3 h-3 text-[#F7F5F0]/20" />
-                      <p className="text-[10px] text-[#F7F5F0]/20">{lang === 'ar' ? alert.timeAr : alert.time}</p>
+                      <Clock className="w-3 h-3 text-foreground/20" />
+                      <p className="text-[10px] text-foreground/20">{lang === 'ar' ? alert.timeAr : alert.time}</p>
                     </div>
                   </div>
 
@@ -415,27 +415,27 @@ export default function Alerts() {
                     {!snoozedAlerts[alert.id] && (
                       <button
                         onClick={() => snoozeAlert(alert.id)}
-                        className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                        className="p-1.5 hover:bg-foreground/5 rounded-lg transition-colors"
                         title={lang === 'ar' ? 'إرجاء' : 'Snooze'}
                       >
-                        <Pause className="w-3.5 h-3.5 text-[#F7F5F0]/40 hover:text-[#F7F5F0]/60" />
+                        <Pause className="w-3.5 h-3.5 text-foreground/40 hover:text-foreground/60" />
                       </button>
                     )}
                     {!resolvedAlerts[alert.id] && (
                       <button
                         onClick={() => resolveAlert(alert.id)}
-                        className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                        className="p-1.5 hover:bg-foreground/5 rounded-lg transition-colors"
                         title={lang === 'ar' ? 'تم التعامل معها' : 'Resolve'}
                       >
-                        <CheckCircle className="w-3.5 h-3.5 text-[#F7F5F0]/40 hover:text-emerald-400" />
+                        <CheckCircle className="w-3.5 h-3.5 text-foreground/40 hover:text-emerald-400" />
                       </button>
                     )}
                     <button
                       onClick={() => dismissAlert(alert.id)}
-                      className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                      className="p-1.5 hover:bg-foreground/5 rounded-lg transition-colors"
                       title={lang === 'ar' ? 'رفض' : 'Dismiss'}
                     >
-                      <X className="w-3.5 h-3.5 text-[#F7F5F0]/20" />
+                      <X className="w-3.5 h-3.5 text-foreground/20" />
                     </button>
                   </div>
                 </div>
@@ -452,9 +452,9 @@ export default function Alerts() {
             className="text-center py-20"
           >
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl glass mb-4">
-              <Bell className="w-7 h-7 text-[#F7F5F0]/20" />
+              <Bell className="w-7 h-7 text-foreground/20" />
             </div>
-            <p className="text-[#F7F5F0]/30 text-sm">{t('noData')}</p>
+            <p className="text-foreground/30 text-sm">{t('noData')}</p>
           </motion.div>
         )}
       </div>

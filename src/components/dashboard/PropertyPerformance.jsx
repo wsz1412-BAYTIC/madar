@@ -18,12 +18,12 @@ export default function PropertyPerformance({ properties }) {
       transition={{ duration: 0.5, delay: 0.2 }}
       className={`p-6 rounded-2xl border h-full ${
         theme === 'dark'
-          ? 'bg-card border-white/[0.06]'
+          ? 'bg-card border-foreground/[0.06]'
           : 'bg-white border-[#0A0B10]/[0.06]'
       }`}
     >
       <h2 className={`text-lg font-heading font-bold mb-4 ${
-        theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
       }`}>
         {lang === 'ar' ? 'أداء العقار' : 'Property Performance'}
       </h2>
@@ -33,12 +33,12 @@ export default function PropertyPerformance({ properties }) {
           sortedProps.map((prop, idx) => (
             <div key={prop.id} className={`p-3 rounded-lg ${
               theme === 'dark'
-                ? 'bg-white/[0.04]'
-                : 'bg-[#0A0B10]/[0.04]'
+                ? 'bg-foreground/[0.04]'
+                : 'bg-background/[0.04]'
             }`}>
               <div className="flex items-center justify-between mb-2">
                 <p className={`text-sm font-medium ${
-                  theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
                 }`}>
                   {prop.name}
                 </p>
@@ -48,8 +48,8 @@ export default function PropertyPerformance({ properties }) {
               </div>
               <div className={`h-1.5 rounded-full overflow-hidden ${
                 theme === 'dark'
-                  ? 'bg-white/[0.08]'
-                  : 'bg-[#0A0B10]/[0.08]'
+                  ? 'bg-foreground/[0.08]'
+                  : 'bg-background/[0.08]'
               }`}>
                 <div
                   className="h-full bg-gradient-to-r from-primary to-amber-500 transition-all"
@@ -60,7 +60,7 @@ export default function PropertyPerformance({ properties }) {
           ))
         ) : (
           <p className={`text-sm text-center py-6 ${
-            theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+            theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
           }`}>
             {lang === 'ar' ? 'لا توجد عقارات' : 'No properties yet'}
           </p>

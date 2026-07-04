@@ -33,10 +33,10 @@ export default function Dashboard() {
     <div className="space-y-8">
       <FadeIn>
         <div>
-          <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">
+          <h1 className="font-heading text-3xl font-bold text-foreground">
             {t('welcomeBack')}, {user?.full_name || user?.email?.split('@')[0] || 'Host'}
           </h1>
-          <p className="text-sm text-[#F7F5F0]/40 mt-1">{t('todayOverview')}</p>
+          <p className="text-sm text-foreground/40 mt-1">{t('todayOverview')}</p>
         </div>
       </FadeIn>
 
@@ -44,7 +44,7 @@ export default function Dashboard() {
       <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4" stagger={0.08}>
         {mockStats.map((stat) => (
           <StaggerItem key={stat.key}>
-            <div className="glass rounded-2xl p-5 hover:border-white/15 transition-all duration-300 group">
+            <div className="glass rounded-2xl p-5 hover:border-foreground/15 transition-all duration-300 group">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${stat.color}15` }}>
                   <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
@@ -54,10 +54,10 @@ export default function Dashboard() {
                   {stat.change}
                 </span>
               </div>
-              <div className="text-2xl font-bold text-[#F7F5F0] font-heading">
-                {stat.value} {stat.unit && <span className="text-xs font-normal text-[#F7F5F0]/30">{stat.unit}</span>}
+              <div className="text-2xl font-bold text-foreground font-heading">
+                {stat.value} {stat.unit && <span className="text-xs font-normal text-foreground/30">{stat.unit}</span>}
               </div>
-              <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(stat.key)}</div>
+              <div className="text-xs text-foreground/40 mt-1">{t(stat.key)}</div>
             </div>
           </StaggerItem>
         ))}
@@ -71,7 +71,7 @@ export default function Dashboard() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/20">
                 <Sparkles className="w-4 h-4 text-[#D95F3B]" />
               </div>
-              <h2 className="font-heading font-semibold text-[#F7F5F0]">{t('aiRecommendations')}</h2>
+              <h2 className="font-heading font-semibold text-foreground">{t('aiRecommendations')}</h2>
             </div>
             <div className="space-y-3">
               {mockRecommendations.map((rec, i) => {
@@ -83,14 +83,14 @@ export default function Dashboard() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.04] hover:border-white/10 transition-all"
+                    className="flex items-center justify-between p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.04] hover:border-foreground/10 transition-all"
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="font-medium text-sm text-[#F7F5F0] truncate">{rec.property}</div>
-                      <div className="text-xs text-[#F7F5F0]/40 mt-0.5">{lang === 'ar' ? rec.reasonAr : rec.reason}</div>
+                      <div className="font-medium text-sm text-foreground truncate">{rec.property}</div>
+                      <div className="text-xs text-foreground/40 mt-0.5">{lang === 'ar' ? rec.reasonAr : rec.reason}</div>
                     </div>
                     <div className={`flex items-center gap-2 ${isRTL ? 'mr-4' : 'ml-4'}`}>
-                      <span className="text-sm text-[#F7F5F0]/30 line-through">{rec.current}</span>
+                      <span className="text-sm text-foreground/30 line-through">{rec.current}</span>
                       <span className={`text-sm font-semibold ${isUp ? 'text-emerald-400' : 'text-amber-400'}`}>{rec.recommended} {sar}</span>
                     </div>
                   </motion.div>
@@ -103,14 +103,14 @@ export default function Dashboard() {
         {/* Occupancy Forecast */}
         <FadeIn delay={0.3}>
           <div className="glass rounded-2xl p-6 h-full">
-            <h2 className="font-heading font-semibold text-[#F7F5F0] mb-5">{t('occupancyForecast')}</h2>
+            <h2 className="font-heading font-semibold text-foreground mb-5">{t('occupancyForecast')}</h2>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={mockForecast}>
-                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.3)', fontSize: 12 }} domain={[0, 100]} />
+                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} domain={[0, 100]} />
                 <Tooltip
-                  contentStyle={{ background: '#14161D', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#F7F5F0', fontSize: 12 }}
-                  labelStyle={{ color: 'rgba(247,245,240,0.5)' }}
+                  contentStyle={{ background: 'var(--chart-tooltip-bg)', border: '1px solid var(--chart-tooltip-border)', borderRadius: 12, color: 'var(--chart-tooltip-text)', fontSize: 12 }}
+                  labelStyle={{ color: 'var(--chart-tooltip-text)' }}
                   cursor={{ fill: 'rgba(255,255,255,0.03)' }}
                   formatter={(v) => [`${v}%`, lang === 'ar' ? 'الإشغال' : 'Occupancy']}
                 />

@@ -87,15 +87,15 @@ export default function PropertiesFilter({
                             (selectedFilters.performance?.length || 0);
 
   const bgCard = theme === 'dark'
-    ? 'bg-white/[0.03] border border-white/[0.06]'
+    ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
     : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
 
   const bgActive = theme === 'dark'
     ? 'bg-[#D95F3B]/20 border-[#D95F3B]/50'
     : 'bg-[#D95F3B]/10 border-[#D95F3B]/30';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
+  const textMuted = theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50';
 
   return (
     <div className="space-y-4">
@@ -146,8 +146,8 @@ export default function PropertiesFilter({
                       selectedFilters.cities?.includes(city)
                         ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
                         : theme === 'dark'
-                          ? 'bg-white/[0.05] text-[#F7F5F0]/70 hover:bg-white/10'
-                          : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                          ? 'bg-foreground/[0.05] text-foreground/70 hover:bg-foreground/10'
+                          : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
                     }`}
                   >
                     {city}
@@ -169,8 +169,8 @@ export default function PropertiesFilter({
                       selectedFilters.performance?.includes(metric.value)
                         ? bgActive
                         : theme === 'dark'
-                          ? 'hover:bg-white/[0.05]'
-                          : 'hover:bg-[#0A0B10]/5'
+                          ? 'hover:bg-foreground/[0.05]'
+                          : 'hover:bg-background/5'
                     }`}
                   >
                     <input
@@ -202,8 +202,8 @@ export default function PropertiesFilter({
                         selectedFilters.tags?.includes(tag)
                           ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
                           : theme === 'dark'
-                            ? 'bg-white/[0.05] text-[#F7F5F0]/70 hover:bg-white/10'
-                            : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                            ? 'bg-foreground/[0.05] text-foreground/70 hover:bg-foreground/10'
+                            : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
                       }`}
                     >
                       {tag}
@@ -219,8 +219,8 @@ export default function PropertiesFilter({
                 onClick={clearFilters}
                 className={`w-full py-2 text-xs font-medium rounded-lg transition-colors ${
                   theme === 'dark'
-                    ? 'text-[#F7F5F0]/70 hover:text-[#F7F5F0] hover:bg-white/5'
-                    : 'text-[#0A0B10]/70 hover:text-[#0A0B10] hover:bg-[#0A0B10]/5'
+                    ? 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
+                    : 'text-[#0A0B10]/70 hover:text-[#0A0B10] hover:bg-background/5'
                 }`}
               >
                 {lang === 'ar' ? 'مسح التصفيات' : 'Clear Filters'}

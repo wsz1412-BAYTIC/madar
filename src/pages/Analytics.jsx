@@ -40,7 +40,7 @@ function ChartSkeleton({ height = 280 }) {
   return (
     <div className="flex items-end gap-2 px-2" style={{ height }}>
       {[40, 65, 50, 80, 60, 90, 70, 85, 55, 75, 95, 68].map((h, i) => (
-        <div key={i} className="flex-1 relative overflow-hidden rounded-t-lg bg-white/[0.04]" style={{ height: `${h}%` }}>
+        <div key={i} className="flex-1 relative overflow-hidden rounded-t-lg bg-foreground/[0.04]" style={{ height: `${h}%` }}>
           <motion.div
             initial={{ x: '-100%' }}
             animate={{ x: '100%' }}
@@ -71,12 +71,12 @@ export default function Analytics() {
       background: 'rgba(10,11,16,0.95)',
       border: '1px solid rgba(217,95,59,0.15)',
       borderRadius: 14,
-      color: '#F7F5F0',
+      color: 'var(--chart-tooltip-text)',
       fontSize: 12,
       boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
       backdropFilter: 'blur(12px)',
     },
-    labelStyle: { color: 'rgba(247,245,240,0.4)', marginBottom: 4 },
+    labelStyle: { color: 'var(--chart-tooltip-text)', marginBottom: 4 },
     cursor: { fill: 'rgba(217,95,59,0.04)', stroke: 'rgba(217,95,59,0.1)' },
   };
 
@@ -88,11 +88,11 @@ export default function Analytics() {
             <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/20">
               <BarChart3 className="w-5 h-5 text-[#D95F3B]" />
             </div>
-            <h1 className="font-heading text-3xl font-bold text-[#F7F5F0]">{t('analytics')}</h1>
+            <h1 className="font-heading text-3xl font-bold text-foreground">{t('analytics')}</h1>
           </div>
           <div className="flex items-center gap-1 glass rounded-full p-1">
             {periods.map(p => (
-              <button key={p} onClick={() => setPeriod(p)} className={`relative px-5 py-2 rounded-full text-xs font-medium transition-all duration-500 ${period === p ? 'text-white' : 'text-[#F7F5F0]/40 hover:text-[#F7F5F0]'}`}>
+              <button key={p} onClick={() => setPeriod(p)} className={`relative px-5 py-2 rounded-full text-xs font-medium transition-all duration-500 ${period === p ? 'text-white' : 'text-foreground/40 hover:text-foreground'}`}>
                 {period === p && <motion.div layoutId="periodPill" className="absolute inset-0 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-full" transition={{ type: 'spring', stiffness: 300, damping: 30 }} />}
                 <span className="relative z-10">{t(p)}</span>
               </button>
@@ -105,7 +105,7 @@ export default function Analytics() {
       <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-4" stagger={0.1}>
         {kpiCards.map(card => (
           <StaggerItem key={card.key}>
-            <div className={`relative glass rounded-2xl p-6 overflow-hidden border ${card.border} hover:border-white/20 transition-all duration-500 group`}>
+            <div className={`relative glass rounded-2xl p-6 overflow-hidden border ${card.border} hover:border-foreground/20 transition-all duration-500 group`}>
               <div className={`absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br ${card.gradient} rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
@@ -117,10 +117,10 @@ export default function Analytics() {
                     {card.change}
                   </span>
                 </div>
-                <div className="text-2xl font-bold text-[#F7F5F0] font-heading">
-                  {card.value}{card.key === 'avgNightlyRate' && <span className="text-sm font-normal text-[#F7F5F0]/30 ml-1">{sar}</span>}
+                <div className="text-2xl font-bold text-foreground font-heading">
+                  {card.value}{card.key === 'avgNightlyRate' && <span className="text-sm font-normal text-foreground/30 ml-1">{sar}</span>}
                 </div>
-                <div className="text-xs text-[#F7F5F0]/40 mt-1">{t(card.key)}</div>
+                <div className="text-xs text-foreground/40 mt-1">{t(card.key)}</div>
               </div>
             </div>
           </StaggerItem>
@@ -134,12 +134,12 @@ export default function Analytics() {
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="font-heading font-semibold text-[#F7F5F0] text-lg">{t('revenueOverTime')}</h2>
-                <p className="text-xs text-[#F7F5F0]/30 mt-1">{sar}</p>
+                <h2 className="font-heading font-semibold text-foreground text-lg">{t('revenueOverTime')}</h2>
+                <p className="text-xs text-foreground/30 mt-1">{sar}</p>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#D95F3B] shadow-[0_0_8px_rgba(217,95,59,0.6)]" />
-                <span className="text-xs text-[#F7F5F0]/40">{lang === 'ar' ? 'الإيرادات' : 'Revenue'}</span>
+                <span className="text-xs text-foreground/40">{lang === 'ar' ? 'الإيرادات' : 'Revenue'}</span>
               </div>
             </div>
             <AnimatePresence mode="wait">
@@ -165,8 +165,8 @@ export default function Analytics() {
                           </feMerge>
                         </filter>
                       </defs>
-                      <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.25)', fontSize: 11 }} dy={8} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.25)', fontSize: 11 }} tickFormatter={(v) => `${v / 1000}k`} />
+                      <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} dy={8} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} tickFormatter={(v) => `${v / 1000}k`} />
                       <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`, lang === 'ar' ? 'الإيرادات' : 'Revenue']} />
                       <Area type="monotone" dataKey="value" stroke="#D95F3B" strokeWidth={2.5} fill="url(#revGrad)" filter="url(#revGlow)" animationDuration={1500} animationEasing="ease-out" dot={{ fill: '#D95F3B', strokeWidth: 0, r: 0 }} activeDot={{ fill: '#D95F3B', strokeWidth: 2, stroke: '#0A0B10', r: 6 }} />
                     </AreaChart>
@@ -186,10 +186,10 @@ export default function Analytics() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#C8972A]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="font-heading font-semibold text-[#F7F5F0] text-lg">{t('occupancyOverTime')}</h2>
+                <h2 className="font-heading font-semibold text-foreground text-lg">{t('occupancyOverTime')}</h2>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-[#C8972A] shadow-[0_0_8px_rgba(200,151,42,0.6)]" />
-                  <span className="text-xs text-[#F7F5F0]/40">%</span>
+                  <span className="text-xs text-foreground/40">%</span>
                 </div>
               </div>
               <AnimatePresence mode="wait">
@@ -210,8 +210,8 @@ export default function Analytics() {
                             </feMerge>
                           </filter>
                         </defs>
-                        <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.25)', fontSize: 11 }} dy={8} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.25)', fontSize: 11 }} domain={[0, 100]} />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} dy={8} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} domain={[0, 100]} />
                         <Tooltip {...chartTooltip} formatter={(v) => [`${v}%`, lang === 'ar' ? 'الإشغال' : 'Occupancy']} />
                         <Line type="monotone" dataKey="value" stroke="#C8972A" strokeWidth={2.5} fill="none" filter="url(#occGlow)" animationDuration={1500} animationEasing="ease-out" dot={{ fill: '#0A0B10', stroke: '#C8972A', strokeWidth: 2, r: 3 }} activeDot={{ fill: '#C8972A', strokeWidth: 2, stroke: '#0A0B10', r: 6 }} />
                       </LineChart>
@@ -229,16 +229,16 @@ export default function Analytics() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D95F3B]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
-                <h2 className="font-heading font-semibold text-[#F7F5F0] text-lg">{t('competitorComparison')}</h2>
+                <h2 className="font-heading font-semibold text-foreground text-lg">{t('competitorComparison')}</h2>
                 <div className="flex items-center gap-4">
                   {[
                     { color: '#D95F3B', label: lang === 'ar' ? 'أنت' : 'You' },
                     { color: '#C8972A', label: lang === 'ar' ? 'المنافس' : 'Competitor' },
-                    { color: 'rgba(247,245,240,0.15)', label: lang === 'ar' ? 'السوق' : 'Market' },
+                    { color: 'var(--chart-tick)', label: lang === 'ar' ? 'السوق' : 'Market' },
                   ].map(item => (
                     <div key={item.label} className="flex items-center gap-1.5">
                       <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
-                      <span className="text-xs text-[#F7F5F0]/40">{item.label}</span>
+                      <span className="text-xs text-foreground/40">{item.label}</span>
                     </div>
                   ))}
                 </div>
@@ -262,12 +262,12 @@ export default function Analytics() {
                             <stop offset="100%" stopColor="#C8972A" stopOpacity={0.6} />
                           </linearGradient>
                         </defs>
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.25)', fontSize: 11 }} dy={8} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'rgba(247,245,240,0.25)', fontSize: 11 }} />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} dy={8} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} />
                         <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`]} cursor={{ fill: 'rgba(255,255,255,0.02)' }} />
                         <Bar dataKey="you" fill="url(#youGrad)" radius={[6, 6, 0, 0]} name={lang === 'ar' ? 'أنت' : 'You'} animationDuration={1500} animationEasing="ease-out" barSize={18} />
                         <Bar dataKey="competitor" fill="url(#compGrad)" radius={[6, 6, 0, 0]} name={lang === 'ar' ? 'المنافس' : 'Competitor'} animationDuration={1500} animationDelay={200} animationEasing="ease-out" barSize={18} />
-                        <Bar dataKey="market" fill="rgba(247,245,240,0.1)" radius={[6, 6, 0, 0]} name={lang === 'ar' ? 'السوق' : 'Market'} animationDuration={1500} animationDelay={400} animationEasing="ease-out" barSize={18} />
+                        <Bar dataKey="market" fill='var(--chart-tick)' radius={[6, 6, 0, 0]} name={lang === 'ar' ? 'السوق' : 'Market'} animationDuration={1500} animationDelay={400} animationEasing="ease-out" barSize={18} />
                       </BarChart>
                     </ResponsiveContainer>
                   </motion.div>

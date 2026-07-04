@@ -145,12 +145,12 @@ export default function BookingCalendar() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className={`font-heading text-3xl font-bold ${
-              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
             }`}>
               {lang === 'ar' ? 'التقويم الرئيسي' : 'Master Calendar'}
             </h1>
             <p className={`text-sm mt-1 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`}>
               {lang === 'ar'
                 ? 'راقب الاشغال والأسعار والطلب عبر جميع عقاراتك'
@@ -239,17 +239,17 @@ export default function BookingCalendar() {
               key={i}
               className={`p-4 rounded-lg ${
                 theme === 'dark'
-                  ? 'bg-white/[0.03] border border-white/[0.06]'
+                  ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
                   : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
               }`}
             >
               <p className={`text-xs font-medium mb-2 ${
-                theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+                theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
               }`}>
                 {stat.label}
               </p>
               <p className={`font-heading font-bold text-2xl ${
-                theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
               }`}>
                 {stat.value}
               </p>

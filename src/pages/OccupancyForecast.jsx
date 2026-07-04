@@ -204,19 +204,19 @@ export default function OccupancyForecast() {
     return (
       <div className={`p-8 rounded-xl text-center ${
         theme === 'dark'
-          ? 'bg-white/[0.03] border border-white/[0.06]'
+          ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
           : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
       }`}>
         <AlertTriangle className={`w-12 h-12 mx-auto mb-4 ${
           theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
         }`} />
         <h2 className={`font-heading font-bold text-lg mb-2 ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {lang === 'ar' ? 'ميزة غير متاحة' : 'Feature Not Available'}
         </h2>
         <p className={`text-sm ${
-          theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+          theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
         }`}>
           {lang === 'ar'
             ? 'تنبيهات الاشغال المتقدمة متاحة فقط في خطة Pro'
@@ -233,12 +233,12 @@ export default function OccupancyForecast() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className={`font-heading text-3xl font-bold ${
-              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
             }`}>
               {lang === 'ar' ? 'تنبيهات الاشغال' : 'Occupancy Forecast Alerts'}
             </h1>
             <p className={`text-sm mt-1 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`}>
               {lang === 'ar'
                 ? 'راقب توقعات الاشغال لـ 30 يوم القادمة مع توصيات ذكية'
@@ -249,12 +249,12 @@ export default function OccupancyForecast() {
             onClick={() => setShowPreferences(!showPreferences)}
             className={`p-3 rounded-lg transition-colors ${
               theme === 'dark'
-                ? 'bg-white/[0.04] hover:bg-white/10'
-                : 'bg-[#0A0B10]/5 hover:bg-[#0A0B10]/10'
+                ? 'bg-foreground/[0.04] hover:bg-foreground/10'
+                : 'bg-background/5 hover:bg-background/10'
             }`}
           >
             <Settings className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
             }`} />
           </button>
         </div>
@@ -283,7 +283,7 @@ export default function OccupancyForecast() {
               label: lang === 'ar' ? 'الكل' : 'All',
               value: filteredAlerts.length,
               filter: 'all',
-              color: 'text-[#F7F5F0]',
+              color: 'text-foreground',
             },
             {
               label: lang === 'ar' ? 'عالي' : 'High',
@@ -311,16 +311,16 @@ export default function OccupancyForecast() {
                 selectedFilter === stat.filter
                   ? 'ring-2 ring-[#D95F3B] ' + (
                     theme === 'dark'
-                      ? 'bg-white/[0.08] border border-[#D95F3B]/50'
-                      : 'bg-[#0A0B10]/10 border border-[#D95F3B]/50'
+                      ? 'bg-foreground/[0.08] border border-[#D95F3B]/50'
+                      : 'bg-background/10 border border-[#D95F3B]/50'
                   )
                   : theme === 'dark'
-                    ? 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06]'
-                    : 'bg-[#F2EFE8] border border-[#0A0B10]/10 hover:bg-[#0A0B10]/5'
+                    ? 'bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.06]'
+                    : 'bg-[#F2EFE8] border border-[#0A0B10]/10 hover:bg-background/5'
               }`}
             >
               <p className={`text-xs font-medium mb-1 ${
-                theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+                theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
               }`}>
                 {stat.label}
               </p>
@@ -364,16 +364,16 @@ export default function OccupancyForecast() {
         <FadeIn delay={0.2}>
           <div className={`p-12 rounded-xl text-center ${
             theme === 'dark'
-              ? 'bg-white/[0.03] border border-white/[0.06]'
+              ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
               : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
           }`}>
             <p className={`text-lg font-medium ${
-              theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
             }`}>
               {lang === 'ar' ? 'لا توجد تنبيهات' : 'No alerts'}
             </p>
             <p className={`text-sm mt-2 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`}>
               {lang === 'ar'
                 ? 'جميع عقاراتك تحقق أهدافها في الاشغال'

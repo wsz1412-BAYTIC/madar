@@ -17,6 +17,11 @@ vi.mock('@/contexts/LanguageContext', () => ({
   useLang: () => langState,
 }));
 
+let themeState;
+vi.mock('@/contexts/ThemeContext', () => ({
+  useTheme: () => themeState,
+}));
+
 // FadeIn wraps children in framer-motion, which needs layout APIs jsdom lacks.
 vi.mock('@/components/madar/Motion', () => ({
   // eslint-disable-next-line react/prop-types
@@ -32,11 +37,12 @@ beforeEach(() => {
     checkUserAuth: vi.fn().mockResolvedValue(undefined),
   };
   langState = { t: (k) => k, lang: 'en', setLang: vi.fn() };
+  themeState = { preference: 'system', setPreference: vi.fn() };
 });
 afterEach(() => cleanup());
 
 describe('Profile settings persistence', () => {
-  it('persists full_name + phone via base44.auth.updateMe on Save', async () => {
+  it('persists profile fields + notification prefs via base44.auth.updateMe on Save', async () => {
     authMock.updateMe.mockResolvedValueOnce({});
     render(<MadarSettings />);
 
@@ -45,7 +51,15 @@ describe('Profile settings persistence', () => {
     fireEvent.click(screen.getByText('saveChanges'));
 
     await waitFor(() => expect(authMock.updateMe).toHaveBeenCalledTimes(1));
-    expect(authMock.updateMe).toHaveBeenCalledWith({ full_name: 'New Name', phone: '+966511112222' });
+    expect(authMock.updateMe).toHaveBeenCalledWith(expect.objectContaining({
+      full_name: 'New Name',
+      phone: '+966511112222',
+      notification_prefs: expect.objectContaining({
+        aiRecommendations: expect.any(Boolean),
+        marketNews: expect.any(Boolean),
+        billingAlerts: expect.any(Boolean),
+      }),
+    }));
   });
 
   it('refreshes the session user and shows a success toast after saving', async () => {
@@ -76,11 +90,40 @@ describe('Profile settings persistence', () => {
     expect(email.value).toBe('host@example.com');
   });
 
-  it('no longer renders the non-functional notification toggles', () => {
+  it('Appearance section persists the preference through ThemeContext', () => {
     render(<MadarSettings />);
-    expect(screen.queryByText('notifications')).toBeNull();
-    expect(screen.queryByText('emailNotif')).toBeNull();
-    expect(screen.queryByText('smsNotif')).toBeNull();
-    expect(screen.queryByText('pushNotif')).toBeNull();
+    const lightBtn = screen.getByRole('radio', { name: 'Light' });
+    fireEvent.click(lightBtn);
+    expect(themeState.setPreference).toHaveBeenCalledWith('light');
+    // System is the currently selected preference
+    expect(screen.getByRole('radio', { name: 'System' }).getAttribute('aria-checked')).toBe('true');
+  });
+
+  it('rejects an invalid Telegram username before calling updateMe', async () => {
+    render(<MadarSettings />);
+    fireEvent.change(screen.getByLabelText(/Telegram username/), { target: { value: '@ab' } });
+    fireEvent.click(screen.getByText('saveChanges'));
+    await waitFor(() => expect(screen.getByText(/Invalid Telegram username/)).toBeTruthy());
+    expect(authMock.updateMe).not.toHaveBeenCalled();
+  });
+
+  it('normalizes a valid Telegram username on save', async () => {
+    authMock.updateMe.mockResolvedValueOnce({});
+    render(<MadarSettings />);
+    fireEvent.change(screen.getByLabelText(/Telegram username/), { target: { value: 'sara_riyadh' } });
+    fireEvent.click(screen.getByText('saveChanges'));
+    await waitFor(() => expect(authMock.updateMe).toHaveBeenCalledTimes(1));
+    expect(authMock.updateMe).toHaveBeenCalledWith(
+      expect.objectContaining({ telegram_username: '@sara_riyadh' })
+    );
+  });
+
+  it('renders the three real notification preference switches', () => {
+    render(<MadarSettings />);
+    const switches = screen.getAllByRole('switch');
+    expect(switches).toHaveLength(3);
+    // default on; clicking flips local state without crashing
+    fireEvent.click(switches[1]);
+    expect(switches[1].getAttribute('aria-checked')).toBe('false');
   });
 });

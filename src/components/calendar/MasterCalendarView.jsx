@@ -42,11 +42,11 @@ export default function MasterCalendarView({
       case 'low':
         return 'bg-[#6B7280]/40 text-white';
       case 'gap':
-        return 'bg-transparent border-2 border-dashed border-[#F7F5F0]/20 text-[#F7F5F0]/40';
+        return 'bg-transparent border-2 border-dashed border-foreground/20 text-foreground/40';
       default:
         return theme === 'dark'
-          ? 'bg-white/[0.02] text-[#F7F5F0]/70 hover:bg-white/[0.06]'
-          : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10';
+          ? 'bg-foreground/[0.02] text-foreground/70 hover:bg-foreground/[0.06]'
+          : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10';
     }
   };
 
@@ -67,22 +67,22 @@ export default function MasterCalendarView({
           onClick={onPrevMonth}
           className={`p-2 rounded-lg transition-colors ${
             theme === 'dark'
-              ? 'hover:bg-white/5'
-              : 'hover:bg-[#0A0B10]/5'
+              ? 'hover:bg-foreground/5'
+              : 'hover:bg-background/5'
           }`}
         >
           {isRTL ? (
             <ChevronRight className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`} />
           ) : (
             <ChevronLeft className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`} />
           )}
         </button>
         <h2 className={`font-heading font-semibold text-lg ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
         }`}>
           {monthNames[lang][month]} {year}
         </h2>
@@ -90,17 +90,17 @@ export default function MasterCalendarView({
           onClick={onNextMonth}
           className={`p-2 rounded-lg transition-colors ${
             theme === 'dark'
-              ? 'hover:bg-white/5'
-              : 'hover:bg-[#0A0B10]/5'
+              ? 'hover:bg-foreground/5'
+              : 'hover:bg-background/5'
           }`}
         >
           {isRTL ? (
             <ChevronLeft className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`} />
           ) : (
             <ChevronRight className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
             }`} />
           )}
         </button>
@@ -112,7 +112,7 @@ export default function MasterCalendarView({
           <div
             key={d}
             className={`text-center text-xs font-medium py-2 ${
-              theme === 'dark' ? 'text-[#F7F5F0]/30' : 'text-[#0A0B10]/30'
+              theme === 'dark' ? 'text-foreground/30' : 'text-[#0A0B10]/30'
             }`}
           >
             {d}
