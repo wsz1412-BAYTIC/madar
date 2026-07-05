@@ -50,6 +50,7 @@ import PricingPage from '@/pages/PricingPage';
 import PropertyAnalysis from '@/pages/PropertyAnalysis';
 import Opportunities from '@/pages/Opportunities';
 import PriceRecommendations from '@/pages/PriceRecommendations';
+import InvestmentConsultant from '@/pages/InvestmentConsultant';
 import PageNotFound from './lib/PageNotFound';
 
 const AuthenticatedApp = () => {
@@ -87,6 +88,7 @@ const AuthenticatedApp = () => {
           <Route path="/properties" element={<Properties />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/pricing-recommendations" element={<PriceRecommendations />} />
+          <Route path="/investment-consultant" element={<InvestmentConsultant />} />
           <Route path="/revenue" element={<Revenue />} />
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/market" element={<Market />} />

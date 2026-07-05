@@ -1,0 +1,34 @@
+{
+  "name": "AiUsageLog",
+  "description": "Server-written audit trail of every AI backend invocation: who, which function, under which plan, outcome, and token usage when the provider reports it. Rows are written only by backend functions via the service role.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "functionName": {
+      "type": "string",
+      "enum": ["generate-price-recommendation", "ai-investment-consultant", "first-report", "ai-assistant"]
+    },
+    "plan": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["success", "fallback", "blocked", "error"]
+    },
+    "model": { "type": ["string", "null"] },
+    "promptTokens": { "type": ["number", "null"] },
+    "completionTokens": { "type": ["number", "null"] },
+    "detail": { "type": ["string", "null"], "description": "Short machine reason (e.g. fallback cause, block reason). Never user content." },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "required": ["userId", "functionName", "plan", "status", "createdAt"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": false,
+    "delete": false
+  }
+}

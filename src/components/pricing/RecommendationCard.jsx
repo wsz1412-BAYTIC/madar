@@ -127,7 +127,49 @@ export default function RecommendationCard({ recommendation, onApprove, onReject
           <p className="text-lg font-semibold">
             {recommendation.recommendedPriceMin} - {recommendation.recommendedPriceMax} {recommendation.currency}
           </p>
+          {recommendation.recommendedPrice != null && (
+            <p className="text-sm text-muted-foreground mt-1">
+              {lang === 'ar' ? 'السعر المقترح' : 'Suggested price'}: <strong>{recommendation.recommendedPrice} {recommendation.currency}</strong>
+            </p>
+          )}
         </div>
+
+        {/* Net revenue after platform fees + straight-line impact estimate */}
+        {(recommendation.netRevenueAfterFees != null || recommendation.revenueProjection) && (
+          <div className="rounded-lg border p-3 space-y-1.5">
+            <p className="text-sm font-medium flex items-center gap-2">
+              {lang === 'ar' ? 'صافي الإيراد بعد عمولة المنصة' : 'Net revenue after platform fees'}
+              {recommendation.platformFeeEstimated && (
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600">
+                  {lang === 'ar' ? 'عمولة تقديرية' : 'estimated fee'}
+                </span>
+              )}
+            </p>
+            <MetricRow
+              labelEn="Platform fee rate" labelAr="نسبة عمولة المنصة"
+              value={recommendation.platformFeeRate != null ? Math.round(recommendation.platformFeeRate * 100) : null} suffix="%"
+            />
+            <MetricRow
+              labelEn="Current net monthly (after fees)" labelAr="الصافي الشهري الحالي (بعد العمولة)"
+              value={recommendation.netRevenueAfterFees} suffix={` ${recommendation.currency}`}
+            />
+            {recommendation.revenueProjection && (
+              <>
+                <MetricRow
+                  labelEn="Expected impact" labelAr="الأثر المتوقع"
+                  value={`${recommendation.revenueProjection.impactSar > 0 ? '+' : ''}${recommendation.revenueProjection.impactSar} ${recommendation.currency} (${recommendation.revenueProjection.impactPercent > 0 ? '+' : ''}${recommendation.revenueProjection.impactPercent}%)`}
+                />
+                <MetricRow
+                  labelEn="Projected net (after fees)" labelAr="الصافي المتوقع (بعد العمولة)"
+                  value={recommendation.revenueProjection.projectedNet?.net} suffix={` ${recommendation.currency}`}
+                />
+                <p className="text-xs text-muted-foreground italic">
+                  {lang === 'ar' ? recommendation.revenueProjection.assumption?.ar : recommendation.revenueProjection.assumption?.en}
+                </p>
+              </>
+            )}
+          </div>
+        )}
 
         <div className="rounded-lg border p-3">
           <p className="text-sm font-medium mb-1">{lang === 'ar' ? 'الأدلة المستخدمة' : 'Evidence used'}</p>

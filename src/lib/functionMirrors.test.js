@@ -25,6 +25,13 @@ const pairs = [
   ['src/lib/trialManagement.js', 'base44/functions/telegram-alerts/trialManagement.js'],
   ['src/lib/telegramNotifications.js', 'base44/functions/telegram-alerts/telegramNotifications.js'],
   ['src/lib/listingImport.js', 'base44/functions/import-listing/listingImport.js'],
+  ['src/lib/platformFees.js', 'base44/functions/generate-price-recommendation/platformFees.js'],
+  ['src/lib/platformFees.js', 'base44/functions/first-report/platformFees.js'],
+  ['src/lib/platformFees.js', 'base44/functions/ai-investment-consultant/platformFees.js'],
+  ['src/lib/firstReport.js', 'base44/functions/first-report/firstReport.js'],
+  ['src/lib/madarReport.js', 'base44/functions/first-report/madarReport.js'],
+  ['src/lib/investmentAnalysis.js', 'base44/functions/ai-investment-consultant/investmentAnalysis.js'],
+  ['src/lib/trialManagement.js', 'base44/functions/ai-investment-consultant/trialManagement.js'],
 ];
 
 describe('backend function mirrors stay in sync with canonical src/lib modules', () => {

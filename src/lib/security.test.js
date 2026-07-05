@@ -90,7 +90,11 @@ describe('generate-price-recommendation never trusts client-supplied metrics', (
   const entrySource = read('base44/functions/generate-price-recommendation/entry.ts');
 
   it('recomputes the snapshot from the server-fetched property, not from the request body', () => {
-    expect(entrySource).toMatch(/buildMetricsSnapshot\(property, \{\}\)/);
+    // The fee rate is server-derived too: property.platform + the
+    // PLATFORM_FEES_JSON env override — never anything the client sent.
+    expect(entrySource).toMatch(/buildMetricsSnapshot\(property, \{ platformFeeRate: fee\.rate \}\)/);
+    expect(entrySource).toMatch(/resolvePlatformFee\(property\.platform, feeOverrides\)/);
+    expect(entrySource).toMatch(/parseFeeOverrides\(Deno\.env\.get\(PLATFORM_FEES_CONFIG_KEY\)\)/);
     // the only field trusted from the request body is the propertyId used to look the record up
     expect(entrySource).toMatch(/const \{ propertyId \} = body/);
   });

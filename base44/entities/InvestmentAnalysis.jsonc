@@ -1,0 +1,26 @@
+{
+  "name": "InvestmentAnalysis",
+  "description": "Saved AI Investment Consultant analyses (annual lease / purchase). Written only by the ai-investment-consultant backend function via the service role; users read their own rows for later viewing.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "analysisType": { "type": "string", "enum": ["lease", "purchase"] },
+    "input": { "type": "object", "description": "The validated deal inputs the user provided (city, platform, rates, asking rent/price…)." },
+    "analysis": { "type": "object", "description": "Full analysis body: verdict, dealStrength, expectedNetRevenue, roiEstimate, rentPriceGap, negotiationProbability, counterOffer, risks, actions, narrative, disclaimer." },
+    "source": { "type": "string", "enum": ["ai", "fallback"] },
+    "plan": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "required": ["userId", "analysisType", "analysis", "createdAt"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": false,
+    "delete": false
+  }
+}
