@@ -73,6 +73,38 @@
     "competitor_data": {
       "type": "object",
       "title": "Competitor Data"
+    },
+    "platform_fee_rate": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "title": "Platform Fee Rate (0-1)",
+      "description": "Platform commission used for net-revenue math (PLATFORM_FEES_JSON override or bundled estimate)"
+    },
+    "platform_fee_estimated": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "title": "Platform Fee Estimated",
+      "description": "true when the fee rate is a bundled estimate rather than a confirmed config override"
+    },
+    "net_revenue_after_fees": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "title": "Net Revenue After Fees (SAR/month)",
+      "description": "Current monthly gross revenue minus the platform fee ONLY (operating costs excluded)"
+    },
+    "revenue_projection": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "title": "Revenue Projection",
+      "description": "Straight-line impact estimate: { currentGross, projectedGross, impactSar, impactPercent, currentNet, projectedNet, assumption }"
     }
   },
   "required": [
