@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { LayoutDashboard, Users, CreditCard, FileText, ScrollText, Shield, Building2, History, Download } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, FileText, ScrollText, Shield, ShieldAlert, Building2, History, Download } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useAuth } from "@/lib/AuthContext";
@@ -12,6 +12,7 @@ import AdminAuditLogs from "@/components/admin/AdminAuditLogs";
 import AdminProperties from "@/components/admin/AdminProperties";
 import AdminUserHistory from "@/components/admin/AdminUserHistory";
 import AdminReports from "@/components/admin/AdminReports";
+import AdminSecurityAlerts from "@/components/admin/AdminSecurityAlerts";
 
 const TABS = [
   { key: "overview", ar: "نظرة عامة", en: "Overview", Icon: LayoutDashboard },
@@ -21,6 +22,7 @@ const TABS = [
   { key: "history", ar: "سجل المستخدم", en: "User History", Icon: History },
   { key: "reports", ar: "تصدير التقارير", en: "Export Reports", Icon: Download },
   { key: "updates", ar: "التحديثات", en: "Site Updates", Icon: FileText },
+  { key: "security", ar: "تنبيهات الأمان", en: "Security Alerts", Icon: ShieldAlert },
   { key: "audit", ar: "سجل العمليات", en: "Audit Logs", Icon: ScrollText },
 ];
 
@@ -29,17 +31,19 @@ export default function AdminDashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [data, setData] = useState({ users: [], subscriptions: [], auditLogs: [], aiUsage: [] });
+  const [newAlertCount, setNewAlertCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const isRTL = lang === "ar";
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [usersRes, subsRes, auditRes, aiRes] = await Promise.allSettled([
+      const [usersRes, subsRes, auditRes, aiRes, secRes] = await Promise.allSettled([
         base44.functions.invoke("adminOperations", { action: "list_users" }),
         base44.functions.invoke("adminOperations", { action: "list_subscriptions" }),
         base44.functions.invoke("adminOperations", { action: "list_audit_logs", limit: 100 }),
         base44.entities.AiUsageLog.list("-created_date", 200),
+        base44.functions.invoke("securityMonitor", { action: "list_alerts", status: "new" }),
       ]);
 
       setData({
@@ -48,6 +52,7 @@ export default function AdminDashboard() {
         auditLogs: auditRes.status === "fulfilled" ? auditRes.value.data?.audit_logs || [] : [],
         aiUsage: aiRes.status === "fulfilled" ? aiRes.value || [] : [],
       });
+      setNewAlertCount(secRes.status === "fulfilled" ? secRes.value.data?.alerts?.length || 0 : 0);
     } catch {
       // errors handled by empty arrays
     } finally {
@@ -87,6 +92,11 @@ export default function AdminDashboard() {
                   >
                     <Icon size={16} strokeWidth={1.5} />
                     {isRTL ? tab.ar : tab.en}
+                    {tab.key === "security" && newAlertCount > 0 && (
+                      <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-medium">
+                        {newAlertCount}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -113,6 +123,7 @@ export default function AdminDashboard() {
               {activeTab === "subscriptions" && <AdminSubscriptions subscriptions={data.subscriptions} users={data.users} onRefresh={fetchAll} />}
               {activeTab === "history" && <AdminUserHistory users={data.users} />}
               {activeTab === "reports" && <AdminReports />}
+              {activeTab === "security" && <AdminSecurityAlerts />}
               {activeTab === "updates" && <AdminSiteUpdates />}
               {activeTab === "audit" && <AdminAuditLogs logs={data.auditLogs} />}
             </motion.div>
