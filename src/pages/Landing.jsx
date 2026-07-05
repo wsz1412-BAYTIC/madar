@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useAuth } from '@/lib/AuthContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
 import ComprehensiveFooter from '@/components/madar/ComprehensiveFooter';
 import PlatformLogos from '@/components/madar/PlatformLogos';
@@ -36,6 +37,9 @@ const estimateRent = (city, type, bedrooms) => marketData[city]?.[type]?.[bedroo
 export default function Landing() {
   const { t, lang, isRTL } = useLang();
   const { theme } = useTheme();
+  // Signed-in visitors must never be pitched "Start Free" — swap the public
+  // CTAs for dashboard/plan links.
+  const { isAuthenticated } = useAuth();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
   const heroRef = useRef(null);
@@ -122,8 +126,10 @@ export default function Landing() {
             transition={{ duration: 0.8, delay: 0.9 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link to="/signup" className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral">
-              <span className="relative z-10">{t('startFree')}</span>
+            <Link to={isAuthenticated ? '/dashboard' : '/signup'} className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral">
+              <span className="relative z-10">
+                {isAuthenticated ? (lang === 'ar' ? 'الانتقال إلى لوحة التحكم' : 'Go to Dashboard') : t('startFree')}
+              </span>
               <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
               <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </Link>
@@ -375,7 +381,7 @@ export default function Landing() {
             }`}>{t('pricingTitle')}</h2>
             <p className={`text-lg ${
               theme === 'dark' ? 'text-[#F7F5F0]/50' : 'text-[#0A0B10]/50'
-            }`}>{t('pricingSubtitle')}</p>
+            }`}>{isAuthenticated ? (lang === 'ar' ? 'قارن الباقات وطوّر اشتراكك في أي وقت' : 'Compare plans and upgrade anytime') : t('pricingSubtitle')}</p>
             <p className={`text-base mt-4 ${
               theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
             }`}>{lang === 'ar' ? '✨ تجربة مجانية لمدة 14 يوماً متضمنة في جميع الخطط' : '✨ 14-Day Free Trial Included in All Plans'}</p>
@@ -425,14 +431,14 @@ export default function Landing() {
                       </li>
                     ))}
                   </ul>
-                  <Link to="/signup" className={`block text-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                  <Link to={isAuthenticated ? '/billing' : '/signup'} className={`block text-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     plan.popular
                       ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white hover:shadow-lg hover:shadow-[#D95F3B]/30'
                       : theme === 'dark'
                         ? 'bg-white/[0.04] text-[#F7F5F0] border border-white/[0.06] hover:bg-white/10'
                         : 'bg-[#0A0B10]/5 text-[#0A0B10] border border-[#0A0B10]/10 hover:bg-[#0A0B10]/10'
                   }`}>
-                    {t('getStarted')}
+                    {isAuthenticated ? (lang === 'ar' ? 'إدارة الباقة' : 'Manage plan') : t('getStarted')}
                   </Link>
                 </div>
               </ScaleIn>

@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useLang } from '@/contexts/LanguageContext';
+import { useAuth } from '@/lib/AuthContext';
 import { FadeIn } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 
 export default function FinalCTA() {
   const { lang, isRTL } = useLang();
+  const { isAuthenticated } = useAuth();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
@@ -54,10 +56,14 @@ export default function FinalCTA() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            to="/signup"
+            to={isAuthenticated ? '/dashboard' : '/signup'}
             className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral"
           >
-            <span className="relative z-10">{lang === 'ar' ? 'ابدأ تجربة مجانية' : 'Start Free Trial'}</span>
+            <span className="relative z-10">
+              {isAuthenticated
+                ? (lang === 'ar' ? 'الانتقال إلى لوحة التحكم' : 'Go to Dashboard')
+                : (lang === 'ar' ? 'ابدأ تجربة مجانية' : 'Start Free Trial')}
+            </span>
             <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </Link>
