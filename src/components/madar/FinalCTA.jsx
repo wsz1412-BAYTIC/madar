@@ -8,7 +8,7 @@ import { ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 
 export default function FinalCTA() {
   const { lang, isRTL } = useLang();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, authChecked } = useAuth();
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
@@ -55,6 +55,9 @@ export default function FinalCTA() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {!authChecked ? (
+            <div aria-hidden="true" className="w-56 h-[56px] rounded-xl bg-white/10 animate-pulse" />
+          ) : (
           <Link
             to={isAuthenticated ? '/dashboard' : '/signup'}
             className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral"
@@ -67,6 +70,7 @@ export default function FinalCTA() {
             <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
             <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </Link>
+          )}
           <Link
             to="/calculator"
             className="px-8 py-4 text-[#F7F5F0] font-medium rounded-xl glass hover:bg-white/10 transition-all"
