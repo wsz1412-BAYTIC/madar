@@ -48,6 +48,26 @@
       "type": ["number", "null"],
       "description": "null when operatingCosts is missing on the property, so no break-even price could be computed"
     },
+    "recommendedPrice": {
+      "type": ["number", "null"],
+      "description": "Single deterministic price point (midpoint of min/max band); null when no band could be computed"
+    },
+    "platformFeeRate": {
+      "type": ["number", "null"],
+      "description": "0..1 platform commission used for net-revenue math (PLATFORM_FEES_JSON override or bundled estimate)"
+    },
+    "platformFeeEstimated": {
+      "type": ["boolean", "null"],
+      "description": "true when the fee rate is a bundled estimate rather than a confirmed config override"
+    },
+    "netRevenueAfterFees": {
+      "type": ["number", "null"],
+      "description": "Current monthly gross revenue minus the platform fee ONLY (operating costs excluded)"
+    },
+    "revenueProjection": {
+      "type": ["object", "null"],
+      "description": "Straight-line impact estimate of moving to recommendedPrice at unchanged occupancy: { currentGross, projectedGross, impactSar, impactPercent, currentNet, projectedNet, assumption }"
+    },
     "currency": {
       "type": "string",
       "default": "SAR"

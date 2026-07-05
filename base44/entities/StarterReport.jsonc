@@ -1,0 +1,24 @@
+{
+  "name": "StarterReport",
+  "description": "The once-only first/starting report for an account: all properties together, 3 total actions, portfolio revenue after platform fees. Written by the first-report backend function via the service role; regenerating requires an admin reset.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "report": { "type": "object", "description": "buildFirstReport() output (summary, 3 total actions, portfolio + fee breakdown + uplift estimate)." },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "resetAt": { "type": ["string", "null"], "format": "date-time", "description": "Set by an admin reset — a reset row no longer blocks regeneration." },
+    "resetByUserId": { "type": ["string", "null"] }
+  },
+  "required": ["userId", "report", "generatedAt"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": {
+      "$or": [
+        { "data.userId": "{{user.id}}" },
+        { "user_condition": { "role": "admin" } }
+      ]
+    },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": false
+  }
+}

@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Building2, BarChart3, DollarSign, Bell, Globe2,
   CalendarDays, Settings, CreditCard, Calculator, Link2, Gift,
   ShieldCheck, LogOut, ChevronLeft, ChevronRight, Menu, X, Globe, TrendingUp,
-  Sun, Moon, Monitor
+  Sun, Moon, Monitor, Briefcase
 } from 'lucide-react';
 
 // Theme control: Dark → Light → System cycle, shown in the sidebar footer on
@@ -21,6 +21,8 @@ const navItems = [
   { key: 'properties', path: '/properties', icon: Building2 },
   { key: 'analytics', path: '/analytics', icon: BarChart3 },
   { key: 'aiRecommendations', path: '/pricing-recommendations', icon: TrendingUp },
+  // Inline bilingual label: 'investmentConsultant' has no LanguageContext key.
+  { key: 'investmentConsultant', path: '/investment-consultant', icon: Briefcase, label: { en: 'Investment Consultant', ar: 'المستشار الاستثماري' } },
   { key: 'revenue', path: '/revenue', icon: DollarSign },
   { key: 'alerts', path: '/alerts', icon: Bell },
   { key: 'market', path: '/market', icon: Globe2 },
@@ -62,12 +64,14 @@ export default function Sidebar() {
 
   const isActive = (path) => location.pathname === path;
 
-  const NavLink = ({ item }) => (
+  const NavLink = ({ item }) => {
+    const label = item.label ? (lang === 'ar' ? item.label.ar : item.label.en) : t(item.key);
+    return (
     <Link
       to={item.path}
       onClick={() => setMobileOpen(false)}
       className="group relative block"
-      title={collapsed ? t(item.key) : undefined}
+      title={collapsed ? label : undefined}
     >
       <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-300 ${
         isActive(item.path)
@@ -82,10 +86,11 @@ export default function Sidebar() {
           />
         )}
         <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isActive(item.path) ? 'text-[#D95F3B]' : 'text-foreground/40 group-hover:text-foreground/70'}`} />
-        {!collapsed && <span className="truncate relative z-10">{t(item.key)}</span>}
+        {!collapsed && <span className="truncate relative z-10">{label}</span>}
       </div>
     </Link>
-  );
+    );
+  };
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
