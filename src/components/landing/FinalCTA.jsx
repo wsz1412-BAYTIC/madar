@@ -2,12 +2,17 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useAuth } from "@/lib/AuthContext";
 import { landingT } from "@/lib/landing-i18n";
 
 export default function FinalCTA() {
   const { lang } = useLanguage();
   const t = landingT[lang];
   const Arrow = lang === "ar" ? ArrowLeft : ArrowRight;
+  const { isAuthenticated, authChecked } = useAuth();
+
+  const showGuest = authChecked && !isAuthenticated;
+  const showUser = authChecked && isAuthenticated;
 
   return (
     <section className="relative overflow-hidden">
@@ -44,20 +49,33 @@ export default function FinalCTA() {
           {t["finalCta.subtitle"]}
         </motion.p>
 
+        {/* Three-state CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-10"
+          className="mt-10 min-h-[56px] flex items-center justify-center"
         >
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-[#FF6B4A] font-body font-bold text-sm md:text-base hover:bg-white/90 transition-all duration-300 shadow-2xl shadow-black/20"
-          >
-            {t["finalCta.button"]}
-            <Arrow size={20} />
-          </Link>
+          {!authChecked ? (
+            <div className="w-48 h-14 rounded-full bg-white/20 animate-pulse" />
+          ) : showUser ? (
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-[#FF6B4A] font-body font-bold text-sm md:text-base hover:bg-white/90 transition-all duration-300 shadow-2xl shadow-black/20"
+            >
+              {lang === "ar" ? "لوحة التحكم" : "Go to Dashboard"}
+              <Arrow size={20} />
+            </Link>
+          ) : showGuest ? (
+            <Link
+              to="/login?mode=signup"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-white text-[#FF6B4A] font-body font-bold text-sm md:text-base hover:bg-white/90 transition-all duration-300 shadow-2xl shadow-black/20"
+            >
+              {t["finalCta.button"]}
+              <Arrow size={20} />
+            </Link>
+          ) : null}
         </motion.div>
       </div>
     </section>

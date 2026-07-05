@@ -2,12 +2,17 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useAuth } from "@/lib/AuthContext";
 import { landingT } from "@/lib/landing-i18n";
 
 export default function Pricing() {
   const { lang } = useLanguage();
   const t = landingT[lang];
   const currency = t["pricing.currency"];
+  const { isAuthenticated, authChecked } = useAuth();
+
+  const showGuest = authChecked && !isAuthenticated;
+  const showUser = authChecked && isAuthenticated;
 
   const tiers = [
     {
@@ -120,16 +125,32 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <Link
-                to="/login"
-                className={`block text-center text-sm font-body font-medium px-6 py-3.5 rounded-full transition-all duration-300 ${
-                  tier.popular
-                    ? "bg-[#FF6B4A] text-white hover:bg-[#FF7D5C]"
-                    : "border border-[#1C1C20]/15 text-[#1C1C20] hover:bg-[#1C1C20]/5"
-                }`}
-              >
-                {t["pricing.cta"]}
-              </Link>
+              {/* Three-state CTA */}
+              {!authChecked ? (
+                <div className="h-12 rounded-full bg-[#1C1C20]/5 animate-pulse" />
+              ) : showUser ? (
+                <Link
+                  to="/billing"
+                  className={`block text-center text-sm font-body font-medium px-6 py-3.5 rounded-full transition-all duration-300 ${
+                    tier.popular
+                      ? "bg-[#FF6B4A] text-white hover:bg-[#FF7D5C]"
+                      : "border border-[#1C1C20]/15 text-[#1C1C20] hover:bg-[#1C1C20]/5"
+                  }`}
+                >
+                  {t["pricing.managePlan"]}
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`block text-center text-sm font-body font-medium px-6 py-3.5 rounded-full transition-all duration-300 ${
+                    tier.popular
+                      ? "bg-[#FF6B4A] text-white hover:bg-[#FF7D5C]"
+                      : "border border-[#1C1C20]/15 text-[#1C1C20] hover:bg-[#1C1C20]/5"
+                  }`}
+                >
+                  {t["pricing.cta"]}
+                </Link>
+              )}
             </motion.div>
           ))}
         </div>

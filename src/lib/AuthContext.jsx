@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
   const [authError, setAuthError] = useState(null);
 
   const checkAuth = useCallback(async () => {
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
+      setAuthChecked(true);
     }
   }, []);
 
@@ -59,6 +61,7 @@ export const AuthProvider = ({ children }) => {
       user,
       isAuthenticated,
       loading,
+      authChecked,
       authError,
       logout,
       navigateToLogin,

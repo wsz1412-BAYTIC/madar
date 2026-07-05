@@ -1,6 +1,6 @@
 export const LOGO_URL = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/888d74ebd_MADARMainsymbol.png";
 export const LOGO_URL_LIGHT = "https://media.base44.com/images/public/6a440c5bd1288d40c2b699ce/d1af3482b_IMG_7737.png";
-export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?w=1920&h=1080&fit=crop&q=80";
+export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1663900108404-a05e8bf82cda?w=1920&h=1080&fit=crop&q=80";
 
 export const landingT = {
   ar: {
@@ -15,6 +15,12 @@ export const landingT = {
     "hero.ctaPrimary": "ابدأ مجاناً",
     "hero.ctaSecondary": "اكتشف أكثر",
     "hero.partners": "يعمل بكفاءة مع :",
+    "hero.welcomeBack": "أهلًا بعودتك، {name}",
+    "hero.dashboard": "لوحة التحكم",
+    "hero.myProperties": "عقاراتي",
+    "hero.trustPlatforms": "3 منصات مدعومة",
+    "hero.trustCities": "+12 مدينة سعودية",
+    "hero.trustMinutes": "توصيات في دقائق",
 
     "stats.revenue": "متوسط زيادة الإيرادات",
     "stats.platforms": "منصات مدعومة",
@@ -52,6 +58,7 @@ export const landingT = {
     "pricing.popular": "الأكثر شيوعاً",
     "pricing.month": "/شهر",
     "pricing.cta": "ابدأ الآن",
+    "pricing.managePlan": "إدارة الباقة",
     "pricing.currency": "ر.س",
 
     "footer.tagline": "ذكاء التسعير العقاري للسعودية",
@@ -99,6 +106,12 @@ export const landingT = {
     "hero.ctaPrimary": "Start Free",
     "hero.ctaSecondary": "Discover More",
     "hero.partners": "Works seamlessly with:",
+    "hero.welcomeBack": "Welcome back, {name}",
+    "hero.dashboard": "Dashboard",
+    "hero.myProperties": "My properties",
+    "hero.trustPlatforms": "3 platforms supported",
+    "hero.trustCities": "12+ Saudi cities",
+    "hero.trustMinutes": "Recommendations in minutes",
 
     "stats.revenue": "Avg. revenue increase",
     "stats.platforms": "Platforms supported",
@@ -136,6 +149,7 @@ export const landingT = {
     "pricing.popular": "Most Popular",
     "pricing.month": "/mo",
     "pricing.cta": "Get Started",
+    "pricing.managePlan": "Manage plan",
     "pricing.currency": "SAR",
 
     "footer.tagline": "Real estate pricing intelligence for Saudi Arabia",

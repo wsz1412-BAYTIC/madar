@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Languages } from "lucide-react";
+import { Menu, X, Languages, User, LogOut, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useAuth } from "@/lib/AuthContext";
 import { landingT } from "@/lib/landing-i18n";
 import { MadarFullLogo } from "@/components/Logo";
 
@@ -10,6 +11,7 @@ export default function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang, toggleLang } = useLanguage();
+  const { isAuthenticated, authChecked, user, logout } = useAuth();
   const t = landingT[lang];
 
   useEffect(() => {
@@ -28,6 +30,10 @@ export default function LandingNavbar() {
     { label: t["nav.pricing"], action: () => scrollTo("pricing") },
     { label: t["nav.cities"], action: () => scrollTo("cities-anchor") },
   ];
+
+  const showGuest = authChecked && !isAuthenticated;
+  const showUser = authChecked && isAuthenticated;
+  const firstName = user?.full_name?.split(" ")[0] || "";
 
   return (
     <>
@@ -94,20 +100,54 @@ export default function LandingNavbar() {
                   {link.label}
                 </button>
               ))}
-              <Link
-                to="/login"
-                className="font-body text-base text-white/80 hover:text-white transition-colors"
-                onClick={() => setMenuOpen(false)}
-              >
-                {t["nav.login"]}
-              </Link>
-              <Link
-                to="/login"
-                className="text-sm font-medium px-6 py-3 rounded-full bg-[#F76C54] text-white text-center"
-                onClick={() => setMenuOpen(false)}
-              >
-                {t["nav.startFree"]}
-              </Link>
+
+              {/* Auth-aware menu actions */}
+              {!authChecked ? (
+                <div className="h-10 rounded-full bg-white/10 animate-pulse" />
+              ) : showUser ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <LayoutDashboard size={16} />
+                    {lang === "ar" ? "لوحة التحكم" : "Dashboard"}
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className="flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <User size={16} />
+                    {lang === "ar" ? `حسابي (${firstName})` : `Account (${firstName})`}
+                  </Link>
+                  <button
+                    onClick={() => { setMenuOpen(false); logout(); }}
+                    className="flex items-center gap-2 font-body text-base text-white/80 hover:text-white transition-colors text-left"
+                  >
+                    <LogOut size={16} />
+                    {lang === "ar" ? "تسجيل الخروج" : "Logout"}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="font-body text-base text-white/80 hover:text-white transition-colors"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t["nav.login"]}
+                  </Link>
+                  <Link
+                    to="/login?mode=signup"
+                    className="text-sm font-medium px-6 py-3 rounded-full bg-[#F76C54] text-white text-center"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t["nav.startFree"]}
+                  </Link>
+                </>
+              )}
             </motion.nav>
           </>
         )}
