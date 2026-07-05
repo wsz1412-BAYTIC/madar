@@ -1,0 +1,68 @@
+{
+  "name": "SiteUpdate",
+  "description": "User-facing product changelog entries \u2014 new features, improvements, and fixes shown on the updates page. Managed by admins only.",
+  "type": "object",
+  "properties": {
+    "title_ar": {
+      "type": "string",
+      "title": "Title (Arabic)"
+    },
+    "title_en": {
+      "type": "string",
+      "title": "Title (English)"
+    },
+    "description_ar": {
+      "type": "string",
+      "title": "Description (Arabic)"
+    },
+    "description_en": {
+      "type": "string",
+      "title": "Description (English)"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "feature",
+        "improvement",
+        "fix",
+        "announcement"
+      ],
+      "title": "Update Type",
+      "default": "feature"
+    },
+    "is_published": {
+      "type": "boolean",
+      "title": "Published",
+      "default": true
+    }
+  },
+  "required": [
+    "title_ar",
+    "title_en",
+    "date",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
