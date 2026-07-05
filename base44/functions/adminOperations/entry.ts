@@ -149,6 +149,149 @@ Deno.serve(async (req) => {
         return Response.json({ audit_logs: logs });
       }
 
+      // ── All user properties (platform-wide) ──
+      case 'list_all_properties': {
+        const limit = body.limit || 500;
+        const props = await sr.entities.UserProperty.list('-created_date', limit);
+        const userIds = [...new Set(props.map(p => p.created_by_id).filter(Boolean))];
+        const userMap = {};
+        for (const uid of userIds) {
+          try {
+            const u = await sr.entities.User.get(uid);
+            if (u) userMap[uid] = { full_name: u.full_name, email: u.email };
+          } catch { /* skip missing */ }
+        }
+        await logAction(null, 'UserProperty', 'admin_data_access', null, null, 'Listed all user properties');
+        return Response.json({ properties: props, userMap });
+      }
+
+      // ── Toggle property active state ──
+      case 'toggle_property_active': {
+        const { property_id, is_active } = body;
+        if (!property_id) return Response.json({ error: 'property_id required' }, { status: 400 });
+        const prop = await sr.entities.UserProperty.get(property_id);
+        if (!prop) return Response.json({ error: 'Property not found' }, { status: 404 });
+        const prev = { is_active: prop.is_active };
+        const updated = await sr.entities.UserProperty.update(property_id, { is_active });
+        await logAction(property_id, 'UserProperty', 'admin_data_modification', prev, { is_active }, `Property ${is_active ? 'activated' : 'deactivated'} by admin`);
+        return Response.json({ property: updated });
+      }
+
+      // ── Delete a property ──
+      case 'delete_property': {
+        const { property_id, reason } = body;
+        if (!property_id) return Response.json({ error: 'property_id required' }, { status: 400 });
+        const prop = await sr.entities.UserProperty.get(property_id);
+        if (!prop) return Response.json({ error: 'Property not found' }, { status: 404 });
+        const prev = { property_name: prop.property_name, city: prop.city };
+        await sr.entities.UserProperty.delete(property_id);
+        await logAction(property_id, 'UserProperty', 'admin_data_modification', prev, null, reason || 'Property deleted by admin');
+        return Response.json({ success: true });
+      }
+
+      // ── Full user history / activity timeline ──
+      case 'get_user_history': {
+        const { target_user_id } = body;
+        if (!target_user_id) return Response.json({ error: 'target_user_id required' }, { status: 400 });
+
+        const [props, recs, perfs, consents, aiLogs, auditLogs] = await Promise.allSettled([
+          sr.entities.UserProperty.filter({ created_by_id: target_user_id }),
+          sr.entities.PriceRecommendation.filter({ created_by_id: target_user_id }),
+          sr.entities.PropertyPerformance.filter({ created_by_id: target_user_id }),
+          sr.entities.ConsentRecord.filter({ userId: target_user_id }),
+          sr.entities.AiUsageLog.filter({ userId: target_user_id }),
+          sr.entities.AuditLog.filter({ acting_user_id: target_user_id }),
+        ]);
+
+        const safe = (r, fallback = []) => r.status === 'fulfilled' ? (r.value || fallback) : fallback;
+
+        const events = [];
+
+        // Properties
+        safe(props).forEach((p) => {
+          events.push({
+            type: 'property',
+            date: p.created_date,
+            title: `Property added: ${p.property_name || p.city}`,
+            details: { city: p.city, platform: p.platform, price: p.price, is_active: p.is_active },
+            id: p.id,
+          });
+        });
+
+        // Recommendations
+        safe(recs).forEach((r) => {
+          events.push({
+            type: 'recommendation',
+            date: r.created_date,
+            title: `Price recommendation: ${r.recommended_price} SAR`,
+            details: { status: r.status, confidence: r.confidence_score, current: r.current_price },
+            id: r.id,
+          });
+        });
+
+        // Performance
+        safe(perfs).forEach((p) => {
+          events.push({
+            type: 'performance',
+            date: p.created_date,
+            title: `Performance recorded: ${p.period_start} → ${p.period_end}`,
+            details: { occupancy: p.occupancy_rate, adr: p.adr, revenue: p.total_revenue },
+            id: p.id,
+          });
+        });
+
+        // Consents
+        safe(consents).forEach((c) => {
+          events.push({
+            type: 'consent',
+            date: c.consentedAt || c.created_date,
+            title: c.withdrawn ? `Consent withdrawn: ${c.policyKey}` : `Consent given: ${c.policyKey}`,
+            details: { version: c.policyVersion, source: c.source },
+            id: c.id,
+          });
+        });
+
+        // AI usage
+        safe(aiLogs).forEach((a) => {
+          events.push({
+            type: 'ai_usage',
+            date: a.createdAt || a.created_date,
+            title: `AI call: ${a.functionName}`,
+            details: { status: a.status, plan: a.plan, model: a.model, detail: a.detail },
+            id: a.id,
+          });
+        });
+
+        // Audit actions
+        safe(auditLogs).forEach((l) => {
+          events.push({
+            type: 'audit',
+            date: l.created_date,
+            title: `Admin action: ${l.action}`,
+            details: { entity: l.target_entity, notes: l.notes },
+            id: l.id,
+          });
+        });
+
+        // Sort newest first
+        events.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+        const targetUser = await sr.entities.User.get(target_user_id).catch(() => null);
+
+        return Response.json({
+          user: targetUser ? { id: targetUser.id, full_name: targetUser.full_name, email: targetUser.email, role: targetUser.role, created_date: targetUser.created_date } : null,
+          events,
+          counts: {
+            properties: safe(props).length,
+            recommendations: safe(recs).length,
+            performance: safe(perfs).length,
+            consents: safe(consents).length,
+            ai_calls: safe(aiLogs).length,
+            admin_actions: safe(auditLogs).length,
+          },
+        });
+      }
+
       default:
         return Response.json({ error: 'Unknown action: ' + action }, { status: 400 });
     }
