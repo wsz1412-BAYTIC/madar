@@ -292,6 +292,51 @@ Deno.serve(async (req) => {
         });
       }
 
+      // ── Export financial & investment reports ──
+      case 'export_reports': {
+        const reportTypes = body.report_types || ['financial', 'investment', 'subscriptions', 'ai_usage'];
+
+        const fetchers = {};
+        if (reportTypes.includes('financial')) {
+          fetchers.recommendations = sr.entities.PriceRecommendation.list('-created_date', 500);
+          fetchers.performance = sr.entities.PropertyPerformance.list('-created_date', 500);
+        }
+        if (reportTypes.includes('investment')) {
+          fetchers.investments = sr.entities.InvestmentAnalysis.list('-created_date', 500);
+        }
+        if (reportTypes.includes('subscriptions')) {
+          fetchers.subscriptions = sr.entities.UserSubscription.list();
+        }
+        if (reportTypes.includes('ai_usage')) {
+          fetchers.aiUsage = sr.entities.AiUsageLog.list('-created_date', 1000);
+        }
+
+        const entries = Object.entries(fetchers);
+        const results = await Promise.allSettled(entries.map(([, p]) => p));
+        const data = {};
+        entries.forEach(([key], i) => {
+          data[key] = results[i].status === 'fulfilled' ? (results[i].value || []) : [];
+        });
+
+        // Resolve owner names
+        const ownerIds = new Set();
+        (data.recommendations || []).forEach((r) => { if (r.created_by_id) ownerIds.add(r.created_by_id); });
+        (data.performance || []).forEach((p) => { if (p.created_by_id) ownerIds.add(p.created_by_id); });
+        (data.investments || []).forEach((a) => { if (a.userId) ownerIds.add(a.userId); });
+        (data.aiUsage || []).forEach((a) => { if (a.userId) ownerIds.add(a.userId); });
+
+        const userMap = {};
+        for (const uid of ownerIds) {
+          try {
+            const u = await sr.entities.User.get(uid);
+            if (u) userMap[uid] = { full_name: u.full_name, email: u.email };
+          } catch { /* skip */ }
+        }
+
+        await logAction(null, 'Report', 'admin_data_access', null, null, `Exported reports: ${reportTypes.join(', ')}`);
+        return Response.json({ data, userMap, generated_at: new Date().toISOString() });
+      }
+
       default:
         return Response.json({ error: 'Unknown action: ' + action }, { status: 400 });
     }

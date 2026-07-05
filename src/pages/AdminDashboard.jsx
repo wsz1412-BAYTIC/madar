@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { LayoutDashboard, Users, CreditCard, FileText, ScrollText, Shield, Building2, History } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, FileText, ScrollText, Shield, Building2, History, Download } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useAuth } from "@/lib/AuthContext";
@@ -11,6 +11,7 @@ import AdminSiteUpdates from "@/components/admin/AdminSiteUpdates";
 import AdminAuditLogs from "@/components/admin/AdminAuditLogs";
 import AdminProperties from "@/components/admin/AdminProperties";
 import AdminUserHistory from "@/components/admin/AdminUserHistory";
+import AdminReports from "@/components/admin/AdminReports";
 
 const TABS = [
   { key: "overview", ar: "نظرة عامة", en: "Overview", Icon: LayoutDashboard },
@@ -18,6 +19,7 @@ const TABS = [
   { key: "properties", ar: "العقارات", en: "Properties", Icon: Building2 },
   { key: "subscriptions", ar: "الاشتراكات", en: "Subscriptions", Icon: CreditCard },
   { key: "history", ar: "سجل المستخدم", en: "User History", Icon: History },
+  { key: "reports", ar: "تصدير التقارير", en: "Export Reports", Icon: Download },
   { key: "updates", ar: "التحديثات", en: "Site Updates", Icon: FileText },
   { key: "audit", ar: "سجل العمليات", en: "Audit Logs", Icon: ScrollText },
 ];
@@ -110,6 +112,7 @@ export default function AdminDashboard() {
               {activeTab === "properties" && <AdminProperties />}
               {activeTab === "subscriptions" && <AdminSubscriptions subscriptions={data.subscriptions} users={data.users} onRefresh={fetchAll} />}
               {activeTab === "history" && <AdminUserHistory users={data.users} />}
+              {activeTab === "reports" && <AdminReports />}
               {activeTab === "updates" && <AdminSiteUpdates />}
               {activeTab === "audit" && <AdminAuditLogs logs={data.auditLogs} />}
             </motion.div>
