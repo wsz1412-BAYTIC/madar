@@ -129,19 +129,17 @@ export default function SmartCoachWidget() {
       {/* Floating Icon */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed z-40 w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center ${
-          theme === 'dark'
-            ? 'bg-primary text-white hover:bg-primary/90'
-            : 'bg-primary text-white hover:bg-primary/90'
-        }`}
+        aria-label={lang === 'ar' ? 'المساعد الذكي' : 'AI assistant'}
+        aria-expanded={isOpen}
+        className="fixed z-40 w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center bg-primary text-white hover:bg-primary/90"
         style={{
-          [isRTL ? 'left' : 'right']: '1.5rem',
-          bottom: '1.5rem'
+          [isRTL ? 'left' : 'right']: '1.25rem',
+          bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))'
         }}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5" />
       </motion.button>
 
       {/* Chat Panel */}
@@ -152,15 +150,15 @@ export default function SmartCoachWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className={`fixed z-40 w-96 max-h-[600px] rounded-2xl shadow-2xl flex flex-col overflow-hidden ${
+            className={`fixed z-40 w-[min(24rem,calc(100vw-2rem))] rounded-2xl shadow-2xl flex flex-col overflow-hidden ${
               theme === 'dark'
                 ? 'bg-card border border-foreground/[0.06]'
                 : 'bg-white border border-[#0A0B10]/[0.06]'
             }`}
             style={{
-              [isRTL ? 'left' : 'right']: '1.5rem',
-              bottom: isMinimized ? '5.5rem' : '5.5rem',
-              maxHeight: isMinimized ? '52px' : '600px'
+              [isRTL ? 'left' : 'right']: '1.25rem',
+              bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))',
+              maxHeight: isMinimized ? '52px' : 'min(37.5rem, calc(100vh - 8rem))'
             }}
           >
             {/* Header */}
