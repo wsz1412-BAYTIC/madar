@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useToast } from "@/components/ui/use-toast";
 import { downloadCSV, downloadJSON, printReport } from "@/lib/reportExport";
+import AdminCharts from "@/components/admin/AdminCharts";
 
 const REPORTS = [
   {
@@ -263,6 +264,21 @@ export default function AdminReports() {
         </h1>
         <p className="font-body text-sm text-muted-foreground">
           {t("صدّر تقارير الأداء المالي والاستثمار إلى ملفات جاهزة للمشاركة مع فريق العمل", "Export financial & investment reports to shareable files for your team")}
+        </p>
+      </div>
+
+      {/* Charts section */}
+      <AdminCharts />
+
+      <div className="hairline my-2" />
+
+      {/* Section heading for exports */}
+      <div>
+        <h2 className="font-body text-sm font-medium text-foreground mb-1">
+          {t("تصدير الملفات", "File Exports")}
+        </h2>
+        <p className="font-body text-xs text-muted-foreground">
+          {t("صدّر البيانات الخام بصيغ CSV و JSON و PDF", "Export raw data as CSV, JSON, and PDF")}
         </p>
       </div>
 
