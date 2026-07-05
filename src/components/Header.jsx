@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Languages, LogOut, Sun, Moon, Monitor } from "lucide-react";
+import { Menu, X, Languages, LogOut, Sun, Moon, Monitor, Shield } from "lucide-react";
 import { useTheme } from "@/lib/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -15,7 +15,7 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const { lang, toggleLang, t } = useLanguage();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { theme, preference, setPreference } = useTheme();
 
   const themeIcon = preference === "system" ? Monitor : theme === "dark" ? Moon : Sun;
@@ -49,6 +49,7 @@ export default function Header() {
     { label: t("nav.assistant"), path: "/assistant" },
     { label: t("nav.commits"), path: "/commits" },
     { label: t("nav.settings"), path: "/settings" },
+    ...(user?.role === "admin" ? [{ label: lang === "ar" ? "الإدارة" : "Admin", path: "/admin", icon: Shield }] : []),
   ];
 
   const isHomepage = location.pathname === "/";

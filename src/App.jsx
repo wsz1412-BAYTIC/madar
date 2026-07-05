@@ -28,6 +28,7 @@ import PricingRecommendations from "./pages/PricingRecommendations";
 import CommitHistory from "./pages/CommitHistory";
 import Settings from "./pages/Settings";
 import InvestmentConsultant from "./pages/InvestmentConsultant";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function LoadingScreen() {
   return (
@@ -70,6 +71,7 @@ function MadarRoutes() {
         <Route path="/commits" element={<ProtectedRoute><CommitHistory /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="/investment-consultant" element={<ProtectedRoute><InvestmentConsultant /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
 
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/privacy" element={<Privacy />} />
