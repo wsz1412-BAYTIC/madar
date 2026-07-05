@@ -268,10 +268,10 @@ export default function InvestmentConsultant() {
             const verdict = VERDICT_META[result.verdict] || VERDICT_META.renegotiate;
             const VerdictIcon = verdict.Icon;
             return (
-              <div className={`flex items-center gap-4 p-6 rounded-2xl border ${verdict.border} ${verdict.bg}`}>
-                <VerdictIcon size={32} strokeWidth={1.5} className={`${verdict.text} flex-shrink-0`} />
+              <div className={`flex items-center gap-4 p-5 sm:p-6 rounded-2xl border ${verdict.border} ${verdict.bg}`}>
+                <VerdictIcon size={28} strokeWidth={1.5} className={`${verdict.text} flex-shrink-0`} />
                 <div>
-                  <p className={`font-display text-lg font-light ${verdict.text}`}>
+                  <p className={`font-display text-base sm:text-lg font-light ${verdict.text}`}>
                     {lang === "ar" ? verdict.ar : verdict.en}
                   </p>
                   <p className="font-body text-xs text-muted-foreground mt-1">
@@ -283,40 +283,51 @@ export default function InvestmentConsultant() {
             );
           })()}
 
-          {/* Key metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="p-4 border border-border/50 rounded-2xl">
-              <p className="font-body text-xs text-muted-foreground mb-1">{lang === "ar" ? "صافي الإيراد السنوي" : "Annual net revenue"}</p>
-              <p className="font-display text-xl font-light" dir="ltr">{fmt(result.expectedNetRevenue?.annual)} {lang === "ar" ? "ر.س" : "SAR"}</p>
-              {result.expectedNetRevenue?.feeEstimated && (
-                <span className="font-body text-[10px] text-muted-foreground/60">{lang === "ar" ? "تقديري" : "estimated"}</span>
-              )}
+          {/* Investment data — clean professional grid, mobile-first */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {/* Annual net revenue */}
+            <div className="p-4 sm:p-5 border border-border/50 rounded-xl bg-card flex flex-col justify-between min-h-[100px]">
+              <p className="font-body text-[11px] sm:text-xs tracking-label uppercase text-muted-foreground mb-2">{lang === "ar" ? "صافي الإيراد السنوي" : "Annual net revenue"}</p>
+              <div>
+                <p className="font-display text-lg sm:text-xl font-light" dir="ltr">{fmt(result.expectedNetRevenue?.annual)} <span className="text-sm text-muted-foreground">{lang === "ar" ? "ر.س" : "SAR"}</span></p>
+                {result.expectedNetRevenue?.feeEstimated && (
+                  <span className="font-body text-[10px] text-muted-foreground/60">{lang === "ar" ? "تقديري" : "estimated"}</span>
+                )}
+              </div>
             </div>
-            <div className="p-4 border border-border/50 rounded-2xl">
-              <p className="font-body text-xs text-muted-foreground mb-1">{lang === "ar" ? "صافي الإيراد الشهري" : "Monthly net"}</p>
-              <p className="font-display text-xl font-light" dir="ltr">{fmt(result.expectedNetRevenue?.monthly)} {lang === "ar" ? "ر.س" : "SAR"}</p>
+
+            {/* Monthly net */}
+            <div className="p-4 sm:p-5 border border-border/50 rounded-xl bg-card flex flex-col justify-between min-h-[100px]">
+              <p className="font-body text-[11px] sm:text-xs tracking-label uppercase text-muted-foreground mb-2">{lang === "ar" ? "صافي الإيراد الشهري" : "Monthly net"}</p>
+              <p className="font-display text-lg sm:text-xl font-light" dir="ltr">{fmt(result.expectedNetRevenue?.monthly)} <span className="text-sm text-muted-foreground">{lang === "ar" ? "ر.س" : "SAR"}</span></p>
             </div>
+
+            {/* ROI */}
             {result.roiEstimate !== null && (
-              <div className="p-4 border border-border/50 rounded-2xl">
-                <p className="font-body text-xs text-muted-foreground mb-1">{lang === "ar" ? "العائد المتوقع" : "ROI estimate"}</p>
-                <p className="font-display text-xl font-light" dir="ltr">{fmt(result.roiEstimate)}%</p>
+              <div className="p-4 sm:p-5 border border-border/50 rounded-xl bg-card flex flex-col justify-between min-h-[100px]">
+                <p className="font-body text-[11px] sm:text-xs tracking-label uppercase text-muted-foreground mb-2">{lang === "ar" ? "العائد المتوقع" : "ROI estimate"}</p>
+                <p className="font-display text-lg sm:text-xl font-light" dir="ltr">{fmt(result.roiEstimate)}%</p>
               </div>
             )}
+
+            {/* Counter-offer */}
             {result.counterOffer !== null && (
-              <div className="p-4 border border-border/50 rounded-2xl">
-                <p className="font-body text-xs text-muted-foreground mb-1">{lang === "ar" ? "عرض مضاد مقترح" : "Suggested counter-offer"}</p>
-                <p className="font-display text-xl font-light" dir="ltr">{fmt(result.counterOffer)} {lang === "ar" ? "ر.س" : "SAR"}</p>
+              <div className="p-4 sm:p-5 border border-border/50 rounded-xl bg-card flex flex-col justify-between min-h-[100px]">
+                <p className="font-body text-[11px] sm:text-xs tracking-label uppercase text-muted-foreground mb-2">{lang === "ar" ? "عرض مضاد مقترح" : "Suggested counter-offer"}</p>
+                <p className="font-display text-lg sm:text-xl font-light" dir="ltr">{fmt(result.counterOffer)} <span className="text-sm text-muted-foreground">{lang === "ar" ? "ر.س" : "SAR"}</span></p>
               </div>
             )}
-            <div className="p-4 border border-border/50 rounded-2xl">
-              <p className="font-body text-xs text-muted-foreground mb-1">{lang === "ar" ? "احتمالية التفاوض" : "Negotiation probability"}</p>
-              <p className="font-display text-xl font-light" dir="ltr">{fmt(result.negotiationProbability)}%</p>
+
+            {/* Negotiation probability */}
+            <div className="p-4 sm:p-5 border border-border/50 rounded-xl bg-card flex flex-col justify-between min-h-[100px]">
+              <p className="font-body text-[11px] sm:text-xs tracking-label uppercase text-muted-foreground mb-2">{lang === "ar" ? "احتمالية التفاوض" : "Negotiation probability"}</p>
+              <p className="font-display text-lg sm:text-xl font-light" dir="ltr">{fmt(result.negotiationProbability)}%</p>
             </div>
           </div>
 
           {/* Narrative */}
           {result.strNarrativeAr && (
-            <div className="p-6 border border-border/50 rounded-2xl">
+            <div className="p-5 sm:p-6 border border-border/50 rounded-xl">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles size={16} strokeWidth={1.5} className="text-accent" />
                 <p className="font-body text-xs tracking-label uppercase text-muted-foreground">
@@ -329,7 +340,7 @@ export default function InvestmentConsultant() {
 
           {/* Risks */}
           {result.risks?.length > 0 && (
-            <div className="p-6 border border-border/50 rounded-2xl">
+            <div className="p-5 sm:p-6 border border-border/50 rounded-xl">
               <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-4">
                 {lang === "ar" ? "أبرز المخاطر" : "Top Risks"}
               </p>
@@ -337,7 +348,7 @@ export default function InvestmentConsultant() {
                 {result.risks.map((risk, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="w-6 h-6 rounded-full bg-destructive/10 text-destructive flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">{i + 1}</span>
-                    <p className="font-body text-sm text-foreground/80">{lang === "ar" ? risk.ar : risk.en}</p>
+                    <p className="font-body text-sm text-foreground/80 leading-relaxed">{lang === "ar" ? risk.ar : risk.en}</p>
                   </li>
                 ))}
               </ol>
@@ -346,7 +357,7 @@ export default function InvestmentConsultant() {
 
           {/* Actions */}
           {result.actions?.length > 0 && (
-            <div className="p-6 border border-border/50 rounded-2xl">
+            <div className="p-5 sm:p-6 border border-border/50 rounded-xl">
               <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-4">
                 {lang === "ar" ? "إجراءات مقترحة" : "Recommended Actions"}
               </p>
@@ -354,7 +365,7 @@ export default function InvestmentConsultant() {
                 {result.actions.map((action, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="w-6 h-6 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">{i + 1}</span>
-                    <p className="font-body text-sm text-foreground/80">{lang === "ar" ? action.ar : action.en}</p>
+                    <p className="font-body text-sm text-foreground/80 leading-relaxed">{lang === "ar" ? action.ar : action.en}</p>
                   </li>
                 ))}
               </ol>
