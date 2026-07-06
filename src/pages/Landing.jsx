@@ -15,9 +15,9 @@ import HowItWorks from '@/components/madar/HowItWorks';
 import SupportedCities from '@/components/madar/SupportedCities';
 import Testimonials from '@/components/madar/Testimonials';
 import FinalCTA from '@/components/madar/FinalCTA';
-import { FadeIn, ScaleIn, StaggerContainer, StaggerItem, ParallaxImage } from '@/components/madar/Motion';
+import { FadeIn, ScaleIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Zap, RefreshCw, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Shield, DollarSign } from 'lucide-react';
+import { Zap, TrendingUp, BarChart3, ArrowRight, ArrowLeft, Check, Star, Sparkles, Shield, DollarSign } from 'lucide-react';
 
 const plans = [
   { key: 'free', price: 0, features: { en: ['1 property', 'Basic pricing insights', 'Community support'], ar: ['عقار واحد', 'تحليلات تسعير أساسية', 'دعم المجتمع'] } },
@@ -38,8 +38,11 @@ export default function Landing() {
   const { t, lang, isRTL } = useLang();
   const { theme } = useTheme();
   // Signed-in visitors must never be pitched "Start Free" — swap the public
-  // CTAs for dashboard/plan links.
-  const { isAuthenticated } = useAuth();
+  // CTAs for dashboard/account links. Until the session check completes
+  // (authChecked), CTAs render as neutral placeholders so a logged-in user
+  // on a slow connection never sees a guest pitch flash by.
+  const { isAuthenticated, authChecked, user } = useAuth();
+  const firstName = (user?.full_name || '').trim().split(/\s+/)[0] || null;
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
   const heroRef = useRef(null);
@@ -76,12 +79,17 @@ export default function Landing() {
       <section ref={heroRef} className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?w=1920&h=1080&fit=crop&q=80"
-            alt="Jeddah corniche at night"
+            src="https://images.unsplash.com/photo-1578895101408-1a36b834405b?w=2400&h=1350&fit=crop&q=85"
+            alt={lang === 'ar' ? 'أفق الرياض عند الغروب' : 'Riyadh skyline at dusk'}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#05070d]/80 via-[#0A0B10]/50 to-[#F2EFE8]" />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#000b1e]/70 via-transparent to-transparent" />
+          {/* Cinematic layered overlay — legible in both themes, warmer at the base */}
+          <div className={`absolute inset-0 bg-gradient-to-b ${
+            theme === 'dark'
+              ? 'from-[#05070d]/85 via-[#0A0B10]/55 to-[#0A0B10]'
+              : 'from-[#05070d]/75 via-[#0A0B10]/40 to-white'
+          }`} />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#000b1e]/70 via-transparent to-[#D95F3B]/10" />
         </motion.div>
 
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -120,40 +128,76 @@ export default function Landing() {
             {t('heroDesc')}
           </motion.p>
 
+          {/* CTA block — three states: checking (neutral), guest, signed-in.
+              A logged-in user must NEVER see the guest "Start Free" pitch. */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link to={isAuthenticated ? '/dashboard' : '/signup'} className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral">
-              <span className="relative z-10">
-                {isAuthenticated ? (lang === 'ar' ? 'الانتقال إلى لوحة التحكم' : 'Go to Dashboard') : t('startFree')}
-              </span>
-              <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-            </Link>
-            <a href="#pricing" className={`px-8 py-4 font-medium rounded-xl transition-all ${
-              theme === 'dark'
-                ? 'text-[#F7F5F0] glass hover:bg-white/10'
-                : 'text-[#0A0B10] bg-[#0A0B10]/5 border border-[#0A0B10]/10 hover:bg-[#0A0B10]/10'
-            }`}>
-              {t('viewPricing')}
-            </a>
+            {!authChecked ? (
+              <>
+                <div aria-hidden="true" className="w-48 h-[56px] rounded-xl bg-white/10 animate-pulse" />
+                <div aria-hidden="true" className="w-40 h-[56px] rounded-xl bg-white/5 animate-pulse" />
+              </>
+            ) : isAuthenticated ? (
+              <>
+                <Link to="/dashboard" className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral">
+                  <span className="relative z-10">
+                    {firstName
+                      ? (lang === 'ar' ? `أهلًا بعودتك ${firstName} — لوحة التحكم` : `Welcome back, ${firstName} — Dashboard`)
+                      : (lang === 'ar' ? 'الانتقال إلى لوحة التحكم' : 'Go to Dashboard')}
+                  </span>
+                  <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                </Link>
+                <Link to="/properties" className={`px-8 py-4 font-medium rounded-xl transition-all ${
+                  theme === 'dark'
+                    ? 'text-[#F7F5F0] glass hover:bg-white/10'
+                    : 'text-[#0A0B10] bg-[#0A0B10]/5 border border-[#0A0B10]/10 hover:bg-[#0A0B10]/10'
+                }`}>
+                  {lang === 'ar' ? 'عقاراتي' : 'My properties'}
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/signup" className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral">
+                  <span className="relative z-10">{t('startFree')}</span>
+                  <Arrow className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                </Link>
+                <a href="#pricing" className={`px-8 py-4 font-medium rounded-xl transition-all ${
+                  theme === 'dark'
+                    ? 'text-[#F7F5F0] glass hover:bg-white/10'
+                    : 'text-[#0A0B10] bg-[#0A0B10]/5 border border-[#0A0B10]/10 hover:bg-[#0A0B10]/10'
+                }`}>
+                  {t('viewPricing')}
+                </a>
+              </>
+            )}
           </motion.div>
 
+          {/* Trust strip: stars + neutral platform/coverage stats (no revenue claims) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.2 }}
-            className={`mt-10 flex items-center justify-center gap-2 text-sm ${
+            className={`mt-10 flex flex-col items-center gap-4 text-sm ${
               theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
             }`}
           >
-            <div className="flex">
-              {[1,2,3,4,5].map(i => <Star key={i} className="w-3.5 h-3.5 text-[#C8972A] fill-[#C8972A]" />)}
+            <div className="flex items-center gap-2">
+              <div className="flex">
+                {[1,2,3,4,5].map(i => <Star key={i} className="w-3.5 h-3.5 text-[#C8972A] fill-[#C8972A]" />)}
+              </div>
+              {t('trustedBy')}
             </div>
-            {t('trustedBy')}
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs nums">
+              <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-[#C8972A]" />{lang === 'ar' ? '3 منصات مدعومة' : '3 platforms supported'}</span>
+              <span className="flex items-center gap-1.5"><BarChart3 className="w-3.5 h-3.5 text-[#C8972A]" />{lang === 'ar' ? '12+ مدينة سعودية' : '12+ Saudi cities'}</span>
+              <span className="flex items-center gap-1.5"><Zap className="w-3.5 h-3.5 text-[#C8972A]" />{lang === 'ar' ? 'توصيات خلال دقائق' : 'Recommendations in minutes'}</span>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -431,15 +475,19 @@ export default function Landing() {
                       </li>
                     ))}
                   </ul>
-                  <Link to={isAuthenticated ? '/billing' : '/signup'} className={`block text-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                    plan.popular
-                      ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white hover:shadow-lg hover:shadow-[#D95F3B]/30'
-                      : theme === 'dark'
-                        ? 'bg-white/[0.04] text-[#F7F5F0] border border-white/[0.06] hover:bg-white/10'
-                        : 'bg-[#0A0B10]/5 text-[#0A0B10] border border-[#0A0B10]/10 hover:bg-[#0A0B10]/10'
-                  }`}>
-                    {isAuthenticated ? (lang === 'ar' ? 'إدارة الباقة' : 'Manage plan') : t('getStarted')}
-                  </Link>
+                  {!authChecked ? (
+                    <div aria-hidden="true" className={`h-11 rounded-xl animate-pulse ${theme === 'dark' ? 'bg-white/[0.06]' : 'bg-black/[0.05]'}`} />
+                  ) : (
+                    <Link to={isAuthenticated ? '/billing' : '/signup'} className={`block text-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      plan.popular
+                        ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white hover:shadow-lg hover:shadow-[#D95F3B]/30'
+                        : theme === 'dark'
+                          ? 'bg-white/[0.04] text-[#F7F5F0] border border-white/[0.06] hover:bg-white/10'
+                          : 'bg-[#0A0B10]/5 text-[#0A0B10] border border-[#0A0B10]/10 hover:bg-[#0A0B10]/10'
+                    }`}>
+                      {isAuthenticated ? (lang === 'ar' ? 'إدارة الباقة' : 'Manage plan') : t('getStarted')}
+                    </Link>
+                  )}
                 </div>
               </ScaleIn>
             ))}
