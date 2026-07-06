@@ -43,6 +43,7 @@ import SubscriptionPolicy from '@/pages/SubscriptionPolicy';
 import AcceptableUsePolicy from '@/pages/AcceptableUsePolicy';
 import IPTrademark from '@/pages/IPTrademark';
 import ThirdPartyDisclaimer from '@/pages/ThirdPartyDisclaimer';
+import Accessibility from '@/pages/Accessibility';
 import HowToUseMadar from '@/pages/HowToUseMadar';
 import HelpCenter from '@/pages/HelpCenter';
 import Reports from '@/pages/Reports';
@@ -81,6 +82,7 @@ const AuthenticatedApp = () => {
       <Route path="/aup" element={<AcceptableUsePolicy />} />
       <Route path="/ip-trademark" element={<IPTrademark />} />
       <Route path="/third-party" element={<ThirdPartyDisclaimer />} />
+      <Route path="/accessibility" element={<Accessibility />} />
       <Route path="/how-to-use" element={<HowToUseMadar />} />
       <Route path="/help" element={<HelpCenter />} />
       <Route path="/pricing" element={<PricingPage />} />
