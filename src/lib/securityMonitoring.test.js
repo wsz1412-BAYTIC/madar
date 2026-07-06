@@ -5,7 +5,7 @@ import {
   detectRapidAiUsage, detectRepeatedFailures, detectUsageConcentration, detectSuspiciousAdminActions,
   runDetections, buildDedupeKey, isDuplicate, dedupeCandidates,
   buildAlertPayload, toAlertSummary, canTransition, applyStatusTransition,
-  scanErrorResponse,
+  scanErrorResponse, pageCompletesWindow,
 } from './securityMonitoring.js';
 
 const now = new Date('2026-07-06T12:00:00Z');
@@ -99,15 +99,25 @@ describe('dedupe', () => {
     expect(deduped).toHaveLength(1);
     expect(deduped[0].severity).toBe('critical');
   });
-  it('suppresses a candidate matching an open alert within the window', () => {
+  it('suppresses a candidate matching an open alert of equal severity in-window', () => {
     const candidate = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning' };
-    const existingOpen = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', status: 'new', detected_at: ago(30) }];
+    const existingOpen = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'new', detected_at: ago(30) }];
     expect(isDuplicate(existingOpen, candidate, now)).toBe(true);
+  });
+  it('lets an ESCALATION through: a critical candidate is not suppressed by an open warning', () => {
+    const critical = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'critical' };
+    const openWarning = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'new', detected_at: ago(30) }];
+    expect(isDuplicate(openWarning, critical, now)).toBe(false); // escalation surfaces
+  });
+  it('still suppresses a de-escalation: a warning candidate under an open critical', () => {
+    const warning = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning' };
+    const openCritical = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'critical', status: 'new', detected_at: ago(30) }];
+    expect(isDuplicate(openCritical, warning, now)).toBe(true);
   });
   it('does NOT suppress when the prior alert is resolved or outside the window', () => {
     const candidate = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning' };
-    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', status: 'resolved', detected_at: ago(30) }], candidate, now)).toBe(false);
-    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', status: 'new', detected_at: ago(60 * 25) }], candidate, now)).toBe(false);
+    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'resolved', detected_at: ago(30) }], candidate, now)).toBe(false);
+    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'new', detected_at: ago(60 * 25) }], candidate, now)).toBe(false);
     expect(buildDedupeKey(candidate)).toBe('rapid_ai_usage:u1');
   });
 });
@@ -144,6 +154,21 @@ describe('buildAlertPayload + toAlertSummary — no PII leaks', () => {
     expect(summary).not.toHaveProperty('subject_user_id');
     expect(summary).not.toHaveProperty('acknowledged_by');
     expect(summary).not.toHaveProperty('resolved_by');
+  });
+});
+
+describe('pageCompletesWindow — paging stops at the cutoff', () => {
+  it('stops when a page is short (no more rows)', () => {
+    expect(pageCompletesWindow(300, 1000, ago(10), now, 24 * 60 * 60 * 1000)).toBe(true);
+  });
+  it('stops when a full page already reaches past the window cutoff', () => {
+    expect(pageCompletesWindow(1000, 1000, ago(60 * 25), now, 24 * 60 * 60 * 1000)).toBe(true); // oldest 25h ago
+  });
+  it('keeps paging when a full page is still entirely inside the window', () => {
+    expect(pageCompletesWindow(1000, 1000, ago(60), now, 24 * 60 * 60 * 1000)).toBe(false); // oldest 1h ago
+  });
+  it('stops on an empty/undated page', () => {
+    expect(pageCompletesWindow(1000, 1000, null, now, 24 * 60 * 60 * 1000)).toBe(true);
   });
 });
 

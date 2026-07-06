@@ -3,10 +3,9 @@ import { base44 } from '@/api/base44Client';
 import AdminNav from '@/components/admin/AdminNav';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ShieldAlert, RefreshCw, ChevronDown, ChevronUp, Check, CheckCheck } from 'lucide-react';
+import { ShieldAlert, RefreshCw, ChevronDown, ChevronUp, Check, CheckCheck, AlertTriangle } from 'lucide-react';
 import {
-  ALERT_TYPES, SEVERITIES, ALERT_STATUSES, label,
-  canTransition, applyStatusTransition, maskUserRef,
+  ALERT_TYPES, SEVERITIES, ALERT_STATUSES, label, canTransition,
 } from '@/lib/securityMonitoring';
 
 const CARD = 'rounded-2xl border border-[#0A0B10]/10 bg-white';
@@ -33,18 +32,17 @@ export default function AdminSecurityAlerts() {
   const [scanning, setScanning] = useState(false);
   const [scanNote, setScanNote] = useState(null);
   const [expanded, setExpanded] = useState(null);
-  const [adminRef, setAdminRef] = useState(null);
+  const [coverageWarning, setCoverageWarning] = useState(false);
   const [filters, setFilters] = useState({ severity: 'all', status: 'all', type: 'all' });
 
-  useEffect(() => {
-    base44.auth.me().then((u) => setAdminRef(maskUserRef(u?.id))).catch(() => setAdminRef(null));
-  }, []);
-
+  // Listing goes through the backend (list_alerts), which returns admin-safe
+  // SUMMARIES only — the raw subject_user_id and actor fields never reach the
+  // browser. The page never calls SecurityAlert.list directly.
   const load = () => {
     setLoading(true);
     setError('');
-    base44.entities.SecurityAlert.list('-detected_at', 300)
-      .then((rows) => setAlerts(rows || []))
+    base44.functions.invoke('securityMonitor', { action: 'list_alerts' })
+      .then((res) => setAlerts((res?.data || res || {}).alerts || []))
       .catch((err) => setError(err?.message || 'تعذر تحميل التنبيهات.'))
       .finally(() => setLoading(false));
   };
@@ -56,6 +54,7 @@ export default function AdminSecurityAlerts() {
     try {
       const res = await base44.functions.invoke('securityMonitor', { action: 'scan' });
       const data = res?.data || res || {};
+      setCoverageWarning(data.scanCoverage && data.scanCoverage.complete === false);
       setScanNote({ ok: true, text: `اكتمل الفحص — تنبيهات جديدة: ${data.alertsCreated ?? 0}` });
       load();
     } catch (err) {
@@ -65,14 +64,18 @@ export default function AdminSecurityAlerts() {
     }
   };
 
+  // Transitions go through the backend (transition_alert), which re-reads the
+  // current status and rejects stale/backward changes — the page never calls
+  // SecurityAlert.update directly, so two admins can't race a stale patch.
   const transition = async (alert, to) => {
-    const patch = applyStatusTransition(alert, to, { now: new Date(), adminRef });
-    if (!patch) return;
     try {
-      await base44.entities.SecurityAlert.update(alert.id, patch);
-      setAlerts((rows) => rows.map((a) => (a.id === alert.id ? { ...a, ...patch } : a)));
+      const res = await base44.functions.invoke('securityMonitor', { action: 'transition_alert', id: alert.id, to });
+      const updated = (res?.data || res || {}).alert;
+      if (updated) setAlerts((rows) => rows.map((a) => (a.id === alert.id ? { ...a, ...updated } : a)));
+      else load();
     } catch (err) {
-      setError(err?.message || 'تعذر تحديث حالة التنبيه.');
+      setError(err?.message || 'تعذر تحديث حالة التنبيه (قد تكون الحالة تغيّرت). يُعاد التحميل.');
+      load();
     }
   };
 
@@ -107,6 +110,13 @@ export default function AdminSecurityAlerts() {
         </div>
 
         {scanNote && <div className={`rounded-xl border p-3 text-sm ${scanNote.ok ? 'border-green-300 bg-green-50 text-green-700' : 'border-red-300 bg-red-50 text-red-700'}`}>{scanNote.text}</div>}
+
+        {coverageWarning && (
+          <div className="flex items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            <p>تنبيه: حجم السجلات تجاوز الحد الأقصى للفحص، وقد لا يغطي هذا الفحص كامل فترة الـ24 ساعة. قد تكون بعض الأحداث ضمن الفترة غير مشمولة (سيتم دعم التصفّح الكامل لاحقًا).</p>
+          </div>
+        )}
 
         {/* Filters */}
         <section className={`${CARD} p-4`}>

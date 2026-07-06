@@ -1,22 +1,28 @@
-// Deno backend function: Madar security monitoring (manual admin-triggered scan).
+// Deno backend function: Madar security monitoring (manual admin-triggered).
 //
-// Access model: EVERY request requires an authenticated user whose role is
+// Access model: EVERY action requires an authenticated user whose role is
 // 'admin' — checked server-side here (the frontend AdminRoute is UX-only and
-// must never be trusted). There is no unauthenticated scan and no
-// subscriber/public path. Reads/writes run through asServiceRole, which
-// resolves as admin for RLS — the same proven pattern admin-operations uses to
-// write AuditLog under an admin-only create policy (so SecurityAlert uses
-// create: { role: admin }, NOT the snapshot's create: { role: system }).
+// must never be trusted). No unauthenticated path, no subscriber/public path.
+// Reads/writes run through asServiceRole, which resolves as admin for RLS —
+// the same proven pattern admin-operations uses to write AuditLog under an
+// admin-only create policy (so SecurityAlert uses create: { role: admin }).
 //
-// Privacy: we normalize logs to { userId, status, at } and never fetch user
-// emails or store IPs/tokens/headers. Alerts carry a masked subject reference;
-// the raw subject_user_id is admin-only for investigation.
+// Actions:
+//   scan             — page AiUsageLog + AuditLog to the 24h cutoff, run
+//                      detections, persist deduped alerts. Reports scanCoverage
+//                      so a truncated (capped) scan is never mistaken for a
+//                      complete one.
+//   list_alerts      — return admin-list-safe SUMMARIES only (never the raw
+//                      subject_user_id or actor fields). The browser never
+//                      reads SecurityAlert directly.
+//   transition_alert — re-read the alert's CURRENT status server-side, then
+//                      apply a forward-only transition. Backend is the single
+//                      source of truth, so two racing admins can't revert a
+//                      resolved alert on stale client state.
 //
-// Detections implemented (backed by current-main schema): rapid_ai_usage,
-// repeated_ai_failures, ai_usage_concentration (AiUsageLog), and
-// suspicious_admin_actions (AuditLog). Deferred: burst property creation
-// (UserProperty has no explicit app-level creation-time field) and auth/login
-// failure checks (no auth-attempt log entity exists in main).
+// Privacy: logs are normalized to PII-free { userId, status, at }; no user
+// emails/tokens/IPs/headers are read or stored. Alerts carry a masked
+// subject_ref; the raw subject_user_id stays server-side / admin-only.
 import { createClientFromRequest } from "npm:@base44/sdk";
 import {
   runDetections,
@@ -24,7 +30,15 @@ import {
   isDuplicate,
   buildAlertPayload,
   scanErrorResponse,
+  pageCompletesWindow,
+  toAlertSummary,
+  applyStatusTransition,
+  maskUserRef,
 } from "./securityMonitoring.js";
+
+const WINDOW_24H_MS = 24 * 60 * 60 * 1000;
+const PAGE_SIZE = 1000;
+const MAX_PAGES = 10; // safety cap: at most 10k rows/source per scan
 
 // Read a required source, tagging any failure with its source name so the scan
 // can surface WHICH entity could not be read (instead of silently returning an
@@ -39,12 +53,33 @@ async function readSource(source, promise) {
   }
 }
 
+// Page a time-sorted entity (newest first) back to the window cutoff, bounded
+// by MAX_PAGES. Returns { rows, complete } — complete:false means the cap was
+// hit before reaching the cutoff (the window is only partially covered).
+async function fetchWindow(source, entity, sortField, atOf, now, windowMs, fields) {
+  const rows = [];
+  let skip = 0;
+  let complete = false;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const batch = await readSource(source, entity.list(sortField, PAGE_SIZE, skip, fields));
+    const list = batch || [];
+    rows.push(...list);
+    const oldestAt = list.length ? atOf(list[list.length - 1]) : null;
+    if (pageCompletesWindow(list.length, PAGE_SIZE, oldestAt, now, windowMs)) {
+      complete = true;
+      break;
+    }
+    skip += PAGE_SIZE;
+  }
+  return { rows, complete };
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
-    // Canonical server-side admin gate — the only way to reach any scan.
+    // Canonical server-side admin gate — the only way to reach any action.
     if (user.role !== "admin") {
       return Response.json({ error: "Forbidden: admin access required" }, { status: 403 });
     }
@@ -53,35 +88,77 @@ Deno.serve(async (req) => {
     const action = body.action || "scan";
     const sr = base44.asServiceRole;
 
+    // ── Admin-list-safe alert listing (browser never touches the entity). ──
+    if (action === "list_alerts") {
+      let rows;
+      try {
+        rows = await readSource("SecurityAlert", sr.entities.SecurityAlert.list("-detected_at", 300));
+      } catch (failure) {
+        return Response.json(scanErrorResponse(failure?.source, failure), { status: 500 });
+      }
+      return Response.json({ success: true, alerts: (rows || []).map(toAlertSummary) });
+    }
+
+    // ── Forward-only status transition, validated against FRESH state. ──
+    if (action === "transition_alert") {
+      const { id, to } = body;
+      if (!id || !to) return Response.json({ error: "id and to are required" }, { status: 400 });
+
+      let current;
+      try {
+        current = await readSource("SecurityAlert", sr.entities.SecurityAlert.get(id));
+      } catch (failure) {
+        return Response.json(scanErrorResponse(failure?.source, failure), { status: 500 });
+      }
+      if (!current) return Response.json({ error: "Alert not found" }, { status: 404 });
+
+      const fromStatus = current.status;
+      const patch = applyStatusTransition(current, to, { now: new Date(), adminRef: maskUserRef(user.id) });
+      if (!patch) {
+        // Stale/backward transition — reject against the current server state.
+        return Response.json(
+          { error: "Invalid transition", from: fromStatus, to },
+          { status: 409 }
+        );
+      }
+      // Atomic compare-and-set: the update is scoped to { id, status: fromStatus },
+      // so it applies ONLY if the status is still what we just read. If a
+      // concurrent admin already transitioned it, zero rows match and we reject
+      // with 409 instead of clobbering their forward transition. The id in the
+      // query uniquely scopes it — at most one row can ever match.
+      const result = await sr.entities.SecurityAlert.updateMany({ id, status: fromStatus }, patch);
+      const changed = Number(result?.updated ?? 0);
+      if (!changed) {
+        return Response.json(
+          { error: "Alert changed concurrently", from: fromStatus, to },
+          { status: 409 }
+        );
+      }
+      return Response.json({ success: true, alert: toAlertSummary({ ...current, ...patch }) });
+    }
+
     if (action !== "scan") {
       return Response.json({ error: "Unknown action" }, { status: 400 });
     }
 
+    // ── Scan: page each source to the 24h cutoff, then run detections. ──
     const now = new Date();
-
-    // Pull recent logs (service role) and normalize to PII-free events. A read
-    // failure on ANY required source aborts the scan with a clear 500 — we never
-    // return a false "successful" scan built on silently-empty logs.
-    let aiLogs, auditLogs, existingAlerts;
+    let ai, audit, existingAlerts;
     try {
-      [aiLogs, auditLogs, existingAlerts] = await Promise.all([
-        readSource("AiUsageLog", sr.entities.AiUsageLog.list("-createdAt", 1000)),
-        readSource("AuditLog", sr.entities.AuditLog.list("-timestamp", 500)),
+      [ai, audit, existingAlerts] = await Promise.all([
+        // Field projections: fetch ONLY what the detectors need, so sensitive
+        // columns (AuditLog.ipAddress/details, AiUsageLog.detail, etc.) never
+        // enter this function or its payload.
+        fetchWindow("AiUsageLog", sr.entities.AiUsageLog, "-createdAt", (l) => l.createdAt || l.created_date, now, WINDOW_24H_MS, ["userId", "status", "createdAt", "created_date"]),
+        fetchWindow("AuditLog", sr.entities.AuditLog, "-timestamp", (l) => l.timestamp || l.created_date, now, WINDOW_24H_MS, ["adminId", "timestamp", "created_date"]),
         readSource("SecurityAlert", sr.entities.SecurityAlert.list("-detected_at", 500)),
       ]);
     } catch (failure) {
       return Response.json(scanErrorResponse(failure?.source, failure), { status: 500 });
     }
 
-    const aiEvents = (aiLogs || []).map((l) => ({
-      userId: l.userId,
-      status: l.status,
-      at: l.createdAt || l.created_date,
-    }));
-    const auditEvents = (auditLogs || []).map((l) => ({
-      userId: l.adminId,
-      at: l.timestamp || l.created_date,
-    }));
+    const aiEvents = (ai.rows || []).map((l) => ({ userId: l.userId, status: l.status, at: l.createdAt || l.created_date }));
+    const auditEvents = (audit.rows || []).map((l) => ({ userId: l.adminId, at: l.timestamp || l.created_date }));
 
     const candidates = dedupeCandidates(runDetections({ aiEvents, auditEvents }, now));
 
@@ -92,8 +169,6 @@ Deno.serve(async (req) => {
         const alert = await sr.entities.SecurityAlert.create(buildAlertPayload(candidate, { now }));
         created.push(alert);
       } catch (err) {
-        // Surface a create failure loudly rather than silently — this is the
-        // exact RLS/service-role risk flagged in the audit.
         return Response.json(
           { error: "Failed to persist SecurityAlert", detail: String(err?.message || err) },
           { status: 500 }
@@ -103,7 +178,14 @@ Deno.serve(async (req) => {
 
     return Response.json({
       success: true,
-      scanned: { aiUsageLogs: (aiLogs || []).length, auditLogs: (auditLogs || []).length },
+      scanned: { aiUsageLogs: (ai.rows || []).length, auditLogs: (audit.rows || []).length },
+      // complete:false ⇒ MAX_PAGES cap hit before the 24h cutoff — the window
+      // is only partially covered and some in-window rows may be unscanned.
+      scanCoverage: {
+        aiUsageLogs: { complete: ai.complete },
+        auditLogs: { complete: audit.complete },
+        complete: ai.complete && audit.complete,
+      },
       candidates: candidates.length,
       alertsCreated: created.length,
     });
