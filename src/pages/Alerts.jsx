@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { AlertTriangle, Info, Sparkles, X, Bell, TrendingUp, Clock, Zap, BellRing, Pause, CheckCircle, Mail, Smartphone, Settings } from 'lucide-react';
+import { AlertTriangle, Info, Sparkles, X, Bell, Clock, Zap, BellRing, Pause, CheckCircle, Mail, Smartphone, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 

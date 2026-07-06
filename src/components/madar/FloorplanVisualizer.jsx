@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FadeIn } from '@/components/madar/Motion';
 import { Building2, X, Users, BedDouble, Bath, DollarSign, Calendar } from 'lucide-react';
 
 const statusConfig = {

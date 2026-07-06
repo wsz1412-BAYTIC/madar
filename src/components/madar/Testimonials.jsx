@@ -2,7 +2,7 @@ import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { FadeIn, AnimatedCounter } from '@/components/madar/Motion';
 import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
+import { Quote } from 'lucide-react';
 
 const testimonials = [
   {

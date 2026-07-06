@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { Link2, Check, X, ExternalLink, Loader2 } from 'lucide-react';
+import { Link2, Check, ExternalLink, Loader2 } from 'lucide-react';
 import { FadeIn } from '@/components/madar/Motion';
 
 const platforms = [
