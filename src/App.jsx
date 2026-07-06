@@ -53,6 +53,7 @@ import RealEstateOpportunities from '@/pages/RealEstateOpportunities';
 import AdminOpportunities from '@/pages/AdminOpportunities';
 import AdminOpportunityForm from '@/pages/AdminOpportunityForm';
 import AdminOpportunityRequests from '@/pages/AdminOpportunityRequests';
+import AdminPropertyVerification from '@/pages/AdminPropertyVerification';
 import PriceRecommendations from '@/pages/PriceRecommendations';
 import InvestmentConsultant from '@/pages/InvestmentConsultant';
 import PageNotFound from './lib/PageNotFound';
@@ -123,6 +124,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/opportunities/new" element={<AdminOpportunityForm />} />
           <Route path="/admin/opportunities/:id" element={<AdminOpportunityForm />} />
           <Route path="/admin/opportunity-requests" element={<AdminOpportunityRequests />} />
+          <Route path="/admin/property-verification" element={<AdminPropertyVerification />} />
         </Route>
       </Route>
 
