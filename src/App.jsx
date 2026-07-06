@@ -49,6 +49,7 @@ import Reports from '@/pages/Reports';
 import PricingPage from '@/pages/PricingPage';
 import PropertyAnalysis from '@/pages/PropertyAnalysis';
 import Opportunities from '@/pages/Opportunities';
+import RealEstateOpportunities from '@/pages/RealEstateOpportunities';
 import AdminOpportunities from '@/pages/AdminOpportunities';
 import AdminOpportunityForm from '@/pages/AdminOpportunityForm';
 import AdminOpportunityRequests from '@/pages/AdminOpportunityRequests';
@@ -83,6 +84,7 @@ const AuthenticatedApp = () => {
       <Route path="/market-insights" element={<Market />} />
       <Route path="/property-analysis" element={<PropertyAnalysis />} />
       <Route path="/opportunities" element={<Opportunities />} />
+      <Route path="/real-estate-opportunities" element={<RealEstateOpportunities />} />
       
       {/* Authenticated routes — gated by ProtectedRoute (redirects to /login) */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
