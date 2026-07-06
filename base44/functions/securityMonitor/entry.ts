@@ -56,12 +56,12 @@ async function readSource(source, promise) {
 // Page a time-sorted entity (newest first) back to the window cutoff, bounded
 // by MAX_PAGES. Returns { rows, complete } — complete:false means the cap was
 // hit before reaching the cutoff (the window is only partially covered).
-async function fetchWindow(source, entity, sortField, atOf, now, windowMs) {
+async function fetchWindow(source, entity, sortField, atOf, now, windowMs, fields) {
   const rows = [];
   let skip = 0;
   let complete = false;
   for (let page = 0; page < MAX_PAGES; page++) {
-    const batch = await readSource(source, entity.list(sortField, PAGE_SIZE, skip));
+    const batch = await readSource(source, entity.list(sortField, PAGE_SIZE, skip, fields));
     const list = batch || [];
     rows.push(...list);
     const oldestAt = list.length ? atOf(list[list.length - 1]) : null;
@@ -112,16 +112,29 @@ Deno.serve(async (req) => {
       }
       if (!current) return Response.json({ error: "Alert not found" }, { status: 404 });
 
+      const fromStatus = current.status;
       const patch = applyStatusTransition(current, to, { now: new Date(), adminRef: maskUserRef(user.id) });
       if (!patch) {
         // Stale/backward transition — reject against the current server state.
         return Response.json(
-          { error: "Invalid transition", from: current.status, to },
+          { error: "Invalid transition", from: fromStatus, to },
           { status: 409 }
         );
       }
-      const updated = await sr.entities.SecurityAlert.update(id, patch);
-      return Response.json({ success: true, alert: toAlertSummary({ ...current, ...patch, ...(updated || {}) }) });
+      // Atomic compare-and-set: the update is scoped to { id, status: fromStatus },
+      // so it applies ONLY if the status is still what we just read. If a
+      // concurrent admin already transitioned it, zero rows match and we reject
+      // with 409 instead of clobbering their forward transition. The id in the
+      // query uniquely scopes it — at most one row can ever match.
+      const result = await sr.entities.SecurityAlert.updateMany({ id, status: fromStatus }, patch);
+      const changed = Number(result?.updated ?? 0);
+      if (!changed) {
+        return Response.json(
+          { error: "Alert changed concurrently", from: fromStatus, to },
+          { status: 409 }
+        );
+      }
+      return Response.json({ success: true, alert: toAlertSummary({ ...current, ...patch }) });
     }
 
     if (action !== "scan") {
@@ -133,8 +146,11 @@ Deno.serve(async (req) => {
     let ai, audit, existingAlerts;
     try {
       [ai, audit, existingAlerts] = await Promise.all([
-        fetchWindow("AiUsageLog", sr.entities.AiUsageLog, "-createdAt", (l) => l.createdAt || l.created_date, now, WINDOW_24H_MS),
-        fetchWindow("AuditLog", sr.entities.AuditLog, "-timestamp", (l) => l.timestamp || l.created_date, now, WINDOW_24H_MS),
+        // Field projections: fetch ONLY what the detectors need, so sensitive
+        // columns (AuditLog.ipAddress/details, AiUsageLog.detail, etc.) never
+        // enter this function or its payload.
+        fetchWindow("AiUsageLog", sr.entities.AiUsageLog, "-createdAt", (l) => l.createdAt || l.created_date, now, WINDOW_24H_MS, ["userId", "status", "createdAt", "created_date"]),
+        fetchWindow("AuditLog", sr.entities.AuditLog, "-timestamp", (l) => l.timestamp || l.created_date, now, WINDOW_24H_MS, ["adminId", "timestamp", "created_date"]),
         readSource("SecurityAlert", sr.entities.SecurityAlert.list("-detected_at", 500)),
       ]);
     } catch (failure) {
