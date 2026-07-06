@@ -52,6 +52,7 @@ export default function ComprehensiveFooter() {
         { label: lang === 'ar' ? 'سياسة الاستخدام' : 'Acceptable Use Policy', to: '/aup' },
         { label: lang === 'ar' ? 'حقوق الملكية الفكرية' : 'IP & Trademark Notice', to: '/ip-trademark' },
         { label: lang === 'ar' ? 'تنصل من منصات الطرف الثالث' : 'Third-Party Platforms Disclaimer', to: '/third-party' },
+        { label: lang === 'ar' ? 'إمكانية الوصول' : 'Accessibility', to: '/accessibility' },
       ],
     },
     {
