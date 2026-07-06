@@ -260,6 +260,20 @@ export function buildAlertPayload(candidate = {}, { now = new Date() } = {}) {
   };
 }
 
+/**
+ * Paging stop-decision for the scan's time-windowed reads. Rows come back
+ * newest-first, so paging can stop once a page is short (no more rows) or the
+ * oldest row on the page is already past the window cutoff. Pure so the loop's
+ * termination is unit-testable.
+ */
+export function pageCompletesWindow(pageLength, pageSize, oldestAt, now, windowMs) {
+  if (pageLength < pageSize) return true;
+  const t = asTime(oldestAt);
+  if (t === null) return true;
+  const nowMs = now instanceof Date ? now.getTime() : new Date(now).getTime();
+  return t < nowMs - windowMs;
+}
+
 /** Admin-list-safe projection — omits raw subject_user_id and actor fields. */
 export function toAlertSummary(alert = {}) {
   return SUMMARY_FIELDS.reduce((safe, field) => {
