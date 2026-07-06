@@ -126,6 +126,21 @@ export function suggestClassification({ comparison, guardedStatus }) {
   };
 }
 
+/**
+ * Reconcile the admin's explicit verification_result with the guarded status.
+ * A 'verified_property' result asserts an official-grade verification and is
+ * only allowed when the guarded status is an official claim — otherwise it is
+ * clamped to the (honest) suggestion, so an unbacked record can never be
+ * presented as verified / ready for investment via an override.
+ */
+export function reconcileResult(explicitResult, suggestion, guardedStatus) {
+  if (!VERIFICATION_RESULTS.includes(explicitResult)) return suggestion.verification_result;
+  if (explicitResult === 'verified_property' && !OFFICIAL_CLAIM_STATUSES.has(guardedStatus)) {
+    return suggestion.verification_result;
+  }
+  return explicitResult;
+}
+
 /** Sanitize/normalize one manually-entered source row. Returns null if unusable. */
 export function normalizeSource(raw = {}) {
   const name = String(raw.name ?? '').trim();
@@ -185,7 +200,7 @@ export function buildVerificationPayload(form = {}, opportunity = null, { now = 
     conflicting_fields: comparison.conflicting,
     source_list: sources,
     notes_internal: hasValue(form.notes_internal) ? String(form.notes_internal).trim() : null,
-    verification_result: VERIFICATION_RESULTS.includes(form.verification_result) ? form.verification_result : suggestion.verification_result,
+    verification_result: reconcileResult(form.verification_result, suggestion, guardedStatus),
     created_at: form.created_at || now.toISOString(),
     updated_at: form.created_at ? now.toISOString() : null,
   };

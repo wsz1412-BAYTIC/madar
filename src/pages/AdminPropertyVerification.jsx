@@ -14,7 +14,7 @@ import {
 const EMPTY_FORM = {
   search_type: 'deed_number', deed_number: '', deed_date: '', municipal_license_number: '', building_permit_number: '',
   city: '', district: '', property_type: '', area_declared: '', location_declared: '',
-  related_opportunity_id: '', official_data_status: 'not_checked', verification_confidence: 'low',
+  related_opportunity_id: '', official_data_status: 'not_checked', verification_confidence: '',
   notes_internal: '', verification_result: '', source_list: [],
 };
 const EMPTY_SOURCE = { name: '', type: 'manual_review', reference: '', retrieved_date: '', confidence: 'low' };
@@ -45,15 +45,18 @@ export default function AdminPropertyVerification() {
     base44.entities.PropertyVerification.list('-created_at').then((r) => setRecords(r || [])).catch(() => setRecords([]));
   }
 
-  const set = (key, value) => { setForm((f) => ({ ...f, [key]: value })); setErrors((e) => ({ ...e, [key]: undefined })); };
+  // Any edit invalidates a computed preview so we never save stale results —
+  // the admin must re-run verification, keeping what's shown == what's saved.
+  const invalidatePreview = () => { setPreview((p) => (p ? null : p)); setNotice(null); };
+  const set = (key, value) => { setForm((f) => ({ ...f, [key]: value })); setErrors((e) => ({ ...e, [key]: undefined })); invalidatePreview(); };
   const linkedOpportunity = useMemo(
     () => opportunities.find((o) => o.id === form.related_opportunity_id) || null,
     [opportunities, form.related_opportunity_id]
   );
 
-  const addSource = () => setForm((f) => ({ ...f, source_list: [...f.source_list, { ...EMPTY_SOURCE }] }));
-  const updateSource = (i, key, value) => setForm((f) => ({ ...f, source_list: f.source_list.map((s, idx) => (idx === i ? { ...s, [key]: value } : s)) }));
-  const removeSource = (i) => setForm((f) => ({ ...f, source_list: f.source_list.filter((_, idx) => idx !== i) }));
+  const addSource = () => { setForm((f) => ({ ...f, source_list: [...f.source_list, { ...EMPTY_SOURCE }] })); invalidatePreview(); };
+  const updateSource = (i, key, value) => { setForm((f) => ({ ...f, source_list: f.source_list.map((s, idx) => (idx === i ? { ...s, [key]: value } : s)) })); invalidatePreview(); };
+  const removeSource = (i) => { setForm((f) => ({ ...f, source_list: f.source_list.filter((_, idx) => idx !== i) })); invalidatePreview(); };
 
   const runVerification = () => {
     const { valid, errors: errs } = validateVerificationForm(form);

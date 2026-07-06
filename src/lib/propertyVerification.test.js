@@ -144,6 +144,24 @@ describe('buildVerificationPayload', () => {
     expect(p.verification_confidence).toBe('medium');
   });
 
+  it('clamps an explicit "verified_property" override when there is no official source', () => {
+    // Admin tries to force verified_property but the guard already downgraded the status.
+    const p = buildVerificationPayload({ ...form, source_list: [manualSource], verification_result: 'verified_property' }, opp, { now });
+    expect(p.official_data_status).toBe('requires_authorization');
+    expect(p.verification_result).not.toBe('verified_property'); // honesty guard wins over the override
+  });
+
+  it('honors an explicit "verified_property" override only with an official source', () => {
+    const p = buildVerificationPayload({ ...form, source_list: [officialSource], verification_result: 'verified_property' }, opp, { now });
+    expect(p.official_data_status).toBe('verified');
+    expect(p.verification_result).toBe('verified_property');
+  });
+
+  it('uses the suggested confidence when the form leaves it blank (no forced override)', () => {
+    const p = buildVerificationPayload({ ...form, source_list: [officialSource], verification_confidence: '' }, opp, { now });
+    expect(p.verification_confidence).toBe('high'); // full official match → high, not defaulted to low
+  });
+
   it('sets updated_at when editing an existing record (created_at present)', () => {
     const p = buildVerificationPayload({ ...form, created_at: '2026-07-01T00:00:00Z' }, opp, { now });
     expect(p.created_at).toBe('2026-07-01T00:00:00Z');
