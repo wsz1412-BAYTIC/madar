@@ -35,6 +35,7 @@ const pairs = [
   ['src/lib/marketHeatmap.js', 'base44/functions/market-heatmap/marketHeatmap.js'],
   ['src/lib/trialManagement.js', 'base44/functions/market-heatmap/trialManagement.js'],
   ['src/lib/opportunityRequests.js', 'base44/functions/real-estate-opportunities/opportunityRequests.js'],
+  ['src/lib/securityMonitoring.js', 'base44/functions/securityMonitor/securityMonitoring.js'],
 ];
 
 describe('backend function mirrors stay in sync with canonical src/lib modules', () => {
