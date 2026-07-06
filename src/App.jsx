@@ -54,6 +54,8 @@ import AdminOpportunities from '@/pages/AdminOpportunities';
 import AdminOpportunityForm from '@/pages/AdminOpportunityForm';
 import AdminOpportunityRequests from '@/pages/AdminOpportunityRequests';
 import AdminPropertyVerification from '@/pages/AdminPropertyVerification';
+import AdminSiteUpdates from '@/pages/AdminSiteUpdates';
+import PlatformUpdates from '@/pages/PlatformUpdates';
 import PriceRecommendations from '@/pages/PriceRecommendations';
 import InvestmentConsultant from '@/pages/InvestmentConsultant';
 import PageNotFound from './lib/PageNotFound';
@@ -86,6 +88,7 @@ const AuthenticatedApp = () => {
       <Route path="/property-analysis" element={<PropertyAnalysis />} />
       <Route path="/opportunities" element={<Opportunities />} />
       <Route path="/real-estate-opportunities" element={<RealEstateOpportunities />} />
+      <Route path="/updates" element={<PlatformUpdates />} />
       
       {/* Authenticated routes — gated by ProtectedRoute (redirects to /login) */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
@@ -125,6 +128,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/opportunities/:id" element={<AdminOpportunityForm />} />
           <Route path="/admin/opportunity-requests" element={<AdminOpportunityRequests />} />
           <Route path="/admin/property-verification" element={<AdminPropertyVerification />} />
+          <Route path="/admin/site-updates" element={<AdminSiteUpdates />} />
         </Route>
       </Route>
 
