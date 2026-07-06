@@ -56,6 +56,7 @@ import AdminOpportunityForm from '@/pages/AdminOpportunityForm';
 import AdminOpportunityRequests from '@/pages/AdminOpportunityRequests';
 import AdminPropertyVerification from '@/pages/AdminPropertyVerification';
 import AdminSiteUpdates from '@/pages/AdminSiteUpdates';
+import AdminSecurityAlerts from '@/pages/AdminSecurityAlerts';
 import PlatformUpdates from '@/pages/PlatformUpdates';
 import PriceRecommendations from '@/pages/PriceRecommendations';
 import InvestmentConsultant from '@/pages/InvestmentConsultant';
@@ -131,6 +132,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/opportunity-requests" element={<AdminOpportunityRequests />} />
           <Route path="/admin/property-verification" element={<AdminPropertyVerification />} />
           <Route path="/admin/site-updates" element={<AdminSiteUpdates />} />
+          <Route path="/admin/security-alerts" element={<AdminSecurityAlerts />} />
         </Route>
       </Route>
 

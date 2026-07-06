@@ -4,7 +4,7 @@ import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { 
   LayoutDashboard, Users, Home, CreditCard, Database, Settings, 
-  FileText, Menu, X, Shield, MessageSquare, BarChart3, Building2, Inbox, ShieldCheck, Megaphone
+  FileText, Menu, X, Shield, MessageSquare, BarChart3, Building2, Inbox, ShieldCheck, Megaphone, ShieldAlert
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -26,6 +26,7 @@ export default function AdminNav({ admin }) {
     { label: lang === 'ar' ? 'طلبات الفرص' : 'Opportunity Requests', icon: Inbox, href: '/admin/opportunity-requests' },
     { label: lang === 'ar' ? 'التحقق من العقار' : 'Property Verification', icon: ShieldCheck, href: '/admin/property-verification' },
     { label: lang === 'ar' ? 'تحديثات المنصة' : 'Site Updates', icon: Megaphone, href: '/admin/site-updates' },
+    { label: lang === 'ar' ? 'تنبيهات الأمان' : 'Security Alerts', icon: ShieldAlert, href: '/admin/security-alerts' },
     { label: lang === 'ar' ? 'السجلات' : 'Audit Logs', icon: BarChart3, href: '/admin/logs' },
     { label: lang === 'ar' ? 'الإعدادات' : 'Settings', icon: Settings, href: '/admin/settings' },
   ];

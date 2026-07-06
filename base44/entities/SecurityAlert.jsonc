@@ -1,0 +1,31 @@
+{
+  "name": "SecurityAlert",
+  "description": "Admin-only security monitoring alerts raised by the securityMonitor backend function (manual admin-triggered scan). Records anomaly summaries + a masked subject reference; the raw subject_user_id is stored for admin investigation only. Never contains emails, tokens, IPs, headers, or private notes, and is never exposed to subscribers or any public API.",
+  "type": "object",
+  "properties": {
+    "alert_type": {
+      "type": "string",
+      "enum": ["rapid_ai_usage", "repeated_ai_failures", "ai_usage_concentration", "suspicious_admin_actions"]
+    },
+    "severity": { "type": "string", "enum": ["info", "warning", "critical"], "default": "info" },
+    "subject_user_id": { "type": ["string", "null"], "description": "Raw subject user id — admin-only, for investigation. Never surfaced in list summaries." },
+    "subject_ref": { "type": ["string", "null"], "description": "Masked display reference (e.g. user_ab12cd). No PII." },
+    "title": { "type": "string" },
+    "summary": { "type": ["string", "null"], "description": "Human-readable, PII-free summary." },
+    "metadata": { "type": "object", "description": "Non-PII counts/thresholds/window only." },
+    "dedupe_key": { "type": ["string", "null"], "description": "alert_type:subject — used to suppress duplicates within the dedupe window." },
+    "status": { "type": "string", "enum": ["new", "acknowledged", "resolved"], "default": "new" },
+    "detected_at": { "type": "string", "format": "date-time" },
+    "acknowledged_at": { "type": ["string", "null"], "format": "date-time" },
+    "acknowledged_by": { "type": ["string", "null"], "description": "Masked admin reference." },
+    "resolved_at": { "type": ["string", "null"], "format": "date-time" },
+    "resolved_by": { "type": ["string", "null"], "description": "Masked admin reference." }
+  },
+  "required": ["alert_type", "severity", "title", "status", "detected_at"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": false
+  }
+}
