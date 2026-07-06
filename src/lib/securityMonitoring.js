@@ -259,6 +259,16 @@ export function toAlertSummary(alert = {}) {
   }, {});
 }
 
+/**
+ * PII-free error body for a failed scan source read. Only the source label and
+ * a plain message string are exposed — never a stack, headers, tokens, IPs, or
+ * any other property that might ride along on the error object.
+ */
+export function scanErrorResponse(source, error) {
+  const message = String((error && error.message) || error || 'unknown error');
+  return { error: 'Security scan failed', source: source || 'unknown', detail: message };
+}
+
 // ── Status workflow: new → acknowledged → resolved (no going backwards).
 const TRANSITIONS = { new: ['acknowledged', 'resolved'], acknowledged: ['resolved'], resolved: [] };
 

@@ -5,6 +5,7 @@ import {
   detectRapidAiUsage, detectRepeatedFailures, detectUsageConcentration, detectSuspiciousAdminActions,
   runDetections, buildDedupeKey, isDuplicate, dedupeCandidates,
   buildAlertPayload, toAlertSummary, canTransition, applyStatusTransition,
+  scanErrorResponse,
 } from './securityMonitoring.js';
 
 const now = new Date('2026-07-06T12:00:00Z');
@@ -143,6 +144,33 @@ describe('buildAlertPayload + toAlertSummary — no PII leaks', () => {
     expect(summary).not.toHaveProperty('subject_user_id');
     expect(summary).not.toHaveProperty('acknowledged_by');
     expect(summary).not.toHaveProperty('resolved_by');
+  });
+});
+
+describe('scanErrorResponse — surfaced failure, no sensitive leakage', () => {
+  it('names the failing source and returns only error/source/detail', () => {
+    const r = scanErrorResponse('AuditLog', new Error('read denied'));
+    expect(r.error).toBe('Security scan failed');
+    expect(r.source).toBe('AuditLog');
+    expect(r.detail).toBe('read denied');
+    expect(Object.keys(r).sort()).toEqual(['detail', 'error', 'source']);
+  });
+
+  it('never leaks a stack, headers, tokens, or other error properties', () => {
+    const err = new Error('list failed');
+    err.stack = 'Error: list failed\n    at secret/path';
+    err.headers = { authorization: 'Bearer super-secret-token' };
+    err.response = { email: 'user@example.com' };
+    const r = scanErrorResponse('AiUsageLog', err);
+    const serialized = JSON.stringify(r);
+    expect(serialized).not.toContain('super-secret-token');
+    expect(serialized).not.toContain('user@example.com');
+    expect(serialized).not.toContain('secret/path');
+    expect(r.detail).toBe('list failed');
+  });
+
+  it('degrades gracefully with a missing source or non-Error value', () => {
+    expect(scanErrorResponse(undefined, 'boom')).toEqual({ error: 'Security scan failed', source: 'unknown', detail: 'boom' });
   });
 });
 

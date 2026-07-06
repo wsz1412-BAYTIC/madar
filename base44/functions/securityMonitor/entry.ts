@@ -23,7 +23,21 @@ import {
   dedupeCandidates,
   isDuplicate,
   buildAlertPayload,
+  scanErrorResponse,
 } from "./securityMonitoring.js";
+
+// Read a required source, tagging any failure with its source name so the scan
+// can surface WHICH entity could not be read (instead of silently returning an
+// empty array and a false "successful" scan).
+async function readSource(source, promise) {
+  try {
+    return await promise;
+  } catch (err) {
+    const tagged = new Error(String(err?.message || err));
+    tagged.source = source;
+    throw tagged;
+  }
+}
 
 Deno.serve(async (req) => {
   try {
@@ -45,12 +59,19 @@ Deno.serve(async (req) => {
 
     const now = new Date();
 
-    // Pull recent logs (service role) and normalize to PII-free events.
-    const [aiLogs, auditLogs, existingAlerts] = await Promise.all([
-      sr.entities.AiUsageLog.list("-createdAt", 1000).catch(() => []),
-      sr.entities.AuditLog.list("-timestamp", 500).catch(() => []),
-      sr.entities.SecurityAlert.list("-detected_at", 500).catch(() => []),
-    ]);
+    // Pull recent logs (service role) and normalize to PII-free events. A read
+    // failure on ANY required source aborts the scan with a clear 500 — we never
+    // return a false "successful" scan built on silently-empty logs.
+    let aiLogs, auditLogs, existingAlerts;
+    try {
+      [aiLogs, auditLogs, existingAlerts] = await Promise.all([
+        readSource("AiUsageLog", sr.entities.AiUsageLog.list("-createdAt", 1000)),
+        readSource("AuditLog", sr.entities.AuditLog.list("-timestamp", 500)),
+        readSource("SecurityAlert", sr.entities.SecurityAlert.list("-detected_at", 500)),
+      ]);
+    } catch (failure) {
+      return Response.json(scanErrorResponse(failure?.source, failure), { status: 500 });
+    }
 
     const aiEvents = (aiLogs || []).map((l) => ({
       userId: l.userId,
