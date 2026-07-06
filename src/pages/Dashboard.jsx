@@ -2,7 +2,7 @@ import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useAuth } from '@/lib/AuthContext';
 import { TrendingUp, Home, DollarSign, BarChart3, ArrowUpRight, ArrowDownRight, Sparkles } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { motion } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 

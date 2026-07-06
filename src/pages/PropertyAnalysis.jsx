@@ -4,7 +4,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
 import ComprehensiveFooter from '@/components/madar/ComprehensiveFooter';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
-import { Zap, TrendingUp, AlertTriangle, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
+import { AlertTriangle, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function PropertyAnalysis() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { AlertCircle, TrendingDown, TrendingUp } from 'lucide-react';
+import { TrendingDown, TrendingUp } from 'lucide-react';
 
 export default function CalendarLegend() {
   const { lang } = useLang();

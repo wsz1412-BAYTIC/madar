@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { FadeIn, AnimatedCounter } from '@/components/madar/Motion';
+import { FadeIn } from '@/components/madar/Motion';
 import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
 

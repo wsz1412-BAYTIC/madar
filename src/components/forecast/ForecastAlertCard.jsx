@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { AlertTriangle, TrendingDown, ChevronDown, ChevronUp, X, Clock, Eye } from 'lucide-react';
+import { AlertTriangle, TrendingDown, ChevronDown, ChevronUp, X, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ForecastAlertCard({

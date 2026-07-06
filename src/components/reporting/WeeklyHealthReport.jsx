@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { motion } from 'framer-motion';
-import { TrendingUp, Calendar, DollarSign, BarChart3, Download, Share2 } from 'lucide-react';
+import { TrendingUp, Download, Share2 } from 'lucide-react';
 
 export default function WeeklyHealthReport({ property, weekData }) {
   const { lang } = useLang();

@@ -3,7 +3,7 @@ import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { SUBSCRIPTION_ENTITLEMENTS, AVAILABLE_ADDONS } from '@/lib/subscriptionEntitlements';
-import { Check, X, ArrowRight } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function PlansAndUpgrade() {

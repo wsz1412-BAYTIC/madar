@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { AlertTriangle, AlertCircle, TrendingDown, Zap } from 'lucide-react';
+import { AlertTriangle, AlertCircle, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const mockAlerts = [

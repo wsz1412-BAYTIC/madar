@@ -12,7 +12,7 @@ import {
   estimateRevenueAtRisk,
 } from '@/lib/forecastEngine';
 import { AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Filter, Settings } from 'lucide-react';
+import { AlertTriangle, Settings } from 'lucide-react';
 
 // Mock properties
 const mockProperties = [

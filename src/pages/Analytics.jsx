@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLang } from '@/contexts/LanguageContext';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, BarChart, Bar, Cell } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, BarChart, Bar } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 import { TrendingUp, TrendingDown, DollarSign, Percent, BarChart3 } from 'lucide-react';
