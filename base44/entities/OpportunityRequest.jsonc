@@ -13,8 +13,29 @@
     "budgetRange": { "type": "string" },
     "message": { "type": "string" },
     "agreementAccepted": { "type": "boolean" },
-    "status": { "type": "string", "enum": ["new", "contacted", "qualified", "closed", "rejected"] },
-    "createdAt": { "type": "string", "format": "date-time" }
+    "status": {
+      "type": "string",
+      "enum": ["new", "contacted", "qualified", "agreement_pending", "agreement_signed", "negotiating", "closed_won", "closed_lost", "rejected", "closed"],
+      "default": "new",
+      "description": "Brokerage workflow status. 'closed' is a legacy pre-Phase-3 value kept for backward compatibility."
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+
+    "internal_notes": { "type": ["string", "null"], "description": "Admin-only follow-up notes. Never exposed to subscribers or public APIs." },
+    "last_contact_at": { "type": ["string", "null"], "format": "date-time", "description": "Admin-only." },
+    "next_follow_up_at": { "type": ["string", "null"], "format": "date-time", "description": "Admin-only." },
+    "assigned_admin": { "type": ["string", "null"], "description": "Admin-only owner/assignee." },
+    "agreement_status": {
+      "type": ["string", "null"],
+      "enum": ["none", "pending", "sent", "signed", "declined", null],
+      "description": "Admin-only brokerage agreement state."
+    },
+    "brokerage_stage": {
+      "type": ["string", "null"],
+      "enum": ["none", "initial_contact", "site_visit", "negotiation", "documentation", "completed", null],
+      "description": "Admin-only brokerage pipeline stage."
+    },
+    "updated_at": { "type": ["string", "null"], "format": "date-time", "description": "Admin-only." }
   },
   "required": ["opportunityId", "userId", "name", "mobile", "preferredContactMethod", "budgetRange", "agreementAccepted", "createdAt"],
   "rls": {
