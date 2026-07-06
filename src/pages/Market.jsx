@@ -4,6 +4,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import PublicNavbar from '@/components/madar/PublicNavbar';
 import ComprehensiveFooter from '@/components/madar/ComprehensiveFooter';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
+import MarketHeatmap from '@/components/madar/MarketHeatmap';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, DollarSign, Zap, Filter, Download, BarChart3, Brain } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -117,6 +118,11 @@ export default function Market() {
                 );
               })}
             </div>
+          </FadeIn>
+
+          {/* Real-data Market Heatmap (plan-gated, server-enforced) */}
+          <FadeIn delay={0.15}>
+            <MarketHeatmap />
           </FadeIn>
 
           {/* Filters */}
