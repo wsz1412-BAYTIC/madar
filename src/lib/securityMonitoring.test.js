@@ -5,7 +5,7 @@ import {
   detectRapidAiUsage, detectRepeatedFailures, detectUsageConcentration, detectSuspiciousAdminActions,
   runDetections, buildDedupeKey, isDuplicate, dedupeCandidates,
   buildAlertPayload, toAlertSummary, canTransition, applyStatusTransition,
-  scanErrorResponse,
+  scanErrorResponse, pageCompletesWindow,
 } from './securityMonitoring.js';
 
 const now = new Date('2026-07-06T12:00:00Z');
@@ -154,6 +154,21 @@ describe('buildAlertPayload + toAlertSummary — no PII leaks', () => {
     expect(summary).not.toHaveProperty('subject_user_id');
     expect(summary).not.toHaveProperty('acknowledged_by');
     expect(summary).not.toHaveProperty('resolved_by');
+  });
+});
+
+describe('pageCompletesWindow — paging stops at the cutoff', () => {
+  it('stops when a page is short (no more rows)', () => {
+    expect(pageCompletesWindow(300, 1000, ago(10), now, 24 * 60 * 60 * 1000)).toBe(true);
+  });
+  it('stops when a full page already reaches past the window cutoff', () => {
+    expect(pageCompletesWindow(1000, 1000, ago(60 * 25), now, 24 * 60 * 60 * 1000)).toBe(true); // oldest 25h ago
+  });
+  it('keeps paging when a full page is still entirely inside the window', () => {
+    expect(pageCompletesWindow(1000, 1000, ago(60), now, 24 * 60 * 60 * 1000)).toBe(false); // oldest 1h ago
+  });
+  it('stops on an empty/undated page', () => {
+    expect(pageCompletesWindow(1000, 1000, null, now, 24 * 60 * 60 * 1000)).toBe(true);
   });
 });
 
