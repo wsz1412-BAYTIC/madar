@@ -1,0 +1,58 @@
+{
+  "name": "PropertyVerification",
+  "description": "Admin-only property verification records (Phase 2). A Super Admin searches by deed / municipal license / building permit, records declared + manually-gathered official data, compares it with an internal RealEstateOpportunity, and classifies accuracy. NO live official integration exists yet — unverifiable results must be marked requires_authorization / unavailable, never 'verified' without an official source. Never exposed to subscribers or any public API.",
+  "type": "object",
+  "properties": {
+    "search_type": { "type": "string", "enum": ["deed_number", "municipal_license", "building_permit"] },
+    "deed_number": { "type": ["string", "null"] },
+    "deed_date": { "type": ["string", "null"] },
+    "municipal_license_number": { "type": ["string", "null"] },
+    "building_permit_number": { "type": ["string", "null"] },
+    "city": { "type": ["string", "null"] },
+    "district": { "type": ["string", "null"] },
+    "property_type": { "type": ["string", "null"] },
+    "area_declared": { "type": ["number", "string", "null"] },
+    "location_declared": { "type": ["string", "null"] },
+    "related_opportunity_id": { "type": ["string", "null"], "description": "Optional link to a RealEstateOpportunity for comparison" },
+    "official_data_status": {
+      "type": "string",
+      "enum": ["not_checked", "verified", "partially_verified", "unavailable", "conflict", "requires_authorization"],
+      "default": "not_checked",
+      "description": "'verified'/'partially_verified' require at least one official source; enforced in propertyVerification.js"
+    },
+    "verification_confidence": { "type": "string", "enum": ["low", "medium", "high"], "default": "low" },
+    "matched_fields": { "type": "array", "items": { "type": "string" } },
+    "missing_fields": { "type": "array", "items": { "type": "string" } },
+    "conflicting_fields": { "type": "array", "items": { "type": "string" } },
+    "source_list": {
+      "type": "array",
+      "description": "Manually-entered sources until official integrations land (REGA/Ejar/Balady/MOJ — deferred).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["official", "user_provided", "third_party", "manual_review"] },
+          "reference": { "type": "string", "description": "URL or reference identifier" },
+          "retrieved_date": { "type": ["string", "null"] },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] }
+        },
+        "required": ["name", "type"]
+      }
+    },
+    "notes_internal": { "type": ["string", "null"] },
+    "verification_result": {
+      "type": "string",
+      "enum": ["verified_property", "verified_with_notes", "needs_documents", "data_conflict", "rejected"],
+      "description": "Admin's final call on whether the property is fit for investment analysis"
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "required": ["search_type", "official_data_status", "created_at"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}
