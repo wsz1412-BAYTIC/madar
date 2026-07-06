@@ -99,15 +99,25 @@ describe('dedupe', () => {
     expect(deduped).toHaveLength(1);
     expect(deduped[0].severity).toBe('critical');
   });
-  it('suppresses a candidate matching an open alert within the window', () => {
+  it('suppresses a candidate matching an open alert of equal severity in-window', () => {
     const candidate = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning' };
-    const existingOpen = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', status: 'new', detected_at: ago(30) }];
+    const existingOpen = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'new', detected_at: ago(30) }];
     expect(isDuplicate(existingOpen, candidate, now)).toBe(true);
+  });
+  it('lets an ESCALATION through: a critical candidate is not suppressed by an open warning', () => {
+    const critical = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'critical' };
+    const openWarning = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'new', detected_at: ago(30) }];
+    expect(isDuplicate(openWarning, critical, now)).toBe(false); // escalation surfaces
+  });
+  it('still suppresses a de-escalation: a warning candidate under an open critical', () => {
+    const warning = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning' };
+    const openCritical = [{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'critical', status: 'new', detected_at: ago(30) }];
+    expect(isDuplicate(openCritical, warning, now)).toBe(true);
   });
   it('does NOT suppress when the prior alert is resolved or outside the window', () => {
     const candidate = { alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning' };
-    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', status: 'resolved', detected_at: ago(30) }], candidate, now)).toBe(false);
-    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', status: 'new', detected_at: ago(60 * 25) }], candidate, now)).toBe(false);
+    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'resolved', detected_at: ago(30) }], candidate, now)).toBe(false);
+    expect(isDuplicate([{ alert_type: 'rapid_ai_usage', subject_user_id: 'u1', severity: 'warning', status: 'new', detected_at: ago(60 * 25) }], candidate, now)).toBe(false);
     expect(buildDedupeKey(candidate)).toBe('rapid_ai_usage:u1');
   });
 });

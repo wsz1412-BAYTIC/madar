@@ -21,6 +21,7 @@ export const ALERT_TYPES = [
   'suspicious_admin_actions',
 ];
 export const SEVERITIES = ['info', 'warning', 'critical'];
+export const SEVERITY_RANK = { info: 0, warning: 1, critical: 2 };
 export const ALERT_STATUSES = ['new', 'acknowledged', 'resolved'];
 
 // AiUsageLog.status values that count as a failed/blocked attempt (madar schema
@@ -189,25 +190,33 @@ export function buildDedupeKey(candidate = {}) {
 }
 
 /**
- * True when an equivalent, still-open alert already exists within the dedupe
- * window (default 24h). Resolved alerts never suppress a fresh one, so a
- * recurring issue can re-alert after it was handled.
+ * True when an equivalent, still-open alert of EQUAL OR HIGHER severity already
+ * exists within the dedupe window (default 24h). Suppression is severity-aware:
+ * a strict escalation (e.g. a critical candidate while only an open warning
+ * exists) is NOT suppressed, so the higher-severity alert still surfaces.
+ * Resolved alerts never suppress a fresh one, so a recurring issue can re-alert
+ * after it was handled.
  */
 export function isDuplicate(existingAlerts, candidate, now = new Date(), windowMs = 24 * 60 * 60 * 1000) {
   const key = buildDedupeKey(candidate);
+  const candRank = SEVERITY_RANK[candidate.severity] ?? 0;
   return (Array.isArray(existingAlerts) ? existingAlerts : []).some(
-    (a) => a && a.status !== 'resolved' && buildDedupeKey(a) === key && withinWindow(a.detected_at, now, windowMs)
+    (a) =>
+      a &&
+      a.status !== 'resolved' &&
+      buildDedupeKey(a) === key &&
+      withinWindow(a.detected_at, now, windowMs) &&
+      (SEVERITY_RANK[a.severity] ?? 0) >= candRank
   );
 }
 
 /** Drop duplicate candidates within one scan, keeping the highest severity. */
 export function dedupeCandidates(candidates) {
-  const rank = { info: 0, warning: 1, critical: 2 };
   const best = new Map();
   for (const c of Array.isArray(candidates) ? candidates : []) {
     const key = buildDedupeKey(c);
     const prev = best.get(key);
-    if (!prev || (rank[c.severity] || 0) > (rank[prev.severity] || 0)) best.set(key, c);
+    if (!prev || (SEVERITY_RANK[c.severity] || 0) > (SEVERITY_RANK[prev.severity] || 0)) best.set(key, c);
   }
   return [...best.values()];
 }
