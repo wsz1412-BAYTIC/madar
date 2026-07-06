@@ -1,0 +1,26 @@
+{
+  "name": "OpportunityRequest",
+  "description": "Subscriber requests for real estate opportunity studies. Created only by backend function and reviewed by admins.",
+  "type": "object",
+  "properties": {
+    "opportunityId": { "type": "string" },
+    "opportunityTeaserTitle": { "type": "string" },
+    "userId": { "type": "string" },
+    "userEmail": { "type": "string" },
+    "name": { "type": "string" },
+    "mobile": { "type": "string" },
+    "preferredContactMethod": { "type": "string", "enum": ["phone", "whatsapp", "email"] },
+    "budgetRange": { "type": "string" },
+    "message": { "type": "string" },
+    "agreementAccepted": { "type": "boolean" },
+    "status": { "type": "string", "enum": ["new", "contacted", "qualified", "closed", "rejected"] },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "required": ["opportunityId", "userId", "name", "mobile", "preferredContactMethod", "budgetRange", "agreementAccepted", "createdAt"],
+  "rls": {
+    "create": false,
+    "read": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}
