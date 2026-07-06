@@ -49,6 +49,10 @@ import Reports from '@/pages/Reports';
 import PricingPage from '@/pages/PricingPage';
 import PropertyAnalysis from '@/pages/PropertyAnalysis';
 import Opportunities from '@/pages/Opportunities';
+import RealEstateOpportunities from '@/pages/RealEstateOpportunities';
+import AdminOpportunities from '@/pages/AdminOpportunities';
+import AdminOpportunityForm from '@/pages/AdminOpportunityForm';
+import AdminOpportunityRequests from '@/pages/AdminOpportunityRequests';
 import PriceRecommendations from '@/pages/PriceRecommendations';
 import InvestmentConsultant from '@/pages/InvestmentConsultant';
 import PageNotFound from './lib/PageNotFound';
@@ -80,6 +84,7 @@ const AuthenticatedApp = () => {
       <Route path="/market-insights" element={<Market />} />
       <Route path="/property-analysis" element={<PropertyAnalysis />} />
       <Route path="/opportunities" element={<Opportunities />} />
+      <Route path="/real-estate-opportunities" element={<RealEstateOpportunities />} />
       
       {/* Authenticated routes — gated by ProtectedRoute (redirects to /login) */}
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
@@ -114,6 +119,10 @@ const AuthenticatedApp = () => {
           <Route path="/admin/support" element={<Admin />} />
           <Route path="/admin/logs" element={<Admin />} />
           <Route path="/admin/settings" element={<Admin />} />
+          <Route path="/admin/opportunities" element={<AdminOpportunities />} />
+          <Route path="/admin/opportunities/new" element={<AdminOpportunityForm />} />
+          <Route path="/admin/opportunities/:id" element={<AdminOpportunityForm />} />
+          <Route path="/admin/opportunity-requests" element={<AdminOpportunityRequests />} />
         </Route>
       </Route>
 
