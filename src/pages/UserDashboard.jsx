@@ -12,7 +12,8 @@ import UpcomingBookings from '@/components/dashboard/UpcomingBookings';
 import PropertyPerformance from '@/components/dashboard/PropertyPerformance';
 import RevenueChart from '@/components/dashboard/RevenueChart';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, TrendingUp, Home, AlertTriangle, Lock } from 'lucide-react';
+import { AlertCircle, TrendingUp, Home, Lock } from 'lucide-react';
+import TransientAlert from '@/components/madar/TransientAlert';
 
 export default function UserDashboard() {
   const navigate = useNavigate();
@@ -61,7 +62,10 @@ export default function UserDashboard() {
         setLoading(false);
       } catch (err) {
         console.error('Error loading dashboard:', err);
-        setErrors(lang === 'ar' ? 'خطأ في تحميل البيانات' : 'Error loading dashboard data');
+        setErrors({
+          en: 'Some data could not be refreshed — showing the latest available. Pull to retry or check back shortly.',
+          ar: 'تعذر تحديث بعض البيانات — تُعرض آخر نسخة متاحة. حاول التحديث أو عد بعد قليل.',
+        });
         setLoading(false);
       }
     };
@@ -103,15 +107,11 @@ export default function UserDashboard() {
           </p>
         </div>
 
+        {/* Data-load problems surface as a small floating notice — it
+            auto-dismisses, has a close button, and never displaces the
+            dashboard content, filters, or mobile controls. */}
         {errors && (
-          <div className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
-            theme === 'dark'
-              ? 'bg-red-950/20 border-red-700/30 text-red-200'
-              : 'bg-red-50 border-red-200 text-red-800'
-          }`}>
-            <AlertTriangle className="w-5 h-5 mt-0.5 flex-shrink-0" />
-            <p>{errors}</p>
-          </div>
+          <TransientAlert message={errors} tone="warning" onClose={() => setErrors(null)} />
         )}
 
         {/* Subscription Warning */}
