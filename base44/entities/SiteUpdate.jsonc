@@ -1,0 +1,31 @@
+{
+  "name": "SiteUpdate",
+  "description": "User-facing product changelog entries (new features, improvements, fixes, announcements). Managed by admins only. Only published entries are readable by non-admins; drafts are admin-only. No sensitive/PII fields.",
+  "type": "object",
+  "properties": {
+    "title_ar": { "type": "string", "title": "Title (Arabic)" },
+    "title_en": { "type": "string", "title": "Title (English)" },
+    "description_ar": { "type": ["string", "null"], "title": "Description (Arabic)" },
+    "description_en": { "type": ["string", "null"], "title": "Description (English)" },
+    "date": { "type": "string", "format": "date", "title": "Date" },
+    "type": {
+      "type": "string",
+      "enum": ["feature", "improvement", "fix", "announcement"],
+      "default": "feature",
+      "title": "Update Type"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": false,
+      "title": "Published",
+      "description": "Fail-safe default false: an entry stays a draft (admin-only) until explicitly published."
+    }
+  },
+  "required": ["title_ar", "title_en", "date", "type"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": { "$or": [{ "data.is_published": true }, { "user_condition": { "role": "admin" } }] },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}
