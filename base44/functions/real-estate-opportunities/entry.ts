@@ -1,4 +1,5 @@
 import { createClientFromRequest } from "npm:@base44/sdk";
+import { findActiveDuplicate, buildDuplicateResponse } from "./opportunityRequests.js";
 
 const TRUE_VALUES = new Set(["true", "1", "yes", "on"]);
 const CITIES = new Set(["Jeddah", "Riyadh", "Makkah"]);
@@ -76,6 +77,18 @@ Deno.serve(async (req) => {
       const opportunity = await sr.entities.RealEstateOpportunity.get(opportunityId);
       if (!opportunity || opportunity.status !== "approved" || opportunity.visibility !== "subscriber_teaser") {
         return Response.json({ error: "Opportunity unavailable" }, { status: 404 });
+      }
+
+      // Duplicate-request protection: the same user cannot open a second active
+      // request for the same opportunity. Closed/lost/rejected requests never
+      // block a fresh submission. On a block we return a safe acknowledgement
+      // (no internal detail) and skip both the create AND the counter increment.
+      const existingRequests = await sr.entities.OpportunityRequest.filter({
+        userId: user.id,
+        opportunityId: opportunity.id,
+      });
+      if (findActiveDuplicate(existingRequests, user.id, opportunity.id)) {
+        return Response.json(buildDuplicateResponse());
       }
 
       const now = new Date().toISOString();
