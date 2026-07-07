@@ -117,6 +117,17 @@ export default function MarketHeatmap() {
         </div>
       </div>
 
+      {/* Data-coverage honesty note: this visualization is built only from
+          available Madar platform data, not an external market feed. */}
+      <div className="flex items-start gap-2 mb-4 rounded-lg border border-[#C8972A]/25 bg-[#C8972A]/[0.07] px-3 py-2">
+        <Info className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#C8972A]" />
+        <p className="text-[11px] leading-relaxed text-foreground/60">
+          {lang === 'ar'
+            ? 'يعتمد هذا المؤشر على البيانات المتاحة داخل المنصة وقد لا يمثل السوق بالكامل.'
+            : 'This indicator is based on data available within the platform and may not represent the entire market.'}
+        </p>
+      </div>
+
       {/* Filters */}
       <div className="flex flex-wrap gap-2 mb-4">
         <FilterSelect value={filters.city} onChange={(v) => setFilters((f) => ({ ...f, city: v }))}
