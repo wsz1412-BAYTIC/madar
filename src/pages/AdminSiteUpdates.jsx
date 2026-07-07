@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import AdminNav from '@/components/admin/AdminNav';
 import ExportButtons from '@/components/admin/ExportButtons';
+import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,6 +31,7 @@ export default function AdminSiteUpdates() {
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
 
   const load = () => {
     setLoading(true);
@@ -76,8 +78,19 @@ export default function AdminSiteUpdates() {
   };
 
   const togglePublished = async (item) => {
-    try { await base44.entities.SiteUpdate.update(item.id, { is_published: !item.is_published }); load(); }
-    catch (err) { setError(err?.message || 'تعذر تغيير حالة النشر.'); }
+    const next = !item.is_published;
+    const title = item.title_ar || item.title_en || '';
+    const msg = next
+      ? `نشر التحديث «${title}» ليكون ظاهرًا للمستخدمين؟`
+      : `إلغاء نشر التحديث «${title}» (سيصبح مسودة للمشرفين فقط)؟`;
+    if (!window.confirm(msg)) return;
+    try {
+      await base44.entities.SiteUpdate.update(item.id, { is_published: next });
+      toast({ description: next ? 'تم نشر التحديث.' : 'تم إلغاء النشر.' });
+      load();
+    } catch (err) {
+      toast({ variant: 'destructive', description: err?.message || 'تعذر تغيير حالة النشر.' });
+    }
   };
 
   const remove = async (item) => {

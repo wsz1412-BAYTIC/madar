@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import AdminNav from '@/components/admin/AdminNav';
 import ExportButtons from '@/components/admin/ExportButtons';
+import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ShieldAlert, RefreshCw, ChevronDown, ChevronUp, Check, CheckCheck, AlertTriangle } from 'lucide-react';
@@ -35,6 +36,7 @@ export default function AdminSecurityAlerts() {
   const [expanded, setExpanded] = useState(null);
   const [coverageWarning, setCoverageWarning] = useState(false);
   const [filters, setFilters] = useState({ severity: 'all', status: 'all', type: 'all' });
+  const { toast } = useToast();
 
   // Listing goes through the backend (list_alerts), which returns admin-safe
   // SUMMARIES only — the raw subject_user_id and actor fields never reach the
@@ -69,13 +71,15 @@ export default function AdminSecurityAlerts() {
   // current status and rejects stale/backward changes — the page never calls
   // SecurityAlert.update directly, so two admins can't race a stale patch.
   const transition = async (alert, to) => {
+    if (!window.confirm(`تأكيد: تغيير حالة التنبيه إلى «${label(to)}»؟`)) return;
     try {
       const res = await base44.functions.invoke('securityMonitor', { action: 'transition_alert', id: alert.id, to });
       const updated = (res?.data || res || {}).alert;
       if (updated) setAlerts((rows) => rows.map((a) => (a.id === alert.id ? { ...a, ...updated } : a)));
       else load();
+      toast({ description: 'تم تحديث حالة التنبيه.' });
     } catch (err) {
-      setError(err?.message || 'تعذر تحديث حالة التنبيه (قد تكون الحالة تغيّرت). يُعاد التحميل.');
+      toast({ variant: 'destructive', description: err?.message || 'تعذر تحديث حالة التنبيه (قد تكون الحالة تغيّرت).' });
       load();
     }
   };
