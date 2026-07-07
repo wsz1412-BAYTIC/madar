@@ -27,8 +27,11 @@ export default function AdminOpsSummary() {
   const [updates, setUpdates] = useState(null);
 
   useEffect(() => {
-    base44.entities.OpportunityRequest.list('-createdAt').then((r) => setRequests(r || [])).catch(() => setRequests([]));
-    base44.entities.SiteUpdate.list('-date', 200).then((r) => setUpdates(r || [])).catch(() => setUpdates([]));
+    // Field projections: fetch ONLY the columns the summary counts, so request
+    // PII (userEmail / mobile / message / internal_notes) never reaches the
+    // browser via the dashboard. (SDK list(sort, limit, skip, fields).)
+    base44.entities.OpportunityRequest.list('-createdAt', undefined, undefined, ['status', 'next_follow_up_at']).then((r) => setRequests(r || [])).catch(() => setRequests([]));
+    base44.entities.SiteUpdate.list('-date', 200, undefined, ['is_published']).then((r) => setUpdates(r || [])).catch(() => setUpdates([]));
     base44.functions.invoke('securityMonitor', { action: 'list_alerts' })
       .then((res) => setAlerts((res?.data || res || {}).alerts || []))
       .catch(() => setAlerts([]));
@@ -37,6 +40,14 @@ export default function AdminOpsSummary() {
   const reqSummary = useMemo(() => summarizeRequests(requests || []), [requests]);
   const alertSummary = useMemo(() => summarizeAlerts(alerts || []), [alerts]);
   const updSummary = useMemo(() => summarizeSiteUpdates(updates || []), [updates]);
+
+  // The list_alerts backend action returns the latest 300 alerts. If we get a
+  // full page, older unresolved alerts may lie beyond it, so the open count is
+  // a floor, not a total — we label it honestly rather than misrepresent it.
+  // (A precise total would need a Security-Monitoring backend count endpoint,
+  // out of scope for this dashboard PR.)
+  const ALERTS_FETCH_CAP = 300;
+  const alertsCapped = (alerts?.length || 0) >= ALERTS_FETCH_CAP;
 
   const card = `p-5 rounded-xl border ${dark ? 'bg-card border-foreground/[0.06]' : 'bg-white border-[#0A0B10]/[0.06]'}`;
   const muted = dark ? 'text-foreground/60' : 'text-[#0A0B10]/60';
@@ -78,7 +89,7 @@ export default function AdminOpsSummary() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Inbox} label={t('إجمالي طلبات الفرص', 'Opportunity Requests')} value={reqSummary.total} />
         <StatCard icon={Bell} label={t('متابعات مستحقة', 'Follow-ups Due')} value={reqSummary.followUpsDue} tone={reqSummary.followUpsDue > 0 ? 'danger' : 'primary'} />
-        <StatCard icon={ShieldAlert} label={t('تنبيهات أمان مفتوحة', 'Open Security Alerts')} value={alertSummary.openTotal} tone={alertSummary.open.critical > 0 ? 'danger' : 'primary'} />
+        <StatCard icon={ShieldAlert} label={t('تنبيهات أمان مفتوحة', 'Open Security Alerts')} value={`${alertSummary.openTotal}${alertsCapped ? '+' : ''}`} tone={alertSummary.open.critical > 0 ? 'danger' : 'primary'} />
         <StatCard icon={Megaphone} label={t('تحديثات منشورة', 'Published Updates')} value={updSummary.published} />
       </div>
 
@@ -104,6 +115,9 @@ export default function AdminOpsSummary() {
             <Chip>{alertLabel('warning')}: <b>{alertSummary.open.warning}</b></Chip>
             <Chip>{alertLabel('info')}: <b>{alertSummary.open.info}</b></Chip>
           </div>
+          {alertsCapped && (
+            <p className={`mt-2 text-[11px] ${muted}`}>{t('* بناءً على أحدث 300 تنبيه', '* based on the latest 300 alerts')}</p>
+          )}
         </div>
 
         {/* Site updates published/draft */}
