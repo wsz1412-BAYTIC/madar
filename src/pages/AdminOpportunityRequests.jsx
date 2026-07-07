@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X, Bell, ShieldCheck, Phone, MessageCircle, Mail } from 'lucide-react';
+import { X, Bell, ShieldCheck, Phone, MessageCircle, Mail, UserPlus } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 import { label as oppLabel } from '@/lib/realEstateOpportunities';
 import { label as pvLabel } from '@/lib/propertyVerification';
 import {
@@ -42,6 +43,40 @@ export default function AdminOpportunityRequests() {
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({ status: 'all', city: 'all', agreementStatus: 'all', followUpDue: false });
   const [active, setActive] = useState(null); // request open in the detail modal
+  const [me, setMe] = useState(null);
+  const { toast } = useToast();
+
+  useEffect(() => { base44.auth.me().then((u) => setMe(u)).catch(() => setMe(null)); }, []);
+
+  // Shared quick-action writer: confirm → update (admin-only RLS) → toast +
+  // optimistic local state. Every data-changing quick action routes through
+  // here so each one is confirmed and gives feedback. Only workflow fields are
+  // ever written — never client mobile/email or free-text notes.
+  const quickUpdate = async (request, patch, confirmMsg, successMsg) => {
+    if (!window.confirm(confirmMsg)) return false;
+    try {
+      const full = { ...patch, updated_at: new Date().toISOString() };
+      await base44.entities.OpportunityRequest.update(request.id, full);
+      setRequests((rows) => rows.map((r) => (r.id === request.id ? { ...r, ...full } : r)));
+      toast({ description: successMsg });
+      return true;
+    } catch (err) {
+      toast({ variant: 'destructive', description: err?.message || 'تعذر تنفيذ الإجراء.' });
+      return false;
+    }
+  };
+
+  const quickStatus = (request, to) =>
+    quickUpdate(request, { status: to }, `تأكيد: تغيير حالة طلب «${request.name}» إلى «${label(to)}»؟`, 'تم تحديث الحالة.');
+  const quickFollowUp = (request, date) =>
+    quickUpdate(request, { next_follow_up_at: date ? new Date(date).toISOString() : null },
+      date ? `تعيين تاريخ المتابعة القادمة لـ«${request.name}» إلى ${date}؟` : `مسح تاريخ المتابعة لـ«${request.name}»؟`,
+      'تم تحديث تاريخ المتابعة.');
+  const quickAssignToMe = (request) => {
+    const ref = me?.email || me?.full_name;
+    if (!ref) { toast({ variant: 'destructive', description: 'تعذر تحديد المشرف الحالي.' }); return; }
+    quickUpdate(request, { assigned_admin: ref }, `إسناد طلب «${request.name}» إليك (${ref})؟`, 'تم الإسناد إليك.');
+  };
 
   const load = () => {
     setLoading(true);
@@ -186,17 +221,43 @@ export default function AdminOpportunityRequests() {
                   {filtered.map((r) => {
                     const due = isFollowUpDue(r);
                     const pvCount = (verificationsByOpportunity.get(r.opportunityId) || []).length;
+                    const rowStatus = r.status || 'new';
+                    // Always keep the row's CURRENT status selectable/visible —
+                    // including a legacy value like 'closed' that REQUEST_STATUSES
+                    // omits — so old requests still show their status and can be
+                    // moved to a current one.
+                    const statusItems = REQUEST_STATUSES.includes(rowStatus) ? REQUEST_STATUSES : [...REQUEST_STATUSES, rowStatus];
                     return (
                       <tr key={r.id} className="border-t border-[#0A0B10]/10 hover:bg-[#0A0B10]/[0.03]">
                         <td className="p-3 whitespace-nowrap">{r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '—'}</td>
                         <td className="p-3">{r.opportunityTeaserTitle || r.opportunityId}</td>
                         <td className="p-3 font-semibold">{r.name}</td>
                         <td className="p-3" dir="ltr">{r.mobile}</td>
-                        <td className="p-3"><StatusChip status={r.status} /></td>
+                        <td className="p-3">
+                          {/* Quick status change (covers contacted / qualified / agreement_pending / closed …). Cancel in the confirm reverts (controlled by r.status). */}
+                          <Select value={rowStatus} onValueChange={(v) => { if (v !== rowStatus) quickStatus(r, v); }}>
+                            <SelectTrigger className="h-8 w-36"><SelectValue /></SelectTrigger>
+                            <SelectContent>{statusItems.map((s) => <SelectItem key={s} value={s}>{label(s)}</SelectItem>)}</SelectContent>
+                          </Select>
+                        </td>
                         <td className="p-3">{label(r.agreement_status || 'none')}</td>
-                        <td className="p-3">{r.next_follow_up_at ? <span className={due ? 'font-semibold text-amber-700' : ''}>{new Date(r.next_follow_up_at).toLocaleDateString('ar-SA')}</span> : '—'}</td>
+                        <td className="p-3">
+                          {/* Quick set next follow-up date */}
+                          <Input
+                            type="date"
+                            dir="ltr"
+                            className={`h-8 w-36 ${due ? 'border-amber-400 text-amber-700' : ''}`}
+                            value={r.next_follow_up_at ? new Date(r.next_follow_up_at).toISOString().slice(0, 10) : ''}
+                            onChange={(e) => quickFollowUp(r, e.target.value)}
+                          />
+                        </td>
                         <td className="p-3">{pvCount > 0 ? <span className="flex items-center gap-1 text-xs text-green-700"><ShieldCheck className="h-3.5 w-3.5" />{pvCount}</span> : <span className="text-xs opacity-40">—</span>}</td>
-                        <td className="p-3"><Button size="sm" variant="outline" onClick={() => setActive(r)}>تفاصيل</Button></td>
+                        <td className="p-3">
+                          <div className="flex items-center gap-1">
+                            <Button size="sm" variant="ghost" title="أسنِد إليّ" onClick={() => quickAssignToMe(r)}><UserPlus className="h-4 w-4" /></Button>
+                            <Button size="sm" variant="outline" onClick={() => setActive(r)}>تفاصيل</Button>
+                          </div>
+                        </td>
                       </tr>
                     );
                   })}
