@@ -221,6 +221,12 @@ export default function AdminOpportunityRequests() {
                   {filtered.map((r) => {
                     const due = isFollowUpDue(r);
                     const pvCount = (verificationsByOpportunity.get(r.opportunityId) || []).length;
+                    const rowStatus = r.status || 'new';
+                    // Always keep the row's CURRENT status selectable/visible —
+                    // including a legacy value like 'closed' that REQUEST_STATUSES
+                    // omits — so old requests still show their status and can be
+                    // moved to a current one.
+                    const statusItems = REQUEST_STATUSES.includes(rowStatus) ? REQUEST_STATUSES : [...REQUEST_STATUSES, rowStatus];
                     return (
                       <tr key={r.id} className="border-t border-[#0A0B10]/10 hover:bg-[#0A0B10]/[0.03]">
                         <td className="p-3 whitespace-nowrap">{r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '—'}</td>
@@ -229,9 +235,9 @@ export default function AdminOpportunityRequests() {
                         <td className="p-3" dir="ltr">{r.mobile}</td>
                         <td className="p-3">
                           {/* Quick status change (covers contacted / qualified / agreement_pending / closed …). Cancel in the confirm reverts (controlled by r.status). */}
-                          <Select value={r.status || 'new'} onValueChange={(v) => { if (v !== (r.status || 'new')) quickStatus(r, v); }}>
+                          <Select value={rowStatus} onValueChange={(v) => { if (v !== rowStatus) quickStatus(r, v); }}>
                             <SelectTrigger className="h-8 w-36"><SelectValue /></SelectTrigger>
-                            <SelectContent>{REQUEST_STATUSES.map((s) => <SelectItem key={s} value={s}>{label(s)}</SelectItem>)}</SelectContent>
+                            <SelectContent>{statusItems.map((s) => <SelectItem key={s} value={s}>{label(s)}</SelectItem>)}</SelectContent>
                           </Select>
                         </td>
                         <td className="p-3">{label(r.agreement_status || 'none')}</td>
