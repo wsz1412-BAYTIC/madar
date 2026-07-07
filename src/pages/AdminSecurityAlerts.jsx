@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import AdminNav from '@/components/admin/AdminNav';
+import ExportButtons from '@/components/admin/ExportButtons';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ShieldAlert, RefreshCw, ChevronDown, ChevronUp, Check, CheckCheck, AlertTriangle } from 'lucide-react';
@@ -89,6 +90,21 @@ export default function AdminSecurityAlerts() {
   const openCount = useMemo(() => alerts.filter((a) => (a.status || 'new') !== 'resolved').length, [alerts]);
   const setFilter = (k, v) => setFilters((f) => ({ ...f, [k]: v }));
 
+  // Export projection: SAFE summary fields only. Alerts already arrive as
+  // backend summaries (no subject_user_id / actor fields), and this explicit
+  // Arabic-keyed mapping guarantees the export can never carry a raw id, email,
+  // token, IP, header, or private note even if the source shape changes.
+  const exportRows = useMemo(() => filtered.map((a) => ({
+    'التاريخ': a.detected_at ? new Date(a.detected_at).toISOString() : '',
+    'الخطورة': label(a.severity),
+    'النوع': label(a.alert_type),
+    'الحالة': label(a.status || 'new'),
+    'المرجع': a.subject_ref || '',
+    'الوصف': a.summary || '',
+    'العدد': a.metadata?.count ?? '',
+    'النافذة': a.metadata?.window || '',
+  })), [filtered]);
+
   return (
     <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
       <AdminNav admin={{ role: 'admin' }} />
@@ -101,8 +117,9 @@ export default function AdminSecurityAlerts() {
               <p className="text-sm opacity-60">مراقبة النشاط غير الطبيعي (فحص يدوي). البيانات داخلية وخاصة بالمشرفين فقط.</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {openCount > 0 && <span className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-800">{openCount} تنبيه مفتوح</span>}
+            <ExportButtons baseName="security-alerts" rows={exportRows} />
             <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={runScan} disabled={scanning}>
               <RefreshCw className={`ml-1 h-4 w-4 ${scanning ? 'animate-spin' : ''}`} />{scanning ? 'جارٍ الفحص...' : 'تشغيل فحص'}
             </Button>

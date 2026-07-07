@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import AdminNav from '@/components/admin/AdminNav';
+import ExportButtons from '@/components/admin/ExportButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -86,6 +87,17 @@ export default function AdminSiteUpdates() {
     catch (err) { setError(err?.message || 'تعذر حذف التحديث.'); }
   };
 
+  // Export projection: changelog fields only (no PII / no internal-only fields).
+  const exportRows = useMemo(() => updates.map((u) => ({
+    'التاريخ': u.date || '',
+    'النوع': label(u.type, 'ar'),
+    'العنوان (عربي)': u.title_ar || '',
+    'العنوان (إنجليزي)': u.title_en || '',
+    'الوصف (عربي)': u.description_ar || '',
+    'الوصف (إنجليزي)': u.description_en || '',
+    'الحالة': u.is_published ? 'منشور' : 'مسودة',
+  })), [updates]);
+
   return (
     <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
       <AdminNav admin={{ role: 'admin' }} />
@@ -98,7 +110,10 @@ export default function AdminSiteUpdates() {
               <p className="text-sm opacity-60">إدارة سجل التغييرات والإعلانات الظاهرة للمستخدمين. المسودات تظهر للمشرفين فقط.</p>
             </div>
           </div>
-          <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={openNew}><Plus className="ml-1 h-4 w-4" />إضافة تحديث</Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <ExportButtons baseName="site-updates" rows={exportRows} />
+            <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={openNew}><Plus className="ml-1 h-4 w-4" />إضافة تحديث</Button>
+          </div>
         </div>
 
         {error && (

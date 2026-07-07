@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import AdminNav from '@/components/admin/AdminNav';
+import ExportButtons from '@/components/admin/ExportButtons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -82,6 +83,22 @@ export default function AdminOpportunityRequests() {
 
   const setFilter = (key, value) => setFilters((f) => ({ ...f, [key]: value }));
 
+  // Export projection: WORKFLOW/pipeline columns only. Deliberately EXCLUDES
+  // the client's mobile, email, and internal_notes — even though the admin can
+  // see them on screen, they are direct-contact PII / free-text notes and must
+  // not be spread into downloadable files.
+  const exportRows = useMemo(() => filtered.map((r) => ({
+    'التاريخ': r.createdAt ? new Date(r.createdAt).toISOString() : '',
+    'الفرصة': r.opportunityTeaserTitle || r.opportunityId || '',
+    'المدينة': oppLabel(cityOf(r.opportunityId)) || '',
+    'العميل': r.name || '',
+    'الحالة': label(r.status || 'new'),
+    'الاتفاقية': label(r.agreement_status || 'none'),
+    'مرحلة الوساطة': label(r.brokerage_stage || 'none'),
+    'المتابعة القادمة': r.next_follow_up_at ? new Date(r.next_follow_up_at).toISOString().slice(0, 10) : '',
+    'المسؤول': r.assigned_admin || '',
+  })), [filtered, cityOf]);
+
   return (
     <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
       <AdminNav admin={{ role: 'admin' }} />
@@ -91,11 +108,14 @@ export default function AdminOpportunityRequests() {
             <h1 className="font-heading text-3xl font-bold">طلبات دراسات الفرص</h1>
             <p className="text-sm opacity-60">متابعة طلبات المشتركين وإدارة مراحل الوساطة العقارية. جميع البيانات داخلية وخاصة بالمشرفين.</p>
           </div>
-          {dueCount > 0 && (
-            <span className="flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-sm text-amber-800">
-              <Bell className="h-4 w-4" />{dueCount} متابعة مستحقة
-            </span>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {dueCount > 0 && (
+              <span className="flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-sm text-amber-800">
+                <Bell className="h-4 w-4" />{dueCount} متابعة مستحقة
+              </span>
+            )}
+            <ExportButtons baseName="opportunity-requests" rows={exportRows} />
+          </div>
         </div>
 
         {/* Filters */}
