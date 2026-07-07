@@ -11,6 +11,7 @@ import RecentAlerts from '@/components/dashboard/RecentAlerts';
 import UpcomingBookings from '@/components/dashboard/UpcomingBookings';
 import PropertyPerformance from '@/components/dashboard/PropertyPerformance';
 import RevenueChart from '@/components/dashboard/RevenueChart';
+import MarketInsightsCard from '@/components/dashboard/MarketInsightsCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, TrendingUp, Home, Lock } from 'lucide-react';
 import TransientAlert from '@/components/madar/TransientAlert';
@@ -169,6 +170,9 @@ export default function UserDashboard() {
             <UpcomingBookings properties={properties} />
           </div>
         </FeatureGuard>
+
+        {/* Market Heatmap discovery — explanation + link to /market (no data shown here) */}
+        <MarketInsightsCard plan={currentPlan} />
 
         {/* Upsell for Free Plan Users */}
         {currentPlan === 'free' && (
