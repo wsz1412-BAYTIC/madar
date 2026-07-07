@@ -5,6 +5,7 @@ import { useLang } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import AdminNav from '@/components/admin/AdminNav';
 import AdminStats from '@/components/admin/AdminStats';
+import AdminOpsSummary from '@/components/admin/AdminOpsSummary';
 import AdminOverview from '@/components/admin/AdminOverview';
 import { Lock } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -141,6 +142,9 @@ export default function AdminDashboard() {
 
           {/* Stats */}
           {stats && <AdminStats stats={stats} />}
+
+          {/* Operational summary (requests / alerts / updates) + quick links */}
+          <AdminOpsSummary />
 
           {/* Overview */}
           <AdminOverview admin={admin} />
