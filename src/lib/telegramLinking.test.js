@@ -1,0 +1,241 @@
+import { describe, it, expect } from 'vitest';
+import {
+  LINK_TTL_MS,
+  generateLinkToken,
+  hashToken,
+  isExpired,
+  computeExpiry,
+  extractMessage,
+  isPrivateChat,
+  parseStartToken,
+  extractChatContext,
+  buildLinkStatus,
+  hasConflictingLink,
+  isLinkedToChat,
+  resolveIdentityConflict,
+  buildLinkAuditEntry,
+} from './telegramLinking.js';
+
+describe('token generation & hashing', () => {
+  it('generates URL-safe tokens with no padding or non-URL chars', () => {
+    const t = generateLinkToken();
+    expect(typeof t).toBe('string');
+    expect(t.length).toBeGreaterThan(20);
+    expect(t).toMatch(/^[A-Za-z0-9_-]+$/); // base64url, no + / =
+  });
+
+  it('generates distinct tokens each call (CSPRNG)', () => {
+    const seen = new Set();
+    for (let i = 0; i < 50; i++) seen.add(generateLinkToken());
+    expect(seen.size).toBe(50);
+  });
+
+  it('hashes a token to a stable 64-char hex digest', async () => {
+    const h1 = await hashToken('abc');
+    const h2 = await hashToken('abc');
+    expect(h1).toBe(h2);
+    expect(h1).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it('produces different hashes for different tokens and hides the raw token', async () => {
+    const token = generateLinkToken();
+    const h = await hashToken(token);
+    expect(h).not.toContain(token);
+    expect(await hashToken(token + 'x')).not.toBe(h);
+  });
+});
+
+describe('expiry', () => {
+  it('treats a token as expired at or after expires_at', () => {
+    const now = new Date('2026-07-11T12:00:00Z');
+    expect(isExpired({ expires_at: '2026-07-11T12:00:00Z' }, now)).toBe(true);
+    expect(isExpired({ expires_at: '2026-07-11T11:59:59Z' }, now)).toBe(true);
+    expect(isExpired({ expires_at: '2026-07-11T12:00:01Z' }, now)).toBe(false);
+  });
+
+  it('treats missing/invalid expiry as expired (fail-closed)', () => {
+    expect(isExpired(null)).toBe(true);
+    expect(isExpired({})).toBe(true);
+    expect(isExpired({ expires_at: 'not-a-date' }, new Date())).toBe(true);
+  });
+
+  it('computeExpiry is exactly 15 minutes after now', () => {
+    const now = new Date('2026-07-11T12:00:00Z');
+    expect(computeExpiry(now)).toBe(new Date(now.getTime() + LINK_TTL_MS).toISOString());
+    expect(LINK_TTL_MS).toBe(15 * 60 * 1000);
+  });
+});
+
+describe('Telegram update parsing', () => {
+  const privateStart = {
+    message: { text: '/start tok_123', chat: { id: 555, type: 'private' }, from: { id: 999 } },
+  };
+
+  it('accepts only private chats', () => {
+    expect(isPrivateChat(privateStart)).toBe(true);
+    expect(isPrivateChat({ message: { chat: { type: 'group' } } })).toBe(false);
+    expect(isPrivateChat({ message: { chat: { type: 'supergroup' } } })).toBe(false);
+    expect(isPrivateChat({ message: { chat: { type: 'channel' } } })).toBe(false);
+    expect(isPrivateChat({})).toBe(false);
+  });
+
+  it('parses the /start token payload', () => {
+    expect(parseStartToken(privateStart)).toBe('tok_123');
+    expect(parseStartToken({ message: { text: '/start@MadarBot tok_abc', chat: {} } })).toBe('tok_abc');
+    expect(parseStartToken({ message: { text: '/start', chat: {} } })).toBeNull();
+    expect(parseStartToken({ message: { text: 'hello', chat: {} } })).toBeNull();
+    expect(parseStartToken({})).toBeNull();
+  });
+
+  it('extracts chat context as strings', () => {
+    expect(extractChatContext(privateStart)).toEqual({ chatId: '555', telegramUserId: '999', chatType: 'private' });
+    expect(extractChatContext({})).toBeNull();
+  });
+
+  it('reads message or edited_message', () => {
+    expect(extractMessage({ edited_message: { text: 'x' } })).toEqual({ text: 'x' });
+    expect(extractMessage({})).toBeNull();
+  });
+});
+
+describe('buildLinkStatus — never leaks secrets', () => {
+  it('projects a linked row without chat/token', () => {
+    const s = buildLinkStatus({
+      status: 'linked',
+      linked_at: '2026-07-11T12:00:00Z',
+      chat_id: '555',
+      telegram_user_id: '999',
+      link_token_hash: 'deadbeef',
+    });
+    expect(s).toEqual({ status: 'linked', linked: true, linked_at: '2026-07-11T12:00:00Z', expires_at: null });
+    expect(JSON.stringify(s)).not.toContain('555');
+    expect(JSON.stringify(s)).not.toContain('999');
+    expect(JSON.stringify(s)).not.toContain('deadbeef');
+  });
+
+  it('projects pending and none states', () => {
+    expect(buildLinkStatus({ status: 'pending', expires_at: '2026-07-11T12:15:00Z' })).toEqual({
+      status: 'pending',
+      linked: false,
+      linked_at: null,
+      expires_at: '2026-07-11T12:15:00Z',
+    });
+    expect(buildLinkStatus(null)).toEqual({ status: 'none', linked: false });
+  });
+});
+
+describe('hasConflictingLink — one identity, one account', () => {
+  const linked = [{ status: 'linked', userId: 'userA', chat_id: '555', telegram_user_id: '999' }];
+
+  it('flags a chat already linked to a different account', () => {
+    expect(hasConflictingLink(linked, { chatId: '555', telegramUserId: '111', forUserId: 'userB' })).toBe(true);
+  });
+
+  it('flags a telegram user already linked to a different account', () => {
+    expect(hasConflictingLink(linked, { chatId: '777', telegramUserId: '999', forUserId: 'userB' })).toBe(true);
+  });
+
+  it('does not flag the same account re-linking its own identity', () => {
+    expect(hasConflictingLink(linked, { chatId: '555', telegramUserId: '999', forUserId: 'userA' })).toBe(false);
+  });
+
+  it('ignores non-linked rows and empty input', () => {
+    const stale = [{ status: 'revoked', userId: 'userA', chat_id: '555' }];
+    expect(hasConflictingLink(stale, { chatId: '555', forUserId: 'userB' })).toBe(false);
+    expect(hasConflictingLink([], { chatId: '555', forUserId: 'userB' })).toBe(false);
+    expect(hasConflictingLink(null, { chatId: '555', forUserId: 'userB' })).toBe(false);
+  });
+});
+
+describe('isLinkedToChat', () => {
+  const link = { status: 'linked', chat_id: '555', telegram_user_id: '999' };
+  it('matches an active link to the same chat and telegram user', () => {
+    expect(isLinkedToChat(link, { chatId: '555', telegramUserId: '999' })).toBe(true);
+    expect(isLinkedToChat(link, { chatId: '555' })).toBe(true);
+  });
+  it('rejects a different chat/user or a non-linked row', () => {
+    expect(isLinkedToChat(link, { chatId: '777', telegramUserId: '999' })).toBe(false);
+    expect(isLinkedToChat(link, { chatId: '555', telegramUserId: '111' })).toBe(false);
+    expect(isLinkedToChat({ status: 'pending', chat_id: '555' }, { chatId: '555' })).toBe(false);
+    expect(isLinkedToChat(null, { chatId: '555' })).toBe(false);
+  });
+});
+
+describe('webhook /start replay idempotency — decision on the hash-matched row', () => {
+  // When a retried /start finds no PENDING candidate, the webhook re-looks up the
+  // token hash and replies "already linked" ONLY when isLinkedToChat is true for
+  // the same chat + telegram user. These cases mirror that decision.
+  const ctx = { chatId: '555', telegramUserId: '999' };
+
+  it('1) successful link, same webhook retry → treated as already-linked (success)', () => {
+    const linkedSameChat = { status: 'linked', chat_id: '555', telegram_user_id: '999', linked_at: '2026-07-11T12:00:00Z' };
+    expect(isLinkedToChat(linkedSameChat, ctx)).toBe(true);
+  });
+
+  it('2) consumed token replayed from a DIFFERENT chat → generic invalid/expired', () => {
+    const linkedOtherChat = { status: 'linked', chat_id: '777', telegram_user_id: '888' };
+    expect(isLinkedToChat(linkedOtherChat, ctx)).toBe(false);
+  });
+
+  it('3) revoked token → generic invalid/expired', () => {
+    const revoked = { status: 'revoked', chat_id: '555', telegram_user_id: '999' };
+    expect(isLinkedToChat(revoked, ctx)).toBe(false);
+  });
+
+  it('4) expired token (or no linked row for the hash) → generic invalid/expired', () => {
+    const expired = { status: 'expired', chat_id: '555', telegram_user_id: '999' };
+    expect(isLinkedToChat(expired, ctx)).toBe(false);
+    expect(isLinkedToChat(null, ctx)).toBe(false); // no row matched the hash at all
+  });
+});
+
+describe('resolveIdentityConflict — earliest link wins (anti-hijack)', () => {
+  const candidate = { id: 'c1', userId: 'userB', status: 'linked', linked_at: '2026-07-11T12:00:05Z' };
+
+  it('keeps the candidate and revokes later different-user rows', () => {
+    const others = [{ id: 'o1', userId: 'userC', status: 'linked', linked_at: '2026-07-11T12:00:09Z' }];
+    expect(resolveIdentityConflict(candidate, others)).toEqual({ keepCandidate: true, revokeIds: ['o1'] });
+  });
+
+  it('revokes the candidate when a different user linked earlier', () => {
+    const others = [{ id: 'o1', userId: 'userA', status: 'linked', linked_at: '2026-07-11T12:00:01Z' }];
+    expect(resolveIdentityConflict(candidate, others)).toEqual({ keepCandidate: false, revokeIds: ['c1'] });
+  });
+
+  it('breaks exact-timestamp ties by lowest id, deterministically', () => {
+    const tie = { id: 'a0', userId: 'userA', status: 'linked', linked_at: '2026-07-11T12:00:05Z' };
+    expect(resolveIdentityConflict(candidate, [tie]).keepCandidate).toBe(false); // 'a0' < 'c1'
+  });
+
+  it('ignores same-user and non-linked rows and empty input', () => {
+    const sameUser = [{ id: 'o2', userId: 'userB', status: 'linked', linked_at: '2026-07-11T12:00:01Z' }];
+    expect(resolveIdentityConflict(candidate, sameUser)).toEqual({ keepCandidate: true, revokeIds: [] });
+    expect(resolveIdentityConflict(candidate, [])).toEqual({ keepCandidate: true, revokeIds: [] });
+  });
+});
+
+describe('buildLinkAuditEntry — PII-minimized', () => {
+  it('builds an AuditLog-shaped entry with no telegram identifiers', () => {
+    const e = buildLinkAuditEntry({
+      action: 'telegram_link_created',
+      actorId: 'user_1',
+      actorRole: 'user',
+      targetUserId: 'user_1',
+      nowIso: '2026-07-11T12:00:00Z',
+      details: { outcome: 'pending' },
+    });
+    expect(e.action).toBe('telegram_link_created');
+    expect(e.targetType).toBe('TelegramLink');
+    expect(e.targetId).toBe('user_1');
+    expect(e.timestamp).toBe('2026-07-11T12:00:00Z');
+    expect(e.previousValue).toBeNull();
+    expect(e.newValue).toBeNull();
+    expect(e.details).toEqual({ outcome: 'pending' });
+  });
+
+  it('falls back to system actor for webhook-originated audits', () => {
+    const e = buildLinkAuditEntry({ action: 'telegram_linked', targetUserId: 'user_2' });
+    expect(e.adminId).toBe('system:telegram');
+    expect(e.adminRole).toBe('system');
+  });
+});

@@ -1,0 +1,23 @@
+{
+  "name": "TelegramLink",
+  "description": "Single source of truth for a Madar account ↔ Telegram chat link. Created and mutated ONLY by backend functions (telegram-linking, telegram-webhook) running as the service role. Stores a one-time link token HASH (never the raw token), the private-chat chatId and telegramUserId (server-only, never surfaced to the browser or any public API), and the link lifecycle status. Contains no emails, no message content, and no raw tokens. Admin-only RLS; the browser never reads this entity directly — the telegram-linking function returns a sanitized status projection instead.",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string", "description": "Madar user id that owns this link." },
+    "link_token_hash": { "type": ["string", "null"], "description": "SHA-256 hash (hex) of the one-time link token. The raw token is never stored or logged." },
+    "status": { "type": "string", "enum": ["pending", "linked", "revoked", "expired"], "default": "pending" },
+    "chat_id": { "type": ["string", "null"], "description": "Telegram private chat id. Server-only; never returned to the browser." },
+    "telegram_user_id": { "type": ["string", "null"], "description": "Telegram user id. Server-only; never returned to the browser." },
+    "created_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": ["string", "null"], "format": "date-time", "description": "Pending token expiry (createdAt + 15 minutes). After this the token is single-use-dead." },
+    "linked_at": { "type": ["string", "null"], "format": "date-time" },
+    "revoked_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "required": ["userId", "status", "created_at"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": false
+  }
+}
