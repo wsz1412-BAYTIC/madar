@@ -161,6 +161,34 @@ describe('isLinkedToChat', () => {
   });
 });
 
+describe('webhook /start replay idempotency — decision on the hash-matched row', () => {
+  // When a retried /start finds no PENDING candidate, the webhook re-looks up the
+  // token hash and replies "already linked" ONLY when isLinkedToChat is true for
+  // the same chat + telegram user. These cases mirror that decision.
+  const ctx = { chatId: '555', telegramUserId: '999' };
+
+  it('1) successful link, same webhook retry → treated as already-linked (success)', () => {
+    const linkedSameChat = { status: 'linked', chat_id: '555', telegram_user_id: '999', linked_at: '2026-07-11T12:00:00Z' };
+    expect(isLinkedToChat(linkedSameChat, ctx)).toBe(true);
+  });
+
+  it('2) consumed token replayed from a DIFFERENT chat → generic invalid/expired', () => {
+    const linkedOtherChat = { status: 'linked', chat_id: '777', telegram_user_id: '888' };
+    expect(isLinkedToChat(linkedOtherChat, ctx)).toBe(false);
+  });
+
+  it('3) revoked token → generic invalid/expired', () => {
+    const revoked = { status: 'revoked', chat_id: '555', telegram_user_id: '999' };
+    expect(isLinkedToChat(revoked, ctx)).toBe(false);
+  });
+
+  it('4) expired token (or no linked row for the hash) → generic invalid/expired', () => {
+    const expired = { status: 'expired', chat_id: '555', telegram_user_id: '999' };
+    expect(isLinkedToChat(expired, ctx)).toBe(false);
+    expect(isLinkedToChat(null, ctx)).toBe(false); // no row matched the hash at all
+  });
+});
+
 describe('resolveIdentityConflict — earliest link wins (anti-hijack)', () => {
   const candidate = { id: 'c1', userId: 'userB', status: 'linked', linked_at: '2026-07-11T12:00:05Z' };
 

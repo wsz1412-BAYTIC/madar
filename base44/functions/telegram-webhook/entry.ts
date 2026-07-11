@@ -97,8 +97,31 @@ Deno.serve(async (req) => {
     const candidate = Array.isArray(matches) ? matches[0] : null;
 
     if (!candidate) {
-      // Unknown/already-consumed token — generic message, no enumeration.
-      await reply(ctx.chatId, "انتهت صلاحية رابط الربط أو أنه غير صالح. / This link is invalid or has expired.");
+      // No pending row. Telegram may RETRY an already-successful /start delivery,
+      // by which point the row is `linked`. Look the same token hash up among
+      // linked rows and, ONLY when it is the SAME successful link (same chat AND
+      // telegram user), re-send the success confirmation idempotently WITHOUT
+      // mutating anything. Every other case — a token linked to a different
+      // chat/user, or a revoked/expired token — keeps the generic reply. This
+      // path never links, so single-use protection is unaffected.
+      let priorByHash = null;
+      try {
+        const linkedMatches = await sr.entities.TelegramLink.filter(
+          { link_token_hash, status: "linked" },
+          "-linked_at",
+          5,
+          0,
+          ["userId", "status", "chat_id", "telegram_user_id", "linked_at"]
+        );
+        priorByHash = Array.isArray(linkedMatches) ? linkedMatches[0] : null;
+      } catch {
+        priorByHash = null;
+      }
+      if (isLinkedToChat(priorByHash, { chatId: ctx.chatId, telegramUserId: ctx.telegramUserId })) {
+        await reply(ctx.chatId, "تم ربط الحساب. / Your account is linked.");
+      } else {
+        await reply(ctx.chatId, "انتهت صلاحية رابط الربط أو أنه غير صالح. / This link is invalid or has expired.");
+      }
       return ack();
     }
 
