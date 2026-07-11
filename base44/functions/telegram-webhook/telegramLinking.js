@@ -150,6 +150,38 @@ export function hasConflictingLink(existingLinks, { chatId, telegramUserId, forU
   );
 }
 
+/** True when `link` is an active link to exactly this chat/telegram user. */
+export function isLinkedToChat(link, { chatId, telegramUserId } = {}) {
+  if (!link || link.status !== 'linked') return false;
+  if (chatId && link.chat_id !== chatId) return false;
+  if (telegramUserId && link.telegram_user_id !== telegramUserId) return false;
+  return true;
+}
+
+/**
+ * Deterministically resolve a residual cross-account race: after a link is
+ * written, `others` are the currently-linked rows (for a DIFFERENT Madar user)
+ * that share this chat_id or telegram_user_id. The EARLIEST linked_at wins
+ * (tiebreak: lowest id) so an identity already linked to one account can never
+ * be hijacked by a second. Returns which rows to revoke and whether the just-
+ * written candidate survives.
+ */
+export function resolveIdentityConflict(candidate, others) {
+  const list = (others || []).filter(
+    (r) => r && r.status === 'linked' && r.id && candidate && r.userId !== candidate.userId
+  );
+  if (list.length === 0) return { keepCandidate: true, revokeIds: [] };
+  const rank = (r) => `${String(r.linked_at || '')}|${String(r.id)}`;
+  let winner = candidate;
+  for (const r of list) {
+    if (rank(r) < rank(winner)) winner = r;
+  }
+  if (winner === candidate || winner.id === candidate.id) {
+    return { keepCandidate: true, revokeIds: list.map((r) => r.id) };
+  }
+  return { keepCandidate: false, revokeIds: [candidate.id] };
+}
+
 // ── PII-minimized audit entry ───────────────────────────────────────────────
 
 /**

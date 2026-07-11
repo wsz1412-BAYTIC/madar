@@ -25,6 +25,8 @@ import {
   parseStartToken,
   extractChatContext,
   hasConflictingLink,
+  isLinkedToChat,
+  resolveIdentityConflict,
   buildLinkAuditEntry,
 } from "./telegramLinking.js";
 
@@ -104,7 +106,7 @@ Deno.serve(async (req) => {
     if (isExpired(candidate, now)) {
       await sr.entities.TelegramLink.updateMany(
         { id: candidate.id, status: "pending" },
-        { status: "expired" }
+        { $set: { status: "expired" } }
       );
       await reply(ctx.chatId, "انتهت صلاحية رابط الربط. أنشئ رابطًا جديدًا من الإعدادات. / Link expired. Generate a new one from settings.");
       return ack();
@@ -140,17 +142,100 @@ Deno.serve(async (req) => {
     const result = await sr.entities.TelegramLink.updateMany(
       { id: candidate.id, status: "pending" },
       {
-        status: "linked",
-        chat_id: ctx.chatId,
-        telegram_user_id: ctx.telegramUserId || null,
-        linked_at: nowIso,
+        $set: {
+          status: "linked",
+          chat_id: ctx.chatId,
+          telegram_user_id: ctx.telegramUserId || null,
+          linked_at: nowIso,
+        },
       }
     );
     const linked = Number(result?.updated ?? 0) > 0;
 
     if (!linked) {
-      // Consumed concurrently — treat as idempotent success, generic message.
-      await reply(ctx.chatId, "تم ربط الحساب. / Your account is linked.");
+      // Zero rows updated is NOT necessarily an idempotent replay — the token may
+      // have been revoked/replaced or consumed from another chat between the
+      // filter and this CAS. Re-read and only report success if THIS chat is now
+      // genuinely linked; otherwise send the generic invalid/expired response.
+      let fresh = null;
+      try {
+        fresh = await sr.entities.TelegramLink.get(candidate.id);
+      } catch {
+        fresh = null;
+      }
+      if (isLinkedToChat(fresh, { chatId: ctx.chatId, telegramUserId: ctx.telegramUserId })) {
+        await reply(ctx.chatId, "تم ربط الحساب. / Your account is linked.");
+      } else {
+        await reply(ctx.chatId, "انتهت صلاحية رابط الربط أو أنه غير صالح. / This link is invalid or has expired.");
+      }
+      return ack();
+    }
+
+    // 7) Post-link reconciliation. The preflight check above is not atomic across
+    // concurrent DIFFERENT-token webhooks, so re-assert the invariants now that
+    // the row is written:
+    const linkedCandidate = {
+      id: candidate.id,
+      userId: candidate.userId,
+      status: "linked",
+      chat_id: ctx.chatId,
+      telegram_user_id: ctx.telegramUserId || null,
+      linked_at: nowIso,
+    };
+
+    // 7a) One chat per Madar account: revoke this user's OTHER linked chats (a
+    // deliberate re-link from a new chat supersedes the old one).
+    try {
+      const mine = await sr.entities.TelegramLink.filter(
+        { userId: candidate.userId, status: "linked" },
+        "-linked_at",
+        20,
+        0,
+        ["id"]
+      );
+      for (const row of mine || []) {
+        if (row && row.id && row.id !== candidate.id) {
+          await sr.entities.TelegramLink.updateMany(
+            { id: row.id, status: "linked" },
+            { $set: { status: "revoked", revoked_at: nowIso } }
+          );
+        }
+      }
+    } catch {
+      // best-effort
+    }
+
+    // 7b) One identity → one account: if a DIFFERENT account linked the same
+    // chat/telegram user in the race window, resolve deterministically (earliest
+    // linked_at wins) and revoke the loser — which may be this very link.
+    const [byChat2, byTg2] = await Promise.all([
+      sr.entities.TelegramLink.filter({ chat_id: ctx.chatId, status: "linked" }, "-linked_at", 10, 0, ["id", "userId", "status", "linked_at"]),
+      ctx.telegramUserId
+        ? sr.entities.TelegramLink.filter({ telegram_user_id: ctx.telegramUserId, status: "linked" }, "-linked_at", 10, 0, ["id", "userId", "status", "linked_at"])
+        : Promise.resolve([]),
+    ]);
+    const { keepCandidate, revokeIds } = resolveIdentityConflict(linkedCandidate, [
+      ...(byChat2 || []),
+      ...(byTg2 || []),
+    ]);
+    for (const id of revokeIds) {
+      await sr.entities.TelegramLink.updateMany(
+        { id, status: "linked" },
+        { $set: { status: "revoked", revoked_at: nowIso } }
+      );
+    }
+
+    if (!keepCandidate) {
+      await writeAudit(
+        sr,
+        buildLinkAuditEntry({
+          action: "telegram_link_conflict",
+          targetUserId: candidate.userId,
+          nowIso,
+          details: { outcome: "rejected", reason: "identity_already_linked" },
+        })
+      );
+      await reply(ctx.chatId, "هذا الحساب في تيليجرام مرتبط بحساب آخر. / This Telegram account is already linked to another account.");
       return ack();
     }
 

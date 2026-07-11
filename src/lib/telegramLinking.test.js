@@ -11,6 +11,8 @@ import {
   extractChatContext,
   buildLinkStatus,
   hasConflictingLink,
+  isLinkedToChat,
+  resolveIdentityConflict,
   buildLinkAuditEntry,
 } from './telegramLinking.js';
 
@@ -142,6 +144,45 @@ describe('hasConflictingLink — one identity, one account', () => {
     expect(hasConflictingLink(stale, { chatId: '555', forUserId: 'userB' })).toBe(false);
     expect(hasConflictingLink([], { chatId: '555', forUserId: 'userB' })).toBe(false);
     expect(hasConflictingLink(null, { chatId: '555', forUserId: 'userB' })).toBe(false);
+  });
+});
+
+describe('isLinkedToChat', () => {
+  const link = { status: 'linked', chat_id: '555', telegram_user_id: '999' };
+  it('matches an active link to the same chat and telegram user', () => {
+    expect(isLinkedToChat(link, { chatId: '555', telegramUserId: '999' })).toBe(true);
+    expect(isLinkedToChat(link, { chatId: '555' })).toBe(true);
+  });
+  it('rejects a different chat/user or a non-linked row', () => {
+    expect(isLinkedToChat(link, { chatId: '777', telegramUserId: '999' })).toBe(false);
+    expect(isLinkedToChat(link, { chatId: '555', telegramUserId: '111' })).toBe(false);
+    expect(isLinkedToChat({ status: 'pending', chat_id: '555' }, { chatId: '555' })).toBe(false);
+    expect(isLinkedToChat(null, { chatId: '555' })).toBe(false);
+  });
+});
+
+describe('resolveIdentityConflict — earliest link wins (anti-hijack)', () => {
+  const candidate = { id: 'c1', userId: 'userB', status: 'linked', linked_at: '2026-07-11T12:00:05Z' };
+
+  it('keeps the candidate and revokes later different-user rows', () => {
+    const others = [{ id: 'o1', userId: 'userC', status: 'linked', linked_at: '2026-07-11T12:00:09Z' }];
+    expect(resolveIdentityConflict(candidate, others)).toEqual({ keepCandidate: true, revokeIds: ['o1'] });
+  });
+
+  it('revokes the candidate when a different user linked earlier', () => {
+    const others = [{ id: 'o1', userId: 'userA', status: 'linked', linked_at: '2026-07-11T12:00:01Z' }];
+    expect(resolveIdentityConflict(candidate, others)).toEqual({ keepCandidate: false, revokeIds: ['c1'] });
+  });
+
+  it('breaks exact-timestamp ties by lowest id, deterministically', () => {
+    const tie = { id: 'a0', userId: 'userA', status: 'linked', linked_at: '2026-07-11T12:00:05Z' };
+    expect(resolveIdentityConflict(candidate, [tie]).keepCandidate).toBe(false); // 'a0' < 'c1'
+  });
+
+  it('ignores same-user and non-linked rows and empty input', () => {
+    const sameUser = [{ id: 'o2', userId: 'userB', status: 'linked', linked_at: '2026-07-11T12:00:01Z' }];
+    expect(resolveIdentityConflict(candidate, sameUser)).toEqual({ keepCandidate: true, revokeIds: [] });
+    expect(resolveIdentityConflict(candidate, [])).toEqual({ keepCandidate: true, revokeIds: [] });
   });
 });
 

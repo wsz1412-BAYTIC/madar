@@ -65,10 +65,13 @@ Deno.serve(async (req) => {
 
     // ── status: sanitized projection of the caller's own link ──
     if (action === "status") {
+      // filter(query, sort, limit, skip, fields) — the projection is the FIFTH
+      // argument; skip must be passed (0) so fields is not read as skip.
       const rows = await sr.entities.TelegramLink.filter(
         { userId: user.id },
         "-created_at",
         20,
+        0,
         ["userId", "status", "linked_at", "expires_at", "created_at"]
       );
       return Response.json({ success: true, link: buildLinkStatus(pickCurrent(rows)) });
@@ -85,14 +88,14 @@ Deno.serve(async (req) => {
       // token is ever live (atomic; idempotent if none exist).
       await sr.entities.TelegramLink.updateMany(
         { userId: user.id, status: "pending" },
-        { status: "revoked", revoked_at: nowIso }
+        { $set: { status: "revoked", revoked_at: nowIso } }
       );
 
       const token = generateLinkToken();
       const link_token_hash = await hashToken(token);
       const expires_at = computeExpiry(now);
 
-      await sr.entities.TelegramLink.create({
+      const created = await sr.entities.TelegramLink.create({
         userId: user.id,
         link_token_hash,
         status: "pending",
@@ -103,6 +106,29 @@ Deno.serve(async (req) => {
         linked_at: null,
         revoked_at: null,
       });
+
+      // Single-flight cleanup: if two create_link calls overlapped, both may have
+      // inserted a pending row. Revoke every OTHER pending row for this user so
+      // only the token we just returned stays live (converges to one token).
+      try {
+        const pendings = await sr.entities.TelegramLink.filter(
+          { userId: user.id, status: "pending" },
+          "-created_at",
+          20,
+          0,
+          ["id"]
+        );
+        for (const row of pendings || []) {
+          if (row && row.id && row.id !== created.id) {
+            await sr.entities.TelegramLink.updateMany(
+              { id: row.id, status: "pending" },
+              { $set: { status: "revoked", revoked_at: nowIso } }
+            );
+          }
+        }
+      } catch {
+        // Cleanup is best-effort; stray pending rows still expire in 15 minutes.
+      }
 
       await writeAudit(
         sr,
@@ -125,11 +151,11 @@ Deno.serve(async (req) => {
     if (action === "unlink") {
       const pendingRes = await sr.entities.TelegramLink.updateMany(
         { userId: user.id, status: "pending" },
-        { status: "revoked", revoked_at: nowIso }
+        { $set: { status: "revoked", revoked_at: nowIso } }
       );
       const linkedRes = await sr.entities.TelegramLink.updateMany(
         { userId: user.id, status: "linked" },
-        { status: "revoked", revoked_at: nowIso }
+        { $set: { status: "revoked", revoked_at: nowIso } }
       );
       const revoked = Number(pendingRes?.updated ?? 0) + Number(linkedRes?.updated ?? 0);
 
