@@ -36,6 +36,8 @@ const pairs = [
   ['src/lib/trialManagement.js', 'base44/functions/market-heatmap/trialManagement.js'],
   ['src/lib/opportunityRequests.js', 'base44/functions/real-estate-opportunities/opportunityRequests.js'],
   ['src/lib/securityMonitoring.js', 'base44/functions/securityMonitor/securityMonitoring.js'],
+  ['src/lib/telegramLinking.js', 'base44/functions/telegram-linking/telegramLinking.js'],
+  ['src/lib/telegramLinking.js', 'base44/functions/telegram-webhook/telegramLinking.js'],
 ];
 
 describe('backend function mirrors stay in sync with canonical src/lib modules', () => {
