@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { isValidTelegramUsername, normalizeTelegramUsername } from '@/lib/telegramNotifications';
 import { User, Globe, Save, Loader2, Sun, Moon, Monitor, Send, Bell } from 'lucide-react';
 import { FadeIn } from '@/components/madar/Motion';
+import TelegramLinkCard from '@/components/settings/TelegramLinkCard';
 
 const APPEARANCE_OPTIONS = [
   { val: 'system', icon: Monitor, en: 'System', ar: 'النظام' },
@@ -160,6 +161,12 @@ export default function MadarSettings() {
             ))}
           </div>
         </div>
+      </FadeIn>
+
+      {/* Secure Telegram account linking (PR 1B). Placed directly above the
+          Notifications card; the optional username field there is unchanged. */}
+      <FadeIn delay={0.22}>
+        <TelegramLinkCard />
       </FadeIn>
 
       {/* Telegram + notification preferences. Preferences are stored on the
