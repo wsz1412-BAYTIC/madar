@@ -78,17 +78,92 @@ describe('TelegramLinkCard', () => {
     expect(createCalls.length).toBe(1);
   });
 
-  it('refreshes status once when the user returns to the tab while pending', async () => {
-    routeInvoke({ status: statusNone, create_link: () => Promise.resolve(createOk) });
+  it('keeps the pending link visible when a status refresh still returns pending', async () => {
+    let statusCall = 0;
+    routeInvoke({
+      status: () => Promise.resolve(statusCall++ === 0 ? statusNone : { data: { link: { status: 'pending', linked: false } } }),
+      create_link: () => Promise.resolve(createOk),
+    });
+    render(<TelegramLinkCard />);
+    fireEvent.click(await screen.findByText('ربط تيليجرام'));
+    await screen.findByText('افتح تيليجرام');
+
+    fireEvent.click(screen.getByText('التحقق من حالة الربط'));
+    await waitFor(() =>
+      expect(base44Mock.functions.invoke.mock.calls.filter((c) => c[1]?.action === 'status').length).toBe(2)
+    );
+    // Still pending → the Open-Telegram link AND the countdown remain visible.
+    expect(screen.getByText('افتح تيليجرام')).toBeTruthy();
+    expect(screen.getByText(/ينتهي الرابط خلال/)).toBeTruthy();
+  });
+
+  it('keeps the pending link visible when a FOCUS refresh still returns pending', async () => {
+    let statusCall = 0;
+    routeInvoke({
+      status: () => Promise.resolve(statusCall++ === 0 ? statusNone : { data: { link: { status: 'pending', linked: false } } }),
+      create_link: () => Promise.resolve(createOk),
+    });
+    render(<TelegramLinkCard />);
+    fireEvent.click(await screen.findByText('ربط تيليجرام'));
+    await screen.findByText('افتح تيليجرام');
+
+    fireEvent(window, new Event('focus'));
+    await waitFor(() =>
+      expect(base44Mock.functions.invoke.mock.calls.filter((c) => c[1]?.action === 'status').length).toBe(2)
+    );
+    expect(screen.getByText('افتح تيليجرام')).toBeTruthy();
+  });
+
+  it('collapses visibilitychange + focus into a SINGLE status request', async () => {
+    routeInvoke({
+      status: () => Promise.resolve({ data: { link: { status: 'pending', linked: false } } }),
+      create_link: () => Promise.resolve(createOk),
+    });
     render(<TelegramLinkCard />);
     fireEvent.click(await screen.findByText('ربط تيليجرام'));
     await screen.findByText('افتح تيليجرام');
     const before = base44Mock.functions.invoke.mock.calls.filter((c) => c[1]?.action === 'status').length;
+
+    // Both events fire together on return from Telegram.
+    fireEvent(document, new Event('visibilitychange'));
     fireEvent(window, new Event('focus'));
-    await waitFor(() => {
-      const after = base44Mock.functions.invoke.mock.calls.filter((c) => c[1]?.action === 'status').length;
-      expect(after).toBe(before + 1);
+
+    await waitFor(() =>
+      expect(base44Mock.functions.invoke.mock.calls.filter((c) => c[1]?.action === 'status').length).toBe(before + 1)
+    );
+    // Give any second (incorrectly un-guarded) request a chance to appear.
+    await new Promise((r) => setTimeout(r, 20));
+    expect(base44Mock.functions.invoke.mock.calls.filter((c) => c[1]?.action === 'status').length).toBe(before + 1);
+  });
+
+  it('pending → linked: shows متصل and drops the local link', async () => {
+    let statusCall = 0;
+    routeInvoke({
+      status: () => Promise.resolve(statusCall++ === 0 ? statusNone : statusLinked),
+      create_link: () => Promise.resolve(createOk),
     });
+    render(<TelegramLinkCard />);
+    fireEvent.click(await screen.findByText('ربط تيليجرام'));
+    await screen.findByText('افتح تيليجرام');
+
+    fireEvent.click(screen.getByText('التحقق من حالة الربط'));
+    await screen.findByText('متصل');
+    expect(screen.queryByText('افتح تيليجرام')).toBeNull();
+  });
+
+  it('pending → none/revoked/expired: clears the local link', async () => {
+    let statusCall = 0;
+    routeInvoke({
+      status: () => Promise.resolve(statusCall++ === 0 ? statusNone : { data: { link: { status: 'revoked', linked: false } } }),
+      create_link: () => Promise.resolve(createOk),
+    });
+    render(<TelegramLinkCard />);
+    fireEvent.click(await screen.findByText('ربط تيليجرام'));
+    await screen.findByText('افتح تيليجرام');
+
+    fireEvent.click(screen.getByText('التحقق من حالة الربط'));
+    await waitFor(() => expect(screen.queryByText('افتح تيليجرام')).toBeNull());
+    expect(await screen.findByText('ربط تيليجرام')).toBeTruthy(); // back to the none/create state
   });
 
   it('shows متصل + linked date and NEVER renders sensitive fields', async () => {

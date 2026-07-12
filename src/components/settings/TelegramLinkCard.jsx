@@ -47,31 +47,54 @@ export default function TelegramLinkCard() {
   const [busy, setBusy] = useState(null); // 'create' | 'verify' | 'unlink' | null
   const [confirmOpen, setConfirmOpen] = useState(false);
   const mounted = useRef(true);
+  // Live mirrors of the one-time link so status refreshes can decide whether a
+  // still-`pending` backend response should keep showing the current link.
+  const deepLinkRef = useRef(null);
+  const expiresAtRef = useRef(null);
+  useEffect(() => { deepLinkRef.current = deepLink; }, [deepLink]);
+  useEffect(() => { expiresAtRef.current = expiresAt; }, [expiresAt]);
+  // Synchronous guard so overlapping status refreshes (e.g. visibilitychange AND
+  // focus firing together on return from Telegram) issue only ONE request. React
+  // `busy` state can be stale across two handlers in the same tick; this ref is
+  // set before the first await, so the second handler sees it immediately.
+  const statusInFlight = useRef(false);
 
   useEffect(() => {
     mounted.current = true;
-    return () => {
-      // Drop the one-time deep link from memory on unmount.
-      mounted.current = false;
-      setDeepLink(null);
-    };
+    // Cleanup only flips the mounted flag — component state is discarded on
+    // unmount automatically, so we never call setState here.
+    return () => { mounted.current = false; };
   }, []);
 
   const applyStatus = useCallback((res) => {
     const s = readLinkStatus(res);
     if (s.linked) {
+      // Linked: drop the one-time link and show the connected state.
       setLinkedAt(s.linkedAt);
       setDeepLink(null);
       setExpiresAt(null);
       setPhase('linked');
-    } else {
-      // A backend-`pending` token has no locally-held deep link after a reload
-      // (the token is never persisted), so the only actionable state is `none`.
-      setPhase('none');
+      return;
     }
+    if (s.status === 'pending' && deepLinkRef.current && !isLinkExpired(expiresAtRef.current)) {
+      // Backend still pending AND we still hold a live one-time link (the user
+      // clicked "Check status" or returned from Telegram before /start was
+      // processed): preserve the Open-Telegram link, countdown and controls.
+      setPhase('pending');
+      return;
+    }
+    // expired / revoked / none — or pending after a reload with no local link:
+    // clear any stale local link and show the appropriate state. `expired` keeps
+    // its own regenerate state; everything else falls back to `none` (which still
+    // offers creating a replacement link).
+    setDeepLink(null);
+    setExpiresAt(null);
+    setPhase(s.status === 'expired' ? 'expired' : 'none');
   }, []);
 
   const loadStatus = useCallback(async (mode) => {
+    if (statusInFlight.current) return; // only one status request at a time
+    statusInFlight.current = true;
     if (mode === 'verify') setBusy('verify');
     try {
       const res = await base44.functions.invoke('telegram-linking', { action: 'status' });
@@ -81,6 +104,7 @@ export default function TelegramLinkCard() {
       if (!mounted.current) return;
       setPhase(classifyLinkError(err)); // 'unavailable' | 'error'
     } finally {
+      statusInFlight.current = false;
       if (mounted.current && mode === 'verify') setBusy(null);
     }
   }, [applyStatus]);
@@ -105,12 +129,14 @@ export default function TelegramLinkCard() {
     }
   }, [phase, expiresAt, nowTs]);
 
-  // Refresh status once when the user returns to the tab while pending.
+  // Refresh status once when the user returns to the tab while pending. Both
+  // `visibilitychange` and `focus` can fire together on return from Telegram; the
+  // synchronous statusInFlight guard inside loadStatus collapses them to one call.
   useEffect(() => {
     if (phase !== 'pending') return undefined;
     const onFocus = () => {
       if (document.visibilityState === 'hidden') return;
-      if (!busy) loadStatus('verify');
+      loadStatus('verify');
     };
     window.addEventListener('focus', onFocus);
     document.addEventListener('visibilitychange', onFocus);
@@ -118,7 +144,7 @@ export default function TelegramLinkCard() {
       window.removeEventListener('focus', onFocus);
       document.removeEventListener('visibilitychange', onFocus);
     };
-  }, [phase, busy, loadStatus]);
+  }, [phase, loadStatus]);
 
   const createLink = useCallback(async () => {
     if (busy) return; // no duplicate actions while busy
@@ -184,8 +210,8 @@ export default function TelegramLinkCard() {
       </div>
       <p className="text-xs leading-relaxed text-foreground/45 mb-5">
         {t(
-          'يربط حسابك بمحادثة خاصة مع بوت مدار لاستقبال التنبيهات بأمان. هذا مختلف عن حقل «اسم المستخدم في تيليجرام» الاختياري بالأسفل — الربط الآمن هو ما يُفعّل الإرسال فعليًا.',
-          'Links your account to a private chat with the Madar bot to receive alerts securely. This is different from the optional “Telegram username” field below — secure linking is what actually enables delivery.'
+          'يربط حسابك بمحادثة خاصة مع بوت مدار. هذا مختلف عن حقل «اسم المستخدم في تيليجرام» الاختياري بالأسفل. إرسال التنبيهات عبر تيليجرام قيد التجهيز وسيُفعّل لاحقًا.',
+          'Links your account to a private chat with the Madar bot. This is different from the optional “Telegram username” field below. Telegram alert delivery is still being set up and will be enabled later.'
         )}
       </p>
 
