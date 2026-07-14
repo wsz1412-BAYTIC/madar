@@ -27,17 +27,17 @@ export default function RevenueChart({ properties }) {
       className={`p-6 rounded-2xl border ${
         theme === 'dark'
           ? 'bg-card border-foreground/[0.06]'
-          : 'bg-white border-[#0A0B10]/[0.06]'
+          : 'bg-white border-[#06131F]/[0.06]'
       }`}
     >
       <div className="mb-6">
         <h2 className={`text-lg font-heading font-bold ${
-          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
         }`}>
           {lang === 'ar' ? 'اتجاه الإيرادات' : 'Revenue Trend'}
         </h2>
         <p className={`text-sm ${
-          theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+          theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
         }`}>
           {lang === 'ar' ? 'آخر 6 أشهر' : 'Last 6 months'}
         </p>
@@ -47,8 +47,8 @@ export default function RevenueChart({ properties }) {
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#D95F3B" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="#D95F3B" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#1B84C4" stopOpacity={0.3}/>
+              <stop offset="95%" stopColor="#1B84C4" stopOpacity={0}/>
             </linearGradient>
           </defs>
           <CartesianGrid 
@@ -65,23 +65,23 @@ export default function RevenueChart({ properties }) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: theme === 'dark' ? '#0F1117' : '#F2EFE8',
+              backgroundColor: theme === 'dark' ? '#0B1B2A' : '#EFF6FA',
               border: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(10,11,16,0.1)',
               borderRadius: '8px',
             }}
-            labelStyle={{ color: theme === 'dark' ? '#F7F5F0' : '#0A0B10' }}
+            labelStyle={{ color: theme === 'dark' ? '#F2F8FC' : '#06131F' }}
           />
           <Area 
             type="monotone" 
             dataKey="revenue" 
-            stroke="#D95F3B" 
+            stroke="#1B84C4"
             fill="url(#colorRevenue)"
             strokeWidth={2}
           />
           <Line 
             type="monotone" 
             dataKey="target" 
-            stroke="#C8972A" 
+            stroke="#0F6BA8"
             strokeWidth={2}
             strokeDasharray="5 5"
           />

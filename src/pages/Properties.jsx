@@ -279,7 +279,7 @@ export default function Properties() {
               <Link2 className="w-4 h-4" />
               <span className="hidden sm:inline">{lang === 'ar' ? 'استيراد' : 'Import'}</span>
             </button>
-            <button onClick={() => setShowWizard(true)} className="group relative flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
+            <button onClick={() => setShowWizard(true)} className="group relative flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all overflow-hidden">
               <Plus className="w-4 h-4 relative z-10" />
               <span className="relative z-10">{t('addProperty')}</span>
               <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -319,7 +319,7 @@ export default function Properties() {
                     onChange={e => { setImportUrl(e.target.value); setImportPreview(null); }}
                     placeholder="https://ar.airbnb.com/rooms/1573422907379"
                     dir="ltr"
-                    className={`w-full ps-10 pe-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 ${importPreview && !importPreview.ok && !importPreview.form ? 'border-danger/60' : 'border-foreground/[0.08]'}`}
+                    className={`w-full ps-10 pe-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50 ${importPreview && !importPreview.ok && !importPreview.form ? 'border-danger/60' : 'border-foreground/[0.08]'}`}
                     required
                   />
                 </div>
@@ -351,7 +351,7 @@ export default function Properties() {
                         </p>
                       </div>
                     )}
-                    <button type="button" onClick={continueToWizard} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
+                    <button type="button" onClick={continueToWizard} className="w-full py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2">
                       {importPreview.ok
                         ? (lang === 'ar' ? 'متابعة ومراجعة البيانات' : 'Continue & review details')
                         : (lang === 'ar' ? 'المتابعة يدويًا' : 'Continue manually')}
@@ -359,7 +359,7 @@ export default function Properties() {
                     </button>
                   </div>
                 ) : (
-                  <button type="submit" disabled={importScanning} className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                  <button type="submit" disabled={importScanning} className="w-full py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-60">
                     {importScanning && <Loader2 className="w-4 h-4 animate-spin" />}
                     {importScanning
                       ? (lang === 'ar' ? 'جارٍ الفحص…' : 'Scanning…')
@@ -441,7 +441,7 @@ export default function Properties() {
               aria-pressed={statusFilter === s.key}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all ${
                 statusFilter === s.key
-                  ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-sm'
+                  ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent shadow-sm'
                   : 'bg-foreground/[0.03] text-foreground/60 border-foreground/[0.08] hover:text-foreground hover:border-foreground/20'
               }`}
             >
@@ -454,7 +454,7 @@ export default function Properties() {
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value)}
-            className="px-3 py-1.5 rounded-lg bg-surface border border-foreground/[0.1] text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/30"
+            className="px-3 py-1.5 rounded-lg bg-surface border border-foreground/[0.1] text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/30"
           >
             <option value="default">{lang === 'ar' ? 'الافتراضي' : 'Default'}</option>
             <option value="price-desc">{lang === 'ar' ? 'السعر: الأعلى أولاً' : 'Price: high → low'}</option>

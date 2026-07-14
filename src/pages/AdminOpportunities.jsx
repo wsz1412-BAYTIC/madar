@@ -54,15 +54,15 @@ export default function AdminOpportunities() {
   }
 
   return (
-    <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
+    <div dir="rtl" className="flex min-h-screen bg-[#EFF6FA]">
       <AdminNav admin={{ role: 'admin' }} />
       <main className="flex-1 space-y-6 p-6 lg:p-8">
         <div className="flex flex-col justify-between gap-4 md:flex-row">
           <div>
             <h1 className="font-heading text-3xl font-bold">إدارة الفرص العقارية</h1>
-            <p className="text-[#0A0B10]/60">لوحة داخلية كاملة للمدير الأعلى فقط.</p>
+            <p className="text-[#06131F]/60">لوحة داخلية كاملة للمدير الأعلى فقط.</p>
           </div>
-          <Button asChild className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]"><Link to="/admin/opportunities/new"><Plus className="ml-2 h-4 w-4" /> إنشاء فرصة</Link></Button>
+          <Button asChild className="bg-gradient-to-r from-[#00548C] to-[#003152]"><Link to="/admin/opportunities/new"><Plus className="ml-2 h-4 w-4" /> إنشاء فرصة</Link></Button>
         </div>
 
         {!enabled && <div className="flex gap-2 rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-800"><ShieldAlert /> العلم REAL_ESTATE_OPPORTUNITIES_ENABLED معطل؛ المشترك يرى حالة قريباً والإدارة متاحة للاختبار.</div>}
@@ -91,11 +91,11 @@ function OpportunityTable({ opportunities, onQuickUpdate }) {
   return (
     <div className="overflow-x-auto rounded-2xl border bg-white">
       <table className="w-full text-sm">
-        <thead className="bg-[#0A0B10]/5"><tr>{['العنوان الداخلي', 'المدينة', 'الحالة', 'الظهور', 'المخاطر', 'طلبات', 'إجراءات'].map((head) => <th key={head} className="p-3 text-right font-semibold">{head}</th>)}</tr></thead>
+        <thead className="bg-[#06131F]/5"><tr>{['العنوان الداخلي', 'المدينة', 'الحالة', 'الظهور', 'المخاطر', 'طلبات', 'إجراءات'].map((head) => <th key={head} className="p-3 text-right font-semibold">{head}</th>)}</tr></thead>
         <tbody>
           {opportunities.map((opportunity) => (
             <tr key={opportunity.id} className="border-t">
-              <td className="p-3"><Link className="font-semibold text-[#D95F3B]" to={`/admin/opportunities/${opportunity.id}`}>{opportunity.title_internal}</Link><p className="opacity-60">{opportunity.public_teaser_title}</p></td>
+              <td className="p-3"><Link className="font-semibold text-[#1B84C4]" to={`/admin/opportunities/${opportunity.id}`}>{opportunity.title_internal}</Link><p className="opacity-60">{opportunity.public_teaser_title}</p></td>
               <td className="p-3">{label(opportunity.city)}</td>
               <td className="p-3">{label(opportunity.status)}</td>
               <td className="p-3">{label(opportunity.visibility)}</td>

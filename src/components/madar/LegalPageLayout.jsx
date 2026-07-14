@@ -22,8 +22,8 @@ export default function LegalPageLayout({ content }) {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-28 pb-20">
         <FadeIn>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
-              <Scale className="w-4 h-4 text-[#D95F3B]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B84C4]/15 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/15">
+              <Scale className="w-4 h-4 text-[#1B84C4]" />
             </div>
             <h1 className="font-heading text-3xl font-bold">{L(content.title)}</h1>
           </div>
@@ -57,7 +57,7 @@ export default function LegalPageLayout({ content }) {
           </div>
 
           <div className="mt-12 pt-6 border-t border-foreground/[0.08]">
-            <Link to="/contact" className="inline-flex items-center gap-1.5 text-sm text-[#D95F3B] hover:underline">
+            <Link to="/contact" className="inline-flex items-center gap-1.5 text-sm text-[#1B84C4] hover:underline">
               {lang === 'ar' ? 'للاستفسارات والشكاوى وطلبات البيانات' : 'Questions, complaints & data requests'}
               {isRTL ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
             </Link>

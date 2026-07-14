@@ -36,14 +36,14 @@ export default function PropertyAnalysis() {
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
   const bgInput = theme === 'dark'
-    ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0]'
-    : 'bg-white border border-[#0A0B10]/10 text-[#0A0B10]';
+    ? 'bg-white/[0.04] border border-white/[0.08] text-[#F2F8FC]'
+    : 'bg-white border border-[#06131F]/10 text-[#06131F]';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60';
 
   const suggestions = [
     {
@@ -92,8 +92,8 @@ export default function PropertyAnalysis() {
                   onClick={() => { setShowResults(false); setFormData({}); }}
                   className={`px-6 py-2 rounded-lg font-medium transition-all ${
                     theme === 'dark'
-                      ? 'bg-white/[0.04] text-[#F7F5F0] hover:bg-white/[0.08]'
-                      : 'bg-[#0A0B10]/5 text-[#0A0B10] hover:bg-[#0A0B10]/10'
+                      ? 'bg-white/[0.04] text-[#F2F8FC] hover:bg-white/[0.08]'
+                      : 'bg-[#06131F]/5 text-[#06131F] hover:bg-[#06131F]/10'
                   }`}
                 >
                   {lang === 'ar' ? 'تحليل جديد' : 'New Analysis'}
@@ -117,17 +117,17 @@ export default function PropertyAnalysis() {
                       </div>
                       {s.suggested && (
                         <>
-                          <ArrowRight className="w-6 h-6 text-[#D95F3B]" />
+                          <ArrowRight className="w-6 h-6 text-[#1B84C4]" />
                           <div>
                             <p className={`text-sm ${textMuted}`}>{lang === 'ar' ? 'المقترح' : 'Suggested'}</p>
-                            <p className={`font-heading font-bold text-2xl text-[#D95F3B]`}>{s.suggested}</p>
+                            <p className={`font-heading font-bold text-2xl text-[#1B84C4]`}>{s.suggested}</p>
                           </div>
                         </>
                       )}
                       {s.period && (
                         <div>
                           <p className={`text-sm ${textMuted}`}>{s.period}</p>
-                          <p className={`font-heading font-bold text-2xl text-[#C8972A]`}>{s.value}</p>
+                          <p className={`font-heading font-bold text-2xl text-[#0F6BA8]`}>{s.value}</p>
                         </div>
                       )}
                     </div>
@@ -161,7 +161,7 @@ export default function PropertyAnalysis() {
               <FadeIn delay={0.3}>
                 <div className={`p-6 rounded-xl ${bgCard}`}>
                   <div className="flex items-center gap-2 mb-6">
-                    <AlertTriangle className="w-5 h-5 text-[#D95F3B]" />
+                    <AlertTriangle className="w-5 h-5 text-[#1B84C4]" />
                     <h2 className={`font-heading font-bold ${textColor}`}>
                       {lang === 'ar' ? 'فرص التحسين' : 'Areas to Improve'}
                     </h2>
@@ -169,7 +169,7 @@ export default function PropertyAnalysis() {
                   <div className="space-y-3">
                     {weaknesses.map((w, idx) => (
                       <div key={idx} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-[#D95F3B] rounded-full mt-2 flex-shrink-0" />
+                        <div className="w-2 h-2 bg-[#0F6BA8] rounded-full mt-2 flex-shrink-0" />
                         <p className={`text-sm ${textColor}`}>{w}</p>
                       </div>
                     ))}
@@ -190,10 +190,10 @@ export default function PropertyAnalysis() {
                     { title: lang === 'ar' ? 'تحسين صور العقار' : 'Improve Property Images', desc: lang === 'ar' ? 'صور احترافية تزيد الحجوزات بحوالي 20%' : 'Professional photos increase bookings by ~20%' },
                     { title: lang === 'ar' ? 'أضف مرافق مميزة' : 'Add Premium Amenities', desc: lang === 'ar' ? 'مثل Wi-Fi فائق السرعة والقهوة المجانية' : 'Like high-speed Wi-Fi and complimentary coffee' },
                   ].map((r, idx) => (
-                    <div key={idx} className={`p-4 rounded-lg border-l-4 border-[#D95F3B] ${
+                    <div key={idx} className={`p-4 rounded-lg border-l-4 border-[#1B84C4] ${
                       theme === 'dark'
                         ? 'bg-white/[0.02]'
-                        : 'bg-[#0A0B10]/3'
+                        : 'bg-[#06131F]/3'
                     }`}>
                       <p className={`font-medium mb-1 ${textColor}`}>{r.title}</p>
                       <p className={`text-sm ${textMuted}`}>{r.desc}</p>
@@ -207,8 +207,8 @@ export default function PropertyAnalysis() {
             <FadeIn delay={0.5}>
               <div className={`p-12 rounded-2xl text-center ${
                 theme === 'dark'
-                  ? 'bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/5 border border-[#D95F3B]/30'
-                  : 'bg-gradient-to-br from-[#D95F3B]/5 to-[#C8972A]/3 border border-[#D95F3B]/20'
+                  ? 'bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/5 border border-[#1B84C4]/30'
+                  : 'bg-gradient-to-br from-[#1B84C4]/5 to-[#ADDFF1]/3 border border-[#1B84C4]/20'
               }`}>
                 <h3 className={`font-heading text-2xl font-bold mb-4 ${textColor}`}>
                   {lang === 'ar' ? 'جاهز للبدء؟' : 'Ready to Get Started?'}
@@ -220,7 +220,7 @@ export default function PropertyAnalysis() {
                 </p>
                 <a
                   href="/signup"
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
                 >
                   {lang === 'ar' ? 'ابدأ التجربة المجانية' : 'Start Free Trial'}
                   <Arrow className="w-4 h-4" />
@@ -365,7 +365,7 @@ export default function PropertyAnalysis() {
             <button
               onClick={handleSubmit}
               disabled={!formData.city || !formData.type || !formData.currentPrice || !formData.occupancy}
-              className="w-full py-3 px-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 px-4 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {lang === 'ar' ? 'ابدأ التحليل' : 'Analyze Now'}
               <Arrow className="w-4 h-4" />

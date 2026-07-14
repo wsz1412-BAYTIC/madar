@@ -153,7 +153,7 @@ export default function SmartCoachWidget() {
             className={`fixed z-40 w-[min(24rem,calc(100vw-2rem))] rounded-2xl shadow-2xl flex flex-col overflow-hidden ${
               theme === 'dark'
                 ? 'bg-card border border-foreground/[0.06]'
-                : 'bg-white border border-[#0A0B10]/[0.06]'
+                : 'bg-white border border-[#06131F]/[0.06]'
             }`}
             style={{
               [isRTL ? 'left' : 'right']: '1.25rem',
@@ -165,7 +165,7 @@ export default function SmartCoachWidget() {
             <div className={`px-4 py-4 border-b ${
               theme === 'dark'
                 ? 'border-foreground/[0.06] bg-card'
-                : 'border-[#0A0B10]/[0.06] bg-white'
+                : 'border-[#06131F]/[0.06] bg-white'
             }`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -174,7 +174,7 @@ export default function SmartCoachWidget() {
                   </div>
                   <div>
                     <h3 className={`font-heading font-bold text-sm ${
-                      theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                     }`}>
                       {lang === 'ar' ? 'مدار سمارت كوتش' : 'Madar Smart Coach'}
                     </h3>
@@ -195,7 +195,7 @@ export default function SmartCoachWidget() {
                     className={`p-2 rounded-lg transition-colors ${
                       theme === 'dark'
                         ? 'hover:bg-foreground/5 text-foreground/50'
-                        : 'hover:bg-background/5 text-[#0A0B10]/50'
+                        : 'hover:bg-background/5 text-[#06131F]/50'
                     }`}
                   >
                     {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
@@ -205,7 +205,7 @@ export default function SmartCoachWidget() {
                     className={`p-2 rounded-lg transition-colors ${
                       theme === 'dark'
                         ? 'hover:bg-foreground/5 text-foreground/50'
-                        : 'hover:bg-background/5 text-[#0A0B10]/50'
+                        : 'hover:bg-background/5 text-[#06131F]/50'
                     }`}
                   >
                     <X className="w-4 h-4" />
@@ -218,7 +218,7 @@ export default function SmartCoachWidget() {
               <>
                 {/* Messages */}
                 <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${
-                  theme === 'dark' ? 'bg-background/50' : 'bg-[#F2EFE8]/30'
+                  theme === 'dark' ? 'bg-background/50' : 'bg-[#EFF6FA]/30'
                 }`}>
                   {messages.map((msg) => (
                     <motion.div
@@ -232,12 +232,12 @@ export default function SmartCoachWidget() {
                           ? 'bg-primary text-white'
                           : theme === 'dark'
                             ? 'bg-foreground/[0.08] text-foreground'
-                            : 'bg-background/[0.08] text-[#0A0B10]'
+                            : 'bg-background/[0.08] text-[#06131F]'
                       }`}>
                         <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
                           {msg.content}
                           {msg.isUpgradePrompt && (
-                            <a href="/billing" className="block mt-2 text-xs font-semibold text-[#D95F3B] hover:underline">
+                            <a href="/billing" className="block mt-2 text-xs font-semibold text-[#1B84C4] hover:underline">
                               {lang === 'ar' ? 'عرض خطط الترقية ←' : 'View upgrade plans →'}
                             </a>
                           )}
@@ -247,7 +247,7 @@ export default function SmartCoachWidget() {
                             ? 'text-white/60'
                             : theme === 'dark'
                               ? 'text-foreground/40'
-                              : 'text-[#0A0B10]/40'
+                              : 'text-[#06131F]/40'
                         } block mt-1`}>
                           {msg.timestamp.toLocaleTimeString(lang === 'ar' ? 'ar' : 'en', { hour: '2-digit', minute: '2-digit' })}
                         </span>
@@ -259,7 +259,7 @@ export default function SmartCoachWidget() {
                       <div className={`px-4 py-2 rounded-lg ${
                         theme === 'dark'
                           ? 'bg-foreground/[0.08] text-foreground'
-                          : 'bg-background/[0.08] text-[#0A0B10]'
+                          : 'bg-background/[0.08] text-[#06131F]'
                       }`}>
                         <div className="flex items-center gap-2">
                           <Loader className="w-4 h-4 animate-spin" />
@@ -276,10 +276,10 @@ export default function SmartCoachWidget() {
                   <div className={`px-4 py-3 border-t ${
                     theme === 'dark'
                       ? 'border-foreground/[0.06]'
-                      : 'border-[#0A0B10]/[0.06]'
+                      : 'border-[#06131F]/[0.06]'
                   }`}>
                     <p className={`text-xs font-medium mb-2 ${
-                      theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                      theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                     }`}>
                       {lang === 'ar' ? 'الأسئلة المقترحة:' : 'Suggested questions:'}
                     </p>
@@ -291,7 +291,7 @@ export default function SmartCoachWidget() {
                           className={`block w-full text-left text-xs p-2 rounded transition-colors ${
                             theme === 'dark'
                               ? 'hover:bg-foreground/5 text-foreground/70'
-                              : 'hover:bg-background/5 text-[#0A0B10]/70'
+                              : 'hover:bg-background/5 text-[#06131F]/70'
                           }`}
                         >
                           {q}
@@ -305,7 +305,7 @@ export default function SmartCoachWidget() {
                 <div className={`px-4 py-3 border-t flex items-end gap-2 ${
                   theme === 'dark'
                     ? 'border-foreground/[0.06] bg-card'
-                    : 'border-[#0A0B10]/[0.06] bg-white'
+                    : 'border-[#06131F]/[0.06] bg-white'
                 }`}>
                   <input
                     type="text"
@@ -317,7 +317,7 @@ export default function SmartCoachWidget() {
                     className={`flex-1 text-sm px-3 py-2 rounded-lg outline-none ${
                       theme === 'dark'
                         ? 'bg-foreground/[0.05] border border-foreground/[0.06] text-foreground placeholder-foreground/40'
-                        : 'bg-background/[0.05] border border-[#0A0B10]/[0.06] text-[#0A0B10] placeholder-[#0A0B10]/40'
+                        : 'bg-background/[0.05] border border-[#06131F]/[0.06] text-[#06131F] placeholder-[#06131F]/40'
                     }`}
                   />
                   <button
@@ -336,7 +336,7 @@ export default function SmartCoachWidget() {
                     className={`p-2 rounded-lg transition-colors ${
                       theme === 'dark'
                         ? 'hover:bg-foreground/5 text-foreground/50'
-                        : 'hover:bg-background/5 text-[#0A0B10]/50'
+                        : 'hover:bg-background/5 text-[#06131F]/50'
                     }`}
                     title={lang === 'ar' ? 'مسح المحادثة' : 'Clear conversation'}
                   >

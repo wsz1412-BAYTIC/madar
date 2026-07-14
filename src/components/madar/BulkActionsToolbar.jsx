@@ -40,7 +40,7 @@ export default function BulkActionsToolbar({
           {!allSelected && selectedCount > 0 && (
             <button
               onClick={onSelectAll}
-              className="text-xs text-[#D95F3B] hover:text-[#D95F3B] underline transition-colors"
+              className="text-xs text-[#1B84C4] hover:text-[#1B84C4] underline transition-colors"
             >
               {lang === 'ar' ? 'تحديد الكل' : 'Select All'}
             </button>

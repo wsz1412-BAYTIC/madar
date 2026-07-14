@@ -197,13 +197,13 @@ export default function TelegramLinkCard() {
   const secondsLeft = secondsUntil(expiresAt, nowTs);
   const linkedDate = formatLinkedDate(linkedAt, lang);
 
-  const btnPrimary = 'group relative inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed';
+  const btnPrimary = 'group relative inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed';
   const btnGhost = 'inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-foreground/[0.04] border border-foreground/[0.08] text-foreground/70 hover:border-foreground/20 hover:text-foreground transition-all disabled:opacity-60 disabled:cursor-not-allowed';
 
   return (
     <div className="glass rounded-2xl p-6">
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#229ED9]/15 to-[#D95F3B]/10 flex items-center justify-center border border-[#229ED9]/15">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#229ED9]/15 to-[#1B84C4]/10 flex items-center justify-center border border-[#229ED9]/15">
           <Send className="w-4 h-4 text-[#229ED9]" />
         </div>
         <h2 className="font-heading font-semibold text-foreground">{t('ربط تيليجرام الآمن', 'Secure Telegram linking')}</h2>

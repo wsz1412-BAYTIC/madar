@@ -75,7 +75,7 @@ export default function MadarSettings() {
     }
   };
 
-  const inputClass = "w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all";
+  const inputClass = "w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50 transition-all";
   const readonlyInputClass = inputClass + " opacity-60 cursor-not-allowed";
 
   return (
@@ -87,8 +87,8 @@ export default function MadarSettings() {
       <FadeIn delay={0.1}>
         <div className="glass rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
-              <User className="w-4 h-4 text-[#D95F3B]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B84C4]/15 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/15">
+              <User className="w-4 h-4 text-[#1B84C4]" />
             </div>
             <h2 className="font-heading font-semibold text-foreground">{t('profileSettings')}</h2>
           </div>
@@ -114,8 +114,8 @@ export default function MadarSettings() {
       <FadeIn delay={0.15}>
         <div className="glass rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
-              <Sun className="w-4 h-4 text-[#D95F3B]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B84C4]/15 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/15">
+              <Sun className="w-4 h-4 text-[#1B84C4]" />
             </div>
             <h2 className="font-heading font-semibold text-foreground">{lang === 'ar' ? 'المظهر' : 'Appearance'}</h2>
           </div>
@@ -133,7 +133,7 @@ export default function MadarSettings() {
                 onClick={() => setPreference(opt.val)}
                 className={`flex flex-col items-center gap-2 py-4 rounded-xl text-sm font-medium border transition-all ${
                   preference === opt.val
-                    ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-md'
+                    ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent shadow-md'
                     : 'bg-foreground/[0.04] text-foreground/60 border-foreground/[0.08] hover:border-foreground/20 hover:text-foreground'
                 }`}
               >
@@ -148,14 +148,14 @@ export default function MadarSettings() {
       <FadeIn delay={0.2}>
         <div className="glass rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C8972A]/15 to-[#D95F3B]/10 flex items-center justify-center border border-[#C8972A]/15">
-              <Globe className="w-4 h-4 text-[#C8972A]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ADDFF1]/15 to-[#1B84C4]/10 flex items-center justify-center border border-[#ADDFF1]/15">
+              <Globe className="w-4 h-4 text-[#0F6BA8]" />
             </div>
             <h2 className="font-heading font-semibold text-foreground">{t('languagePref')}</h2>
           </div>
           <div className="flex gap-3">
             {[{ val: 'en', label: 'English' }, { val: 'ar', label: 'العربية' }].map(opt => (
-              <button key={opt.val} onClick={() => update('language', opt.val)} className={`flex-1 py-3 rounded-xl text-sm font-medium border transition-all ${form.language === opt.val ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent' : 'bg-foreground/[0.04] text-foreground/50 border-foreground/[0.08] hover:border-foreground/20'}`}>
+              <button key={opt.val} onClick={() => update('language', opt.val)} className={`flex-1 py-3 rounded-xl text-sm font-medium border transition-all ${form.language === opt.val ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent' : 'bg-foreground/[0.04] text-foreground/50 border-foreground/[0.08] hover:border-foreground/20'}`}>
                 {opt.label}
               </button>
             ))}
@@ -175,8 +175,8 @@ export default function MadarSettings() {
       <FadeIn delay={0.25}>
         <div className="glass rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C8972A]/15 to-[#D95F3B]/10 flex items-center justify-center border border-[#C8972A]/15">
-              <Bell className="w-4 h-4 text-[#C8972A]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ADDFF1]/15 to-[#1B84C4]/10 flex items-center justify-center border border-[#ADDFF1]/15">
+              <Bell className="w-4 h-4 text-[#0F6BA8]" />
             </div>
             <h2 className="font-heading font-semibold text-foreground">{lang === 'ar' ? 'التنبيهات' : 'Notifications'}</h2>
           </div>
@@ -219,7 +219,7 @@ export default function MadarSettings() {
                   role="switch"
                   aria-checked={form.prefs[pref.key]}
                   onClick={() => updatePref(pref.key)}
-                  className={`w-11 h-6 rounded-full relative transition-all ${form.prefs[pref.key] ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A]' : 'bg-foreground/[0.12]'}`}
+                  className={`w-11 h-6 rounded-full relative transition-all ${form.prefs[pref.key] ? 'bg-gradient-to-r from-[#00548C] to-[#003152]' : 'bg-foreground/[0.12]'}`}
                 >
                   <span className={`absolute top-[3px] w-[18px] h-[18px] bg-white rounded-full shadow transition-all ${form.prefs[pref.key] ? 'start-[22px]' : 'start-[3px]'}`} />
                 </button>
@@ -230,7 +230,7 @@ export default function MadarSettings() {
       </FadeIn>
 
       <FadeIn delay={0.3}>
-        <button onClick={handleSave} disabled={saving} className="group relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all text-sm overflow-hidden disabled:opacity-60">
+        <button onClick={handleSave} disabled={saving} className="group relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all text-sm overflow-hidden disabled:opacity-60">
           {saving ? <Loader2 className="w-4 h-4 relative z-10 animate-spin" /> : <Save className="w-4 h-4 relative z-10" />}
           <span className="relative z-10">{t('saveChanges')}</span>
           <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />

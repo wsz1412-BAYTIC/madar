@@ -30,17 +30,17 @@ export default function PlansAndUpgrade() {
 
   return (
       <div className={`p-4 sm:p-6 lg:p-8 min-h-screen ${
-        theme === 'dark' ? 'bg-background' : 'bg-[#F2EFE8]'
+        theme === 'dark' ? 'bg-background' : 'bg-[#EFF6FA]'
       }`}>
         {/* Header */}
         <div className="mb-12">
           <h1 className={`text-4xl sm:text-5xl font-heading font-bold mb-4 ${
-            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
           }`}>
             {lang === 'ar' ? 'خطط وترقيات' : 'Plans & Upgrades'}
           </h1>
           <p className={`text-lg ${
-            theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+            theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
           }`}>
             {lang === 'ar' 
               ? 'اختر الخطة المناسبة لاحتياجات عملك'
@@ -57,7 +57,7 @@ export default function PlansAndUpgrade() {
                 ? 'bg-primary text-white'
                 : theme === 'dark'
                   ? 'text-foreground/60 hover:text-foreground'
-                  : 'text-[#0A0B10]/60 hover:text-[#0A0B10]'
+                  : 'text-[#06131F]/60 hover:text-[#06131F]'
             }`}
           >
             {lang === 'ar' ? 'شهري' : 'Monthly'}
@@ -69,7 +69,7 @@ export default function PlansAndUpgrade() {
                 ? 'bg-primary text-white'
                 : theme === 'dark'
                   ? 'text-foreground/60 hover:text-foreground'
-                  : 'text-[#0A0B10]/60 hover:text-[#0A0B10]'
+                  : 'text-[#06131F]/60 hover:text-[#06131F]'
             }`}
           >
             {lang === 'ar' ? 'سنوي' : 'Yearly'}
@@ -92,7 +92,7 @@ export default function PlansAndUpgrade() {
                     : 'bg-white border-primary/50 ring-2 ring-primary/20'
                   : theme === 'dark'
                     ? 'bg-card border-foreground/[0.06] hover:border-foreground/[0.12]'
-                    : 'bg-white border-[#0A0B10]/[0.06] hover:border-[#0A0B10]/[0.12]'
+                    : 'bg-white border-[#06131F]/[0.06] hover:border-[#06131F]/[0.12]'
               }`}
             >
               {plan.id === currentPlan && (
@@ -103,7 +103,7 @@ export default function PlansAndUpgrade() {
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className={`text-xl font-heading font-bold ${
-                    theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                    theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                   }`}>
                     {lang === 'ar' ? plan.nameAr : plan.name}
                   </h3>
@@ -114,7 +114,7 @@ export default function PlansAndUpgrade() {
                   )}
                 </div>
                 <p className={`text-sm ${
-                  theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                  theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
                 }`}>
                   {plan.id === 'free' 
                     ? (lang === 'ar' ? 'مجاني للأبد' : 'Forever free')
@@ -127,12 +127,12 @@ export default function PlansAndUpgrade() {
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
                     <span className={`text-3xl font-bold ${
-                      theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                     }`}>
                       SAR {Math.round(plan.price || 0)}
                     </span>
                     <span className={`text-sm ${
-                      theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                      theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
                     }`}>
                       /{lang === 'ar' ? 'شهر' : 'month'}
                     </span>
@@ -143,14 +143,14 @@ export default function PlansAndUpgrade() {
               {/* Key Features */}
               <div className="mb-8 flex-1">
                 <p className={`text-xs font-semibold mb-3 ${
-                  theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
+                  theme === 'dark' ? 'text-foreground/40' : 'text-[#06131F]/40'
                 }`}>
                   {lang === 'ar' ? 'الميزات الرئيسية' : 'Key Features'}
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2 text-sm">
                     <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#0A0B10]/80'}>
+                    <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#06131F]/80'}>
                       {plan.features.properties.maxCount === Infinity 
                         ? (lang === 'ar' ? 'عقارات غير محدودة' : 'Unlimited properties')
                         : `${plan.features.properties.maxCount} ${lang === 'ar' ? 'عقار' : 'properties'}`}
@@ -159,7 +159,7 @@ export default function PlansAndUpgrade() {
                   {plan.features.pricing.recommendations && (
                     <li className="flex items-start gap-2 text-sm">
                       <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#0A0B10]/80'}>
+                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#06131F]/80'}>
                         {lang === 'ar' ? 'توصيات التسعير' : 'Pricing recommendations'}
                       </span>
                     </li>
@@ -167,7 +167,7 @@ export default function PlansAndUpgrade() {
                   {plan.features.pricing.automaticPricing && (
                     <li className="flex items-start gap-2 text-sm">
                       <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#0A0B10]/80'}>
+                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#06131F]/80'}>
                         {lang === 'ar' ? 'التسعير التلقائي' : 'Automatic pricing'}
                       </span>
                     </li>
@@ -175,7 +175,7 @@ export default function PlansAndUpgrade() {
                   {plan.features.analyticsCenter && (
                     <li className="flex items-start gap-2 text-sm">
                       <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#0A0B10]/80'}>
+                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#06131F]/80'}>
                         {lang === 'ar' ? 'تحليلات متقدمة' : 'Advanced analytics'}
                       </span>
                     </li>
@@ -183,7 +183,7 @@ export default function PlansAndUpgrade() {
                   {plan.features.support.level === 'priority' && (
                     <li className="flex items-start gap-2 text-sm">
                       <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#0A0B10]/80'}>
+                      <span className={theme === 'dark' ? 'text-foreground/80' : 'text-[#06131F]/80'}>
                         {lang === 'ar' ? 'دعم ذو أولوية' : 'Priority support'}
                       </span>
                     </li>
@@ -199,7 +199,7 @@ export default function PlansAndUpgrade() {
                   plan.id === currentPlan
                     ? theme === 'dark'
                       ? 'bg-foreground/[0.04] text-foreground/40 cursor-default'
-                      : 'bg-background/[0.04] text-[#0A0B10]/40 cursor-default'
+                      : 'bg-background/[0.04] text-[#06131F]/40 cursor-default'
                     : 'bg-primary text-white hover:shadow-lg hover:shadow-primary/30'
                 }`}
               >
@@ -214,7 +214,7 @@ export default function PlansAndUpgrade() {
         {/* Add-ons Section */}
         <div className="mb-12">
           <h2 className={`text-2xl font-heading font-bold mb-6 ${
-            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
           }`}>
             {lang === 'ar' ? 'إضافات اختيارية' : 'Optional Add-ons'}
           </h2>
@@ -232,18 +232,18 @@ export default function PlansAndUpgrade() {
                       : 'bg-primary/5 border-primary/50'
                     : theme === 'dark'
                       ? 'bg-card border-foreground/[0.06]'
-                      : 'bg-white border-[#0A0B10]/[0.06]'
+                      : 'bg-white border-[#06131F]/[0.06]'
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className={`font-heading font-bold ${
-                      theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                     }`}>
                       {lang === 'ar' ? addon.nameAr : addon.name}
                     </h3>
                     <p className={`text-sm ${
-                      theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                      theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
                     }`}>
                       SAR {addon.price}/month
                     </p>
@@ -278,17 +278,17 @@ export default function PlansAndUpgrade() {
         {/* Feature Comparison */}
         <div className="mb-12">
           <h2 className={`text-2xl font-heading font-bold mb-6 ${
-            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
           }`}>
             {lang === 'ar' ? 'مقارنة الميزات' : 'Feature Comparison'}
           </h2>
           <div className={`rounded-xl border overflow-x-auto ${
-            theme === 'dark' ? 'border-foreground/[0.06]' : 'border-[#0A0B10]/[0.06]'
+            theme === 'dark' ? 'border-foreground/[0.06]' : 'border-[#06131F]/[0.06]'
           }`}>
             <table className="w-full text-sm">
               <thead>
                 <tr className={`border-b ${
-                  theme === 'dark' ? 'border-foreground/[0.06] bg-foreground/[0.02]' : 'border-[#0A0B10]/[0.06] bg-background/[0.02]'
+                  theme === 'dark' ? 'border-foreground/[0.06] bg-foreground/[0.02]' : 'border-[#06131F]/[0.06] bg-background/[0.02]'
                 }`}>
                   <th className="px-6 py-3 text-left font-semibold">{lang === 'ar' ? 'الميزة' : 'Feature'}</th>
                   {plans.map(plan => (
@@ -307,10 +307,10 @@ export default function PlansAndUpgrade() {
                   { key: 'support.level', label: lang === 'ar' ? 'مستوى الدعم' : 'Support Level' },
                 ].map((feature, idx) => (
                   <tr key={idx} className={`border-b ${
-                    theme === 'dark' ? 'border-foreground/[0.06]' : 'border-[#0A0B10]/[0.06]'
+                    theme === 'dark' ? 'border-foreground/[0.06]' : 'border-[#06131F]/[0.06]'
                   }`}>
                     <td className={`px-6 py-3 font-medium ${
-                      theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                     }`}>
                       {feature.label}
                     </td>
@@ -324,7 +324,7 @@ export default function PlansAndUpgrade() {
                             <X className="w-5 h-5 text-red-500 mx-auto" />
                           ) : (
                             <span className={`text-sm ${
-                              theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                              theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
                             }`}>
                               {hasFeature}
                             </span>

@@ -54,23 +54,23 @@ export default function AIDisclaimer() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F2EFE8] text-[#0A0B10]">
+    <div className="min-h-screen bg-[#EFF6FA] text-[#06131F]">
       <PublicNavbar />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#F2EFE8] to-white">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#EFF6FA] to-white">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
             <div className="flex justify-center mb-6">
               <div className="relative">
-                <Zap className="w-16 h-16 text-[#D95F3B]" />
-                <AlertTriangle className="w-8 h-8 text-[#C8972A] absolute -bottom-1 -right-1" />
+                <Zap className="w-16 h-16 text-[#1B84C4]" />
+                <AlertTriangle className="w-8 h-8 text-[#0F6BA8] absolute -bottom-1 -right-1" />
               </div>
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0A0B10] mb-6">
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#06131F] mb-6">
               {lang === 'ar' ? 'إخلاء مسؤولية الذكاء الاصطناعي' : 'AI Disclaimer'}
             </h1>
-            <p className="text-lg text-[#0A0B10]/60">
+            <p className="text-lg text-[#06131F]/60">
               {lang === 'ar'
                 ? 'فهم قدرات ومحدودية خدمات الذكاء الاصطناعي في مدار.'
                 : 'Understanding the capabilities and limitations of Madar AI services.'}
@@ -103,11 +103,11 @@ export default function AIDisclaimer() {
           <div className="space-y-12">
             {sections.map((section, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="pb-8 border-b border-[#0A0B10]/[0.06] last:border-b-0">
-                  <h2 className="font-heading text-2xl font-bold text-[#0A0B10] mb-4">
+                <div className="pb-8 border-b border-[#06131F]/[0.06] last:border-b-0">
+                  <h2 className="font-heading text-2xl font-bold text-[#06131F] mb-4">
                     {lang === 'ar' ? section.titleAr : section.titleEn}
                   </h2>
-                  <p className="text-[#0A0B10]/70 leading-relaxed">
+                  <p className="text-[#06131F]/70 leading-relaxed">
                     {lang === 'ar' ? section.contentAr : section.contentEn}
                   </p>
                 </div>
@@ -118,24 +118,24 @@ export default function AIDisclaimer() {
       </section>
 
       {/* How We Label AI */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F2EFE8]">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#EFF6FA]">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="text-center mb-16">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#0A0B10] mb-4">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#06131F] mb-4">
               {lang === 'ar' ? 'كيف نسمي المحتوى المولد بالذكاء الاصطناعي' : 'How We Label AI-Generated Content'}
             </h2>
           </FadeIn>
 
           <div className="grid md:grid-cols-2 gap-8">
             <FadeIn delay={0.1}>
-              <div className="p-6 rounded-2xl bg-white border-2 border-[#D95F3B]">
+              <div className="p-6 rounded-2xl bg-white border-2 border-[#1B84C4]">
                 <div className="flex items-center gap-3 mb-4">
-                  <Zap className="w-5 h-5 text-[#D95F3B]" />
-                  <h3 className="font-heading font-bold text-[#0A0B10]">
+                  <Zap className="w-5 h-5 text-[#1B84C4]" />
+                  <h3 className="font-heading font-bold text-[#06131F]">
                     {lang === 'ar' ? 'شارة AI' : 'AI Badge'}
                   </h3>
                 </div>
-                <p className="text-[#0A0B10]/60 text-sm leading-relaxed">
+                <p className="text-[#06131F]/60 text-sm leading-relaxed">
                   {lang === 'ar'
                     ? 'يتم وضع شارة برتقالية في الزاوية العلوية لكل توصية أو تنبؤ مولد بواسطة الذكاء الاصطناعي.'
                     : 'An orange badge appears in the top corner of every AI-generated recommendation or forecast.'}
@@ -144,14 +144,14 @@ export default function AIDisclaimer() {
             </FadeIn>
 
             <FadeIn delay={0.15}>
-              <div className="p-6 rounded-2xl bg-white border-2 border-[#C8972A]">
+              <div className="p-6 rounded-2xl bg-white border-2 border-[#0F6BA8]">
                 <div className="flex items-center gap-3 mb-4">
-                  <CheckCircle className="w-5 h-5 text-[#C8972A]" />
-                  <h3 className="font-heading font-bold text-[#0A0B10]">
+                  <CheckCircle className="w-5 h-5 text-[#0F6BA8]" />
+                  <h3 className="font-heading font-bold text-[#06131F]">
                     {lang === 'ar' ? 'ملخص المقدار' : 'Confidence Score'}
                   </h3>
                 </div>
-                <p className="text-[#0A0B10]/60 text-sm leading-relaxed">
+                <p className="text-[#06131F]/60 text-sm leading-relaxed">
                   {lang === 'ar'
                     ? 'تعرض مستوى ثقة النموذج (منخفض / متوسط / عالي) لمساعدتك في تقييم موثوقية الناتج.'
                     : 'Model confidence level (Low / Medium / High) is shown to help you assess reliability.'}
@@ -166,17 +166,17 @@ export default function AIDisclaimer() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
-            <h2 className="font-heading text-2xl font-bold text-[#0A0B10] mb-4">
+            <h2 className="font-heading text-2xl font-bold text-[#06131F] mb-4">
               {lang === 'ar' ? 'هل لديك أسئلة أخرى؟' : 'Have more questions?'}
             </h2>
-            <p className="text-[#0A0B10]/60 mb-8">
+            <p className="text-[#06131F]/60 mb-8">
               {lang === 'ar'
                 ? 'اتصل بفريق الدعم للحصول على توضيح بشأن المحتوى المولد بالذكاء الاصطناعي.'
                 : 'Contact support for clarification on AI-generated content.'}
             </p>
             <a
               href="/contact"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+              className="inline-block px-6 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
             >
               {lang === 'ar' ? 'اتصل بالدعم' : 'Contact Support'}
             </a>

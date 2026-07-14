@@ -32,7 +32,7 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
         className={`relative max-w-md w-full rounded-2xl p-6 ${
           theme === 'dark'
             ? 'bg-surface border border-foreground/[0.08]'
-            : 'bg-white border border-[#0A0B10]/10'
+            : 'bg-white border border-[#06131F]/10'
         }`}
       >
         <button onClick={onClose} className="absolute top-4 right-4 p-2 hover:bg-foreground/5 rounded-lg transition-colors">
@@ -40,7 +40,7 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
         </button>
 
         <h2 className={`font-heading font-bold text-xl mb-6 ${
-          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
         }`}>
           {dateData.date}
         </h2>
@@ -49,16 +49,16 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
           {/* Occupancy */}
           <div>
             <p className={`text-xs font-medium mb-1 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`}>{lang === 'ar' ? 'مستوى الاشغال' : 'Occupancy Level'}</p>
             <div className="w-full bg-foreground/[0.05] rounded-lg h-2">
               <div
-                className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A] h-2 rounded-lg"
+                className="bg-gradient-to-r from-[#00548C] to-[#003152] h-2 rounded-lg"
                 style={{ width: `${dateData.occupancy}%` }}
               />
             </div>
             <p className={`text-sm mt-1 ${
-              theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
+              theme === 'dark' ? 'text-foreground/70' : 'text-[#06131F]/70'
             }`}>{dateData.occupancy}%</p>
           </div>
 
@@ -66,27 +66,27 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
           <div className={`p-4 rounded-lg ${
             theme === 'dark'
               ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-              : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+              : 'bg-[#EFF6FA] border border-[#06131F]/10'
           }`}>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className={`text-xs font-medium mb-2 ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'السعر الحالي' : 'Current Price'}</p>
-                <p className="font-heading font-bold text-lg text-[#D95F3B]">{dateData.currentPrice} SAR</p>
+                <p className="font-heading font-bold text-lg text-[#1B84C4]">{dateData.currentPrice} SAR</p>
               </div>
               <div>
                 <p className={`text-xs font-medium mb-2 ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'السعر الموصى به' : 'Recommended'}</p>
-                <p className="font-heading font-bold text-lg text-[#C8972A]">{dateData.recommendedPrice} SAR</p>
+                <p className={`font-heading font-bold text-lg ${theme === 'dark' ? 'text-[#7CC4E8]' : 'text-[#0F6BA8]'}`}>{dateData.recommendedPrice} SAR</p>
               </div>
             </div>
             {dateData.priceAlert && (
               <div className="flex items-start gap-2 mt-3 pt-3 border-t border-foreground/[0.06]">
-                <AlertCircle className="w-4 h-4 text-[#D95F3B] mt-0.5 flex-shrink-0" />
+                <AlertCircle className="w-4 h-4 text-[#1B84C4] mt-0.5 flex-shrink-0" />
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-[#D95F3B]/80' : 'text-[#D95F3B]'
+                  theme === 'dark' ? 'text-[#1B84C4]/80' : 'text-[#1B84C4]'
                 }`}>{dateData.priceAlert}</p>
               </div>
             )}
@@ -96,18 +96,18 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p className={`text-xs font-medium mb-1 ${
-                theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
               }`}>{lang === 'ar' ? 'متوسط المنافسين' : 'Competitors Avg'}</p>
               <p className={`text-sm ${
-                theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
+                theme === 'dark' ? 'text-foreground/70' : 'text-[#06131F]/70'
               }`}>{dateData.competitorPrice} SAR</p>
             </div>
             <div>
               <p className={`text-xs font-medium mb-1 ${
-                theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
               }`}>{lang === 'ar' ? 'الطلب المحلي' : 'Local Demand'}</p>
               <p className={`text-sm ${
-                theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
+                theme === 'dark' ? 'text-foreground/70' : 'text-[#06131F]/70'
               }`}>{dateData.localDemand}</p>
             </div>
           </div>
@@ -115,11 +115,11 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
           {/* Revenue Opportunity */}
           <div>
             <p className={`text-xs font-medium mb-2 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`}>{lang === 'ar' ? 'فرصة الإيرادات' : 'Revenue Opportunity'}</p>
-            <p className="font-heading font-bold text-lg text-[#C8972A]">+{dateData.revenueOpportunity} SAR</p>
+            <p className="font-heading font-bold text-lg text-[#0F6BA8]">+{dateData.revenueOpportunity} SAR</p>
             <p className={`text-xs mt-1 ${
-              theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
+              theme === 'dark' ? 'text-foreground/40' : 'text-[#06131F]/40'
             }`}>{lang === 'ar' ? 'إيرادات إضافية محتملة' : 'Potential additional revenue'}</p>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
           <button
             onClick={handleApprove}
             disabled={isApproving}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium text-sm transition-all hover:shadow-lg hover:shadow-[#D95F3B]/20 disabled:opacity-50"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium text-sm transition-all hover:shadow-lg hover:shadow-[#1B84C4]/20 disabled:opacity-50"
           >
             {isApproving ? (
               <span className="flex items-center justify-center gap-2">

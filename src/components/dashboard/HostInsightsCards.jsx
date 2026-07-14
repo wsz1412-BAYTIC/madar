@@ -19,9 +19,9 @@ export default function HostInsightsCards({ properties }) {
   const { weakOccupancy } = deriveHostSignals(properties);
 
   const t = (a, e) => (ar ? a : e);
-  const cardCls = `p-5 rounded-2xl border flex flex-col ${dark ? 'bg-card border-foreground/[0.06]' : 'bg-white border-[#0A0B10]/[0.06]'}`;
-  const muted = dark ? 'text-foreground/60' : 'text-[#0A0B10]/60';
-  const strong = dark ? 'text-foreground' : 'text-[#0A0B10]';
+  const cardCls = `p-5 rounded-2xl border flex flex-col ${dark ? 'bg-card border-foreground/[0.06]' : 'bg-white border-[#06131F]/[0.06]'}`;
+  const muted = dark ? 'text-foreground/60' : 'text-[#06131F]/60';
+  const strong = dark ? 'text-foreground' : 'text-[#06131F]';
 
   const cards = [
     {
@@ -81,11 +81,11 @@ export default function HostInsightsCards({ properties }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map(({ key, Icon, title, body, cta, disclaimer }) => (
           <div key={key} className={cardCls}>
-            <Icon className="h-5 w-5 text-[#D95F3B]" />
+            <Icon className="h-5 w-5 text-[#1B84C4]" />
             <h3 className={`mt-3 font-heading font-bold ${strong}`}>{title}</h3>
             <p className={`mt-1 flex-1 text-sm leading-relaxed ${muted}`}>{body}</p>
             {disclaimer && (
-              <p className={`mt-2 text-[11px] leading-relaxed ${dark ? 'text-foreground/40' : 'text-[#0A0B10]/40'}`}>
+              <p className={`mt-2 text-[11px] leading-relaxed ${dark ? 'text-foreground/40' : 'text-[#06131F]/40'}`}>
                 {t('يعتمد هذا المؤشر على البيانات المتاحة داخل المنصة وقد لا يمثل السوق بالكامل.',
                    'This indicator is based on data available within the platform and may not represent the entire market.')}
               </p>

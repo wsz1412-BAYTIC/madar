@@ -6,7 +6,7 @@ import { Sparkles, CheckCircle2, Clock } from 'lucide-react';
 // Plan badge shown next to the customer's name: "Growth Trial · 14 days",
 // "Growth · Paid", "Free", "Trial Expired" — bilingual, theme-token colors.
 const STYLES = {
-  growth_trial: 'bg-[#C8972A]/15 text-[#C8972A] border-[#C8972A]/30',
+  growth_trial: 'bg-[#ADDFF1]/15 text-[#0F6BA8] border-[#ADDFF1]/30',
   paid: 'bg-success/15 text-success border-success/30',
   trial_expired: 'bg-danger/10 text-danger border-danger/30',
   free: 'bg-foreground/[0.06] text-foreground/60 border-foreground/[0.12]',

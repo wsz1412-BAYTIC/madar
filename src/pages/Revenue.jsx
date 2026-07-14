@@ -55,8 +55,8 @@ export default function Revenue() {
           <StaggerItem key={card.key}>
             <div className="glass rounded-2xl p-5 hover:border-foreground/15 transition-all">
               <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
-                  <card.icon className="w-4 h-4 text-[#D95F3B]" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B84C4]/15 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/15">
+                  <card.icon className="w-4 h-4 text-[#1B84C4]" />
                 </div>
                 <span className={`text-xs font-medium ${card.up ? 'text-emerald-400' : 'text-foreground/30'}`}>{card.trend}</span>
               </div>
@@ -75,8 +75,8 @@ export default function Revenue() {
               <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
               <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`]} />
-              <Bar dataKey="net" fill="#D95F3B" radius={[4, 4, 0, 0]} name={t('netRevenue')} />
-              <Bar dataKey="fees" fill="#C8972A" radius={[4, 4, 0, 0]} name={t('platformFees')} />
+              <Bar dataKey="net" fill="#1B84C4" radius={[4, 4, 0, 0]} name={t('netRevenue')} />
+              <Bar dataKey="fees" fill="#0F6BA8" radius={[4, 4, 0, 0]} name={t('platformFees')} />
               <Bar dataKey="cleaning" fill='var(--chart-tick)' radius={[4, 4, 0, 0]} name={t('cleaningFees')} />
             </BarChart>
           </ResponsiveContainer>
@@ -90,15 +90,15 @@ export default function Revenue() {
             <AreaChart data={allProjection}>
               <defs>
                 <linearGradient id="projGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#C8972A" stopOpacity={0.2} />
-                  <stop offset="100%" stopColor="#C8972A" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#0F6BA8" stopOpacity={0.2} />
+                  <stop offset="100%" stopColor="#0F6BA8" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 12 }} />
               <Tooltip {...chartTooltip} formatter={(v) => v ? [`${v.toLocaleString()} ${sar}`] : ['-']} />
-              <Area type="monotone" dataKey="actual" stroke="#D95F3B" strokeWidth={2} fill="none" name={lang === 'ar' ? 'فعلي' : 'Actual'} />
-              <Area type="monotone" dataKey="projected" stroke="#C8972A" strokeWidth={2} strokeDasharray="6 4" fill="url(#projGrad)" name={lang === 'ar' ? 'متوقع' : 'Projected'} />
+              <Area type="monotone" dataKey="actual" stroke="#1B84C4" strokeWidth={2} fill="none" name={lang === 'ar' ? 'فعلي' : 'Actual'} />
+              <Area type="monotone" dataKey="projected" stroke="#0F6BA8" strokeWidth={2} strokeDasharray="6 4" fill="url(#projGrad)" name={lang === 'ar' ? 'متوقع' : 'Projected'} />
             </AreaChart>
           </ResponsiveContainer>
         </div>

@@ -49,9 +49,9 @@ export default function AdminOpsSummary() {
   const ALERTS_FETCH_CAP = 300;
   const alertsCapped = (alerts?.length || 0) >= ALERTS_FETCH_CAP;
 
-  const card = `p-5 rounded-xl border ${dark ? 'bg-card border-foreground/[0.06]' : 'bg-white border-[#0A0B10]/[0.06]'}`;
-  const muted = dark ? 'text-foreground/60' : 'text-[#0A0B10]/60';
-  const strong = dark ? 'text-foreground' : 'text-[#0A0B10]';
+  const card = `p-5 rounded-xl border ${dark ? 'bg-card border-foreground/[0.06]' : 'bg-white border-[#06131F]/[0.06]'}`;
+  const muted = dark ? 'text-foreground/60' : 'text-[#06131F]/60';
+  const strong = dark ? 'text-foreground' : 'text-[#06131F]';
 
   const StatCard = ({ icon: Icon, label, value, tone = 'primary' }) => (
     <div className={card}>
@@ -68,7 +68,7 @@ export default function AdminOpsSummary() {
   );
 
   const Chip = ({ children }) => (
-    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs ${dark ? 'bg-foreground/10 text-foreground/80' : 'bg-[#0A0B10]/5 text-[#0A0B10]/80'}`}>{children}</span>
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs ${dark ? 'bg-foreground/10 text-foreground/80' : 'bg-[#06131F]/5 text-[#06131F]/80'}`}>{children}</span>
   );
 
   const quickLinks = [
@@ -135,7 +135,7 @@ export default function AdminOpsSummary() {
         <p className={`mb-3 text-sm font-medium ${strong}`}>{t('روابط سريعة', 'Quick Links')}</p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {quickLinks.map((l) => (
-            <Link key={l.to} to={l.to} className={`flex items-center justify-between gap-2 rounded-xl border p-4 transition-colors ${dark ? 'border-foreground/[0.06] bg-card hover:bg-foreground/5' : 'border-[#0A0B10]/[0.06] bg-white hover:bg-black/[0.03]'}`}>
+            <Link key={l.to} to={l.to} className={`flex items-center justify-between gap-2 rounded-xl border p-4 transition-colors ${dark ? 'border-foreground/[0.06] bg-card hover:bg-foreground/5' : 'border-[#06131F]/[0.06] bg-white hover:bg-black/[0.03]'}`}>
               <span className="flex items-center gap-2">
                 <l.icon className="h-5 w-5 text-primary" />
                 <span className={`text-sm font-medium ${strong}`}>{ar ? l.ar : l.en}</span>

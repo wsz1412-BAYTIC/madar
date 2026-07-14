@@ -31,7 +31,7 @@ function Chip({ selected, onClick, children, invalid = false }) {
       aria-pressed={selected}
       className={`px-3.5 py-2 rounded-xl text-xs font-medium border transition-all ${
         selected
-          ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-sm'
+          ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent shadow-sm'
           : `bg-foreground/[0.03] text-foreground/65 hover:text-foreground hover:border-foreground/25 ${invalid ? 'border-danger/40' : 'border-foreground/[0.08]'}`
       }`}
     >
@@ -178,7 +178,7 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
   };
 
   const inputClass = (field) =>
-    `w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all ${
+    `w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50 transition-all ${
       errors[field] ? 'border-danger/60' : 'border-foreground/[0.08]'
     }`;
   const fieldError = (field) => msg(field) && <p className="text-xs text-danger mt-1">{msg(field)}</p>;
@@ -216,9 +216,9 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
                   const current = i === stepIndex;
                   return (
                     <React.Fragment key={s}>
-                      <div className={`flex items-center gap-1.5 text-[11px] font-medium ${current ? 'text-[#D95F3B]' : done ? 'text-success' : 'text-foreground/35'}`}>
+                      <div className={`flex items-center gap-1.5 text-[11px] font-medium ${current ? 'text-[#1B84C4]' : done ? 'text-success' : 'text-foreground/35'}`}>
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center border text-[10px] nums ${
-                          current ? 'border-[#D95F3B] bg-[#D95F3B]/10' : done ? 'border-success bg-success/10' : 'border-foreground/20'
+                          current ? 'border-[#1B84C4] bg-[#1B84C4]/10' : done ? 'border-success bg-success/10' : 'border-foreground/20'
                         }`}>
                           {done ? <Check className="w-3 h-3" /> : i + 1}
                         </span>
@@ -247,7 +247,7 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
                           onChange={(e) => { setScanUrl(e.target.value); setScanNote(null); }}
                           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleScan(); } }}
                           placeholder="https://airbnb.com/rooms/…"
-                          className={`w-full ps-10 pe-3 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all ${
+                          className={`w-full ps-10 pe-3 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50 transition-all ${
                             scanNote?.tone === 'error' ? 'border-danger/60' : 'border-foreground/[0.08]'
                           }`}
                         />
@@ -255,7 +255,7 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
                       <button
                         type="button" onClick={handleScan} disabled={scanning}
                         aria-label={lang === 'ar' ? 'معاينة' : 'Scan'}
-                        className="shrink-0 flex items-center gap-1.5 px-4 h-[46px] rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+                        className="shrink-0 flex items-center gap-1.5 px-4 h-[46px] rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-60"
                       >
                         {scanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                         <span className="hidden sm:inline">{lang === 'ar' ? 'معاينة' : 'Scan'}</span>
@@ -397,7 +397,7 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addLink(); } }}
                         aria-label={lang === 'ar' ? 'إضافة رابط منصة' : 'Add a platform link'}
                         placeholder="https://gathern.co/unit/…"
-                        className={`flex-1 min-w-0 px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all ${
+                        className={`flex-1 min-w-0 px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50 transition-all ${
                           linkError ? 'border-danger/60' : 'border-foreground/[0.08]'
                         }`}
                       />
@@ -426,13 +426,13 @@ export default function AddPropertyWizard({ open, onClose, onCreated, initial = 
               </button>
               {stepIndex < WIZARD_STEPS.length - 1 ? (
                 <button type="button" onClick={next}
-                  className="flex items-center gap-1.5 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all">
+                  className="flex items-center gap-1.5 px-5 h-10 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all">
                   {lang === 'ar' ? 'التالي' : 'Next'}
                   {isRTL ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                 </button>
               ) : (
                 <button type="button" onClick={submit} disabled={saving}
-                  className="flex items-center gap-1.5 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60">
+                  className="flex items-center gap-1.5 px-5 h-10 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-60">
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                   {lang === 'ar' ? 'إضافة العقار' : 'Add property'}
                 </button>

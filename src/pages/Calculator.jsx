@@ -52,8 +52,8 @@ export default function Calculator() {
     <div className="space-y-8 max-w-2xl mx-auto">
       <FadeIn>
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#C8972A]/20 to-[#D95F3B]/10 flex items-center justify-center border border-[#C8972A]/20">
-            <CalcIcon className="w-5 h-5 text-[#C8972A]" />
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#ADDFF1]/20 to-[#1B84C4]/10 flex items-center justify-center border border-[#ADDFF1]/20">
+            <CalcIcon className="w-5 h-5 text-[#0F6BA8]" />
           </div>
           <div>
             <h1 className="font-heading text-3xl font-bold text-foreground">{t('investmentCalculator')}</h1>
@@ -69,7 +69,7 @@ export default function Calculator() {
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-foreground/60 mb-1.5">{lang === 'ar' ? 'المدينة' : 'City'}</label>
-              <select value={dynForm.city} onChange={e => updateDyn('city', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+              <select value={dynForm.city} onChange={e => updateDyn('city', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20">
                 <option value="riyadh">{lang === 'ar' ? 'الرياض' : 'Riyadh'}</option>
                 <option value="jeddah">{lang === 'ar' ? 'جدة' : 'Jeddah'}</option>
                 <option value="dammam">{lang === 'ar' ? 'الدمام' : 'Dammam'}</option>
@@ -77,19 +77,19 @@ export default function Calculator() {
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground/60 mb-1.5">{lang === 'ar' ? 'النوع' : 'Type'}</label>
-              <select value={dynForm.type} onChange={e => updateDyn('type', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+              <select value={dynForm.type} onChange={e => updateDyn('type', e.target.value)} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20">
                 <option value="apartment">{lang === 'ar' ? 'شقة' : 'Apartment'}</option>
                 <option value="villa">{lang === 'ar' ? 'فيلا' : 'Villa'}</option>
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground/60 mb-1.5">{lang === 'ar' ? 'غرف النوم' : 'Bedrooms'}</label>
-              <select value={dynForm.bedrooms} onChange={e => updateDyn('bedrooms', Number(e.target.value))} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20">
+              <select value={dynForm.bedrooms} onChange={e => updateDyn('bedrooms', Number(e.target.value))} className="w-full px-3 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20">
                 {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
               </select>
             </div>
           </div>
-          <button onClick={calculateDynamic} className="group relative w-full py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
+          <button onClick={calculateDynamic} className="group relative w-full py-2.5 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all overflow-hidden">
             <span className="relative z-10">{t('calculate')}</span>
             <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           </button>
@@ -103,19 +103,19 @@ export default function Calculator() {
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                 <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'الإيجار الشهري المقدّر' : 'Estimated Monthly Rent'}</div>
-                <div className="text-2xl font-bold text-[#D95F3B] font-heading">{dynResult.estimatedRent.toLocaleString()} {sar}</div>
+                <div className="text-2xl font-bold text-[#1B84C4] font-heading">{dynResult.estimatedRent.toLocaleString()} {sar}</div>
               </div>
               <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                 <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'الإيرادات السنوية' : 'Annual Revenue'}</div>
-                <div className="text-2xl font-bold text-[#C8972A] font-heading">{dynResult.annualRevenue.toLocaleString()} {sar}</div>
+                <div className="text-2xl font-bold text-[#0F6BA8] font-heading">{dynResult.annualRevenue.toLocaleString()} {sar}</div>
               </div>
               <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                 <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'الربح السنوي' : 'Annual Profit'}</div>
-                <div className="text-2xl font-bold text-[#D95F3B] font-heading">{dynResult.annualProfit.toLocaleString()} {sar}</div>
+                <div className="text-2xl font-bold text-[#1B84C4] font-heading">{dynResult.annualProfit.toLocaleString()} {sar}</div>
               </div>
               <div className="p-4 rounded-xl bg-foreground/[0.02] border border-foreground/[0.06]">
                 <div className="text-xs text-foreground/40 mb-1">{lang === 'ar' ? 'العائد على الاستثمار' : 'ROI'}</div>
-                <div className="text-2xl font-bold text-[#C8972A] font-heading">{dynResult.roi}%</div>
+                <div className="text-2xl font-bold text-[#0F6BA8] font-heading">{dynResult.roi}%</div>
               </div>
             </div>
           </div>
@@ -137,12 +137,12 @@ export default function Calculator() {
                  type="number"
                  value={field.val}
                  onChange={e => update(field.key === 'propertyValue' ? 'propertyValue' : field.key === 'monthlyRent' ? 'monthlyRent' : field.key === 'occupancyEst' ? 'occupancy' : 'expenses', e.target.value)}
-                 className="w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50"
+                 className="w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50"
                  dir="ltr"
                />
              </div>
            ))}
-           <button onClick={calculate} className="group relative w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all overflow-hidden">
+           <button onClick={calculate} className="group relative w-full py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl text-sm hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all overflow-hidden">
              <span className="relative z-10">{t('calculate')}</span>
              <div className="absolute inset-0 bg-foreground/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
            </button>
@@ -152,10 +152,10 @@ export default function Calculator() {
       {result && (
         <div className="grid grid-cols-2 gap-4">
           {[
-            { key: 'annualRevenue', value: result.annualRevenue.toLocaleString(), icon: DollarSign, color: '#D95F3B' },
-            { key: 'annualExpenses', value: result.annualExpenses.toLocaleString(), icon: BarChart3, color: '#C8972A' },
-            { key: 'annualProfit', value: result.annualProfit.toLocaleString(), icon: TrendingUp, color: '#D95F3B' },
-            { key: 'roi', value: `${result.roi}%`, icon: TrendingUp, color: '#C8972A' },
+            { key: 'annualRevenue', value: result.annualRevenue.toLocaleString(), icon: DollarSign, color: '#1B84C4' },
+            { key: 'annualExpenses', value: result.annualExpenses.toLocaleString(), icon: BarChart3, color: '#0F6BA8' },
+            { key: 'annualProfit', value: result.annualProfit.toLocaleString(), icon: TrendingUp, color: '#1B84C4' },
+            { key: 'roi', value: `${result.roi}%`, icon: TrendingUp, color: '#0F6BA8' },
           ].map(card => (
             <div key={card.key} className="glass rounded-2xl p-5">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style={{ backgroundColor: `${card.color}15` }}>
@@ -168,7 +168,7 @@ export default function Calculator() {
             </div>
           ))}
           <div className="col-span-2 relative rounded-2xl p-6 overflow-hidden border border-foreground/[0.08]">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#00548C] to-[#003152]" />
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-white/70" />

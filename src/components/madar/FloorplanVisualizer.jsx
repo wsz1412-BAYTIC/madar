@@ -7,12 +7,12 @@ const statusConfig = {
   booked: {
     labelEn: 'Booked',
     labelAr: 'محجوز',
-    color: '#D95F3B',
-    bg: 'bg-[#D95F3B]/15',
-    border: 'border-[#D95F3B]/40',
-    glow: 'shadow-[0_0_30px_-8px_rgba(217,95,59,0.5)]',
-    dot: 'bg-[#D95F3B]',
-    accent: 'text-[#D95F3B]',
+    color: '#1B84C4',
+    bg: 'bg-[#1B84C4]/15',
+    border: 'border-[#1B84C4]/40',
+    glow: 'shadow-[0_0_30px_-8px_rgba(27, 132, 196,0.5)]',
+    dot: 'bg-[#0F6BA8]',
+    accent: 'text-[#1B84C4]',
   },
   available: {
     labelEn: 'Available',
@@ -80,9 +80,9 @@ export default function FloorplanVisualizer() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-2xl blur-lg opacity-20" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00548C] to-[#003152] rounded-2xl blur-lg opacity-20" />
               <div className="relative w-12 h-12 rounded-2xl glass flex items-center justify-center border border-foreground/10">
-                <Building2 className="w-5 h-5 text-[#D95F3B]" />
+                <Building2 className="w-5 h-5 text-[#1B84C4]" />
               </div>
             </div>
             <div>
@@ -119,7 +119,7 @@ export default function FloorplanVisualizer() {
       {/* Building visualization */}
       <div className="relative p-6 lg:p-8">
         {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#D95F3B]/3 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#1B84C4]/3 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 space-y-4">
           {floors.map((floor, fi) => {

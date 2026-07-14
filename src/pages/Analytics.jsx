@@ -31,8 +31,8 @@ const competitorData = [
 const periods = ['last30Days', 'last90Days', 'lastYear'];
 
 const kpiCards = [
-  { key: 'totalRevenue', value: '487,000', icon: DollarSign, change: '+18%', up: true, gradient: 'from-[#D95F3B]/20 to-[#D95F3B]/5', iconColor: 'text-[#D95F3B]', border: 'border-[#D95F3B]/20' },
-  { key: 'occupancyRate', value: '79%', icon: Percent, change: '+5%', up: true, gradient: 'from-[#C8972A]/20 to-[#C8972A]/5', iconColor: 'text-[#C8972A]', border: 'border-[#C8972A]/20' },
+  { key: 'totalRevenue', value: '487,000', icon: DollarSign, change: '+18%', up: true, gradient: 'from-[#1B84C4]/20 to-[#1B84C4]/5', iconColor: 'text-[#1B84C4]', border: 'border-[#1B84C4]/20' },
+  { key: 'occupancyRate', value: '79%', icon: Percent, change: '+5%', up: true, gradient: 'from-[#ADDFF1]/20 to-[#ADDFF1]/5', iconColor: 'text-[#0F6BA8]', border: 'border-[#ADDFF1]/20' },
   { key: 'avgNightlyRate', value: '892', icon: BarChart3, change: '+12%', up: true, gradient: 'from-emerald-500/20 to-emerald-500/5', iconColor: 'text-emerald-400', border: 'border-emerald-500/20' },
 ];
 
@@ -45,7 +45,7 @@ function ChartSkeleton({ height = 280 }) {
             initial={{ x: '-100%' }}
             animate={{ x: '100%' }}
             transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.08, ease: 'easeInOut' }}
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C8972A]/15 to-transparent"
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-[#ADDFF1]/15 to-transparent"
           />
         </div>
       ))}
@@ -69,7 +69,7 @@ export default function Analytics() {
   const chartTooltip = {
     contentStyle: {
       background: 'rgba(10,11,16,0.95)',
-      border: '1px solid rgba(217,95,59,0.15)',
+      border: '1px solid rgba(27, 132, 196,0.15)',
       borderRadius: 14,
       color: 'var(--chart-tooltip-text)',
       fontSize: 12,
@@ -77,7 +77,7 @@ export default function Analytics() {
       backdropFilter: 'blur(12px)',
     },
     labelStyle: { color: 'var(--chart-tooltip-text)', marginBottom: 4 },
-    cursor: { fill: 'rgba(217,95,59,0.04)', stroke: 'rgba(217,95,59,0.1)' },
+    cursor: { fill: 'rgba(27, 132, 196,0.04)', stroke: 'rgba(27, 132, 196,0.1)' },
   };
 
   return (
@@ -85,15 +85,15 @@ export default function Analytics() {
       <FadeIn>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/20">
-              <BarChart3 className="w-5 h-5 text-[#D95F3B]" />
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/20">
+              <BarChart3 className="w-5 h-5 text-[#1B84C4]" />
             </div>
             <h1 className="font-heading text-3xl font-bold text-foreground">{t('analytics')}</h1>
           </div>
           <div className="flex items-center gap-1 glass rounded-full p-1">
             {periods.map(p => (
               <button key={p} onClick={() => setPeriod(p)} className={`relative px-5 py-2 rounded-full text-xs font-medium transition-all duration-500 ${period === p ? 'text-white' : 'text-foreground/40 hover:text-foreground'}`}>
-                {period === p && <motion.div layoutId="periodPill" className="absolute inset-0 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-full" transition={{ type: 'spring', stiffness: 300, damping: 30 }} />}
+                {period === p && <motion.div layoutId="periodPill" className="absolute inset-0 bg-gradient-to-r from-[#00548C] to-[#003152] rounded-full" transition={{ type: 'spring', stiffness: 300, damping: 30 }} />}
                 <span className="relative z-10">{t(p)}</span>
               </button>
             ))}
@@ -130,7 +130,7 @@ export default function Analytics() {
       {/* Revenue Chart */}
       <FadeIn delay={0.2}>
         <div className="relative glass rounded-3xl p-8 overflow-hidden">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-[#D95F3B]/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 left-0 w-96 h-96 bg-[#1B84C4]/5 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -138,7 +138,7 @@ export default function Analytics() {
                 <p className="text-xs text-foreground/30 mt-1">{sar}</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#D95F3B] shadow-[0_0_8px_rgba(217,95,59,0.6)]" />
+                <div className="w-2 h-2 rounded-full bg-[#0F6BA8] shadow-[0_0_8px_rgba(27, 132, 196,0.6)]" />
                 <span className="text-xs text-foreground/40">{lang === 'ar' ? 'الإيرادات' : 'Revenue'}</span>
               </div>
             </div>
@@ -153,9 +153,9 @@ export default function Analytics() {
                     <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                       <defs>
                         <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#D95F3B" stopOpacity={0.4} />
-                          <stop offset="50%" stopColor="#D95F3B" stopOpacity={0.1} />
-                          <stop offset="100%" stopColor="#D95F3B" stopOpacity={0} />
+                          <stop offset="0%" stopColor="#1B84C4" stopOpacity={0.4} />
+                          <stop offset="50%" stopColor="#1B84C4" stopOpacity={0.1} />
+                          <stop offset="100%" stopColor="#1B84C4" stopOpacity={0} />
                         </linearGradient>
                         <filter id="revGlow">
                           <feGaussianBlur stdDeviation="3" result="coloredBlur" />
@@ -168,7 +168,7 @@ export default function Analytics() {
                       <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} dy={8} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} tickFormatter={(v) => `${v / 1000}k`} />
                       <Tooltip {...chartTooltip} formatter={(v) => [`${v.toLocaleString()} ${sar}`, lang === 'ar' ? 'الإيرادات' : 'Revenue']} />
-                      <Area type="monotone" dataKey="value" stroke="#D95F3B" strokeWidth={2.5} fill="url(#revGrad)" filter="url(#revGlow)" animationDuration={1500} animationEasing="ease-out" dot={{ fill: '#D95F3B', strokeWidth: 0, r: 0 }} activeDot={{ fill: '#D95F3B', strokeWidth: 2, stroke: '#0A0B10', r: 6 }} />
+                      <Area type="monotone" dataKey="value" stroke="#1B84C4" strokeWidth={2.5} fill="url(#revGrad)" filter="url(#revGlow)" animationDuration={1500} animationEasing="ease-out" dot={{ fill: '#1B84C4', strokeWidth: 0, r: 0 }} activeDot={{ fill: '#1B84C4', strokeWidth: 2, stroke: '#06131F', r: 6 }} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </motion.div>
@@ -183,12 +183,12 @@ export default function Analytics() {
         {/* Occupancy */}
         <FadeIn delay={0.3}>
           <div className="relative glass rounded-3xl p-8 overflow-hidden h-full">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C8972A]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#ADDFF1]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="font-heading font-semibold text-foreground text-lg">{t('occupancyOverTime')}</h2>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#C8972A] shadow-[0_0_8px_rgba(200,151,42,0.6)]" />
+                  <div className="w-2 h-2 rounded-full bg-[#0F6BA8] shadow-[0_0_8px_rgba(173, 223, 241,0.6)]" />
                   <span className="text-xs text-foreground/40">%</span>
                 </div>
               </div>
@@ -213,7 +213,7 @@ export default function Analytics() {
                         <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} dy={8} />
                         <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} domain={[0, 100]} />
                         <Tooltip {...chartTooltip} formatter={(v) => [`${v}%`, lang === 'ar' ? 'الإشغال' : 'Occupancy']} />
-                        <Line type="monotone" dataKey="value" stroke="#C8972A" strokeWidth={2.5} fill="none" filter="url(#occGlow)" animationDuration={1500} animationEasing="ease-out" dot={{ fill: '#0A0B10', stroke: '#C8972A', strokeWidth: 2, r: 3 }} activeDot={{ fill: '#C8972A', strokeWidth: 2, stroke: '#0A0B10', r: 6 }} />
+                        <Line type="monotone" dataKey="value" stroke="#0F6BA8" strokeWidth={2.5} fill="none" filter="url(#occGlow)" animationDuration={1500} animationEasing="ease-out" dot={{ fill: '#06131F', stroke: '#0F6BA8', strokeWidth: 2, r: 3 }} activeDot={{ fill: '#0F6BA8', strokeWidth: 2, stroke: '#06131F', r: 6 }} />
                       </LineChart>
                     </ResponsiveContainer>
                   </motion.div>
@@ -226,14 +226,14 @@ export default function Analytics() {
         {/* Competitor */}
         <FadeIn delay={0.4}>
           <div className="relative glass rounded-3xl p-8 overflow-hidden h-full">
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#D95F3B]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#1B84C4]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
                 <h2 className="font-heading font-semibold text-foreground text-lg">{t('competitorComparison')}</h2>
                 <div className="flex items-center gap-4">
                   {[
-                    { color: '#D95F3B', label: lang === 'ar' ? 'أنت' : 'You' },
-                    { color: '#C8972A', label: lang === 'ar' ? 'المنافس' : 'Competitor' },
+                    { color: '#1B84C4', label: lang === 'ar' ? 'أنت' : 'You' },
+                    { color: '#0F6BA8', label: lang === 'ar' ? 'المنافس' : 'Competitor' },
                     { color: 'var(--chart-tick)', label: lang === 'ar' ? 'السوق' : 'Market' },
                   ].map(item => (
                     <div key={item.label} className="flex items-center gap-1.5">
@@ -254,12 +254,12 @@ export default function Analytics() {
                       <BarChart data={competitorData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }} barGap={4}>
                         <defs>
                           <linearGradient id="youGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#D95F3B" />
-                            <stop offset="100%" stopColor="#D95F3B" stopOpacity={0.6} />
+                            <stop offset="0%" stopColor="#1B84C4" />
+                            <stop offset="100%" stopColor="#1B84C4" stopOpacity={0.6} />
                           </linearGradient>
                           <linearGradient id="compGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#C8972A" />
-                            <stop offset="100%" stopColor="#C8972A" stopOpacity={0.6} />
+                            <stop offset="0%" stopColor="#0F6BA8" />
+                            <stop offset="100%" stopColor="#0F6BA8" stopOpacity={0.6} />
                           </linearGradient>
                         </defs>
                         <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} dy={8} />

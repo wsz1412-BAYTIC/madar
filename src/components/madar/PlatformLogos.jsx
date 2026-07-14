@@ -28,7 +28,7 @@ const GathernLogo = ({ className = '', monochrome }) => (
       fontWeight: 700,
       fontSize: '1.75rem',
       letterSpacing: '-0.02em',
-      color: monochrome ? 'rgba(247,245,240,0.5)' : '#00A67D',
+      color: monochrome ? 'rgba(242, 248, 252,0.5)' : '#00A67D',
       transition: 'color 0.4s ease',
     }}
   >
@@ -45,7 +45,7 @@ const BookingLogo = ({ className = '', monochrome }) => (
       fontWeight: 700,
       fontSize: '1.5rem',
       letterSpacing: '-0.02em',
-      color: monochrome ? 'rgba(247,245,240,0.5)' : '#003B95',
+      color: monochrome ? 'rgba(242, 248, 252,0.5)' : '#003B95',
       transition: 'color 0.4s ease',
     }}
   >
@@ -63,25 +63,25 @@ export default function PlatformLogos() {
   const { t, lang } = useLang();
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-[#0A0B10] overflow-hidden">
+    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-[#06131F] overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-[#D95F3B]/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-[#C8972A]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-[#1B84C4]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-[#ADDFF1]/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center">
         <FadeIn>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-[#0F6BA8] text-xs font-medium mb-6">
             <motion.span
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="w-1.5 h-1.5 rounded-full bg-[#C8972A]"
+              className="w-1.5 h-1.5 rounded-full bg-[#0F6BA8]"
             />
             {lang === 'ar' ? 'تكامل سلس' : 'Seamless Integration'}
           </div>
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F7F5F0] mb-4 leading-tight max-w-3xl mx-auto">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F2F8FC] mb-4 leading-tight max-w-3xl mx-auto">
             {lang === 'ar'
               ? 'حلّل عقاراتك عبر المنصات التي تستخدمها بالفعل'
               : 'Analyze Your Property Across the Platforms You Already Use'}
@@ -89,7 +89,7 @@ export default function PlatformLogos() {
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <p className="text-[#F7F5F0]/40 text-sm sm:text-base mb-14 max-w-xl mx-auto">
+          <p className="text-[#F2F8FC]/40 text-sm sm:text-base mb-14 max-w-xl mx-auto">
             {lang === 'ar'
               ? 'اربط حساباتك الموجودة واحصل على رؤى موحّدة في مكان واحد'
               : 'Connect your existing accounts and get unified insights in one place'}

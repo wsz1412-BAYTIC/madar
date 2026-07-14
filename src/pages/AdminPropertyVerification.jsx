@@ -19,7 +19,7 @@ const EMPTY_FORM = {
 };
 const EMPTY_SOURCE = { name: '', type: 'manual_review', reference: '', retrieved_date: '', confidence: 'low' };
 
-const CARD = 'rounded-2xl border border-[#0A0B10]/10 bg-white p-5';
+const CARD = 'rounded-2xl border border-[#06131F]/10 bg-white p-5';
 const FieldLabel = ({ children }) => <label className="mb-1 block text-xs font-medium opacity-60">{children}</label>;
 
 // Admin-only page (route is wrapped in AdminRoute; the PropertyVerification
@@ -87,11 +87,11 @@ export default function AdminPropertyVerification() {
   const needsPermit = form.search_type === 'building_permit';
 
   return (
-    <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
+    <div dir="rtl" className="flex min-h-screen bg-[#EFF6FA]">
       <AdminNav admin={{ role: 'admin' }} />
       <main className="flex-1 space-y-6 p-6 lg:p-8">
         <div className="flex items-center gap-3">
-          <ShieldCheck className="h-7 w-7 text-[#D95F3B]" />
+          <ShieldCheck className="h-7 w-7 text-[#1B84C4]" />
           <div>
             <h1 className="font-heading text-3xl font-bold">التحقق من العقار</h1>
             <p className="text-sm opacity-60">تحقق من العقار عبر رقم الصك أو رخصة البلدية أو رخصة البناء، وقارنه ببيانات الفرصة الداخلية.</p>
@@ -157,7 +157,7 @@ export default function AdminPropertyVerification() {
                     {opportunities.map((o) => <SelectItem key={o.id} value={o.id}>{o.title_internal || o.public_teaser_title || o.id}</SelectItem>)}
                   </SelectContent>
                 </Select>
-                {linkedOpportunity && <p className="mt-1 flex items-center gap-1 text-xs text-[#D95F3B]"><Link2 className="h-3 w-3" />سيُقارن العقار ببيانات هذه الفرصة.</p>}
+                {linkedOpportunity && <p className="mt-1 flex items-center gap-1 text-xs text-[#1B84C4]"><Link2 className="h-3 w-3" />سيُقارن العقار ببيانات هذه الفرصة.</p>}
               </div>
             </div>
           </section>
@@ -171,7 +171,7 @@ export default function AdminPropertyVerification() {
             {form.source_list.length === 0 && <p className="text-sm opacity-50">لا توجد مصادر بعد. أضف مصدرًا واحدًا على الأقل لدعم التحقق.</p>}
             <div className="space-y-3">
               {form.source_list.map((s, i) => (
-                <div key={i} className="rounded-xl border border-[#0A0B10]/10 p-3">
+                <div key={i} className="rounded-xl border border-[#06131F]/10 p-3">
                   <div className="grid grid-cols-2 gap-2">
                     <div><FieldLabel>اسم المصدر</FieldLabel><Input value={s.name} onChange={(e) => updateSource(i, 'name', e.target.value)} /></div>
                     <div><FieldLabel>نوع المصدر</FieldLabel>
@@ -192,7 +192,7 @@ export default function AdminPropertyVerification() {
               ))}
             </div>
 
-            <div className="mt-5 space-y-3 border-t border-[#0A0B10]/10 pt-4">
+            <div className="mt-5 space-y-3 border-t border-[#06131F]/10 pt-4">
               <div><FieldLabel>حالة البيانات الرسمية</FieldLabel>
                 <Select value={form.official_data_status} onValueChange={(v) => set('official_data_status', v)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
@@ -213,7 +213,7 @@ export default function AdminPropertyVerification() {
               <div><FieldLabel>ملاحظات داخلية</FieldLabel><Textarea value={form.notes_internal} onChange={(e) => set('notes_internal', e.target.value)} rows={2} /></div>
             </div>
 
-            <Button className="mt-4 w-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={runVerification}>تشغيل التحقق</Button>
+            <Button className="mt-4 w-full bg-gradient-to-r from-[#00548C] to-[#003152]" onClick={runVerification}>تشغيل التحقق</Button>
           </section>
         </div>
 
@@ -225,10 +225,10 @@ export default function AdminPropertyVerification() {
           <h2 className="mb-3 font-heading text-lg font-bold">سجلات التحقق ({records.length})</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-[#0A0B10]/5"><tr>{['التاريخ', 'نوع البحث', 'المدينة', 'حالة البيانات', 'الثقة', 'النتيجة'].map((h) => <th key={h} className="p-2 text-right">{h}</th>)}</tr></thead>
+              <thead className="bg-[#06131F]/5"><tr>{['التاريخ', 'نوع البحث', 'المدينة', 'حالة البيانات', 'الثقة', 'النتيجة'].map((h) => <th key={h} className="p-2 text-right">{h}</th>)}</tr></thead>
               <tbody>
                 {records.map((r) => (
-                  <tr key={r.id} className="border-t border-[#0A0B10]/10">
+                  <tr key={r.id} className="border-t border-[#06131F]/10">
                     <td className="p-2">{r.created_at ? new Date(r.created_at).toLocaleDateString('ar-SA') : '—'}</td>
                     <td className="p-2">{label(r.search_type)}</td>
                     <td className="p-2">{r.city || '—'}</td>
@@ -281,7 +281,7 @@ function ResultCard({ preview, onSave, saving, notice }) {
         <div><div className="text-xs opacity-70">هل يصلح العقار للتحليل الاستثماري؟</div><div className="font-semibold">{readiness.text}</div></div>
       </div>
       {notice && <p className={`mt-3 text-sm ${notice.ok ? 'text-green-700' : 'text-red-700'}`}>{notice.text}</p>}
-      <Button className="mt-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={onSave} disabled={saving}>
+      <Button className="mt-4 bg-gradient-to-r from-[#00548C] to-[#003152]" onClick={onSave} disabled={saving}>
         {saving ? 'جارٍ الحفظ...' : 'حفظ سجل التحقق'}
       </Button>
     </section>

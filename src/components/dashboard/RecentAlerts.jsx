@@ -39,11 +39,11 @@ export default function RecentAlerts({ properties }) {
       className={`p-6 rounded-2xl border ${
         theme === 'dark'
           ? 'bg-card border-foreground/[0.06]'
-          : 'bg-white border-[#0A0B10]/[0.06]'
+          : 'bg-white border-[#06131F]/[0.06]'
       }`}
     >
       <h2 className={`text-lg font-heading font-bold mb-4 ${
-        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
       }`}>
         {lang === 'ar' ? 'التنبيهات الأخيرة' : 'Recent Alerts'}
       </h2>
@@ -63,12 +63,12 @@ export default function RecentAlerts({ properties }) {
               <IconComponent className={`w-4 h-4 mt-0.5 flex-shrink-0 ${getColor(alert.severity)}`} />
               <div className="flex-1 min-w-0">
                 <p className={`text-sm font-medium ${
-                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                 }`}>
                   {alert.title}
                 </p>
                 <p className={`text-xs ${
-                  theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
+                  theme === 'dark' ? 'text-foreground/40' : 'text-[#06131F]/40'
                 }`}>
                   {alert.property}
                 </p>

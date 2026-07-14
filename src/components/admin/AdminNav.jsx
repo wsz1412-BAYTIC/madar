@@ -42,7 +42,7 @@ export default function AdminNav({ admin }) {
           ? 'bg-primary/20 text-primary'
           : theme === 'dark'
             ? 'text-foreground/60 hover:text-foreground hover:bg-foreground/5'
-            : 'text-[#0A0B10]/60 hover:text-[#0A0B10] hover:bg-black/5'
+            : 'text-[#06131F]/60 hover:text-[#06131F] hover:bg-black/5'
       }`}
     >
       <item.icon className="w-5 h-5 flex-shrink-0" />
@@ -58,7 +58,7 @@ export default function AdminNav({ admin }) {
         className={`fixed top-6 ${isRTL ? 'left-6' : 'right-6'} z-50 lg:hidden p-2 rounded-lg ${
           theme === 'dark'
             ? 'bg-card border border-foreground/[0.06]'
-            : 'bg-white border border-[#0A0B10]/[0.06]'
+            : 'bg-white border border-[#06131F]/[0.06]'
         }`}
       >
         {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -84,17 +84,17 @@ export default function AdminNav({ admin }) {
         className={`fixed ${isRTL ? 'right-0' : 'left-0'} top-0 bottom-0 w-64 z-40 lg:static lg:translate-x-0 lg:w-64 border-r overflow-y-auto ${
           theme === 'dark'
             ? 'bg-background border-foreground/[0.06]'
-            : 'bg-white border-[#0A0B10]/[0.06]'
+            : 'bg-white border-[#06131F]/[0.06]'
         }`}
       >
         <div className="p-6">
           {/* Logo */}
           <Link to="/admin" className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00548C] to-[#003152] flex items-center justify-center">
               <Shield className="w-4 h-4 text-white" />
             </div>
             <span className={`font-heading font-bold ${
-              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
             }`}>
               {lang === 'ar' ? 'مسؤول' : 'Admin'}
             </span>
@@ -117,12 +117,12 @@ export default function AdminNav({ admin }) {
             theme === 'dark' ? 'bg-foreground/[0.04]' : 'bg-background/[0.04]'
           }`}>
             <p className={`text-xs font-medium mb-1 ${
-              theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+              theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
             }`}>
               {lang === 'ar' ? 'دورك' : 'Your Role'}
             </p>
             <p className={`text-sm font-semibold ${
-              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
             }`}>
               {admin?.role || 'Admin'}
             </p>

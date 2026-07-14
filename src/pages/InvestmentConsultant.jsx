@@ -45,7 +45,7 @@ function Chip({ selected, onClick, children, invalid = false }) {
       aria-pressed={selected}
       className={`px-3.5 py-2 rounded-xl text-xs font-medium border transition-all ${
         selected
-          ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-sm'
+          ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent shadow-sm'
           : `bg-foreground/[0.03] text-foreground/65 hover:text-foreground hover:border-foreground/25 ${invalid ? 'border-danger/40' : 'border-foreground/[0.08]'}`
       }`}
     >
@@ -127,7 +127,7 @@ function AnalysisResult({ analysis, lang }) {
         </div>
         <div className="h-2 rounded-full bg-foreground/[0.08] overflow-hidden">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A] transition-all"
+            className="h-full rounded-full bg-gradient-to-r from-[#00548C] to-[#003152] transition-all"
             style={{ width: `${score}%` }}
           />
         </div>
@@ -217,7 +217,7 @@ export default function InvestmentConsultant() {
   const fieldError = (field) => msg(field) && <p className="text-xs text-danger mt-1">{msg(field)}</p>;
 
   const inputClass = (field) =>
-    `w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50 transition-all ${
+    `w-full px-4 py-3 rounded-xl bg-foreground/[0.04] border text-sm text-foreground placeholder-foreground/30 focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50 transition-all ${
       errors[field] ? 'border-danger/60' : 'border-foreground/[0.08]'
     }`;
   const sectionLabel = 'block text-sm font-medium text-foreground/60 mb-1.5';
@@ -337,7 +337,7 @@ export default function InvestmentConsultant() {
       <FadeIn>
         <div>
           <h1 className="font-heading text-2xl md:text-3xl font-bold text-foreground flex items-center gap-2.5">
-            <Briefcase className="w-6 h-6 text-[#D95F3B]" />
+            <Briefcase className="w-6 h-6 text-[#1B84C4]" />
             {lang === 'ar' ? 'المستشار الاستثماري الذكي' : 'AI Investment Consultant'}
           </h1>
           <p className="text-sm text-foreground/50 mt-1">
@@ -357,7 +357,7 @@ export default function InvestmentConsultant() {
             aria-pressed={analysisType === 'lease'}
             className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-all ${
               analysisType === 'lease'
-                ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-sm'
+                ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent shadow-sm'
                 : 'bg-foreground/[0.03] text-foreground/65 border-foreground/[0.08] hover:text-foreground'
             }`}
           >
@@ -370,13 +370,13 @@ export default function InvestmentConsultant() {
             aria-pressed={analysisType === 'purchase'}
             className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-all ${
               analysisType === 'purchase'
-                ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white border-transparent shadow-sm'
+                ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white border-transparent shadow-sm'
                 : 'bg-foreground/[0.03] text-foreground/65 border-foreground/[0.08] hover:text-foreground'
             }`}
           >
             <Home className="w-4 h-4" />
             {lang === 'ar' ? 'تحليل شراء' : 'Purchase'}
-            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-[#C8972A]/20 text-[#C8972A]">Business</span>
+            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-[#ADDFF1]/20 text-[#0F6BA8]">Business</span>
           </button>
         </div>
       </FadeIn>
@@ -498,7 +498,7 @@ export default function InvestmentConsultant() {
 
           <button
             type="button" onClick={analyze} disabled={pending}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 h-11 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 h-11 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-60"
           >
             {pending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
             {lang === 'ar' ? 'تحليل الصفقة' : 'Analyze deal'}
@@ -509,8 +509,8 @@ export default function InvestmentConsultant() {
       {/* Upgrade panel */}
       {errorPanel?.type === 'upgrade' && (
         <FadeIn>
-          <div className="p-6 rounded-2xl border border-[#C8972A]/30 bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/10 text-center space-y-3">
-            <Crown className="w-9 h-9 mx-auto text-[#C8972A]" />
+          <div className="p-6 rounded-2xl border border-[#ADDFF1]/30 bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/10 text-center space-y-3">
+            <Crown className="w-9 h-9 mx-auto text-[#0F6BA8]" />
             <h2 className="font-heading font-bold text-foreground">
               {lang === 'ar' ? 'هذه الميزة تتطلب ترقية باقتك' : 'This feature requires a plan upgrade'}
             </h2>
@@ -521,7 +521,7 @@ export default function InvestmentConsultant() {
             </p>
             <Link
               to="/billing"
-              className="inline-flex items-center gap-2 px-6 h-11 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+              className="inline-flex items-center gap-2 px-6 h-11 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
             >
               <Crown className="w-4 h-4" />
               {lang === 'ar' ? 'ترقية الباقة' : 'Upgrade plan'}

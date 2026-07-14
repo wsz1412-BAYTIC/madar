@@ -145,12 +145,12 @@ export default function BookingCalendar() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className={`font-heading text-3xl font-bold ${
-              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
             }`}>
               {lang === 'ar' ? 'التقويم الرئيسي' : 'Master Calendar'}
             </h1>
             <p className={`text-sm mt-1 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`}>
               {lang === 'ar'
                 ? 'راقب الاشغال والأسعار والطلب عبر جميع عقاراتك'
@@ -159,8 +159,8 @@ export default function BookingCalendar() {
           </div>
           <div className={`px-4 py-2 rounded-lg text-sm font-medium ${
             theme === 'dark'
-              ? 'bg-[#D95F3B]/10 text-[#D95F3B] border border-[#D95F3B]/30'
-              : 'bg-[#D95F3B]/5 text-[#D95F3B] border border-[#D95F3B]/30'
+              ? 'bg-[#1B84C4]/10 text-[#1B84C4] border border-[#1B84C4]/30'
+              : 'bg-[#1B84C4]/5 text-[#1B84C4] border border-[#1B84C4]/30'
           }`}>
             {lang === 'ar' ? 'عقار واحد متاح' : `${availableProperties.length} properties available`}
           </div>
@@ -217,12 +217,12 @@ export default function BookingCalendar() {
             {
               label: lang === 'ar' ? 'متوسط الاشغال' : 'Avg Occupancy',
               value: '62%',
-              color: 'bg-[#D95F3B]',
+              color: 'bg-[#0F6BA8]',
             },
             {
               label: lang === 'ar' ? 'متوسط السعر' : 'Avg Price',
               value: '285 SAR',
-              color: 'bg-[#C8972A]',
+              color: 'bg-[#0F6BA8]',
             },
             {
               label: lang === 'ar' ? 'فرص الإيرادات' : 'Revenue Opportunities',
@@ -240,16 +240,16 @@ export default function BookingCalendar() {
               className={`p-4 rounded-lg ${
                 theme === 'dark'
                   ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-                  : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+                  : 'bg-[#EFF6FA] border border-[#06131F]/10'
               }`}
             >
               <p className={`text-xs font-medium mb-2 ${
-                theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
               }`}>
                 {stat.label}
               </p>
               <p className={`font-heading font-bold text-2xl ${
-                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
               }`}>
                 {stat.value}
               </p>

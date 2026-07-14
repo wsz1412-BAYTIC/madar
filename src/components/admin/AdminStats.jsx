@@ -15,18 +15,18 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
       className={`p-6 rounded-xl border ${
         theme === 'dark'
           ? 'bg-card border-foreground/[0.06]'
-          : 'bg-white border-[#0A0B10]/[0.06]'
+          : 'bg-white border-[#06131F]/[0.06]'
       }`}
     >
       <div className="flex items-start justify-between">
         <div>
           <p className={`text-sm ${
-            theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+            theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
           }`}>
             {label}
           </p>
           <p className={`text-3xl font-bold mt-2 ${
-            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
           }`}>
             {value}
           </p>

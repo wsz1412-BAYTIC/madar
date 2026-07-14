@@ -50,7 +50,7 @@ export default function PublicAssistantWidget() {
         onClick={() => setIsOpen((v) => !v)}
         aria-label={lang === 'ar' ? 'مساعد مدار' : 'Madar assistant'}
         aria-expanded={isOpen}
-        className="fixed z-40 w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center bg-gradient-to-br from-[#D95F3B] to-[#C8972A] text-white"
+        className="fixed z-40 w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center bg-gradient-to-br from-[#00548C] to-[#003152] text-white"
         style={{
           [isRTL ? 'left' : 'right']: '1.25rem',
           bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))',
@@ -78,7 +78,7 @@ export default function PublicAssistantWidget() {
           >
             <div className="px-4 py-3 border-b border-foreground/[0.06] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center text-white text-sm font-bold">M</div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#00548C] to-[#003152] flex items-center justify-center text-white text-sm font-bold">M</div>
                 <div>
                   <p className="font-heading font-semibold text-sm text-foreground">{lang === 'ar' ? 'دليل مدار' : 'Madar Guide'}</p>
                   <p className="text-[11px] text-foreground/45">
@@ -100,7 +100,7 @@ export default function PublicAssistantWidget() {
                 <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] px-3.5 py-2.5 rounded-xl text-sm leading-relaxed ${
                     m.role === 'user'
-                      ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                      ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                       : 'bg-foreground/[0.06] text-foreground'
                   }`}>
                     <p className="whitespace-pre-wrap break-words">{m.text}</p>
@@ -108,7 +108,7 @@ export default function PublicAssistantWidget() {
                       <div className="flex flex-wrap gap-2 mt-2">
                         {m.links.map((link) => (
                           <Link key={link.to} to={link.to} onClick={() => setIsOpen(false)}
-                            className="text-xs font-semibold text-[#D95F3B] hover:underline">
+                            className="text-xs font-semibold text-[#1B84C4] hover:underline">
                             {lang === 'ar' ? link.label.ar : link.label.en} ←
                           </Link>
                         ))}
@@ -139,11 +139,11 @@ export default function PublicAssistantWidget() {
                 onKeyDown={(e) => { if (e.key === 'Enter') ask(input); }}
                 placeholder={lang === 'ar' ? 'اسأل عن مدار…' : 'Ask about Madar…'}
                 aria-label={lang === 'ar' ? 'اكتب سؤالك' : 'Type your question'}
-                className="flex-1 min-w-0 text-sm px-3 py-2 rounded-lg bg-foreground/[0.05] border border-foreground/[0.08] text-foreground placeholder-foreground/35 outline-none focus:ring-2 focus:ring-[#D95F3B]/20"
+                className="flex-1 min-w-0 text-sm px-3 py-2 rounded-lg bg-foreground/[0.05] border border-foreground/[0.08] text-foreground placeholder-foreground/35 outline-none focus:ring-2 focus:ring-[#1B84C4]/20"
               />
               <button type="button" onClick={() => ask(input)} disabled={!input.trim()}
                 aria-label={lang === 'ar' ? 'إرسال' : 'Send'}
-                className="p-2 rounded-lg text-[#D95F3B] hover:bg-[#D95F3B]/10 disabled:opacity-40 transition-colors">
+                className="p-2 rounded-lg text-[#1B84C4] hover:bg-[#1B84C4]/10 disabled:opacity-40 transition-colors">
                 <Send className="w-4 h-4" />
               </button>
             </div>

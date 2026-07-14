@@ -38,7 +38,7 @@ export default function PremiumFeatures() {
   const { lang } = useLang();
 
   return (
-    <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-[#0A0B10] overflow-hidden">
+    <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-[#06131F] overflow-hidden">
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -48,10 +48,10 @@ export default function PremiumFeatures() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#0F6BA8] text-xs font-medium mb-6">
             {lang === 'ar' ? 'ميزات مدار' : 'Madar Features'}
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F7F5F0] leading-[1.15] max-w-3xl mx-auto">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F2F8FC] leading-[1.15] max-w-3xl mx-auto">
             {lang === 'ar' ? (
               <>كل ما تحتاجه <span className="text-gradient-gold">للتفوق على السوق</span></>
             ) : (
@@ -72,15 +72,15 @@ export default function PremiumFeatures() {
               className="group relative rounded-2xl border border-white/[0.06] hover:border-white/15 bg-white/[0.02] p-8 transition-colors duration-500"
             >
               {/* Icon */}
-              <div className="w-11 h-11 rounded-xl border border-white/[0.08] flex items-center justify-center mb-5 group-hover:border-[#C8972A]/30 transition-colors duration-500">
-                <f.icon className="w-[18px] h-[18px] text-[#F7F5F0]/50 group-hover:text-[#C8972A] transition-colors duration-500" />
+              <div className="w-11 h-11 rounded-xl border border-white/[0.08] flex items-center justify-center mb-5 group-hover:border-[#ADDFF1]/30 transition-colors duration-500">
+                <f.icon className="w-[18px] h-[18px] text-[#F2F8FC]/50 group-hover:text-[#0F6BA8] transition-colors duration-500" />
               </div>
 
               {/* Content */}
-              <h3 className="font-heading text-base font-bold text-[#F7F5F0] leading-snug mb-2">
+              <h3 className="font-heading text-base font-bold text-[#F2F8FC] leading-snug mb-2">
                 {lang === 'ar' ? f.titleAr : f.titleEn}
               </h3>
-              <p className="text-sm text-[#F7F5F0]/40 leading-relaxed">
+              <p className="text-sm text-[#F2F8FC]/40 leading-relaxed">
                 {lang === 'ar' ? f.descAr : f.descEn}
               </p>
             </motion.div>

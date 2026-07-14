@@ -121,16 +121,16 @@ export default function HowToUseMadar() {
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60';
 
   return (
     <div className={`min-h-screen ${
       theme === 'dark'
         ? 'bg-background text-foreground'
-        : 'bg-white text-[#0A0B10]'
+        : 'bg-white text-[#06131F]'
     }`}>
       <PublicNavbar />
 
@@ -154,11 +154,11 @@ export default function HowToUseMadar() {
               <StaggerItem key={idx}>
                 <motion.div
                   whileHover={{ x: isRTL ? -8 : 8 }}
-                  className={`p-6 rounded-xl ${bgCard} transition-all hover:border-[#D95F3B]/50`}
+                  className={`p-6 rounded-xl ${bgCard} transition-all hover:border-[#1B84C4]/50`}
                 >
                   <div className="flex gap-6">
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center text-white font-heading font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00548C] to-[#003152] flex items-center justify-center text-white font-heading font-bold text-lg">
                         {step.number}
                       </div>
                     </div>
@@ -171,7 +171,7 @@ export default function HowToUseMadar() {
                       </p>
                       <Link
                         to={step.number === 1 ? '/signup' : step.number === 2 ? '/plans' : step.number === 4 ? '/connect' : step.number === 5 ? '/dashboard' : step.number === 6 ? '/market' : step.number === 7 ? '/alerts' : '/analytics'}
-                        className="inline-flex items-center gap-2 text-sm font-medium text-[#D95F3B] hover:text-[#C8972A] transition-colors"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-[#1B84C4] hover:text-[#0F6BA8] transition-colors"
                       >
                         {step.action}
                         <Arrow className="w-4 h-4" />
@@ -203,7 +203,7 @@ export default function HowToUseMadar() {
                   className={`p-6 rounded-xl ${bgCard}`}
                 >
                   <div className="flex items-start gap-3 mb-3">
-                    <Check className="w-5 h-5 text-[#D95F3B] flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 text-[#1B84C4] flex-shrink-0 mt-0.5" />
                     <h3 className={`font-bold ${textColor}`}>
                       {feature.title}
                     </h3>
@@ -219,7 +219,7 @@ export default function HowToUseMadar() {
           {/* CTA */}
           <FadeIn delay={0.4} className="text-center">
             <div className={`p-8 rounded-xl ${bgCard}`}>
-              <HelpCircle className="w-12 h-12 mx-auto mb-4 text-[#D95F3B]" />
+              <HelpCircle className="w-12 h-12 mx-auto mb-4 text-[#1B84C4]" />
               <h3 className={`font-heading font-bold text-lg mb-2 ${textColor}`}>
                 {lang === 'ar' ? 'هل لديك أسئلة؟' : 'Have Questions?'}
               </h3>
@@ -231,7 +231,7 @@ export default function HowToUseMadar() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/help"
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all inline-flex items-center justify-center gap-2"
+                  className="px-6 py-2.5 bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all inline-flex items-center justify-center gap-2"
                 >
                   {lang === 'ar' ? 'مركز المساعدة' : 'Help Center'}
                   <Arrow className="w-4 h-4" />
@@ -240,8 +240,8 @@ export default function HowToUseMadar() {
                   to="/contact"
                   className={`px-6 py-2.5 text-sm font-medium rounded-lg transition-colors inline-flex items-center justify-center gap-2 ${
                     theme === 'dark'
-                      ? 'bg-white/[0.04] text-[#F7F5F0] hover:bg-white/[0.08]'
-                      : 'bg-[#0A0B10]/5 text-[#0A0B10] hover:bg-[#0A0B10]/10'
+                      ? 'bg-white/[0.04] text-[#F2F8FC] hover:bg-white/[0.08]'
+                      : 'bg-[#06131F]/5 text-[#06131F] hover:bg-[#06131F]/10'
                   }`}
                 >
                   {lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}

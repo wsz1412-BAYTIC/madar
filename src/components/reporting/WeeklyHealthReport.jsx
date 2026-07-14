@@ -43,10 +43,10 @@ export default function WeeklyHealthReport({ property, weekData }) {
 
   const bgCard = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60';
 
   const getTrendColor = (value) => {
     if (value > 0) return 'text-green-500';
@@ -104,12 +104,12 @@ export default function WeeklyHealthReport({ property, weekData }) {
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
             ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-            : 'bg-background/3 border border-[#0A0B10]/10'
+            : 'bg-background/3 border border-[#06131F]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'الاشغال' : 'Occupancy'}
           </p>
-          <p className="font-heading font-bold text-lg text-[#D95F3B]">
+          <p className="font-heading font-bold text-lg text-[#1B84C4]">
             {Math.round(metrics.avgOccupancy)}%
           </p>
         </div>
@@ -117,12 +117,12 @@ export default function WeeklyHealthReport({ property, weekData }) {
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
             ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-            : 'bg-background/3 border border-[#0A0B10]/10'
+            : 'bg-background/3 border border-[#06131F]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'إجمالي الإيرادات' : 'Total Revenue'}
           </p>
-          <p className="font-heading font-bold text-lg text-[#C8972A]">
+          <p className="font-heading font-bold text-lg text-[#0F6BA8]">
             {metrics.totalRevenue.toLocaleString()} {lang === 'ar' ? 'ر.س' : 'SAR'}
           </p>
         </div>
@@ -130,7 +130,7 @@ export default function WeeklyHealthReport({ property, weekData }) {
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
             ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-            : 'bg-background/3 border border-[#0A0B10]/10'
+            : 'bg-background/3 border border-[#06131F]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'متوسط اليومي' : 'Daily Avg'}
@@ -143,7 +143,7 @@ export default function WeeklyHealthReport({ property, weekData }) {
         <div className={`p-4 rounded-lg ${
           theme === 'dark'
             ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-            : 'bg-background/3 border border-[#0A0B10]/10'
+            : 'bg-background/3 border border-[#06131F]/10'
         }`}>
           <p className={`text-xs font-medium mb-1 ${textMuted}`}>
             {lang === 'ar' ? 'الاتجاه' : 'Trend'}
@@ -183,7 +183,7 @@ export default function WeeklyHealthReport({ property, weekData }) {
                     initial={{ width: 0 }}
                     animate={{ width: `${percentage}%` }}
                     transition={{ duration: 0.6, delay: idx * 0.05 }}
-                    className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]"
+                    className="h-full bg-gradient-to-r from-[#00548C] to-[#003152]"
                   />
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function WeeklyHealthReport({ property, weekData }) {
       {/* Top Performing Days */}
       <div>
         <h4 className={`text-sm font-bold mb-3 flex items-center gap-2 ${textColor}`}>
-          <TrendingUp className="w-4 h-4 text-[#D95F3B]" />
+          <TrendingUp className="w-4 h-4 text-[#1B84C4]" />
           {lang === 'ar' ? 'أفضل الأيام' : 'Top Performing Days'}
         </h4>
         <div className="space-y-2">
@@ -205,11 +205,11 @@ export default function WeeklyHealthReport({ property, weekData }) {
               className={`p-3 rounded-lg flex items-center justify-between ${
                 theme === 'dark'
                   ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-                  : 'bg-background/3 border border-[#0A0B10]/10'
+                  : 'bg-background/3 border border-[#06131F]/10'
               }`}
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center text-white text-xs font-bold">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#00548C] to-[#003152] flex items-center justify-center text-white text-xs font-bold">
                   {idx + 1}
                 </div>
                 <div>
@@ -221,7 +221,7 @@ export default function WeeklyHealthReport({ property, weekData }) {
                   </p>
                 </div>
               </div>
-              <p className="font-heading font-bold text-[#C8972A]">
+              <p className="font-heading font-bold text-[#0F6BA8]">
                 {day.revenue || 0} SAR
               </p>
             </div>
@@ -230,10 +230,10 @@ export default function WeeklyHealthReport({ property, weekData }) {
       </div>
 
       {/* Insights */}
-      <div className={`p-4 rounded-lg border-l-4 border-[#D95F3B] ${
+      <div className={`p-4 rounded-lg border-l-4 border-[#1B84C4] ${
         theme === 'dark'
-          ? 'bg-[#D95F3B]/5'
-          : 'bg-[#D95F3B]/5'
+          ? 'bg-[#1B84C4]/5'
+          : 'bg-[#1B84C4]/5'
       }`}>
         <h4 className={`text-sm font-bold mb-2 ${textColor}`}>
           {lang === 'ar' ? 'الملاحظات' : 'Key Insights'}

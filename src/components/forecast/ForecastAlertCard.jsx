@@ -35,7 +35,8 @@ export default function ForecastAlertCard({
   const getConfidenceColor = (confidence) => {
     switch (confidence) {
       case 'high':
-        return theme === 'dark' ? 'text-[#C8972A]' : 'text-[#D95F3B]';
+        // Dark surfaces need the light azure; deep azure sits at ~3:1 there.
+        return theme === 'dark' ? 'text-[#7CC4E8]' : 'text-[#1B84C4]';
       case 'medium':
         return theme === 'dark' ? 'text-[#FFB800]' : 'text-[#FF9900]';
       default:
@@ -45,7 +46,7 @@ export default function ForecastAlertCard({
 
   const bgColor = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
   return (
     <motion.div
@@ -67,7 +68,7 @@ export default function ForecastAlertCard({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <h3 className={`font-bold text-sm ${
-                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
               }`}>
                 {alert.propertyName}
               </h3>
@@ -76,7 +77,7 @@ export default function ForecastAlertCard({
               </span>
             </div>
             <p className={`text-xs ${
-              theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+              theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
             }`}>
               {lang === 'ar'
                 ? `${Math.round(alert.forecastedOccupancy * 100)}% المتوقع مقابل ${Math.round(alert.targetOccupancy * 100)}% الهدف`
@@ -86,11 +87,11 @@ export default function ForecastAlertCard({
         </div>
         {isExpanded ? (
           <ChevronUp className={`w-5 h-5 flex-shrink-0 ${
-            theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+            theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
           }`} />
         ) : (
           <ChevronDown className={`w-5 h-5 flex-shrink-0 ${
-            theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+            theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
           }`} />
         )}
       </button>
@@ -103,7 +104,7 @@ export default function ForecastAlertCard({
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3 }}
           className={`border-t ${
-            theme === 'dark' ? 'border-foreground/[0.06]' : 'border-[#0A0B10]/10'
+            theme === 'dark' ? 'border-foreground/[0.06]' : 'border-[#06131F]/10'
           }`}
         >
           <div className="p-5 space-y-5">
@@ -111,17 +112,17 @@ export default function ForecastAlertCard({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className={`text-xs font-medium mb-1 ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'الاشغال المتوقعة' : 'Forecasted'}</p>
-                <p className="font-heading font-bold text-lg text-[#D95F3B]">
+                <p className="font-heading font-bold text-lg text-[#1B84C4]">
                   {Math.round(alert.forecastedOccupancy * 100)}%
                 </p>
               </div>
               <div>
                 <p className={`text-xs font-medium mb-1 ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'متوسط السوق' : 'Market Avg'}</p>
-                <p className="font-heading font-bold text-lg text-[#C8972A]">
+                <p className="font-heading font-bold text-lg text-[#0F6BA8]">
                   {Math.round(alert.marketOccupancy * 100)}%
                 </p>
               </div>
@@ -131,11 +132,11 @@ export default function ForecastAlertCard({
             <div className={`p-4 rounded-lg ${
               theme === 'dark'
                 ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-                : 'bg-background/5 border border-[#0A0B10]/10'
+                : 'bg-background/5 border border-[#06131F]/10'
             }`}>
               <div className="flex items-center justify-between mb-2">
                 <p className={`text-xs font-medium ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'دقة التنبؤ' : 'Forecast Confidence'}</p>
                 <span className={`text-xs font-bold ${getConfidenceColor(alert.forecast.confidence)}`}>
                   {alert.forecast.confidence === 'high' ? '↑ High' :
@@ -143,7 +144,7 @@ export default function ForecastAlertCard({
                 </span>
               </div>
               <p className={`text-xs ${
-                theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
               }`}>
                 {lang === 'ar'
                   ? 'بناءً على البيانات التاريخية والسوق والأحداث المحلية'
@@ -159,13 +160,13 @@ export default function ForecastAlertCard({
                   : 'bg-[#FF6B6B]/5'
               }`}>
                 <p className={`text-xs font-medium mb-1 ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'الإيرادات المعرضة للخطر' : 'Potential Revenue Loss'}</p>
                 <p className="font-heading font-bold text-lg text-[#FF6B6B]">
                   {alert.revenueAtRisk.estimatedRevenueLoss.toLocaleString()} SAR
                 </p>
                 <p className={`text-xs mt-1 ${
-                  theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
+                  theme === 'dark' ? 'text-foreground/40' : 'text-[#06131F]/40'
                 }`}>
                   {lang === 'ar'
                     ? `خسارة متوقعة لـ ${alert.revenueAtRisk.lostBookingDays} أيام حجز`
@@ -177,7 +178,7 @@ export default function ForecastAlertCard({
             {/* Main Factors */}
             <div>
               <p className={`text-xs font-medium mb-3 ${
-                theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
               }`}>{lang === 'ar' ? 'العوامل الرئيسية' : 'Key Factors'}</p>
               <div className="space-y-2">
                 {alert.mainFactors?.map((factor, idx) => (
@@ -186,9 +187,9 @@ export default function ForecastAlertCard({
                       ? 'bg-foreground/[0.02]'
                       : 'bg-background/3'
                   }`}>
-                    <TrendingDown className="w-3 h-3 text-[#D95F3B]" />
+                    <TrendingDown className="w-3 h-3 text-[#1B84C4]" />
                     <span className={
-                      theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
+                      theme === 'dark' ? 'text-foreground/70' : 'text-[#06131F]/70'
                     }>
                       {factor}
                     </span>
@@ -201,7 +202,7 @@ export default function ForecastAlertCard({
             {alert.recommendations && alert.recommendations.length > 0 && (
               <div>
                 <p className={`text-xs font-medium mb-3 ${
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'الإجراءات الموصى بها' : 'Recommended Actions'}</p>
                 <div className="space-y-2">
                   {alert.recommendations.slice(0, 3).map((rec, idx) => (
@@ -210,20 +211,20 @@ export default function ForecastAlertCard({
                       className={`text-xs p-3 rounded border ${
                         rec.priority === 'high'
                           ? theme === 'dark'
-                            ? 'bg-[#D95F3B]/5 border-[#D95F3B]/30'
-                            : 'bg-[#D95F3B]/5 border-[#D95F3B]/30'
+                            ? 'bg-[#1B84C4]/5 border-[#1B84C4]/30'
+                            : 'bg-[#1B84C4]/5 border-[#1B84C4]/30'
                           : theme === 'dark'
                             ? 'bg-foreground/[0.02] border-foreground/[0.06]'
-                            : 'bg-background/3 border-[#0A0B10]/10'
+                            : 'bg-background/3 border-[#06131F]/10'
                       }`}
                     >
                       <p className={`font-medium mb-1 ${
-                        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                        theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                       }`}>
                         {rec.action}
                       </p>
                       <p className={
-                        theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                        theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
                       }>
                         {rec.description}
                       </p>
@@ -237,12 +238,12 @@ export default function ForecastAlertCard({
             <div className={`text-xs p-3 rounded ${
               theme === 'dark'
                 ? 'bg-foreground/[0.02] border border-foreground/[0.06]'
-                : 'bg-background/5 border border-[#0A0B10]/10'
+                : 'bg-background/5 border border-[#06131F]/10'
             }`}>
               <div className="flex items-center gap-2 mb-1">
                 <Calendar className="w-3 h-3" />
                 <span className={
-                  theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+                  theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }>
                   {alert.forecast.forecastPeriod}
                 </span>
@@ -256,7 +257,7 @@ export default function ForecastAlertCard({
                 className={`flex-1 py-2 px-3 text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1 ${
                   theme === 'dark'
                     ? 'bg-foreground/[0.04] text-foreground hover:bg-foreground/10'
-                    : 'bg-background/5 text-[#0A0B10] hover:bg-background/10'
+                    : 'bg-background/5 text-[#06131F] hover:bg-background/10'
                 }`}
               >
                 <Clock className="w-3 h-3" />
@@ -264,7 +265,7 @@ export default function ForecastAlertCard({
               </button>
               <button
                 onClick={() => onResolve(alert.id)}
-                className="flex-1 py-2 px-3 text-xs font-medium rounded-lg bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white hover:shadow-lg transition-all"
+                className="flex-1 py-2 px-3 text-xs font-medium rounded-lg bg-gradient-to-r from-[#00548C] to-[#003152] text-white hover:shadow-lg transition-all"
               >
                 {lang === 'ar' ? 'حل' : 'Resolve'}
               </button>

@@ -27,8 +27,8 @@ const citiesData = [
 ];
 
 const seasonalData = [
-  { season: 'Summer', value: 35, fill: '#D95F3B' },
-  { season: 'Winter', value: 28, fill: '#C8972A' },
+  { season: 'Summer', value: 35, fill: '#1B84C4' },
+  { season: 'Winter', value: 28, fill: '#0F6BA8' },
   { season: 'Spring', value: 22, fill: '#6B7280' },
   { season: 'Fall', value: 15, fill: '#9CA3AF' },
 ];
@@ -43,10 +43,10 @@ export default function Market() {
 
   const bgCard = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60';
 
   const metrics = [
     {
@@ -109,7 +109,7 @@ export default function Market() {
                     className={`p-6 rounded-xl ${bgCard}`}
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <Icon className="w-5 h-5 text-[#D95F3B]" />
+                      <Icon className="w-5 h-5 text-[#1B84C4]" />
                       <span className="text-xs font-medium text-green-500">{metric.change}</span>
                     </div>
                     <p className={`text-sm font-medium mb-2 ${textMuted}`}>{metric.label}</p>
@@ -129,7 +129,7 @@ export default function Market() {
           <FadeIn delay={0.2}>
             <div className={`p-6 rounded-xl ${bgCard} space-y-4`}>
               <div className="flex items-center gap-2">
-                <Filter className="w-5 h-5 text-[#D95F3B]" />
+                <Filter className="w-5 h-5 text-[#1B84C4]" />
                 <span className={`font-medium ${textColor}`}>
                   {lang === 'ar' ? 'الفلاتر' : 'Filters'}
                 </span>
@@ -146,10 +146,10 @@ export default function Market() {
                         onClick={() => setSelectedCity(city)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                           selectedCity === city
-                            ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                            ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                             : theme === 'dark'
                               ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]'
-                              : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
+                              : 'bg-background/5 text-[#06131F]/70 hover:bg-background/10'
                         }`}
                       >
                         {city === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : city}
@@ -168,10 +168,10 @@ export default function Market() {
                         onClick={() => setSelectedSize(size)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                           selectedSize === size
-                            ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                            ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                             : theme === 'dark'
                               ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]'
-                              : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
+                              : 'bg-background/5 text-[#06131F]/70 hover:bg-background/10'
                         }`}
                       >
                         {size === 'all' ? (lang === 'ar' ? 'الكل' : 'All') : size}
@@ -196,8 +196,8 @@ export default function Market() {
                   <YAxis stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} />
                   <Tooltip contentStyle={{ backgroundColor: theme === 'dark' ? '#1a1a1a' : '#f5f5f5', border: 'none', borderRadius: '8px' }} />
                   <Legend />
-                  <Line type="monotone" dataKey="occupancy" stroke="#D95F3B" strokeWidth={2} />
-                  <Line type="monotone" dataKey="price" stroke="#C8972A" strokeWidth={2} />
+                  <Line type="monotone" dataKey="occupancy" stroke="#1B84C4" strokeWidth={2} />
+                  <Line type="monotone" dataKey="price" stroke="#0F6BA8" strokeWidth={2} />
                   <Line type="monotone" dataKey="revpar" stroke="#6B7280" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
@@ -217,8 +217,8 @@ export default function Market() {
                   <YAxis stroke={theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'} />
                   <Tooltip contentStyle={{ backgroundColor: theme === 'dark' ? '#1a1a1a' : '#f5f5f5', border: 'none', borderRadius: '8px' }} />
                   <Legend />
-                  <Bar dataKey="occupancy" fill="#D95F3B" />
-                  <Bar dataKey="growth" fill="#C8972A" />
+                  <Bar dataKey="occupancy" fill="#1B84C4" />
+                  <Bar dataKey="growth" fill="#0F6BA8" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -228,7 +228,7 @@ export default function Market() {
           <FadeIn delay={0.45}>
             <div className={`p-6 rounded-xl ${bgCard}`}>
               <div className="flex items-center gap-2 mb-6">
-                <BarChart3 className="w-5 h-5 text-[#D95F3B]" />
+                <BarChart3 className="w-5 h-5 text-[#1B84C4]" />
                 <h2 className={`font-heading font-bold text-xl ${textColor}`}>
                   {lang === 'ar' ? 'معايير أسعار المنافسين' : 'Competitor Rate Benchmarks'}
                 </h2>
@@ -269,7 +269,7 @@ export default function Market() {
           <FadeIn delay={0.5}>
             <div className={`p-6 rounded-xl ${bgCard}`}>
               <div className="flex items-center gap-2 mb-6">
-                <Brain className="w-5 h-5 text-[#C8972A]" />
+                <Brain className="w-5 h-5 text-[#0F6BA8]" />
                 <h2 className={`font-heading font-bold text-xl ${textColor}`}>
                   {lang === 'ar' ? 'توقعات الإشغال بالذكاء الاصطناعي (30 يوم)' : 'AI-Driven Occupancy Forecast (30 Days)'}
                 </h2>
@@ -280,10 +280,10 @@ export default function Market() {
                     <span className={`text-sm font-medium ${textColor}`}>
                       {lang === 'ar' ? 'الأسبوع القادم' : 'Next Week'}
                     </span>
-                    <span className="text-sm text-[#D95F3B] font-medium">82%</span>
+                    <span className="text-sm text-[#1B84C4] font-medium">82%</span>
                   </div>
                   <div className="w-full h-2 bg-foreground/[0.04] rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '82%'}} />
+                    <div className="h-full bg-gradient-to-r from-[#00548C] to-[#003152]" style={{width: '82%'}} />
                   </div>
                 </div>
                 <div>
@@ -291,10 +291,10 @@ export default function Market() {
                     <span className={`text-sm font-medium ${textColor}`}>
                       {lang === 'ar' ? 'الأسابيع 2-3' : 'Weeks 2-3'}
                     </span>
-                    <span className="text-sm text-[#D95F3B] font-medium">68%</span>
+                    <span className="text-sm text-[#1B84C4] font-medium">68%</span>
                   </div>
                   <div className="w-full h-2 bg-foreground/[0.04] rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '68%'}} />
+                    <div className="h-full bg-gradient-to-r from-[#00548C] to-[#003152]" style={{width: '68%'}} />
                   </div>
                 </div>
                 <div>
@@ -302,10 +302,10 @@ export default function Market() {
                     <span className={`text-sm font-medium ${textColor}`}>
                       {lang === 'ar' ? 'الأسبوع 4' : 'Week 4'}
                     </span>
-                    <span className="text-sm text-[#D95F3B] font-medium">56%</span>
+                    <span className="text-sm text-[#1B84C4] font-medium">56%</span>
                   </div>
                   <div className="w-full h-2 bg-foreground/[0.04] rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" style={{width: '56%'}} />
+                    <div className="h-full bg-gradient-to-r from-[#00548C] to-[#003152]" style={{width: '56%'}} />
                   </div>
                 </div>
               </div>
@@ -346,13 +346,13 @@ export default function Market() {
                   { season: lang === 'ar' ? 'الربيع' : 'Spring', period: 'Mar-May', demand: lang === 'ar' ? 'متوسط' : 'Medium' },
                   { season: lang === 'ar' ? 'الخريف' : 'Fall', period: 'Sep-Nov', demand: lang === 'ar' ? 'منخفض' : 'Low' },
                 ].map((item, idx) => (
-                  <div key={idx} className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-foreground/[0.02] border border-foreground/[0.06]' : 'bg-background/3 border border-[#0A0B10]/10'}`}>
+                  <div key={idx} className={`p-4 rounded-lg ${theme === 'dark' ? 'bg-foreground/[0.02] border border-foreground/[0.06]' : 'bg-background/3 border border-[#06131F]/10'}`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className={`font-medium ${textColor}`}>{item.season}</p>
                         <p className={`text-sm ${textMuted}`}>{item.period}</p>
                       </div>
-                      <span className="px-3 py-1 bg-[#D95F3B]/10 text-[#D95F3B] text-xs font-medium rounded-full">
+                      <span className="px-3 py-1 bg-[#1B84C4]/10 text-[#1B84C4] text-xs font-medium rounded-full">
                         {item.demand}
                       </span>
                     </div>
@@ -366,8 +366,8 @@ export default function Market() {
           <FadeIn delay={0.6}>
             <div className={`p-12 rounded-2xl text-center ${
               theme === 'dark'
-                ? 'bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/5 border border-[#D95F3B]/30'
-                : 'bg-gradient-to-br from-[#D95F3B]/5 to-[#C8972A]/3 border border-[#D95F3B]/20'
+                ? 'bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/5 border border-[#1B84C4]/30'
+                : 'bg-gradient-to-br from-[#1B84C4]/5 to-[#ADDFF1]/3 border border-[#1B84C4]/20'
             }`}>
               <h3 className={`font-heading text-2xl font-bold mb-4 ${textColor}`}>
                 {lang === 'ar' ? 'استكشف بيانات السوق' : 'Explore Market Data'}
@@ -379,7 +379,7 @@ export default function Market() {
               </p>
               <a
                 href="/signup"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
               >
                 {lang === 'ar' ? 'ابدأ الآن' : 'Get Started'}
               </a>

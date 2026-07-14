@@ -10,13 +10,13 @@ export default function CalendarLegend() {
   const legends = [
     {
       key: 'high',
-      color: 'bg-[#D95F3B]/80',
+      color: 'bg-[#1B84C4]/80',
       label: lang === 'ar' ? 'طلب عالي' : 'High Demand',
       icon: TrendingUp,
     },
     {
       key: 'medium',
-      color: 'bg-[#C8972A]/60',
+      color: 'bg-[#ADDFF1]/60',
       label: lang === 'ar' ? 'طلب متوسط' : 'Medium Demand',
       icon: null,
     },
@@ -42,7 +42,7 @@ export default function CalendarLegend() {
           <div key={item.key} className="flex items-center gap-2">
             <div className={`w-4 h-4 rounded ${item.color}`} />
             <span className={`text-xs font-medium ${
-              theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
+              theme === 'dark' ? 'text-foreground/70' : 'text-[#06131F]/70'
             }`}>
               {Icon ? <Icon className="w-3 h-3 inline mr-1" /> : null}
               {item.label}
