@@ -20,7 +20,7 @@ export default function PropertyCardWithSelection({
           type="checkbox"
           checked={isSelected}
           onChange={onSelect}
-          className="w-4 h-4 rounded accent-[#D95F3B] cursor-pointer"
+          className="w-4 h-4 rounded accent-[#1B84C4] cursor-pointer"
         />
       </motion.div>
 
@@ -33,7 +33,7 @@ export default function PropertyCardWithSelection({
         transition={{ duration: 0.2 }}
         className={`transition-all ${
           isSelected
-            ? 'ring-2 ring-[#D95F3B]/50 rounded-2xl'
+            ? 'ring-2 ring-[#1B84C4]/50 rounded-2xl'
             : ''
         }`}
       >
@@ -45,7 +45,7 @@ export default function PropertyCardWithSelection({
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="absolute top-3 right-3 z-20 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium px-2 py-1 rounded-full"
+          className="absolute top-3 right-3 z-20 bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-xs font-medium px-2 py-1 rounded-full"
         >
           ✓
         </motion.div>

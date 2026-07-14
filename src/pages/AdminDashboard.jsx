@@ -90,12 +90,12 @@ export default function AdminDashboard() {
             theme === 'dark' ? 'text-red-400' : 'text-red-600'
           }`} />
           <h1 className={`text-xl font-bold mb-2 ${
-            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
           }`}>
             {lang === 'ar' ? 'وصول مرفوض' : 'Access Denied'}
           </h1>
           <p className={`text-sm mb-6 ${
-            theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+            theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
           }`}>
             {lang === 'ar' 
               ? 'ليس لديك الصلاحيات اللازمة للوصول إلى لوحة تحكم المسؤولين'
@@ -122,17 +122,17 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         <div className={`p-6 sm:p-8 ${
-          theme === 'dark' ? 'bg-background' : 'bg-[#F2EFE8]'
+          theme === 'dark' ? 'bg-background' : 'bg-[#EFF6FA]'
         }`}>
           {/* Header */}
           <div className="mb-8">
             <h1 className={`text-3xl sm:text-4xl font-heading font-bold mb-2 ${
-              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
             }`}>
               {lang === 'ar' ? 'لوحة تحكم المسؤول' : 'Admin Dashboard'}
             </h1>
             <p className={`text-sm ${
-              theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+              theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
             }`}>
               {lang === 'ar' 
                 ? `مرحباً ${admin?.role || 'المسؤول'}, إدارة منصة Madar`

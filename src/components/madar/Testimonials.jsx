@@ -43,17 +43,17 @@ export default function Testimonials() {
   const { lang } = useLang();
 
   return (
-    <section className="relative py-28 px-4 sm:px-6 lg:px-8 bg-[#0A0B10] overflow-hidden border-t border-white/[0.04]">
-      <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-[#D95F3B]/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#C8972A]/5 rounded-full blur-[120px] pointer-events-none" />
+    <section className="relative py-28 px-4 sm:px-6 lg:px-8 bg-[#06131F] overflow-hidden border-t border-white/[0.04]">
+      <div className="absolute top-0 left-0 w-[500px] h-[400px] bg-[#1B84C4]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#ADDFF1]/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header */}
         <FadeIn className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#C8972A] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[#0F6BA8] text-xs font-medium mb-6">
             {lang === 'ar' ? 'قصص النجاح' : 'Customer Stories'}
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F7F5F0] leading-[1.15] max-w-3xl mx-auto mb-4">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F2F8FC] leading-[1.15] max-w-3xl mx-auto mb-4">
             {lang === 'ar' ? (
               <>مضيفون يثقون <span className="text-gradient-gold">بمدار</span></>
             ) : (
@@ -74,7 +74,7 @@ export default function Testimonials() {
               className="text-center"
             >
               <AnimatedCounter value={r.value} className="block text-3xl sm:text-4xl font-bold font-heading text-gradient-gold" />
-              <div className="text-xs sm:text-sm text-[#F7F5F0]/40 mt-2">
+              <div className="text-xs sm:text-sm text-[#F2F8FC]/40 mt-2">
                 {lang === 'ar' ? r.labelAr : r.labelEn}
               </div>
             </motion.div>
@@ -92,19 +92,19 @@ export default function Testimonials() {
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="group relative rounded-2xl glass-strong border border-white/[0.06] hover:border-white/15 p-7 transition-all duration-500"
             >
-              <Quote className="w-7 h-7 text-[#C8972A]/30 mb-4" />
+              <Quote className="w-7 h-7 text-[#ADDFF1]/30 mb-4" />
 
-              <p className="text-sm text-[#F7F5F0]/70 leading-relaxed mb-6">
+              <p className="text-sm text-[#F2F8FC]/70 leading-relaxed mb-6">
                 "{lang === 'ar' ? t.textAr : t.text}"
               </p>
 
               <div className="flex items-center gap-3 pt-4 border-t border-white/[0.06]">
                 <img src={t.avatar} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
                 <div>
-                  <div className="text-sm font-medium text-[#F7F5F0]">
+                  <div className="text-sm font-medium text-[#F2F8FC]">
                     {lang === 'ar' ? t.nameAr : t.name}
                   </div>
-                  <div className="text-xs text-[#F7F5F0]/40">
+                  <div className="text-xs text-[#F2F8FC]/40">
                     {lang === 'ar' ? t.roleAr : t.role}
                   </div>
                 </div>

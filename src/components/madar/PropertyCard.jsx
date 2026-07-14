@@ -16,9 +16,9 @@ const platformStyles = {
 // a quiet surface with the brand mark instead of a broken/black box.
 function ImageFallback({ name }) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#D95F3B]/10 via-surface to-[#C8972A]/10">
-      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/15 border border-[#D95F3B]/20 flex items-center justify-center">
-        <Building2 className="w-6 h-6 text-[#D95F3B]" />
+    <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#1B84C4]/10 via-surface to-[#ADDFF1]/10">
+      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/15 border border-[#1B84C4]/20 flex items-center justify-center">
+        <Building2 className="w-6 h-6 text-[#1B84C4]" />
       </div>
       <div className="flex items-center gap-1.5 text-[11px] text-foreground/40">
         <ImageOff className="w-3 h-3" />
@@ -43,10 +43,10 @@ export default function PropertyCard({ prop, index }) {
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -8 }}
-      className="group relative glass rounded-3xl overflow-hidden hover:border-foreground/20 transition-all duration-700 hover:shadow-2xl hover:shadow-[#D95F3B]/10 h-full flex flex-col"
+      className="group relative glass rounded-3xl overflow-hidden hover:border-foreground/20 transition-all duration-700 hover:shadow-2xl hover:shadow-[#1B84C4]/10 h-full flex flex-col"
     >
       {/* Glow border on hover */}
-      <div className="absolute -inset-px bg-gradient-to-br from-[#D95F3B]/20 via-transparent to-[#C8972A]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl pointer-events-none" />
+      <div className="absolute -inset-px bg-gradient-to-br from-[#1B84C4]/20 via-transparent to-[#ADDFF1]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl pointer-events-none" />
 
       {/* Image */}
       <div className="relative h-56 overflow-hidden shrink-0">
@@ -83,7 +83,7 @@ export default function PropertyCard({ prop, index }) {
         {/* Rating chip */}
         {showImage && (
           <div className="absolute bottom-4 start-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/45 backdrop-blur-md">
-            <Star className="w-3 h-3 text-[#C8972A] fill-[#C8972A]" />
+            <Star className="w-3 h-3 text-[#0F6BA8] fill-[#0F6BA8]" />
             <span className="text-[11px] font-medium text-white nums">4.{8 + (prop.id % 2)}</span>
           </div>
         )}
@@ -98,7 +98,7 @@ export default function PropertyCard({ prop, index }) {
         </div>
 
         <div className="flex items-center gap-1.5 text-xs text-foreground/50 mb-4">
-          <MapPin className="w-3 h-3 text-[#D95F3B]/60" />
+          <MapPin className="w-3 h-3 text-[#1B84C4]/60" />
           {isRTL ? prop.cityAr : prop.city}
         </div>
 
@@ -130,7 +130,7 @@ export default function PropertyCard({ prop, index }) {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.92 }}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-foreground/60 group-hover:bg-gradient-to-r group-hover:from-[#D95F3B] group-hover:to-[#C8972A] group-hover:text-white group-hover:border-transparent transition-all duration-500"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground/[0.04] border border-foreground/[0.08] text-foreground/60 group-hover:bg-gradient-to-r group-hover:from-[#1B84C4] group-hover:to-[#0F6BA8] group-hover:text-white group-hover:border-transparent transition-all duration-500"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span className="text-xs font-medium">{isRTL ? 'عرض' : 'View'}</span>

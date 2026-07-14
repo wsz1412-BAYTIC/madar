@@ -80,14 +80,14 @@ export default function PricingPlans() {
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
   const bgCardHovered = theme === 'dark'
     ? 'bg-white/[0.05] border-white/[0.12]'
-    : 'bg-white border-[#0A0B10]/20';
+    : 'bg-white border-[#06131F]/20';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60';
 
   return (
     <div className="space-y-12">
@@ -106,16 +106,16 @@ export default function PricingPlans() {
         <div className={`inline-flex items-center rounded-full p-1 ${
           theme === 'dark'
             ? 'bg-white/[0.05] border border-white/[0.08]'
-            : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10'
+            : 'bg-[#06131F]/5 border border-[#06131F]/10'
         }`}>
           <button
             onClick={() => setBillingPeriod('monthly')}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
               billingPeriod === 'monthly'
-                ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                 : theme === 'dark'
-                  ? 'text-[#F7F5F0]/60'
-                  : 'text-[#0A0B10]/60'
+                  ? 'text-[#F2F8FC]/60'
+                  : 'text-[#06131F]/60'
             }`}
           >
             {lang === 'ar' ? 'شهري' : 'Monthly'}
@@ -124,10 +124,10 @@ export default function PricingPlans() {
             onClick={() => setBillingPeriod('yearly')}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all relative ${
               billingPeriod === 'yearly'
-                ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                 : theme === 'dark'
-                  ? 'text-[#F7F5F0]/60'
-                  : 'text-[#0A0B10]/60'
+                  ? 'text-[#F2F8FC]/60'
+                  : 'text-[#06131F]/60'
             }`}
           >
             {lang === 'ar' ? 'سنوي' : 'Yearly'}
@@ -151,14 +151,14 @@ export default function PricingPlans() {
             whileHover={{ y: plan.popular ? -12 : -4 }}
             className={`relative rounded-2xl transition-all duration-300 ${
               plan.popular
-                ? 'md:scale-105 ring-2 ring-[#D95F3B]'
+                ? 'md:scale-105 ring-2 ring-[#1B84C4]'
                 : ''
             }`}
           >
             {/* Popular Badge */}
             {plan.popular && (
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                <div className="px-4 py-1.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-bold rounded-full">
+                <div className="px-4 py-1.5 bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-xs font-bold rounded-full">
                   {lang === 'ar' ? 'الأكثر طلباً' : 'Most Popular'}
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function PricingPlans() {
 
             <div className={`p-8 h-full rounded-2xl flex flex-col ${
               plan.popular
-                ? 'bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/5 border border-[#D95F3B]/30'
+                ? 'bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/5 border border-[#1B84C4]/30'
                 : bgCard
             }`}>
               {/* Title */}
@@ -182,7 +182,7 @@ export default function PricingPlans() {
               {/* Price */}
               <div className="mb-8">
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className="font-heading font-bold text-4xl text-[#D95F3B]">
+                  <span className="font-heading font-bold text-4xl text-[#1B84C4]">
                     {currentPrice(plan)}
                   </span>
                   <span className={textMuted}>
@@ -207,7 +207,7 @@ export default function PricingPlans() {
               <div className={`p-3 rounded-lg mb-8 text-center text-sm ${
                 theme === 'dark'
                   ? 'bg-white/[0.05] border border-white/[0.08]'
-                  : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10'
+                  : 'bg-[#06131F]/5 border border-[#06131F]/10'
               }`}>
                 <p className={`${textMuted}`}>
                   {lang === 'ar'
@@ -221,10 +221,10 @@ export default function PricingPlans() {
                 to="/signup"
                 className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all mb-8 flex items-center justify-center gap-2 ${
                   plan.popular
-                    ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white hover:shadow-lg hover:shadow-[#D95F3B]/30'
+                    ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white hover:shadow-lg hover:shadow-[#1B84C4]/30'
                     : theme === 'dark'
-                      ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] hover:bg-white/[0.08]'
-                      : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] hover:bg-[#0A0B10]/10'
+                      ? 'bg-white/[0.04] border border-white/[0.08] text-[#F2F8FC] hover:bg-white/[0.08]'
+                      : 'bg-[#06131F]/5 border border-[#06131F]/10 text-[#06131F] hover:bg-[#06131F]/10'
                 }`}
               >
                 {lang === 'ar' ? 'ابدأ التجربة المجانية' : 'Start Free Trial'}
@@ -242,7 +242,7 @@ export default function PricingPlans() {
                   >
                     <Check
                       className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
-                        feature.included ? 'text-[#D95F3B]' : textMuted
+                        feature.included ? 'text-[#1B84C4]' : textMuted
                       }`}
                     />
                     <span>
@@ -264,7 +264,7 @@ export default function PricingPlans() {
         className={`text-center max-w-3xl mx-auto p-6 rounded-xl ${
           theme === 'dark'
             ? 'bg-white/[0.02] border border-white/[0.06]'
-            : 'bg-[#0A0B10]/3 border border-[#0A0B10]/10'
+            : 'bg-[#06131F]/3 border border-[#06131F]/10'
         }`}
       >
         <p className={`text-sm ${textMuted}`}>

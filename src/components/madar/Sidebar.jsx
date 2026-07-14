@@ -81,11 +81,11 @@ export default function Sidebar() {
         {isActive(item.path) && (
           <motion.div
             layoutId="activePill"
-            className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#D95F3B]/15 to-[#C8972A]/5 border border-[#D95F3B]/20"
+            className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#1B84C4]/15 to-[#ADDFF1]/5 border border-[#1B84C4]/20"
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         )}
-        <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isActive(item.path) ? 'text-[#D95F3B]' : 'text-foreground/40 group-hover:text-foreground/70'}`} />
+        <item.icon className={`w-[18px] h-[18px] flex-shrink-0 relative z-10 transition-all duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 ${isActive(item.path) ? 'text-[#1B84C4]' : 'text-foreground/40 group-hover:text-foreground/70'}`} />
         {!collapsed && <span className="truncate relative z-10">{label}</span>}
       </div>
     </Link>
@@ -97,8 +97,8 @@ export default function Sidebar() {
       <div className="flex items-center justify-between px-5 h-20 border-b border-foreground/[0.06]">
         <Link to="/dashboard" className="flex items-center gap-3 group" onClick={() => setMobileOpen(false)}>
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-xl blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#00548C] to-[#003152] rounded-xl blur-md opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#00548C] to-[#003152] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
               <span className="text-white font-bold text-sm font-heading">م</span>
             </div>
           </div>
@@ -142,8 +142,8 @@ export default function Sidebar() {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 cinematic-blur bg-background/80 border-b border-foreground/[0.06] h-16 flex items-center justify-between px-6">
         <Link to="/dashboard" className="flex items-center gap-3 group">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-lg blur-sm opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
-            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B] to-[#C8972A] flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#00548C] to-[#003152] rounded-lg blur-sm opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-[#00548C] to-[#003152] flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
               <span className="text-white font-bold text-xs font-heading">م</span>
             </div>
           </div>

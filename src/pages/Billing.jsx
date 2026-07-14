@@ -204,11 +204,11 @@ export default function Billing() {
                 </div>
 
                 {upgradeState.message ? (
-                  <div className={`p-4 rounded-xl border-l-4 border-[#C8972A] bg-[#C8972A]/5`}>
+                  <div className={`p-4 rounded-xl border-l-4 border-[#0F6BA8] bg-[#ADDFF1]/5`}>
                     <p className={`text-sm text-foreground/80`}>{upgradeState.message}</p>
                   </div>
                 ) : (
-                  <div className={`p-4 rounded-xl border-l-4 border-[#D95F3B] bg-[#D95F3B]/5`}>
+                  <div className={`p-4 rounded-xl border-l-4 border-[#1B84C4] bg-[#1B84C4]/5`}>
                     <p className={`text-sm text-foreground/60`}>
                       {lang === 'ar'
                         ? 'الترقية المدفوعة قيد الإعداد. سيتم تفعيل الدفع قريبًا.'
@@ -224,20 +224,20 @@ export default function Billing() {
                       checked={subscriptionConsent}
                       onChange={(e) => setSubscriptionConsent(e.target.checked)}
                       aria-label={lang === 'ar' ? 'الموافقة على شروط الاشتراك' : 'Accept the Subscription Terms'}
-                      className="w-4 h-4 mt-0.5 rounded accent-[#D95F3B] cursor-pointer shrink-0"
+                      className="w-4 h-4 mt-0.5 rounded accent-[#1B84C4] cursor-pointer shrink-0"
                     />
                     <span className="text-xs text-foreground/60 leading-relaxed">
                       {lang === 'ar' ? (
-                        <>أوافق على <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">شروط الاشتراك</Link> <span className="text-danger">*</span></>
+                        <>أوافق على <Link to={POLICY_ROUTES.subscription} className="text-[#1B84C4] hover:underline">شروط الاشتراك</Link> <span className="text-danger">*</span></>
                       ) : (
-                        <>I agree to the <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">Subscription Terms</Link> <span className="text-danger">*</span></>
+                        <>I agree to the <Link to={POLICY_ROUTES.subscription} className="text-[#1B84C4] hover:underline">Subscription Terms</Link> <span className="text-danger">*</span></>
                       )}
                     </span>
                   </label>
                   <button
                     onClick={handleUpgrade}
                     disabled={upgradeState.loading || !subscriptionConsent}
-                    className="w-full py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+                    className="w-full py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-60"
                   >
                     {upgradeState.loading
                       ? (lang === 'ar' ? 'جارٍ التحقق...' : 'Checking...')
@@ -278,7 +278,7 @@ export default function Billing() {
                 {billingPeriod === opt.key && (
                   <motion.span
                     layoutId="billing-cycle-pill"
-                    className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#D95F3B] to-[#C8972A] shadow-sm"
+                    className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#00548C] to-[#003152] shadow-sm"
                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
                 )}
@@ -292,7 +292,7 @@ export default function Billing() {
       <FadeIn delay={0.1}>
         {/* Current plan: clean themed surface with a quiet accent edge — no
             heavy gradient panel, works identically in dark and light. */}
-        <div className="relative rounded-2xl p-6 overflow-hidden glass border-s-4 border-s-[#D95F3B]">
+        <div className="relative rounded-2xl p-6 overflow-hidden glass border-s-4 border-s-[#1B84C4]">
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -303,7 +303,7 @@ export default function Billing() {
                 </div>
               </div>
               <div className="w-12 h-12 rounded-xl bg-foreground/5 flex items-center justify-center border border-foreground/10">
-                <CreditCard className="w-6 h-6 text-[#C8972A]" />
+                <CreditCard className="w-6 h-6 text-[#0F6BA8]" />
               </div>
             </div>
             <div className="flex items-baseline gap-1 mb-6">
@@ -312,7 +312,7 @@ export default function Billing() {
              </div>
              {trial?.state === 'trial_active' ? (
                <div className="flex items-center gap-2 text-sm text-foreground/70">
-                 <Sparkles className="w-4 h-4 text-[#C8972A]" />
+                 <Sparkles className="w-4 h-4 text-[#0F6BA8]" />
                  <span className="nums">
                    {lang === 'ar'
                      ? `تجربة النمو نشطة — متبقٍ ${trial.daysRemaining} ${trial.daysRemaining === 1 ? 'يوم' : 'أيام'}. فعّل اشتراكًا مدفوعًا للاستمرار بعدها.`
@@ -327,7 +327,7 @@ export default function Billing() {
              ) : currentPlan.key === 'free' ? (
                <div className="space-y-3">
                  <div className="flex items-center gap-2 text-sm text-foreground/60">
-                   <Info className="w-4 h-4 text-[#C8972A]" />
+                   <Info className="w-4 h-4 text-[#0F6BA8]" />
                    <span>{lang === 'ar' ? 'أنت على الخطة المجانية — لا يوجد دفع مطلوب.' : 'You are on the Free plan — no payment required.'}</span>
                  </div>
                  {!subscription?.trialUsedAt && (
@@ -338,20 +338,20 @@ export default function Billing() {
                          checked={subscriptionConsent}
                          onChange={(e) => setSubscriptionConsent(e.target.checked)}
                          aria-label={lang === 'ar' ? 'الموافقة على شروط الاشتراك' : 'Accept the Subscription Terms'}
-                         className="w-4 h-4 mt-0.5 rounded accent-[#D95F3B] cursor-pointer shrink-0"
+                         className="w-4 h-4 mt-0.5 rounded accent-[#1B84C4] cursor-pointer shrink-0"
                        />
                        <span className="text-xs text-foreground/60 leading-relaxed">
                          {lang === 'ar' ? (
-                           <>أوافق على <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">شروط الاشتراك</Link> <span className="text-danger">*</span></>
+                           <>أوافق على <Link to={POLICY_ROUTES.subscription} className="text-[#1B84C4] hover:underline">شروط الاشتراك</Link> <span className="text-danger">*</span></>
                          ) : (
-                           <>I agree to the <Link to={POLICY_ROUTES.subscription} className="text-[#D95F3B] hover:underline">Subscription Terms</Link> <span className="text-danger">*</span></>
+                           <>I agree to the <Link to={POLICY_ROUTES.subscription} className="text-[#1B84C4] hover:underline">Subscription Terms</Link> <span className="text-danger">*</span></>
                          )}
                        </span>
                      </label>
                      <button
                        onClick={activateTrial}
                        disabled={trialState.loading}
-                       className="inline-flex items-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+                       className="inline-flex items-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-60"
                      >
                        <Sparkles className="w-4 h-4" />
                        {trialState.loading
@@ -364,13 +364,13 @@ export default function Billing() {
                </div>
              ) : (
                <div className="flex items-center gap-3">
-                 <Power className="w-4 h-4 text-[#C8972A]" />
+                 <Power className="w-4 h-4 text-[#0F6BA8]" />
                  <label className="flex items-center gap-2 cursor-pointer">
                    <input
                      type="checkbox"
                      checked={autoRenew}
                      onChange={(e) => setAutoRenew(e.target.checked)}
-                     className="w-4 h-4 rounded accent-[#D95F3B] cursor-pointer"
+                     className="w-4 h-4 rounded accent-[#1B84C4] cursor-pointer"
                    />
                    <span className="text-sm text-foreground/70">
                      {lang === 'ar' ? 'تجديد تلقائي عند الانتهاء' : 'Auto-renew when subscription ends'}
@@ -388,11 +388,11 @@ export default function Billing() {
           const isUpgrade = plan.price > currentPlan.price;
           return (
             <StaggerItem key={plan.key} className="h-full">
-              <div className={`glass rounded-2xl border p-5 h-full flex flex-col ${isCurrent ? 'border-[#D95F3B]/40' : 'border-foreground/[0.06]'}`}>
+              <div className={`glass rounded-2xl border p-5 h-full flex flex-col ${isCurrent ? 'border-[#1B84C4]/40' : 'border-foreground/[0.06]'}`}>
                 <div className="flex items-center justify-between mb-1">
                   <h3 className="font-heading font-semibold text-foreground">{t(plan.key)}</h3>
                   {isCurrent && (
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#D95F3B]/15 text-[#D95F3B]">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#1B84C4]/15 text-[#1B84C4]">
                       {t('currentPlan')}
                     </span>
                   )}
@@ -413,11 +413,11 @@ export default function Billing() {
                   ))}
                 </ul>
                 {isCurrent ? (
-                  <div className="h-9 flex items-center justify-center bg-[#D95F3B]/10 text-[#D95F3B] text-xs font-medium rounded-lg">{t('currentPlan')}</div>
+                  <div className="h-9 flex items-center justify-center bg-[#1B84C4]/10 text-[#1B84C4] text-xs font-medium rounded-lg">{t('currentPlan')}</div>
                 ) : isUpgrade ? (
                   <button
                     onClick={() => openUpgrade(plan.key)}
-                    className="h-9 w-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 flex items-center justify-center gap-1 transition-all"
+                    className="h-9 w-full bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-xs font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 flex items-center justify-center gap-1 transition-all"
                   >
                     <ArrowUpRight className="w-3 h-3" />{t('upgrade')}
                   </button>
@@ -453,7 +453,7 @@ export default function Billing() {
             <a
               href={`https://wa.me/${'966538100119'}?text=${encodeURIComponent(lang === 'ar' ? 'مرحبًا، أرغب بالاستفسار عن خطة الأعمال المخصصة في مدار.' : 'Hello, I would like to ask about the Madar Business/Custom plan.')}`}
               target="_blank" rel="noreferrer"
-              className="shrink-0 inline-flex items-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+              className="shrink-0 inline-flex items-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
             >
               {lang === 'ar' ? 'تواصل معنا' : 'Contact us'}
             </a>
@@ -466,8 +466,8 @@ export default function Billing() {
         <div className="glass rounded-2xl p-6">
           <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D95F3B]/15 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/15">
-                <FileText className="w-4 h-4 text-[#D95F3B]" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B84C4]/15 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/15">
+                <FileText className="w-4 h-4 text-[#1B84C4]" />
               </div>
               <h2 className="font-heading font-semibold text-foreground">
                 {lang === 'ar' ? 'تقرير مدار السريع' : 'Madar Quick Report'}
@@ -501,8 +501,8 @@ export default function Billing() {
                 ))}
               </ol>
               {report.lockedCount > 0 && (
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-[#C8972A]/10 border border-[#C8972A]/25 text-xs text-foreground/70">
-                  <Lock className="w-3.5 h-3.5 text-[#C8972A] shrink-0" />
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-[#ADDFF1]/10 border border-[#ADDFF1]/25 text-xs text-foreground/70">
+                  <Lock className="w-3.5 h-3.5 text-[#0F6BA8] shrink-0" />
                   {lang === 'ar'
                     ? `${report.lockedCount} ملاحظات إضافية تُفتح مع الاشتراك المدفوع.`
                     : `${report.lockedCount} more finding${report.lockedCount === 1 ? '' : 's'} unlock with a paid plan.`}

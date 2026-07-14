@@ -46,7 +46,7 @@ export default function CookieConsentBanner() {
               <div className="p-6 sm:p-8">
                 <div className="flex items-start justify-between gap-4 mb-6">
                   <div className="flex items-start gap-4 flex-1">
-                    <Cookie className="w-6 h-6 text-[#C8972A] flex-shrink-0 mt-1" />
+                    <Cookie className="w-6 h-6 text-[#0F6BA8] flex-shrink-0 mt-1" />
                     <div>
                       <h2 className="font-heading font-bold text-white text-lg mb-2">
                         {lang === 'ar' ? 'إعدادات ملفات تعريف الارتباط' : 'Cookie Preferences'}
@@ -70,7 +70,7 @@ export default function CookieConsentBanner() {
                 <div className="grid sm:grid-cols-3 gap-4">
                   <button
                     onClick={acceptAll}
-                    className="px-4 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all text-sm"
+                    className="px-4 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all text-sm"
                   >
                     {lang === 'ar' ? 'قبول الكل' : 'Accept All'}
                   </button>
@@ -130,7 +130,7 @@ export default function CookieConsentBanner() {
                         type="checkbox"
                         checked={true}
                         disabled
-                        className="w-5 h-5 accent-[#D95F3B]"
+                        className="w-5 h-5 accent-[#1B84C4]"
                       />
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export default function CookieConsentBanner() {
                         type="checkbox"
                         checked={preferences.performance}
                         onChange={(e) => setPreferences({ ...preferences, performance: e.target.checked })}
-                        className="w-5 h-5 accent-[#D95F3B]"
+                        className="w-5 h-5 accent-[#1B84C4]"
                       />
                     </div>
                   </div>
@@ -170,7 +170,7 @@ export default function CookieConsentBanner() {
                         type="checkbox"
                         checked={preferences.preferences}
                         onChange={(e) => setPreferences({ ...preferences, preferences: e.target.checked })}
-                        className="w-5 h-5 accent-[#D95F3B]"
+                        className="w-5 h-5 accent-[#1B84C4]"
                       />
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function CookieConsentBanner() {
                         type="checkbox"
                         checked={preferences.marketing}
                         onChange={(e) => setPreferences({ ...preferences, marketing: e.target.checked })}
-                        className="w-5 h-5 accent-[#D95F3B]"
+                        className="w-5 h-5 accent-[#1B84C4]"
                       />
                     </div>
                   </div>
@@ -206,7 +206,7 @@ export default function CookieConsentBanner() {
                   </button>
                   <button
                     onClick={handleCustom}
-                    className="px-4 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+                    className="px-4 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
                   >
                     {lang === 'ar' ? 'حفظ التفضيلات' : 'Save Preferences'}
                   </button>

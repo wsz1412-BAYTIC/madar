@@ -89,10 +89,10 @@ export default function Opportunities() {
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60';
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -136,10 +136,10 @@ export default function Opportunities() {
                     onClick={() => setFilter(p)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       filter === p
-                        ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                        ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                         : theme === 'dark'
-                          ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                          : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                          ? 'bg-white/[0.04] text-[#F2F8FC]/70 hover:bg-white/[0.08]'
+                          : 'bg-[#06131F]/5 text-[#06131F]/70 hover:bg-[#06131F]/10'
                     }`}
                   >
                     {p === 'all' && (lang === 'ar' ? 'الكل' : 'All')}
@@ -164,8 +164,8 @@ export default function Opportunities() {
                   >
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/20 flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-[#D95F3B]" />
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/20 flex items-center justify-center">
+                          <Icon className="w-6 h-6 text-[#1B84C4]" />
                         </div>
                         <div>
                           <h3 className={`font-bold ${textColor}`}>{opp.type}</h3>
@@ -181,29 +181,29 @@ export default function Opportunities() {
 
                     <p className={`text-sm mb-6 ${textMuted}`}>{opp.reason}</p>
 
-                    <div className="flex items-baseline gap-2 mb-6 p-4 rounded-lg bg-[#D95F3B]/10">
-                      <span className="font-heading font-bold text-2xl text-[#D95F3B]">{opp.revenue}</span>
+                    <div className="flex items-baseline gap-2 mb-6 p-4 rounded-lg bg-[#1B84C4]/10">
+                      <span className="font-heading font-bold text-2xl text-[#1B84C4]">{opp.revenue}</span>
                       <span className={`text-sm ${textMuted}`}>{opp.period}</span>
                     </div>
 
-                    <div className={`p-4 rounded-lg border-l-4 border-[#C8972A] mb-6 ${
+                    <div className={`p-4 rounded-lg border-l-4 border-[#0F6BA8] mb-6 ${
                       theme === 'dark'
                         ? 'bg-white/[0.02]'
-                        : 'bg-[#0A0B10]/3'
+                        : 'bg-[#06131F]/3'
                     }`}>
                       <p className={`text-sm font-medium ${textColor}`}>{lang === 'ar' ? 'الإجراء المقترح' : 'Recommended Action'}</p>
                       <p className={`text-sm ${textMuted} mt-1`}>{opp.action}</p>
                     </div>
 
                     <div className="flex gap-2">
-                      <button className="flex-1 py-2 px-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all flex items-center justify-center gap-2">
+                      <button className="flex-1 py-2 px-4 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all flex items-center justify-center gap-2">
                         {lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}
                         <Arrow className="w-4 h-4" />
                       </button>
                       <button className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
                         theme === 'dark'
-                          ? 'bg-white/[0.04] text-[#F7F5F0] hover:bg-white/[0.08]'
-                          : 'bg-[#0A0B10]/5 text-[#0A0B10] hover:bg-[#0A0B10]/10'
+                          ? 'bg-white/[0.04] text-[#F2F8FC] hover:bg-white/[0.08]'
+                          : 'bg-[#06131F]/5 text-[#06131F] hover:bg-[#06131F]/10'
                       } flex items-center justify-center gap-2`}>
                         {lang === 'ar' ? 'حفظ' : 'Save'}
                         <BookmarkPlus className="w-4 h-4" />
@@ -219,8 +219,8 @@ export default function Opportunities() {
           <FadeIn delay={0.3}>
             <div className={`p-12 rounded-2xl text-center ${
               theme === 'dark'
-                ? 'bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/5 border border-[#D95F3B]/30'
-                : 'bg-gradient-to-br from-[#D95F3B]/5 to-[#C8972A]/3 border border-[#D95F3B]/20'
+                ? 'bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/5 border border-[#1B84C4]/30'
+                : 'bg-gradient-to-br from-[#1B84C4]/5 to-[#ADDFF1]/3 border border-[#1B84C4]/20'
             }`}>
               <h3 className={`font-heading text-2xl font-bold mb-4 ${textColor}`}>
                 {lang === 'ar' ? 'هل تريد زيادة إيرادك بشكل أسرع؟' : 'Want to boost revenue faster?'}
@@ -232,7 +232,7 @@ export default function Opportunities() {
               </p>
               <a
                 href="/signup"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
               >
                 {lang === 'ar' ? 'ابدأ التجربة المجانية' : 'Start Free Trial'}
                 <Arrow className="w-4 h-4" />

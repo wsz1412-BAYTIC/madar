@@ -88,14 +88,14 @@ export default function PropertiesFilter({
 
   const bgCard = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
   const bgActive = theme === 'dark'
-    ? 'bg-[#D95F3B]/20 border-[#D95F3B]/50'
-    : 'bg-[#D95F3B]/10 border-[#D95F3B]/30';
+    ? 'bg-[#1B84C4]/20 border-[#1B84C4]/50'
+    : 'bg-[#1B84C4]/10 border-[#1B84C4]/30';
 
-  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50';
 
   return (
     <div className="space-y-4">
@@ -107,12 +107,12 @@ export default function PropertiesFilter({
         }`}
       >
         <div className="flex items-center gap-2">
-          <Filter className={`w-4 h-4 ${theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'}`} />
+          <Filter className={`w-4 h-4 ${theme === 'dark' ? 'text-[#1B84C4]' : 'text-[#1B84C4]'}`} />
           <span className={`font-medium text-sm ${textColor}`}>
             {lang === 'ar' ? 'تصفية العقارات' : 'Filter Properties'}
           </span>
           {activeFilterCount > 0 && (
-            <span className="ml-2 px-2 py-1 rounded-full bg-[#D95F3B] text-white text-xs font-bold">
+            <span className="ml-2 px-2 py-1 rounded-full bg-[#0F6BA8] text-white text-xs font-bold">
               {activeFilterCount}
             </span>
           )}
@@ -144,10 +144,10 @@ export default function PropertiesFilter({
                     onClick={() => handleCityToggle(city)}
                     className={`px-3 py-2 text-xs rounded-lg font-medium transition-all ${
                       selectedFilters.cities?.includes(city)
-                        ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                        ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                         : theme === 'dark'
                           ? 'bg-foreground/[0.05] text-foreground/70 hover:bg-foreground/10'
-                          : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
+                          : 'bg-background/5 text-[#06131F]/70 hover:bg-background/10'
                     }`}
                   >
                     {city}
@@ -177,7 +177,7 @@ export default function PropertiesFilter({
                       type="checkbox"
                       checked={selectedFilters.performance?.includes(metric.value) || false}
                       onChange={() => handlePerformanceToggle(metric.value)}
-                      className="w-4 h-4 rounded cursor-pointer accent-[#D95F3B]"
+                      className="w-4 h-4 rounded cursor-pointer accent-[#1B84C4]"
                     />
                     <span className={`text-sm ml-2 ${textColor}`}>
                       {metric.label}
@@ -200,10 +200,10 @@ export default function PropertiesFilter({
                       onClick={() => handleTagToggle(tag)}
                       className={`px-3 py-2 text-xs rounded-lg font-medium transition-all ${
                         selectedFilters.tags?.includes(tag)
-                          ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                          ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                           : theme === 'dark'
                             ? 'bg-foreground/[0.05] text-foreground/70 hover:bg-foreground/10'
-                            : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
+                            : 'bg-background/5 text-[#06131F]/70 hover:bg-background/10'
                       }`}
                     >
                       {tag}
@@ -220,7 +220,7 @@ export default function PropertiesFilter({
                 className={`w-full py-2 text-xs font-medium rounded-lg transition-colors ${
                   theme === 'dark'
                     ? 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
-                    : 'text-[#0A0B10]/70 hover:text-[#0A0B10] hover:bg-background/5'
+                    : 'text-[#06131F]/70 hover:text-[#06131F] hover:bg-background/5'
                 }`}
               >
                 {lang === 'ar' ? 'مسح التصفيات' : 'Clear Filters'}

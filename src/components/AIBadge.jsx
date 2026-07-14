@@ -49,16 +49,16 @@ export function AIRecommendationCard({ title, children, confidence = 'medium', d
       </div>
 
       <div className="pr-20 mb-4">
-        <h3 className="font-heading font-bold text-[#0A0B10] text-lg">{title}</h3>
+        <h3 className="font-heading font-bold text-[#06131F] text-lg">{title}</h3>
       </div>
 
-      <div className="text-[#0A0B10]/70 text-sm leading-relaxed mb-4">{children}</div>
+      <div className="text-[#06131F]/70 text-sm leading-relaxed mb-4">{children}</div>
 
       {disclaimer && (
-        <div className="text-xs text-[#0A0B10]/50 border-t border-orange-200/30 pt-3 mt-4">
+        <div className="text-xs text-[#06131F]/50 border-t border-orange-200/30 pt-3 mt-4">
           <p>
             <span className="font-medium">Disclaimer:</span> AI-generated recommendations are predictions, not guarantees. Review before acting. See our{' '}
-            <a href="/ai-disclaimer" className="text-[#D95F3B] hover:underline">
+            <a href="/ai-disclaimer" className="text-[#1B84C4] hover:underline">
               AI Disclaimer
             </a>
             {' '}for more.

@@ -56,9 +56,9 @@ export default function PublicNavbar() {
   const getNavLinkClass = () => {
     const isDark = theme === 'dark';
     const textColor = scrolled
-      ? (isDark ? 'text-[#F7F5F0]/70 hover:text-[#F7F5F0]' : 'text-[#0A0B10]/60 hover:text-[#0A0B10]')
-      : (isDark ? 'text-[#F7F5F0]/60 hover:text-[#F7F5F0]' : 'text-[#0A0B10]/70 hover:text-[#0A0B10]');
-    return `relative text-sm font-light tracking-wide ${textColor} transition-colors duration-500 after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-px after:bg-gradient-to-r after:from-[#D95F3B] after:to-[#C8972A] hover:after:w-full after:transition-all after:duration-500`;
+      ? (isDark ? 'text-[#F2F8FC]/70 hover:text-[#F2F8FC]' : 'text-[#06131F]/60 hover:text-[#06131F]')
+      : (isDark ? 'text-[#F2F8FC]/60 hover:text-[#F2F8FC]' : 'text-[#06131F]/70 hover:text-[#06131F]');
+    return `relative text-sm font-light tracking-wide ${textColor} transition-colors duration-500 after:absolute after:bottom-[-6px] after:left-0 after:w-0 after:h-px after:bg-gradient-to-r after:from-[#1B84C4] after:to-[#0F6BA8] hover:after:w-full after:transition-all after:duration-500`;
   };
 
   return (
@@ -70,7 +70,7 @@ export default function PublicNavbar() {
         scrolled
           ? `cinematic-blur py-3 shadow-2xl ${
               theme === 'dark'
-                ? 'bg-[#0A0B10]/95 border-b border-white/[0.06] shadow-black/40'
+                ? 'bg-[#06131F]/95 border-b border-white/[0.06] shadow-black/40'
                 : 'bg-white/95 border-b border-black/[0.08]'
             }`
           : 'bg-transparent py-6'
@@ -81,7 +81,7 @@ export default function PublicNavbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B]/30 to-[#C8972A]/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1B84C4]/30 to-[#ADDFF1]/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <img
                 src={LOGO_URL}
                 alt="Madar"
@@ -105,16 +105,16 @@ export default function PublicNavbar() {
               onClick={toggleTheme}
               className={`p-2 rounded-lg transition-all duration-500 ${
                 theme === 'dark'
-                  ? 'text-[#F7F5F0]/50 hover:text-[#F7F5F0] hover:bg-white/5'
-                  : 'text-[#0A0B10]/50 hover:text-[#0A0B10] hover:bg-black/5'
+                  ? 'text-[#F2F8FC]/50 hover:text-[#F2F8FC] hover:bg-white/5'
+                  : 'text-[#06131F]/50 hover:text-[#06131F] hover:bg-black/5'
               }`}
             >
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
             <button onClick={toggleLang} className={`text-sm font-light tracking-wide transition-colors duration-500 flex items-center gap-1.5 ${
               theme === 'dark'
-                ? `${scrolled ? 'text-[#F7F5F0]/50 hover:text-[#F7F5F0]' : 'text-[#F7F5F0]/60 hover:text-[#F7F5F0]'}`
-                : `${scrolled ? 'text-[#0A0B10]/50 hover:text-[#0A0B10]' : 'text-[#0A0B10]/60 hover:text-[#0A0B10]'}`
+                ? `${scrolled ? 'text-[#F2F8FC]/50 hover:text-[#F2F8FC]' : 'text-[#F2F8FC]/60 hover:text-[#F2F8FC]'}`
+                : `${scrolled ? 'text-[#06131F]/50 hover:text-[#06131F]' : 'text-[#06131F]/60 hover:text-[#06131F]'}`
             }`}>
               <Globe className="w-3.5 h-3.5" />
               {t('language')}
@@ -126,8 +126,8 @@ export default function PublicNavbar() {
               <>
                 <Link to="/dashboard" className={`px-5 py-2.5 text-sm font-light tracking-wide glass rounded-full transition-all duration-500 ${
                   theme === 'dark'
-                    ? 'text-[#F7F5F0] hover:bg-white/10'
-                    : 'text-[#0A0B10] hover:bg-black/5'
+                    ? 'text-[#F2F8FC] hover:bg-white/10'
+                    : 'text-[#06131F] hover:bg-black/5'
                 }`}>
                   {t('dashboard')}
                 </Link>
@@ -140,10 +140,10 @@ export default function PublicNavbar() {
                     aria-expanded={menuOpen}
                     aria-label={lang === 'ar' ? 'قائمة المستخدم' : 'User menu'}
                     className={`flex items-center gap-2 ps-1.5 pe-3 py-1.5 rounded-full glass transition-all duration-300 ${
-                      theme === 'dark' ? 'text-[#F7F5F0] hover:bg-white/10' : 'text-[#0A0B10] hover:bg-black/5'
+                      theme === 'dark' ? 'text-[#F2F8FC] hover:bg-white/10' : 'text-[#06131F] hover:bg-black/5'
                     }`}
                   >
-                    <span className="w-7 h-7 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] text-white text-[11px] font-semibold flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-full bg-gradient-to-br from-[#00548C] to-[#003152] text-white text-[11px] font-semibold flex items-center justify-center">
                       {userInitials(user)}
                     </span>
                     <span className="text-sm font-light max-w-[140px] truncate">{displayName}</span>
@@ -163,13 +163,13 @@ export default function PublicNavbar() {
                       >
                         <Link to="/dashboard" role="menuitem" onClick={() => setMenuOpen(false)}
                           className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-light transition-colors ${
-                            theme === 'dark' ? 'text-[#F7F5F0]/80 hover:text-[#F7F5F0] hover:bg-white/5' : 'text-[#0A0B10]/80 hover:text-[#0A0B10] hover:bg-black/5'
+                            theme === 'dark' ? 'text-[#F2F8FC]/80 hover:text-[#F2F8FC] hover:bg-white/5' : 'text-[#06131F]/80 hover:text-[#06131F] hover:bg-black/5'
                           }`}>
                           <LayoutDashboard className="w-4 h-4 opacity-60" />{t('dashboard')}
                         </Link>
                         <Link to="/settings" role="menuitem" onClick={() => setMenuOpen(false)}
                           className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-light transition-colors ${
-                            theme === 'dark' ? 'text-[#F7F5F0]/80 hover:text-[#F7F5F0] hover:bg-white/5' : 'text-[#0A0B10]/80 hover:text-[#0A0B10] hover:bg-black/5'
+                            theme === 'dark' ? 'text-[#F2F8FC]/80 hover:text-[#F2F8FC] hover:bg-white/5' : 'text-[#06131F]/80 hover:text-[#06131F] hover:bg-black/5'
                           }`}>
                           <UserCircle className="w-4 h-4 opacity-60" />{t('account')}
                         </Link>
@@ -186,12 +186,12 @@ export default function PublicNavbar() {
               <>
                 <Link to="/login" className={`text-sm font-light tracking-wide transition-colors duration-500 ${
                   theme === 'dark'
-                    ? 'text-[#F7F5F0]/70 hover:text-[#F7F5F0]'
-                    : 'text-[#0A0B10]/70 hover:text-[#0A0B10]'
+                    ? 'text-[#F2F8FC]/70 hover:text-[#F2F8FC]'
+                    : 'text-[#06131F]/70 hover:text-[#06131F]'
                 }`}>
                   {t('login')}
                 </Link>
-                <Link to="/signup" className="group relative px-6 py-2.5 text-sm font-light tracking-wide text-white bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-full hover:shadow-xl hover:shadow-[#D95F3B]/30 transition-all duration-500 overflow-hidden">
+                <Link to="/signup" className="group relative px-6 py-2.5 text-sm font-light tracking-wide text-white bg-gradient-to-r from-[#00548C] to-[#003152] rounded-full hover:shadow-xl hover:shadow-[#1B84C4]/30 transition-all duration-500 overflow-hidden">
                   <span className="relative z-10">{t('getStarted')}</span>
                   <div className="absolute inset-0 bg-white/20 translate-x-[-120%] group-hover:translate-x-[120%] transition-transform duration-1000" />
                 </Link>
@@ -200,7 +200,7 @@ export default function PublicNavbar() {
           </div>
 
           {/* Mobile toggle */}
-          <button onClick={() => setOpen(!open)} aria-label={lang === 'ar' ? 'القائمة' : 'Menu'} className={`lg:hidden relative w-10 h-10 flex items-center justify-center ${theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'}`}>
+          <button onClick={() => setOpen(!open)} aria-label={lang === 'ar' ? 'القائمة' : 'Menu'} className={`lg:hidden relative w-10 h-10 flex items-center justify-center ${theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]'}`}>
             <AnimatePresence mode="wait">
               {open ? (
                 <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.3 }}>
@@ -226,7 +226,7 @@ export default function PublicNavbar() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className={`lg:hidden cinematic-blur overflow-hidden ${
               theme === 'dark'
-                ? 'bg-[#0A0B10]/95 border-t border-white/[0.06]'
+                ? 'bg-[#06131F]/95 border-t border-white/[0.06]'
                 : 'bg-white/95 border-t border-black/[0.08]'
             }`}
           >
@@ -234,8 +234,8 @@ export default function PublicNavbar() {
               {navItems.map((item) => (
                 <Link key={item.label} to={item.href} onClick={() => setOpen(false)} className={`block text-base font-light transition-colors ${
                   theme === 'dark'
-                    ? 'text-[#F7F5F0]/70 hover:text-[#F7F5F0]'
-                    : 'text-[#0A0B10]/70 hover:text-[#0A0B10]'
+                    ? 'text-[#F2F8FC]/70 hover:text-[#F2F8FC]'
+                    : 'text-[#06131F]/70 hover:text-[#06131F]'
                 }`}>
                   {item.label}
                 </Link>
@@ -245,16 +245,16 @@ export default function PublicNavbar() {
                   onClick={() => { toggleTheme(); setOpen(false); }}
                   className={`p-2 rounded-lg transition-all ${
                     theme === 'dark'
-                      ? 'text-[#F7F5F0]/50 hover:text-[#F7F5F0] hover:bg-white/5'
-                      : 'text-[#0A0B10]/50 hover:text-[#0A0B10] hover:bg-black/5'
+                      ? 'text-[#F2F8FC]/50 hover:text-[#F2F8FC] hover:bg-white/5'
+                      : 'text-[#06131F]/50 hover:text-[#06131F] hover:bg-black/5'
                   }`}
                 >
                   {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                 </button>
                 <button onClick={() => { toggleLang(); setOpen(false); }} className={`flex items-center gap-2 text-base font-light transition-colors ${
                   theme === 'dark'
-                    ? 'text-[#F7F5F0]/70 hover:text-[#F7F5F0]'
-                    : 'text-[#0A0B10]/70 hover:text-[#0A0B10]'
+                    ? 'text-[#F2F8FC]/70 hover:text-[#F2F8FC]'
+                    : 'text-[#06131F]/70 hover:text-[#06131F]'
                 }`}>
                   <Globe className="w-4 h-4" />{t('language')}
                 </button>
@@ -268,17 +268,17 @@ export default function PublicNavbar() {
                   <div aria-hidden="true" className={`w-full h-11 rounded-full animate-pulse ${theme === 'dark' ? 'bg-white/[0.06]' : 'bg-black/[0.05]'}`} />
                 ) : isAuthenticated ? (
                   <>
-                    <div className={`flex items-center gap-3 px-2 pb-1 ${theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'}`}>
-                      <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] text-white text-xs font-semibold flex items-center justify-center shrink-0">
+                    <div className={`flex items-center gap-3 px-2 pb-1 ${theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]'}`}>
+                      <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#00548C] to-[#003152] text-white text-xs font-semibold flex items-center justify-center shrink-0">
                         {userInitials(user)}
                       </span>
                       <span className="text-sm font-light truncate">{displayName}</span>
                     </div>
                     <Link to="/dashboard" onClick={() => setOpen(false)} className={`flex items-center justify-center gap-2 w-full px-5 py-3 text-sm font-light glass rounded-full ${
-                      theme === 'dark' ? 'text-white' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-white' : 'text-[#06131F]'
                     }`}><LayoutDashboard className="w-4 h-4 opacity-60" />{t('dashboard')}</Link>
                     <Link to="/settings" onClick={() => setOpen(false)} className={`flex items-center justify-center gap-2 w-full px-5 py-3 text-sm font-light glass rounded-full ${
-                      theme === 'dark' ? 'text-white' : 'text-[#0A0B10]'
+                      theme === 'dark' ? 'text-white' : 'text-[#06131F]'
                     }`}><UserCircle className="w-4 h-4 opacity-60" />{t('account')}</Link>
                     <button type="button" onClick={() => { setOpen(false); logout(); }}
                       className="flex items-center justify-center gap-2 w-full px-5 py-3 text-sm font-light text-danger bg-danger/10 rounded-full">
@@ -289,10 +289,10 @@ export default function PublicNavbar() {
                   <>
                     <Link to="/login" onClick={() => setOpen(false)} className={`block w-full text-center px-5 py-3 text-sm font-light rounded-full ${
                       theme === 'dark'
-                        ? 'text-[#F7F5F0]/80'
-                        : 'text-[#0A0B10]/80'
+                        ? 'text-[#F2F8FC]/80'
+                        : 'text-[#06131F]/80'
                     }`}>{t('login')}</Link>
-                    <Link to="/signup" onClick={() => setOpen(false)} className="block w-full text-center px-5 py-3 text-sm font-light text-white bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-full">{t('getStarted')}</Link>
+                    <Link to="/signup" onClick={() => setOpen(false)} className="block w-full text-center px-5 py-3 text-sm font-light text-white bg-gradient-to-r from-[#00548C] to-[#003152] rounded-full">{t('getStarted')}</Link>
                   </>
                 )}
               </div>

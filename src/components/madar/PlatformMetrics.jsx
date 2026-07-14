@@ -39,9 +39,9 @@ const metrics = [
     suffix: '%',
     labelEn: 'Average Occupancy',
     labelAr: 'متوسط الإشغال',
-    gradient: 'from-[#D95F3B]/20 to-transparent',
-    iconColor: 'text-[#D95F3B]',
-    border: 'border-[#D95F3B]/20',
+    gradient: 'from-[#1B84C4]/20 to-transparent',
+    iconColor: 'text-[#1B84C4]',
+    border: 'border-[#1B84C4]/20',
   },
   {
     icon: ArrowUpRight,
@@ -50,9 +50,9 @@ const metrics = [
     suffix: '%',
     labelEn: 'Potential Price Increase',
     labelAr: 'زيادة السعر المحتملة',
-    gradient: 'from-[#C8972A]/20 to-transparent',
-    iconColor: 'text-[#C8972A]',
-    border: 'border-[#C8972A]/20',
+    gradient: 'from-[#ADDFF1]/20 to-transparent',
+    iconColor: 'text-[#0F6BA8]',
+    border: 'border-[#ADDFF1]/20',
   },
   {
     icon: Building2,
@@ -60,8 +60,8 @@ const metrics = [
     suffix: '+',
     labelEn: 'Properties Analyzed',
     labelAr: 'عقارات تم تحليلها',
-    gradient: 'from-[#D95F3B]/15 to-transparent',
-    iconColor: 'text-[#D95F3B]',
+    gradient: 'from-[#1B84C4]/15 to-transparent',
+    iconColor: 'text-[#1B84C4]',
     border: 'border-white/10',
   },
   {
@@ -69,8 +69,8 @@ const metrics = [
     target: 24,
     labelEn: 'Cities Covered',
     labelAr: 'مدن مغطاة',
-    gradient: 'from-[#C8972A]/15 to-transparent',
-    iconColor: 'text-[#C8972A]',
+    gradient: 'from-[#ADDFF1]/15 to-transparent',
+    iconColor: 'text-[#0F6BA8]',
     border: 'border-white/10',
   },
 ];
@@ -98,14 +98,14 @@ export default function PlatformMetrics() {
               <div className={`w-10 h-10 rounded-xl glass flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500`}>
                 <Icon className={`w-4 h-4 ${m.iconColor}`} />
               </div>
-              <div className="font-heading text-3xl sm:text-4xl font-bold text-[#F7F5F0] leading-none mb-2">
+              <div className="font-heading text-3xl sm:text-4xl font-bold text-[#F2F8FC] leading-none mb-2">
                 <AnimatedCounter
                   target={m.target}
                   prefix={m.prefix || ''}
                   suffix={m.suffix || ''}
                 />
               </div>
-              <div className="text-xs sm:text-sm text-[#F7F5F0]/40 font-medium">
+              <div className="text-xs sm:text-sm text-[#F2F8FC]/40 font-medium">
                 {lang === 'ar' ? m.labelAr : m.labelEn}
               </div>
             </div>

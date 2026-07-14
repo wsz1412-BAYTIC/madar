@@ -10,7 +10,7 @@ import {
   ALERT_TYPES, SEVERITIES, ALERT_STATUSES, label, canTransition,
 } from '@/lib/securityMonitoring';
 
-const CARD = 'rounded-2xl border border-[#0A0B10]/10 bg-white';
+const CARD = 'rounded-2xl border border-[#06131F]/10 bg-white';
 const FieldLabel = ({ children }) => <label className="mb-1 block text-xs font-medium opacity-60">{children}</label>;
 
 const SEVERITY_STYLE = {
@@ -110,12 +110,12 @@ export default function AdminSecurityAlerts() {
   })), [filtered]);
 
   return (
-    <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
+    <div dir="rtl" className="flex min-h-screen bg-[#EFF6FA]">
       <AdminNav admin={{ role: 'admin' }} />
       <main className="flex-1 space-y-6 p-6 lg:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <ShieldAlert className="h-7 w-7 text-[#D95F3B]" />
+            <ShieldAlert className="h-7 w-7 text-[#1B84C4]" />
             <div>
               <h1 className="font-heading text-3xl font-bold">تنبيهات الأمان</h1>
               <p className="text-sm opacity-60">مراقبة النشاط غير الطبيعي (فحص يدوي). البيانات داخلية وخاصة بالمشرفين فقط.</p>
@@ -124,7 +124,7 @@ export default function AdminSecurityAlerts() {
           <div className="flex flex-wrap items-center gap-2">
             {openCount > 0 && <span className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-800">{openCount} تنبيه مفتوح</span>}
             <ExportButtons baseName="security-alerts" rows={exportRows} />
-            <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={runScan} disabled={scanning}>
+            <Button className="bg-gradient-to-r from-[#00548C] to-[#003152]" onClick={runScan} disabled={scanning}>
               <RefreshCw className={`ml-1 h-4 w-4 ${scanning ? 'animate-spin' : ''}`} />{scanning ? 'جارٍ الفحص...' : 'تشغيل فحص'}
             </Button>
           </div>
@@ -185,11 +185,11 @@ export default function AdminSecurityAlerts() {
         {/* List / states */}
         <section className={`${CARD} overflow-hidden`}>
           {loading ? (
-            <div className="space-y-2 p-6">{[...Array(4)].map((_, i) => <div key={i} className="h-14 animate-pulse rounded bg-[#0A0B10]/5" />)}</div>
+            <div className="space-y-2 p-6">{[...Array(4)].map((_, i) => <div key={i} className="h-14 animate-pulse rounded bg-[#06131F]/5" />)}</div>
           ) : filtered.length === 0 ? (
             <div className="p-10 text-center opacity-60">{alerts.length === 0 ? 'لا توجد تنبيهات. شغّل فحصًا لاكتشاف النشاط غير الطبيعي.' : 'لا توجد تنبيهات مطابقة للتصفية.'}</div>
           ) : (
-            <ul className="divide-y divide-[#0A0B10]/10">
+            <ul className="divide-y divide-[#06131F]/10">
               {filtered.map((a) => {
                 const isOpen = expanded === a.id;
                 const status = a.status || 'new';
@@ -199,17 +199,17 @@ export default function AdminSecurityAlerts() {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className={`rounded-full px-2 py-0.5 text-[11px] ${SEVERITY_STYLE[a.severity] || 'bg-gray-100 text-gray-700'}`}>{label(a.severity)}</span>
-                          <span className="rounded-full bg-[#0A0B10]/5 px-2 py-0.5 text-[11px]">{label(a.alert_type)}</span>
+                          <span className="rounded-full bg-[#06131F]/5 px-2 py-0.5 text-[11px]">{label(a.alert_type)}</span>
                           <span className={`rounded-full px-2 py-0.5 text-[11px] ${STATUS_STYLE[status]}`}>{label(status)}</span>
                           <span className="text-xs opacity-50">{a.detected_at ? new Date(a.detected_at).toLocaleString('ar-SA') : ''}</span>
                         </div>
                         <p className="mt-1 font-semibold">{a.title}</p>
-                        <button className="mt-1 flex items-center gap-1 text-xs text-[#D95F3B]" onClick={() => setExpanded(isOpen ? null : a.id)}>
+                        <button className="mt-1 flex items-center gap-1 text-xs text-[#1B84C4]" onClick={() => setExpanded(isOpen ? null : a.id)}>
                           {isOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
                           {isOpen ? 'إخفاء التفاصيل' : 'عرض التفاصيل'}
                         </button>
                         {isOpen && (
-                          <div className="mt-2 rounded-xl bg-[#F2EFE8] p-3 text-sm">
+                          <div className="mt-2 rounded-xl bg-[#EFF6FA] p-3 text-sm">
                             {a.summary && <p className="mb-2 opacity-80">{a.summary}</p>}
                             <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
                               <div><span className="opacity-50">المرجع: </span><span dir="ltr">{a.subject_ref || '—'}</span></div>

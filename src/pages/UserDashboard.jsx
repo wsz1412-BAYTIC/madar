@@ -88,20 +88,20 @@ export default function UserDashboard() {
 
   return (
       <div className={`p-4 sm:p-6 lg:p-8 min-h-screen ${
-        theme === 'dark' ? 'bg-background' : 'bg-[#F2EFE8]'
+        theme === 'dark' ? 'bg-background' : 'bg-[#EFF6FA]'
       }`}>
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <h1 className={`text-3xl sm:text-4xl font-heading font-bold ${
-              theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+              theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
             }`}>
               {lang === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
             </h1>
             <PlanBadge subscription={subscriptionData} />
           </div>
           <p className={`text-sm ${
-            theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+            theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
           }`}>
             {lang === 'ar' 
               ? `مرحباً ${user?.full_name || 'بك'}, هنا ملخص أداء عقاراتك`
@@ -194,7 +194,7 @@ export default function UserDashboard() {
                   {lang === 'ar' ? 'فتح ميزات متقدمة' : 'Unlock Advanced Features'}
                 </h3>
                 <p className={`text-sm mb-4 ${
-                  theme === 'dark' ? 'text-foreground/70' : 'text-[#0A0B10]/70'
+                  theme === 'dark' ? 'text-foreground/70' : 'text-[#06131F]/70'
                 }`}>
                   {lang === 'ar' 
                     ? 'ترقيتك إلى Basic أو أعلى للوصول إلى التحليلات المتقدمة والتسعير الذكي'
@@ -215,10 +215,10 @@ export default function UserDashboard() {
         <div className={`mt-8 p-6 rounded-2xl border ${
           theme === 'dark'
             ? 'bg-card border-foreground/[0.06]'
-            : 'bg-white border-[#0A0B10]/[0.06]'
+            : 'bg-white border-[#06131F]/[0.06]'
         }`}>
           <h2 className={`text-lg font-heading font-bold mb-4 ${
-            theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+            theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
           }`}>
             {lang === 'ar' ? 'الخطوات التالية' : 'Next Steps'}
           </h2>
@@ -228,12 +228,12 @@ export default function UserDashboard() {
               className={`p-4 rounded-lg text-left hover:bg-primary/5 transition-colors ${
                 theme === 'dark'
                   ? 'border border-foreground/[0.06]'
-                  : 'border border-[#0A0B10]/[0.06]'
+                  : 'border border-[#06131F]/[0.06]'
               }`}
             >
               <Home className="w-5 h-5 mb-2 text-primary" />
               <p className={`text-sm font-medium ${
-                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
               }`}>
                 {lang === 'ar' ? 'إضافة عقار' : 'Add Property'}
               </p>
@@ -244,12 +244,12 @@ export default function UserDashboard() {
                 className={`p-4 rounded-lg text-left hover:bg-primary/5 transition-colors ${
                   theme === 'dark'
                     ? 'border border-foreground/[0.06]'
-                    : 'border border-[#0A0B10]/[0.06]'
+                    : 'border border-[#06131F]/[0.06]'
                 }`}
               >
                 <TrendingUp className="w-5 h-5 mb-2 text-primary" />
                 <p className={`text-sm font-medium ${
-                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                 }`}>
                   {lang === 'ar' ? 'التحليلات' : 'Analytics'}
                 </p>

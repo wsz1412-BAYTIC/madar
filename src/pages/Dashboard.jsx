@@ -7,10 +7,10 @@ import { motion } from 'framer-motion';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 
 const mockStats = [
-  { key: 'totalRevenue', value: '45,230', unit: 'SAR', change: '+12%', up: true, icon: DollarSign, color: '#D95F3B' },
-  { key: 'occupancyRate', value: '78%', change: '+5%', up: true, icon: BarChart3, color: '#C8972A' },
-  { key: 'avgNightlyRate', value: '580', unit: 'SAR', change: '-2%', up: false, icon: TrendingUp, color: '#D95F3B' },
-  { key: 'activeListings', value: '6', change: '+1', up: true, icon: Home, color: '#C8972A' },
+  { key: 'totalRevenue', value: '45,230', unit: 'SAR', change: '+12%', up: true, icon: DollarSign, color: '#1B84C4' },
+  { key: 'occupancyRate', value: '78%', change: '+5%', up: true, icon: BarChart3, color: '#0F6BA8' },
+  { key: 'avgNightlyRate', value: '580', unit: 'SAR', change: '-2%', up: false, icon: TrendingUp, color: '#1B84C4' },
+  { key: 'activeListings', value: '6', change: '+1', up: true, icon: Home, color: '#0F6BA8' },
 ];
 
 const mockForecast = [
@@ -68,8 +68,8 @@ export default function Dashboard() {
         <FadeIn delay={0.2}>
           <div className="glass rounded-2xl p-6 h-full">
             <div className="flex items-center gap-2 mb-5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/20">
-                <Sparkles className="w-4 h-4 text-[#D95F3B]" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/20">
+                <Sparkles className="w-4 h-4 text-[#1B84C4]" />
               </div>
               <h2 className="font-heading font-semibold text-foreground">{t('aiRecommendations')}</h2>
             </div>
@@ -116,7 +116,7 @@ export default function Dashboard() {
                 />
                 <Bar dataKey="value" radius={[6, 6, 0, 0]} barSize={28}>
                   {mockForecast.map((_, i) => (
-                    <Cell key={i} fill={i >= 4 ? '#D95F3B' : 'rgba(217,95,59,0.4)'} />
+                    <Cell key={i} fill={i >= 4 ? '#1B84C4' : 'rgba(27, 132, 196,0.4)'} />
                   ))}
                 </Bar>
               </BarChart>

@@ -46,7 +46,7 @@ export function StatusChangeModal({ isOpen, onClose, onConfirm, isLoading, selec
                 <select
                   value={status}
                   onChange={e => setStatus(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-lg bg-foreground/[0.04] border border-foreground/[0.08] text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20"
+                  className="w-full px-4 py-2.5 rounded-lg bg-foreground/[0.04] border border-foreground/[0.08] text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20"
                 >
                   <option value="active">{lang === 'ar' ? 'نشط' : 'Active'}</option>
                   <option value="paused">{lang === 'ar' ? 'موقوف مؤقتاً' : 'Paused'}</option>
@@ -66,7 +66,7 @@ export function StatusChangeModal({ isOpen, onClose, onConfirm, isLoading, selec
               <button
                 onClick={handleConfirm}
                 disabled={isLoading}
-                className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isLoading ? (
                   <>
@@ -129,7 +129,7 @@ export function AddLabelsModal({ isOpen, onClose, onConfirm, isLoading, selected
                   value={labels}
                   onChange={e => setLabels(e.target.value)}
                   placeholder={lang === 'ar' ? 'مثال: فاخر، جديد، موصى به' : 'e.g. Premium, New, Featured'}
-                  className="w-full px-4 py-3 rounded-lg bg-foreground/[0.04] border border-foreground/[0.08] text-foreground text-sm placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20 resize-none"
+                  className="w-full px-4 py-3 rounded-lg bg-foreground/[0.04] border border-foreground/[0.08] text-foreground text-sm placeholder-foreground/25 focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20 resize-none"
                   rows="3"
                 />
                 <p className="text-xs text-foreground/40 mt-2">{lang === 'ar' ? 'أدخل التسميات مفصولة بفواصل' : 'Enter labels separated by commas'}</p>
@@ -147,7 +147,7 @@ export function AddLabelsModal({ isOpen, onClose, onConfirm, isLoading, selected
               <button
                 onClick={handleConfirm}
                 disabled={isLoading || !labels.trim()}
-                className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isLoading ? (
                   <>
@@ -298,7 +298,7 @@ export function ActionResultsModal({ isOpen, onClose, results, isSuccess, title,
 
             <button
               onClick={onClose}
-              className="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+              className="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
             >
               {lang === 'ar' ? 'حسناً' : 'Done'}
             </button>

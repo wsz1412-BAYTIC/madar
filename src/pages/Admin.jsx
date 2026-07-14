@@ -5,8 +5,8 @@ import { ShieldCheck, Users, Building2, CreditCard, Sparkles, Loader2, AlertTria
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/madar/Motion';
 
 const planBadge = {
-  premium: 'bg-[#D95F3B]/10 text-[#D95F3B]',
-  professional: 'bg-[#C8972A]/10 text-[#C8972A]',
+  premium: 'bg-[#1B84C4]/10 text-[#1B84C4]',
+  professional: 'bg-[#ADDFF1]/10 text-[#0F6BA8]',
   basic: 'bg-blue-500/10 text-blue-400',
   free: 'bg-foreground/5 text-foreground/50',
 };
@@ -83,10 +83,10 @@ export default function Admin() {
 
   const statTiles = data.stats
     ? [
-        { key: 'totalUsers', label: t('activeUsers'), value: data.stats.totalUsers, icon: Users, color: '#D95F3B' },
-        { key: 'totalProperties', label: t('totalProperties'), value: data.stats.totalProperties, icon: Building2, color: '#C8972A' },
-        { key: 'activeSubscriptions', label: lang === 'ar' ? 'اشتراكات نشطة' : 'Active Subscriptions', value: data.stats.activeSubscriptions, icon: CreditCard, color: '#D95F3B' },
-        { key: 'recommendations', label: lang === 'ar' ? 'التوصيات' : 'Recommendations', value: data.stats.totalRecommendations, icon: Sparkles, color: '#C8972A' },
+        { key: 'totalUsers', label: t('activeUsers'), value: data.stats.totalUsers, icon: Users, color: '#1B84C4' },
+        { key: 'totalProperties', label: t('totalProperties'), value: data.stats.totalProperties, icon: Building2, color: '#0F6BA8' },
+        { key: 'activeSubscriptions', label: lang === 'ar' ? 'اشتراكات نشطة' : 'Active Subscriptions', value: data.stats.activeSubscriptions, icon: CreditCard, color: '#1B84C4' },
+        { key: 'recommendations', label: lang === 'ar' ? 'التوصيات' : 'Recommendations', value: data.stats.totalRecommendations, icon: Sparkles, color: '#0F6BA8' },
       ]
     : [];
 

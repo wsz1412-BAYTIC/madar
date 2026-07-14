@@ -36,9 +36,9 @@ export default function MasterCalendarView({
   const getDemandColor = (demandLevel) => {
     switch (demandLevel) {
       case 'high':
-        return 'bg-[#D95F3B]/80 text-white shadow-lg shadow-[#D95F3B]/20';
+        return 'bg-[#1B84C4]/80 text-white shadow-lg shadow-[#1B84C4]/20';
       case 'medium':
-        return 'bg-[#C8972A]/60 text-white';
+        return 'bg-[#ADDFF1]/60 text-white';
       case 'low':
         return 'bg-[#6B7280]/40 text-white';
       case 'gap':
@@ -46,7 +46,7 @@ export default function MasterCalendarView({
       default:
         return theme === 'dark'
           ? 'bg-foreground/[0.02] text-foreground/70 hover:bg-foreground/[0.06]'
-          : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10';
+          : 'bg-background/5 text-[#06131F]/70 hover:bg-background/10';
     }
   };
 
@@ -59,7 +59,7 @@ export default function MasterCalendarView({
     <div className={`rounded-2xl p-6 ${
       theme === 'dark'
         ? 'glass'
-        : 'bg-white border border-[#0A0B10]/10'
+        : 'bg-white border border-[#06131F]/10'
     }`}>
       {/* Month Navigation */}
       <div className="flex items-center justify-between mb-8">
@@ -73,16 +73,16 @@ export default function MasterCalendarView({
         >
           {isRTL ? (
             <ChevronRight className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`} />
           ) : (
             <ChevronLeft className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`} />
           )}
         </button>
         <h2 className={`font-heading font-semibold text-lg ${
-          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
         }`}>
           {monthNames[lang][month]} {year}
         </h2>
@@ -96,11 +96,11 @@ export default function MasterCalendarView({
         >
           {isRTL ? (
             <ChevronLeft className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`} />
           ) : (
             <ChevronRight className={`w-5 h-5 ${
-              theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+              theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
             }`} />
           )}
         </button>
@@ -112,7 +112,7 @@ export default function MasterCalendarView({
           <div
             key={d}
             className={`text-center text-xs font-medium py-2 ${
-              theme === 'dark' ? 'text-foreground/30' : 'text-[#0A0B10]/30'
+              theme === 'dark' ? 'text-foreground/30' : 'text-[#06131F]/30'
             }`}
           >
             {d}

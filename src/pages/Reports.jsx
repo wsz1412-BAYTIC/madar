@@ -21,9 +21,9 @@ function FirstReportSection() {
 
   const bgCard = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
-  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60';
 
   const fmt = (n) => (Number.isFinite(Number(n)) ? Number(n).toLocaleString('en-US') : '—');
   const sar = lang === 'ar' ? 'ر.س' : 'SAR';
@@ -65,7 +65,7 @@ function FirstReportSection() {
       <div className={`p-6 rounded-xl ${bgCard} space-y-5`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <FileText className="w-5 h-5 text-[#D95F3B]" />
+            <FileText className="w-5 h-5 text-[#1B84C4]" />
             <div>
               <h2 className={`font-heading font-bold text-lg ${textColor}`}>
                 {lang === 'ar' ? 'التقرير التأسيسي' : 'First Report'}
@@ -80,7 +80,7 @@ function FirstReportSection() {
           {!report && (
             <button
               type="button" onClick={generate} disabled={generating}
-              className="flex items-center justify-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-60"
+              className="flex items-center justify-center gap-2 px-5 h-10 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-60"
             >
               {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
               {lang === 'ar' ? 'إنشاء التقرير التأسيسي' : 'Generate first report'}
@@ -140,7 +140,7 @@ function FirstReportSection() {
                 </h3>
                 {(report.actions || []).slice(0, 3).map((action, i) => (
                   <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.08]">
-                    <span className="w-6 h-6 rounded-full bg-[#D95F3B]/10 text-[#D95F3B] flex items-center justify-center text-xs font-bold nums shrink-0">
+                    <span className="w-6 h-6 rounded-full bg-[#1B84C4]/10 text-[#1B84C4] flex items-center justify-center text-xs font-bold nums shrink-0">
                       {i + 1}
                     </span>
                     <div className="space-y-1">
@@ -193,7 +193,7 @@ function FirstReportSection() {
 
             {/* Uplift estimate */}
             {uplift && (
-              <div className="p-4 rounded-xl bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/10 border border-[#C8972A]/25">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/10 border border-[#ADDFF1]/25">
                 <p className={`text-[11px] ${textMuted}`}>{lang === 'ar' ? 'التحسن المتوقع' : 'Estimated uplift'}</p>
                 <p className={`text-lg font-bold nums ${textColor}`} dir="ltr">
                   +{fmt(uplift.sarMin)}–{fmt(uplift.sarMax)} {sar}
@@ -268,18 +268,18 @@ export default function Reports() {
       <div className={`p-8 rounded-xl text-center ${
         theme === 'dark'
           ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-          : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+          : 'bg-[#EFF6FA] border border-[#06131F]/10'
       }`}>
         <AlertTriangle className={`w-12 h-12 mx-auto mb-4 ${
-          theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+          theme === 'dark' ? 'text-[#1B84C4]' : 'text-[#1B84C4]'
         }`} />
         <h2 className={`font-heading font-bold text-lg mb-2 ${
-          theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
         }`}>
           {lang === 'ar' ? 'ميزة غير متاحة' : 'Feature Not Available'}
         </h2>
         <p className={`text-sm ${
-          theme === 'dark' ? 'text-foreground/50' : 'text-[#0A0B10]/50'
+          theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
         }`}>
           {lang === 'ar'
             ? 'التقارير الأسبوعية متاحة فقط في خطط Growth و Pro'
@@ -292,10 +292,10 @@ export default function Reports() {
 
   const bgCard = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60';
 
   return (
     <div className="space-y-8">
@@ -320,7 +320,7 @@ export default function Reports() {
       <FadeIn delay={0.1}>
         <div className={`p-6 rounded-xl ${bgCard} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4`}>
           <div className="flex items-center gap-4">
-            <Calendar className="w-5 h-5 text-[#D95F3B]" />
+            <Calendar className="w-5 h-5 text-[#1B84C4]" />
             <div>
               <p className={`text-sm font-medium ${textColor}`}>
                 {lang === 'ar' ? 'الفترة الزمنية' : 'Period'}
@@ -332,10 +332,10 @@ export default function Reports() {
                     onClick={() => setSelectedPeriod(period)}
                     className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-all ${
                       selectedPeriod === period
-                        ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                        ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                         : theme === 'dark'
                           ? 'bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]'
-                          : 'bg-background/5 text-[#0A0B10]/70 hover:bg-background/10'
+                          : 'bg-background/5 text-[#06131F]/70 hover:bg-background/10'
                     }`}
                   >
                     {period === 'current' && (lang === 'ar' ? 'الأسبوع الحالي' : 'This Week')}
@@ -367,7 +367,7 @@ export default function Reports() {
                 type="checkbox"
                 checked={emailNotifications}
                 onChange={(e) => setEmailNotifications(e.target.checked)}
-                className="w-4 h-4 rounded accent-[#D95F3B]"
+                className="w-4 h-4 rounded accent-[#1B84C4]"
               />
               <Mail className="w-4 h-4" />
               <span className="hidden sm:inline">

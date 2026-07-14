@@ -41,10 +41,10 @@ export default function PricingPage() {
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60';
 
   return (
     <div className={`min-h-screen ${
@@ -82,7 +82,7 @@ export default function PricingPage() {
                     className={`p-6 rounded-xl ${bgCard}`}
                   >
                     <div className="flex items-start gap-3 mb-3">
-                      <HelpCircle className="w-5 h-5 text-[#D95F3B] flex-shrink-0 mt-0.5" />
+                      <HelpCircle className="w-5 h-5 text-[#1B84C4] flex-shrink-0 mt-0.5" />
                       <h3 className={`font-bold ${textColor}`}>
                         {faq.question}
                       </h3>
@@ -100,8 +100,8 @@ export default function PricingPage() {
           <FadeIn delay={0.3} className="mt-20">
             <div className={`p-12 rounded-2xl text-center ${
               theme === 'dark'
-                ? 'bg-gradient-to-br from-[#D95F3B]/10 to-[#C8972A]/5 border border-[#D95F3B]/30'
-                : 'bg-gradient-to-br from-[#D95F3B]/5 to-[#C8972A]/3 border border-[#D95F3B]/20'
+                ? 'bg-gradient-to-br from-[#1B84C4]/10 to-[#ADDFF1]/5 border border-[#1B84C4]/30'
+                : 'bg-gradient-to-br from-[#1B84C4]/5 to-[#ADDFF1]/3 border border-[#1B84C4]/20'
             }`}>
               <h3 className={`font-heading text-2xl font-bold mb-4 ${textColor}`}>
                 {lang === 'ar' ? 'هل لديك أسئلة؟' : 'Have Questions?'}
@@ -113,7 +113,7 @@ export default function PricingPage() {
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
               >
                 {lang === 'ar' ? 'اتصل بنا' : 'Get in Touch'}
               </Link>

@@ -19,11 +19,11 @@ export default function PropertyPerformance({ properties }) {
       className={`p-6 rounded-2xl border h-full ${
         theme === 'dark'
           ? 'bg-card border-foreground/[0.06]'
-          : 'bg-white border-[#0A0B10]/[0.06]'
+          : 'bg-white border-[#06131F]/[0.06]'
       }`}
     >
       <h2 className={`text-lg font-heading font-bold mb-4 ${
-        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
       }`}>
         {lang === 'ar' ? 'أداء العقار' : 'Property Performance'}
       </h2>
@@ -38,7 +38,7 @@ export default function PropertyPerformance({ properties }) {
             }`}>
               <div className="flex items-center justify-between mb-2">
                 <p className={`text-sm font-medium ${
-                  theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                  theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
                 }`}>
                   {prop.name}
                 </p>
@@ -60,7 +60,7 @@ export default function PropertyPerformance({ properties }) {
           ))
         ) : (
           <p className={`text-sm text-center py-6 ${
-            theme === 'dark' ? 'text-foreground/40' : 'text-[#0A0B10]/40'
+            theme === 'dark' ? 'text-foreground/40' : 'text-[#06131F]/40'
           }`}>
             {lang === 'ar' ? 'لا توجد عقارات' : 'No properties yet'}
           </p>

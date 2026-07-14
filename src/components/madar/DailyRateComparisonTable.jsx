@@ -25,7 +25,7 @@ export default function DailyRateComparisonTable() {
     const diff = yourRate - avgCompetitor;
     if (diff > 20) return 'text-emerald-400';
     if (diff < -20) return 'text-red-400';
-    return 'text-[#C8972A]';
+    return 'text-[#0F6BA8]';
   };
 
   const getDifference = (yourRate, avgCompetitor) => {
@@ -48,7 +48,7 @@ export default function DailyRateComparisonTable() {
   return (
     <FadeIn delay={0.5}>
       <div className="relative glass rounded-3xl p-8 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#C8972A]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#ADDFF1]/5 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10">
           {/* Header */}
@@ -100,12 +100,12 @@ export default function DailyRateComparisonTable() {
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="font-semibold text-[#D95F3B]">{row.yourRate} {sar}</span>
+                        <span className="font-semibold text-[#1B84C4]">{row.yourRate} {sar}</span>
                       </td>
                       <td className="px-4 py-4 text-foreground/70">{row.competitor1} {sar}</td>
                       <td className="px-4 py-4 text-foreground/70">{row.competitor2} {sar}</td>
                       <td className="px-4 py-4 text-foreground/70">{row.competitor3} {sar}</td>
-                      <td className="px-4 py-4 text-[#C8972A]">{avgCompetitor.toFixed(0)} {sar}</td>
+                      <td className="px-4 py-4 text-[#0F6BA8]">{avgCompetitor.toFixed(0)} {sar}</td>
                       <td className="px-4 py-4">
                         <div className={`flex items-center gap-1 text-xs font-medium ${getTrendColor(row.yourRate, avgCompetitor)}`}>
                           {diff.isLower ? (
@@ -133,7 +133,7 @@ export default function DailyRateComparisonTable() {
                           </span>
                         )}
                         {!isHighest && !isLowest && (
-                          <span className="inline-block px-2.5 py-1 bg-[#C8972A]/15 text-[#C8972A] text-xs font-medium rounded-full border border-[#C8972A]/20">
+                          <span className="inline-block px-2.5 py-1 bg-[#ADDFF1]/15 text-[#0F6BA8] text-xs font-medium rounded-full border border-[#ADDFF1]/20">
                             {lang === 'ar' ? 'متوسط' : 'Mid'}
                           </span>
                         )}
@@ -173,7 +173,7 @@ export default function DailyRateComparisonTable() {
                           <p className="text-xs text-foreground/40">{row.day}</p>
                         </div>
                         <div className="ml-4">
-                          <p className="font-semibold text-[#D95F3B]">{row.yourRate} {sar}</p>
+                          <p className="font-semibold text-[#1B84C4]">{row.yourRate} {sar}</p>
                           <div className={`text-xs font-medium mt-1 flex items-center gap-1 ${getTrendColor(row.yourRate, avgCompetitor)}`}>
                             {diff.isLower ? (
                               <>
@@ -201,7 +201,7 @@ export default function DailyRateComparisonTable() {
                           </span>
                         )}
                         {!isHighest && !isLowest && (
-                          <span className="px-2 py-0.5 bg-[#C8972A]/15 text-[#C8972A] text-xs font-medium rounded-full border border-[#C8972A]/20">
+                          <span className="px-2 py-0.5 bg-[#ADDFF1]/15 text-[#0F6BA8] text-xs font-medium rounded-full border border-[#ADDFF1]/20">
                             {lang === 'ar' ? 'متوسط' : 'Mid'}
                           </span>
                         )}
@@ -233,7 +233,7 @@ export default function DailyRateComparisonTable() {
                           <span className="text-foreground">{row.competitor3} {sar}</span>
                         </div>
                         <div className="flex justify-between pt-2 border-t border-foreground/[0.06] font-medium">
-                          <span className="text-[#C8972A]">{lang === 'ar' ? 'متوسط السوق' : 'Market Avg'}:</span>
+                          <span className="text-[#0F6BA8]">{lang === 'ar' ? 'متوسط السوق' : 'Market Avg'}:</span>
                           <span className="text-foreground">{avgCompetitor.toFixed(0)} {sar}</span>
                         </div>
                       </motion.div>

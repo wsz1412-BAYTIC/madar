@@ -22,15 +22,15 @@ export default function CalendarFilters({
 
   const filterClass = `px-3 py-2 text-sm rounded-lg transition-colors ${
     theme === 'dark'
-      ? 'bg-foreground/[0.04] border border-foreground/[0.08] text-foreground focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20'
-      : 'bg-background/5 border border-[#0A0B10]/10 text-[#0A0B10] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/20'
+      ? 'bg-foreground/[0.04] border border-foreground/[0.08] text-foreground focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20'
+      : 'bg-background/5 border border-[#06131F]/10 text-[#06131F] focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/20'
   }`;
 
   return (
     <div className={`p-4 rounded-xl ${
       theme === 'dark'
         ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-        : 'bg-[#F2EFE8] border border-[#0A0B10]/10'
+        : 'bg-[#EFF6FA] border border-[#06131F]/10'
     }`}>
       <div className="flex items-center gap-2 mb-4">
         <Filter className="w-4 h-4" />

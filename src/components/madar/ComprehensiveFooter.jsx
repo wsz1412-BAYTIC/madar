@@ -80,13 +80,13 @@ export default function ComprehensiveFooter() {
   ];
 
   const MobileSection = ({ column }) => (
-    <div className="border-b border-[#0A0B10]/10">
+    <div className="border-b border-[#06131F]/10">
       <button
         onClick={() => setExpandedMobile(expandedMobile === column.title ? null : column.title)}
-        className="w-full py-4 px-4 flex items-center justify-between hover:bg-[#0A0B10]/5 transition-colors"
+        className="w-full py-4 px-4 flex items-center justify-between hover:bg-[#06131F]/5 transition-colors"
       >
         <span className={`font-bold text-sm ${
-          theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+          theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]'
         }`}>
           {column.title}
         </span>
@@ -99,7 +99,7 @@ export default function ComprehensiveFooter() {
         animate={{ height: expandedMobile === column.title ? 'auto' : 0 }}
         className="overflow-hidden"
       >
-        <div className="px-4 py-2 space-y-2 bg-[#0A0B10]/3">
+        <div className="px-4 py-2 space-y-2 bg-[#06131F]/3">
           {column.links.map((link, idx) => (
             <div key={idx}>
               {link.external ? (
@@ -109,8 +109,8 @@ export default function ComprehensiveFooter() {
                   rel="noopener noreferrer"
                   className={`block text-xs transition-colors ${
                     theme === 'dark'
-                      ? 'text-[#F7F5F0]/60 hover:text-[#D95F3B]'
-                      : 'text-[#0A0B10]/60 hover:text-[#D95F3B]'
+                      ? 'text-[#F2F8FC]/60 hover:text-[#1B84C4]'
+                      : 'text-[#06131F]/60 hover:text-[#1B84C4]'
                   }`}
                 >
                   {link.label}
@@ -120,8 +120,8 @@ export default function ComprehensiveFooter() {
                   to={link.to}
                   className={`block text-xs transition-colors ${
                     theme === 'dark'
-                      ? 'text-[#F7F5F0]/60 hover:text-[#D95F3B]'
-                      : 'text-[#0A0B10]/60 hover:text-[#D95F3B]'
+                      ? 'text-[#F2F8FC]/60 hover:text-[#1B84C4]'
+                      : 'text-[#06131F]/60 hover:text-[#1B84C4]'
                   }`}
                 >
                   {link.label}
@@ -138,7 +138,7 @@ export default function ComprehensiveFooter() {
     <footer className={`border-t ${
       theme === 'dark'
         ? 'border-white/[0.06] bg-background'
-        : 'border-[#0A0B10]/[0.06] bg-[#F9F8F6]'
+        : 'border-[#06131F]/[0.06] bg-[#F9F8F6]'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         {/* Desktop Layout */}
@@ -146,7 +146,7 @@ export default function ComprehensiveFooter() {
           {columns.map((column, idx) => (
             <div key={idx}>
               <h3 className={`font-bold text-sm mb-6 ${
-                theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]'
               }`}>
                 {column.title}
               </h3>
@@ -160,8 +160,8 @@ export default function ComprehensiveFooter() {
                         rel="noopener noreferrer"
                         className={`text-xs transition-colors ${
                           theme === 'dark'
-                            ? 'text-[#F7F5F0]/60 hover:text-[#D95F3B]'
-                            : 'text-[#0A0B10]/60 hover:text-[#D95F3B]'
+                            ? 'text-[#F2F8FC]/60 hover:text-[#1B84C4]'
+                            : 'text-[#06131F]/60 hover:text-[#1B84C4]'
                         }`}
                       >
                         {link.label}
@@ -171,8 +171,8 @@ export default function ComprehensiveFooter() {
                         to={link.to}
                         className={`text-xs transition-colors ${
                           theme === 'dark'
-                            ? 'text-[#F7F5F0]/60 hover:text-[#D95F3B]'
-                            : 'text-[#0A0B10]/60 hover:text-[#D95F3B]'
+                            ? 'text-[#F2F8FC]/60 hover:text-[#1B84C4]'
+                            : 'text-[#06131F]/60 hover:text-[#1B84C4]'
                         }`}
                       >
                         {link.label}
@@ -194,7 +194,7 @@ export default function ComprehensiveFooter() {
 
         {/* Brand Section */}
         <div className={`py-8 mb-8 border-t ${
-          theme === 'dark' ? 'border-white/[0.06]' : 'border-[#0A0B10]/[0.06]'
+          theme === 'dark' ? 'border-white/[0.06]' : 'border-[#06131F]/[0.06]'
         }`}>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Logo & Description */}
@@ -207,7 +207,7 @@ export default function ComprehensiveFooter() {
                 />
               </Link>
               <p className={`text-xs leading-relaxed max-w-xs ${
-                theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60'
               }`}>
                 {lang === 'ar'
                   ? 'مدار منصة ذكاء سوقي مدعومة بالذكاء الاصطناعي تساعد مشغلي الإيجارات قصيرة المدى على تحسين التسعير والإشغال والإيرادات في المملكة العربية السعودية.'
@@ -223,8 +223,8 @@ export default function ComprehensiveFooter() {
                   href="tel:+966538100119"
                   className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 text-xs transition-colors ${
                     theme === 'dark'
-                      ? 'text-[#F7F5F0]/60 hover:text-[#D95F3B]'
-                      : 'text-[#0A0B10]/60 hover:text-[#D95F3B]'
+                      ? 'text-[#F2F8FC]/60 hover:text-[#1B84C4]'
+                      : 'text-[#06131F]/60 hover:text-[#1B84C4]'
                   }`}
                 >
                   <Phone className="w-4 h-4 flex-shrink-0" />
@@ -236,8 +236,8 @@ export default function ComprehensiveFooter() {
                   rel="noopener noreferrer"
                   className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 text-xs transition-colors ${
                     theme === 'dark'
-                      ? 'text-[#F7F5F0]/60 hover:text-[#25D366]'
-                      : 'text-[#0A0B10]/60 hover:text-[#25D366]'
+                      ? 'text-[#F2F8FC]/60 hover:text-[#25D366]'
+                      : 'text-[#06131F]/60 hover:text-[#25D366]'
                   }`}
                 >
                   <MessageCircle className="w-4 h-4 flex-shrink-0" />
@@ -247,15 +247,15 @@ export default function ComprehensiveFooter() {
                   href="mailto:Admin@baytic.app"
                   className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-center gap-3 text-xs transition-colors ${
                     theme === 'dark'
-                      ? 'text-[#F7F5F0]/60 hover:text-[#D95F3B]'
-                      : 'text-[#0A0B10]/60 hover:text-[#D95F3B]'
+                      ? 'text-[#F2F8FC]/60 hover:text-[#1B84C4]'
+                      : 'text-[#06131F]/60 hover:text-[#1B84C4]'
                   }`}
                 >
                   <Mail className="w-4 h-4 flex-shrink-0" />
                   <span>Admin@baytic.app</span>
                 </a>
                 <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} items-start gap-3 text-xs ${
-                  theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60'
+                  theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60'
                 }`}>
                   <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <span>{lang === 'ar' ? 'حي النهضة، جدة، المملكة العربية السعودية' : 'Al Nahdah District, Jeddah, Kingdom of Saudi Arabia'}</span>
@@ -268,8 +268,8 @@ export default function ComprehensiveFooter() {
                   onClick={toggleTheme}
                   className={`p-2.5 rounded-lg transition-all ${
                     theme === 'dark'
-                      ? 'bg-white/[0.04] text-[#F7F5F0]/60 hover:bg-white/[0.08] hover:text-[#F7F5F0]'
-                      : 'bg-[#0A0B10]/5 text-[#0A0B10]/60 hover:bg-[#0A0B10]/10 hover:text-[#0A0B10]'
+                      ? 'bg-white/[0.04] text-[#F2F8FC]/60 hover:bg-white/[0.08] hover:text-[#F2F8FC]'
+                      : 'bg-[#06131F]/5 text-[#06131F]/60 hover:bg-[#06131F]/10 hover:text-[#06131F]'
                   }`}
                   title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                 >
@@ -279,8 +279,8 @@ export default function ComprehensiveFooter() {
                   onClick={toggleLang}
                   className={`px-3 py-2.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
                     theme === 'dark'
-                      ? 'bg-white/[0.04] text-[#F7F5F0]/60 hover:bg-white/[0.08] hover:text-[#F7F5F0]'
-                      : 'bg-[#0A0B10]/5 text-[#0A0B10]/60 hover:bg-[#0A0B10]/10 hover:text-[#0A0B10]'
+                      ? 'bg-white/[0.04] text-[#F2F8FC]/60 hover:bg-white/[0.08] hover:text-[#F2F8FC]'
+                      : 'bg-[#06131F]/5 text-[#06131F]/60 hover:bg-[#06131F]/10 hover:text-[#06131F]'
                   }`}
                 >
                   <Globe className="w-4 h-4" />
@@ -293,34 +293,34 @@ export default function ComprehensiveFooter() {
 
         {/* Bottom Bar */}
         <div className={`py-6 border-t ${
-          theme === 'dark' ? 'border-white/[0.06]' : 'border-[#0A0B10]/[0.06]'
+          theme === 'dark' ? 'border-white/[0.06]' : 'border-[#06131F]/[0.06]'
         } flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${
-          theme === 'dark' ? 'text-[#F7F5F0]/40' : 'text-[#0A0B10]/40'
+          theme === 'dark' ? 'text-[#F2F8FC]/40' : 'text-[#06131F]/40'
         }`}>
           <span>© 2025 Madar. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}</span>
           <div className="flex gap-4">
             <Link to="/privacy" className={`transition-colors hover:${
-              theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+              theme === 'dark' ? 'text-[#1B84C4]' : 'text-[#1B84C4]'
             }`}>
               {lang === 'ar' ? 'الخصوصية' : 'Privacy'}
             </Link>
             <Link to="/terms" className={`transition-colors hover:${
-              theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+              theme === 'dark' ? 'text-[#1B84C4]' : 'text-[#1B84C4]'
             }`}>
               {lang === 'ar' ? 'الشروط' : 'Terms'}
             </Link>
             <Link to="/cookies" className={`transition-colors hover:${
-              theme === 'dark' ? 'text-[#D95F3B]' : 'text-[#D95F3B]'
+              theme === 'dark' ? 'text-[#1B84C4]' : 'text-[#1B84C4]'
             }`}>
               {lang === 'ar' ? 'الكوكيز' : 'Cookies'}
             </Link>
-            <Link to="/subscription" className="transition-colors hover:text-[#D95F3B]">
+            <Link to="/subscription" className="transition-colors hover:text-[#1B84C4]">
               {lang === 'ar' ? 'شروط الاشتراك' : 'Subscription Terms'}
             </Link>
-            <Link to="/data-ai-policy" className="transition-colors hover:text-[#D95F3B]">
+            <Link to="/data-ai-policy" className="transition-colors hover:text-[#1B84C4]">
               {lang === 'ar' ? 'البيانات والذكاء الاصطناعي' : 'Data & AI Policy'}
             </Link>
-            <Link to="/contact" className="transition-colors hover:text-[#D95F3B]">
+            <Link to="/contact" className="transition-colors hover:text-[#1B84C4]">
               {lang === 'ar' ? 'الشكاوى وطلبات البيانات' : 'Complaints & Data Requests'}
             </Link>
           </div>

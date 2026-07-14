@@ -60,20 +60,20 @@ export default function ThirdPartyDisclaimer() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F2EFE8] text-[#0A0B10]">
+    <div className="min-h-screen bg-[#EFF6FA] text-[#06131F]">
       <PublicNavbar />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#F2EFE8] to-white">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#EFF6FA] to-white">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
             <div className="flex justify-center mb-6">
-              <AlertCircle className="w-16 h-16 text-[#D95F3B]" />
+              <AlertCircle className="w-16 h-16 text-[#1B84C4]" />
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0A0B10] mb-6">
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#06131F] mb-6">
               {lang === 'ar' ? 'إخلاء مسؤولية المنصات الخارجية' : 'Third-Party Platform Disclaimer'}
             </h1>
-            <p className="text-lg text-[#0A0B10]/60">
+            <p className="text-lg text-[#06131F]/60">
               {lang === 'ar'
                 ? 'فهم استقلالية مدار والمسؤوليات فيما يتعلق بالمنصات الأخرى.'
                 : 'Understanding Madar independence and responsibilities regarding other platforms.'}
@@ -86,10 +86,10 @@ export default function ThirdPartyDisclaimer() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="mb-12">
-            <h2 className="font-heading text-3xl font-bold text-[#0A0B10] mb-4">
+            <h2 className="font-heading text-3xl font-bold text-[#06131F] mb-4">
               {lang === 'ar' ? 'ما تحتاج لمعرفته' : 'What You Need to Know'}
             </h2>
-            <p className="text-[#0A0B10]/60 leading-relaxed">
+            <p className="text-[#06131F]/60 leading-relaxed">
               {lang === 'ar'
                 ? 'مدار تتكامل مع منصات الجهات الخارجية لتوفير قيمة إضافية. ومع ذلك، نحن مستقلون تماماً ولا ننطق باسم هذه المنصات.'
                 : 'Madar integrates with third-party platforms to provide additional value. However, we are completely independent and do not speak on their behalf.'}
@@ -99,14 +99,14 @@ export default function ThirdPartyDisclaimer() {
           <div className="space-y-5">
             {points.map((point, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="p-6 rounded-2xl border border-[#0A0B10]/[0.06] hover:border-[#D95F3B]/30 hover:bg-red-50/10 transition-all">
+                <div className="p-6 rounded-2xl border border-[#06131F]/[0.06] hover:border-[#1B84C4]/30 hover:bg-red-50/10 transition-all">
                   <div className="flex items-start gap-4">
-                    <Building2 className="w-5 h-5 text-[#D95F3B] flex-shrink-0 mt-1" />
+                    <Building2 className="w-5 h-5 text-[#1B84C4] flex-shrink-0 mt-1" />
                     <div className="flex-1">
-                      <h3 className="font-heading font-bold text-[#0A0B10] text-lg mb-2">
+                      <h3 className="font-heading font-bold text-[#06131F] text-lg mb-2">
                         {lang === 'ar' ? point.titleAr : point.titleEn}
                       </h3>
-                      <p className="text-[#0A0B10]/70 text-sm leading-relaxed">
+                      <p className="text-[#06131F]/70 text-sm leading-relaxed">
                         {lang === 'ar' ? point.contentAr : point.contentEn}
                       </p>
                     </div>
@@ -119,7 +119,7 @@ export default function ThirdPartyDisclaimer() {
       </section>
 
       {/* Critical Notice */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#F2EFE8]">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#EFF6FA]">
         <div className="max-w-4xl mx-auto">
           <FadeIn>
             <div className="p-8 rounded-2xl bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300">
@@ -174,17 +174,17 @@ export default function ThirdPartyDisclaimer() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <FadeIn>
-            <h2 className="font-heading text-2xl font-bold text-[#0A0B10] mb-4">
+            <h2 className="font-heading text-2xl font-bold text-[#06131F] mb-4">
               {lang === 'ar' ? 'هل لديك أسئلة حول التكاملات؟' : 'Questions about third-party integrations?'}
             </h2>
-            <p className="text-[#0A0B10]/60 mb-8">
+            <p className="text-[#06131F]/60 mb-8">
               {lang === 'ar'
                 ? 'اتصل بنا لتوضيح العلاقة بيننا والمنصات الأخرى.'
                 : 'Contact us to clarify our relationship with other platforms.'}
             </p>
             <a
               href="/contact"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+              className="inline-block px-6 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
             >
               {lang === 'ar' ? 'اتصل بالدعم' : 'Contact Support'}
             </a>

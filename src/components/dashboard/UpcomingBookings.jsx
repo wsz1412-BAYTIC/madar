@@ -22,11 +22,11 @@ export default function UpcomingBookings({ properties }) {
       className={`p-6 rounded-2xl border ${
         theme === 'dark'
           ? 'bg-card border-foreground/[0.06]'
-          : 'bg-white border-[#0A0B10]/[0.06]'
+          : 'bg-white border-[#06131F]/[0.06]'
       }`}
     >
       <h2 className={`text-lg font-heading font-bold mb-4 ${
-        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
       }`}>
         {lang === 'ar' ? 'الحجوزات القادمة' : 'Upcoming Bookings'}
       </h2>
@@ -43,7 +43,7 @@ export default function UpcomingBookings({ properties }) {
           >
             <div className="flex-1 min-w-0">
               <p className={`text-sm font-medium ${
-                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
               }`}>
                 {booking.property}
               </p>

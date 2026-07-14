@@ -31,12 +31,12 @@ export default function PlatformUpdates() {
   const dark = theme === 'dark';
 
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'} className={dark ? 'min-h-screen bg-[#0A0B10] text-white' : 'min-h-screen bg-[#F2EFE8] text-[#0A0B10]'}>
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={dark ? 'min-h-screen bg-[#06131F] text-white' : 'min-h-screen bg-[#EFF6FA] text-[#06131F]'}>
       <PublicNavbar />
       <main className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
         <header className="mb-8 text-center">
-          <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#D95F3B]/10">
-            <Megaphone className="h-6 w-6 text-[#D95F3B]" />
+          <div className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1B84C4]/10">
+            <Megaphone className="h-6 w-6 text-[#1B84C4]" />
           </div>
           <h1 className="font-heading text-4xl font-bold">{t('تحديثات المنصة', 'Platform Updates')}</h1>
           <p className="mt-2 opacity-60">{t('أحدث الميزات والتحسينات في مدار.', 'The latest features and improvements in Madar.')}</p>
@@ -56,7 +56,7 @@ export default function PlatformUpdates() {
               return (
                 <li key={u.id} className={`rounded-2xl border p-5 ${dark ? 'border-white/10 bg-white/5' : 'border-black/10 bg-white'}`}>
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#D95F3B]/10 px-2.5 py-0.5 text-xs text-[#D95F3B]">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#1B84C4]/10 px-2.5 py-0.5 text-xs text-[#1B84C4]">
                       <Icon className="h-3.5 w-3.5" />{label(u.type, lang)}
                     </span>
                     <span className="text-xs opacity-50">{u.date ? new Date(u.date).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}</span>

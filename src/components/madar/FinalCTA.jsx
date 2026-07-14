@@ -16,17 +16,17 @@ export default function FinalCTA() {
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 1, 0.3]);
 
   return (
-    <section ref={ref} className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#F2EFE8]">
+    <section ref={ref} className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#EFF6FA]">
       <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
         <img
           src="https://media.base44.com/images/public/6a43dd3026ba0773af35c603/b61ceee51_.png"
           alt=""
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#0A0B10]/85" />
+        <div className="absolute inset-0 bg-[#06131F]/85" />
       </motion.div>
 
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#F2EFE8] via-transparent to-[#F2EFE8]" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#EFF6FA] via-transparent to-[#EFF6FA]" />
 
       <FadeIn className="relative z-10 max-w-3xl mx-auto text-center">
         <motion.div
@@ -34,13 +34,13 @@ export default function FinalCTA() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-[#C8972A] text-xs font-medium mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-[#0F6BA8] text-xs font-medium mb-8"
         >
           <Sparkles className="w-3.5 h-3.5" />
           {lang === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
         </motion.div>
 
-        <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#F7F5F0] leading-[1.1] mb-6">
+        <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#F2F8FC] leading-[1.1] mb-6">
           {lang === 'ar' ? (
             <>عقاراتك تستحق <span className="text-gradient-gold">الأفضل</span></>
           ) : (
@@ -48,7 +48,7 @@ export default function FinalCTA() {
           )}
         </h2>
 
-        <p className="text-lg text-[#F7F5F0]/60 mb-10 max-w-xl mx-auto">
+        <p className="text-lg text-[#F2F8FC]/60 mb-10 max-w-xl mx-auto">
           {lang === 'ar'
             ? 'انضم إلى نخبة المضيفين الذين يحققون أقصى عائد من إيجاراتهم في المملكة.'
             : 'Join an elite group of hosts maximizing returns across the Kingdom.'}
@@ -60,7 +60,7 @@ export default function FinalCTA() {
           ) : (
           <Link
             to={isAuthenticated ? '/dashboard' : '/signup'}
-            className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral"
+            className="group relative flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-xl transition-all overflow-hidden glow-coral"
           >
             <span className="relative z-10">
               {isAuthenticated
@@ -73,13 +73,13 @@ export default function FinalCTA() {
           )}
           <Link
             to="/calculator"
-            className="px-8 py-4 text-[#F7F5F0] font-medium rounded-xl glass hover:bg-white/10 transition-all"
+            className="px-8 py-4 text-[#F2F8FC] font-medium rounded-xl glass hover:bg-white/10 transition-all"
           >
             {lang === 'ar' ? 'جرّب الحاسبة' : 'Try Calculator'}
           </Link>
         </div>
 
-        <p className="text-sm text-[#F7F5F0]/30 mt-8">
+        <p className="text-sm text-[#F2F8FC]/30 mt-8">
           {lang === 'ar' ? 'لا حاجة لبطاقة ائتمان · إلغاء في أي وقت' : 'No credit card required · Cancel anytime'}
         </p>
       </FadeIn>

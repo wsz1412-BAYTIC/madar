@@ -15,16 +15,16 @@ import {
 // contrast relief the low steps need). Per theme so each is legible on its
 // own surface. Index = intensity bucket 0..4; -1 (no data) → neutral.
 const RAMP = {
-  light: ['#FBE9E1', '#F4C3AE', '#E8926B', '#D95F3B', '#A83F22'],
-  dark: ['#3A2A24', '#6E4433', '#A6543A', '#D95F3B', '#F0805C'],
+  light: ['#FBE9E1', '#F4C3AE', '#E8926B', '#1B84C4', '#A83F22'],
+  dark: ['#3A2A24', '#6E4433', '#A6543A', '#1B84C4', '#F0805C'],
 };
 const cellText = (bucket, theme) => {
-  if (bucket < 0) return theme === 'dark' ? 'rgba(247,245,240,0.35)' : 'rgba(10,11,16,0.35)';
+  if (bucket < 0) return theme === 'dark' ? 'rgba(242, 248, 252,0.35)' : 'rgba(10,11,16,0.35)';
   if (bucket >= 2) return '#ffffff';
-  return theme === 'dark' ? 'rgba(247,245,240,0.85)' : '#0A0B10';
+  return theme === 'dark' ? 'rgba(242, 248, 252,0.85)' : '#06131F';
 };
 const cellBg = (bucket, theme) =>
-  bucket < 0 ? (theme === 'dark' ? 'rgba(247,245,240,0.05)' : 'rgba(10,11,16,0.04)') : RAMP[theme][bucket];
+  bucket < 0 ? (theme === 'dark' ? 'rgba(242, 248, 252,0.05)' : 'rgba(10,11,16,0.04)') : RAMP[theme][bucket];
 
 const L = (v, lang) => (typeof v === 'string' ? v : lang === 'ar' ? v?.ar : v?.en);
 
@@ -74,7 +74,7 @@ export default function MarketHeatmap() {
     return [...m.entries()];
   }, [cells]);
 
-  const card = theme === 'dark' ? 'bg-foreground/[0.03] border-foreground/[0.08]' : 'bg-white border-[#0A0B10]/10';
+  const card = theme === 'dark' ? 'bg-foreground/[0.03] border-foreground/[0.08]' : 'bg-white border-[#06131F]/10';
 
   // ── Guest / not-signed-in: honest gate, never fake data ──
   if (authChecked && !isAuthenticated) {
@@ -94,7 +94,7 @@ export default function MarketHeatmap() {
       <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
         <div>
           <h2 className="font-heading text-xl font-bold text-foreground flex items-center gap-2">
-            <MapIcon className="w-5 h-5 text-[#D95F3B]" />
+            <MapIcon className="w-5 h-5 text-[#1B84C4]" />
             {lang === 'ar' ? 'الخريطة الحرارية للسوق' : 'Market Heatmap'}
           </h2>
           <p className="text-xs text-foreground/50 mt-1">
@@ -102,7 +102,7 @@ export default function MarketHeatmap() {
               ? (lang === 'ar' ? 'رؤية سوق مجهّلة حسب المدينة والحي' : 'Anonymized market view by city & neighborhood')
               : (lang === 'ar' ? 'خريطة محفظتك حسب المدينة والحي' : 'Your portfolio by city & neighborhood')}
             {access.tier && (
-              <span className="ms-2 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#C8972A]/15 text-[#C8972A] uppercase">
+              <span className="ms-2 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#ADDFF1]/15 text-[#0F6BA8] uppercase">
                 {access.tier}
               </span>
             )}
@@ -119,8 +119,8 @@ export default function MarketHeatmap() {
 
       {/* Data-coverage honesty note: this visualization is built only from
           available Madar platform data, not an external market feed. */}
-      <div className="flex items-start gap-2 mb-4 rounded-lg border border-[#C8972A]/25 bg-[#C8972A]/[0.07] px-3 py-2">
-        <Info className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#C8972A]" />
+      <div className="flex items-start gap-2 mb-4 rounded-lg border border-[#ADDFF1]/25 bg-[#ADDFF1]/[0.07] px-3 py-2">
+        <Info className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#0F6BA8]" />
         <p className="text-[11px] leading-relaxed text-foreground/60">
           {lang === 'ar'
             ? 'يعتمد هذا المؤشر على البيانات المتاحة داخل المنصة وقد لا يمثل السوق بالكامل.'
@@ -218,7 +218,7 @@ export default function MarketHeatmap() {
                     <button key={c.id} type="button" onClick={() => setSelectedId(c.id === selectedId ? null : c.id)}
                       title={`${c.district} · ${c.occupancy != null ? c.occupancy + '%' : (lang === 'ar' ? 'لا بيانات' : 'no data')}`}
                       aria-label={`${c.district}, ${c.city}${c.occupancy != null ? `, ${c.occupancy}% ${lang === 'ar' ? 'إشغال' : 'occupancy'}` : ''}`}
-                      className={`relative min-w-[92px] px-3 py-2.5 rounded-lg text-start transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-[#D95F3B]/40 ${c.id === selectedId ? 'ring-2 ring-[#D95F3B]' : ''}`}
+                      className={`relative min-w-[92px] px-3 py-2.5 rounded-lg text-start transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-[#1B84C4]/40 ${c.id === selectedId ? 'ring-2 ring-[#1B84C4]' : ''}`}
                       style={{ background: cellBg(c.intensity, theme), color: cellText(c.intensity, theme) }}>
                       <div className="text-[11px] font-medium leading-tight truncate max-w-[120px]">{c.district}</div>
                       <div className="text-sm font-bold nums" dir="ltr">{c.occupancy != null ? `${c.occupancy}%` : '—'}</div>
@@ -255,7 +255,7 @@ function ViewToggle({ view, setView, lang }) {
     <div className="flex items-center rounded-lg bg-foreground/[0.05] border border-foreground/[0.08] p-0.5">
       {[{ k: 'map', Icon: MapIcon, l: lang === 'ar' ? 'خريطة' : 'Map' }, { k: 'table', Icon: Table2, l: lang === 'ar' ? 'جدول' : 'Table' }].map(({ k, Icon, l }) => (
         <button key={k} type="button" onClick={() => setView(k)} aria-pressed={view === k}
-          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs transition-colors ${view === k ? 'bg-[#D95F3B] text-white' : 'text-foreground/60 hover:text-foreground'}`}>
+          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs transition-colors ${view === k ? 'bg-[#0F6BA8] text-white' : 'text-foreground/60 hover:text-foreground'}`}>
           <Icon className="w-3.5 h-3.5" />{l}
         </button>
       ))}
@@ -288,7 +288,7 @@ function CellDetail({ cell, lang, theme }) {
     </div>
   );
   return (
-    <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'bg-foreground/[0.04] border-foreground/[0.08]' : 'bg-[#F2EFE8] border-[#0A0B10]/10'}`}>
+    <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'bg-foreground/[0.04] border-foreground/[0.08]' : 'bg-[#EFF6FA] border-[#06131F]/10'}`}>
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-heading font-semibold text-foreground">{cell.district} <span className="text-foreground/40 font-normal">· {cell.city}</span></h3>
         <span className={`flex items-center gap-1 text-xs font-semibold ${trendColor}`}>
@@ -304,7 +304,7 @@ function CellDetail({ cell, lang, theme }) {
         {stat(lang === 'ar' ? 'عدد العينة' : 'Sample', cell.sampleCount)}
       </div>
       <div className="flex items-start gap-2 text-xs text-foreground/70 leading-relaxed">
-        <Info className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#C8972A]" />
+        <Info className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#0F6BA8]" />
         <p>{insight}</p>
       </div>
     </div>
@@ -316,7 +316,7 @@ function HeatmapTable({ cells, lang, theme }) {
     <div className="overflow-x-auto rounded-xl border border-foreground/[0.08]">
       <table className="w-full text-sm">
         <thead>
-          <tr className={`text-start ${theme === 'dark' ? 'bg-foreground/[0.04]' : 'bg-[#0A0B10]/[0.03]'}`}>
+          <tr className={`text-start ${theme === 'dark' ? 'bg-foreground/[0.04]' : 'bg-[#06131F]/[0.03]'}`}>
             {[lang === 'ar' ? 'المدينة' : 'City', lang === 'ar' ? 'الحي' : 'District', lang === 'ar' ? 'الإشغال' : 'Occupancy', lang === 'ar' ? 'السعر' : 'ADR', lang === 'ar' ? 'العينة' : 'Sample'].map((h) => (
               <th key={h} className="text-start font-medium text-foreground/60 px-3 py-2 whitespace-nowrap">{h}</th>
             ))}
@@ -378,7 +378,7 @@ function ErrorState({ lang, message, onRetry }) {
     <div className="flex flex-col items-center text-center py-12 px-4">
       <p className="text-sm text-foreground/70 mb-3">{message}</p>
       <button type="button" onClick={onRetry}
-        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#D95F3B] text-white text-sm font-medium hover:shadow-lg transition-all">
+        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0F6BA8] text-white text-sm font-medium hover:shadow-lg transition-all">
         <RefreshCw className="w-3.5 h-3.5" />{lang === 'ar' ? 'إعادة المحاولة' : 'Retry'}
       </button>
     </div>
@@ -388,10 +388,10 @@ function ErrorState({ lang, message, onRetry }) {
 function GateCard({ theme, lang, title, body, cta, inline = false }) {
   return (
     <div className={`${inline ? '' : 'rounded-2xl border'} ${theme === 'dark' ? 'bg-primary/[0.06] border-primary/20' : 'bg-primary/5 border-primary/20'} p-6 text-center`}>
-      <Lock className="w-8 h-8 text-[#D95F3B] mx-auto mb-3" />
+      <Lock className="w-8 h-8 text-[#1B84C4] mx-auto mb-3" />
       <h3 className="font-heading font-bold text-foreground mb-2">{title}</h3>
       <p className="text-sm text-foreground/60 max-w-md mx-auto mb-4">{body}</p>
-      <Link to={cta.to} className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium hover:shadow-lg transition-all">
+      <Link to={cta.to} className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium hover:shadow-lg transition-all">
         {cta.label}
       </Link>
     </div>

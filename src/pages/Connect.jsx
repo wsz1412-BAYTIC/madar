@@ -30,8 +30,8 @@ export default function Connect() {
     <div className="space-y-8 max-w-2xl">
       <FadeIn>
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/20">
-            <Link2 className="w-5 h-5 text-[#D95F3B]" />
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/20">
+            <Link2 className="w-5 h-5 text-[#1B84C4]" />
           </div>
           <div>
             <h1 className="font-heading text-3xl font-bold text-foreground">{t('connectPlatforms')}</h1>
@@ -68,7 +68,7 @@ export default function Connect() {
                         {t('disconnect')}
                       </button>
                     ) : (
-                      <button onClick={() => handleConnect(platform.id)} disabled={isLoading} className="px-4 py-2 text-xs font-medium text-white bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all disabled:opacity-50 flex items-center gap-1.5">
+                      <button onClick={() => handleConnect(platform.id)} disabled={isLoading} className="px-4 py-2 text-xs font-medium text-white bg-gradient-to-r from-[#00548C] to-[#003152] rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all disabled:opacity-50 flex items-center gap-1.5">
                         {isLoading ? <><Loader2 className="w-3 h-3 animate-spin" />{lang === 'ar' ? 'جاري الربط...' : 'Connecting...'}</> : <>{t('connectNow')}<ExternalLink className="w-3 h-3" /></>}
                       </button>
                     )}
@@ -89,7 +89,7 @@ export default function Connect() {
               : ['Click "Connect Now" for your platform', 'Log in and authorize Madar access', 'Your listings and bookings sync automatically']
             ).map((step, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#D95F3B] to-[#C8972A] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{i + 1}</div>
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#00548C] to-[#003152] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{i + 1}</div>
                 <span className="text-sm text-foreground/60">{step}</span>
               </div>
             ))}

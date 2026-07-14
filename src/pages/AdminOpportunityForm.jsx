@@ -75,7 +75,7 @@ export default function AdminOpportunityForm() {
   }
 
   return (
-    <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
+    <div dir="rtl" className="flex min-h-screen bg-[#EFF6FA]">
       <AdminNav admin={{ role: 'admin' }} />
       <main className="flex-1 p-6 lg:p-8">
         <form onSubmit={save} className="max-w-6xl space-y-6">
@@ -84,7 +84,7 @@ export default function AdminOpportunityForm() {
               <h1 className="font-heading text-3xl font-bold">{isNew ? 'إنشاء فرصة عقارية' : 'تفاصيل فرصة عقارية'}</h1>
               <p className="opacity-60">جميع الحقول الحساسة داخلية ولا تظهر للمشتركين.</p>
             </div>
-            <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]">حفظ</Button>
+            <Button className="bg-gradient-to-r from-[#00548C] to-[#003152]">حفظ</Button>
           </div>
           {error && <div className="rounded-xl border border-red-300 bg-red-50 p-4 text-red-700">{error}</div>}
           {loading ? <div className="rounded-2xl bg-white p-8">جاري التحميل...</div> : FIELD_GROUPS.map(([title, fields]) => (

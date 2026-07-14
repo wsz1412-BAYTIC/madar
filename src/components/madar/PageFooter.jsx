@@ -8,7 +8,7 @@ export default function PageFooter() {
   const { lang } = useLang();
 
   return (
-    <footer className="py-16 px-4 border-t border-[#0A0B10]/[0.06] bg-[#F2EFE8]">
+    <footer className="py-16 px-4 border-t border-[#06131F]/[0.06] bg-[#EFF6FA]">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-start gap-12 mb-12">
           {/* Logo & Description */}
@@ -20,7 +20,7 @@ export default function PageFooter() {
                 className="h-24 w-auto"
               />
             </Link>
-            <p className="text-sm text-[#0A0B10]/60 max-w-xs leading-relaxed">
+            <p className="text-sm text-[#06131F]/60 max-w-xs leading-relaxed">
               {lang === 'ar'
                 ? 'مدار هي منصة ذكاء السوق المدعومة بالذكاء الاصطناعي تساعد مشغلي الإيجار قصير الأجل على اتخاذ قرارات تسعير وإيرادات أفضل عبر المملكة العربية السعودية.'
                 : 'Madar is an AI-powered market intelligence platform helping short-term rental operators make better pricing and revenue decisions across Saudi Arabia.'}
@@ -29,20 +29,20 @@ export default function PageFooter() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-heading font-bold text-[#0A0B10] text-sm mb-4">
+            <h3 className="font-heading font-bold text-[#06131F] text-sm mb-4">
               {lang === 'ar' ? 'الروابط السريعة' : 'Quick Links'}
             </h3>
             <div className="space-y-2">
-              <Link to="/" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'الرئيسية' : 'Home'}
               </Link>
-              <Link to="/calculator" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/calculator" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'الحاسبة' : 'Calculator'}
               </Link>
-              <Link to="/login" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/login" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'تسجيل الدخول' : 'Login'}
               </Link>
-              <Link to="/signup" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/signup" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'التسجيل' : 'Sign Up'}
               </Link>
             </div>
@@ -50,20 +50,20 @@ export default function PageFooter() {
 
           {/* Legal & Policy */}
           <div>
-            <h3 className="font-heading font-bold text-[#0A0B10] text-sm mb-4">
+            <h3 className="font-heading font-bold text-[#06131F] text-sm mb-4">
               {lang === 'ar' ? 'السياسات والقانون' : 'Legal & Policy'}
             </h3>
             <div className="space-y-2">
-              <Link to="/privacy" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/privacy" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
               </Link>
-              <Link to="/terms" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/terms" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'الشروط' : 'Terms'}
               </Link>
-              <Link to="/aup" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/aup" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'سياسة الاستخدام' : 'Acceptable Use'}
               </Link>
-              <Link to="/ip-trademark" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/ip-trademark" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'الملكية الفكرية' : 'IP & Trademark'}
               </Link>
             </div>
@@ -71,20 +71,20 @@ export default function PageFooter() {
 
           {/* Support & Company */}
           <div>
-            <h3 className="font-heading font-bold text-[#0A0B10] text-sm mb-4">
+            <h3 className="font-heading font-bold text-[#06131F] text-sm mb-4">
               {lang === 'ar' ? 'الدعم والشركة' : 'Support & Company'}
             </h3>
             <div className="space-y-2">
-              <Link to="/contact" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/contact" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'اتصل بنا' : 'Contact Us'}
               </Link>
-              <Link to="/cookies" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/cookies" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'سياسة الكوكيز' : 'Cookie Policy'}
               </Link>
-              <Link to="/third-party" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/third-party" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'جهات خارجية' : 'Third-Party'}
               </Link>
-              <Link to="/ai-disclaimer" className="text-sm text-[#0A0B10]/60 hover:text-[#D95F3B] transition-colors block">
+              <Link to="/ai-disclaimer" className="text-sm text-[#06131F]/60 hover:text-[#1B84C4] transition-colors block">
                 {lang === 'ar' ? 'إخلاء المسؤولية AI' : 'AI Disclaimer'}
               </Link>
             </div>
@@ -92,16 +92,16 @@ export default function PageFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-[#0A0B10]/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#0A0B10]/40">
+        <div className="pt-8 border-t border-[#06131F]/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#06131F]/40">
           <span>© 2025 Madar. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}</span>
           <div className="flex gap-4">
-            <a href="/privacy" className="hover:text-[#D95F3B] transition-colors">
+            <a href="/privacy" className="hover:text-[#1B84C4] transition-colors">
               {lang === 'ar' ? 'الخصوصية' : 'Privacy'}
             </a>
-            <a href="/terms" className="hover:text-[#D95F3B] transition-colors">
+            <a href="/terms" className="hover:text-[#1B84C4] transition-colors">
               {lang === 'ar' ? 'الشروط' : 'Terms'}
             </a>
-            <a href="/cookies" className="hover:text-[#D95F3B] transition-colors">
+            <a href="/cookies" className="hover:text-[#1B84C4] transition-colors">
               {lang === 'ar' ? 'الكوكيز' : 'Cookies'}
             </a>
           </div>

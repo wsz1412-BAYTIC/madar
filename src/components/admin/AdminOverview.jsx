@@ -46,7 +46,7 @@ export default function AdminOverview({ admin }) {
   return (
     <div>
       <h2 className={`text-2xl font-heading font-bold mb-6 ${
-        theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+        theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
       }`}>
         {lang === 'ar' ? 'المقاطع الرئيسية' : 'Main Sections'}
       </h2>
@@ -64,7 +64,7 @@ export default function AdminOverview({ admin }) {
               className={`block p-6 rounded-2xl border transition-all hover:-translate-y-1 ${
                 theme === 'dark'
                   ? 'bg-card border-foreground/[0.06] hover:border-primary/30'
-                  : 'bg-white border-[#0A0B10]/[0.06] hover:border-primary/30'
+                  : 'bg-white border-[#06131F]/[0.06] hover:border-primary/30'
               }`}
             >
               <div className="flex items-start justify-between mb-3">
@@ -75,12 +75,12 @@ export default function AdminOverview({ admin }) {
                 </div>
               </div>
               <h3 className={`text-lg font-heading font-bold mb-2 ${
-                theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]'
+                theme === 'dark' ? 'text-foreground' : 'text-[#06131F]'
               }`}>
                 {section.title}
               </h3>
               <p className={`text-sm ${
-                theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60'
+                theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60'
               }`}>
                 {section.description}
               </p>

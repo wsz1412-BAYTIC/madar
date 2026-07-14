@@ -135,10 +135,10 @@ export default function Alerts() {
 
   const bgCard = theme === 'dark'
     ? 'bg-foreground/[0.03] border border-foreground/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-foreground' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-foreground/60' : 'text-[#06131F]/60';
 
   return (
     <div className="space-y-8">
@@ -173,7 +173,7 @@ export default function Alerts() {
                 <div key={item.key} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <label className={`text-sm font-medium ${textColor}`}>{item.label}</label>
-                    <span className="text-sm font-bold text-[#D95F3B]">{thresholds[item.key]}%</span>
+                    <span className="text-sm font-bold text-[#1B84C4]">{thresholds[item.key]}%</span>
                   </div>
                   <input
                     type="range"
@@ -181,7 +181,7 @@ export default function Alerts() {
                     max={item.max}
                     value={thresholds[item.key]}
                     onChange={(e) => setThresholds(prev => ({ ...prev, [item.key]: parseInt(e.target.value) }))}
-                    className="w-full h-2 bg-foreground/10 rounded-lg appearance-none cursor-pointer accent-[#D95F3B]"
+                    className="w-full h-2 bg-foreground/10 rounded-lg appearance-none cursor-pointer accent-[#1B84C4]"
                   />
                 </div>
               ))}
@@ -207,9 +207,9 @@ export default function Alerts() {
                         type="checkbox"
                         checked={channels[item.key]}
                         onChange={(e) => setChannels(prev => ({ ...prev, [item.key]: e.target.checked }))}
-                        className="w-4 h-4 rounded accent-[#D95F3B] cursor-pointer"
+                        className="w-4 h-4 rounded accent-[#1B84C4] cursor-pointer"
                       />
-                      <Icon className="w-4 h-4 text-[#D95F3B]" />
+                      <Icon className="w-4 h-4 text-[#1B84C4]" />
                       <span className={`text-sm font-medium ${textColor}`}>{item.label}</span>
                     </label>
                   );
@@ -219,7 +219,7 @@ export default function Alerts() {
 
             <button
               onClick={() => setShowConfig(false)}
-              className="w-full py-2 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+              className="w-full py-2 bg-gradient-to-r from-[#00548C] to-[#003152] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
             >
               {lang === 'ar' ? 'حفظ التغييرات' : 'Save Changes'}
             </button>
@@ -232,9 +232,9 @@ export default function Alerts() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#D95F3B] to-[#C8972A] rounded-2xl blur-lg opacity-30 animate-glow-pulse" />
-              <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/10 flex items-center justify-center border border-[#D95F3B]/20">
-                <Bell className="w-5 h-5 text-[#D95F3B]" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00548C] to-[#003152] rounded-2xl blur-lg opacity-30 animate-glow-pulse" />
+              <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/10 flex items-center justify-center border border-[#1B84C4]/20">
+                <Bell className="w-5 h-5 text-[#1B84C4]" />
               </div>
             </div>
             <div>
@@ -311,7 +311,7 @@ export default function Alerts() {
                 {isActive && (
                   <motion.div
                     layoutId="alertFilterPill"
-                    className="absolute inset-0 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] rounded-full"
+                    className="absolute inset-0 bg-gradient-to-r from-[#00548C] to-[#003152] rounded-full"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -343,7 +343,7 @@ export default function Alerts() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, x: -40, height: 0, marginBottom: 0 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className={`relative glass ${cfg.border} ${cfg.glow} rounded-2xl p-5 overflow-hidden ${isNew ? 'ring-1 ring-[#D95F3B]/40' : ''}`}
+                className={`relative glass ${cfg.border} ${cfg.glow} rounded-2xl p-5 overflow-hidden ${isNew ? 'ring-1 ring-[#1B84C4]/40' : ''}`}
               >
                 {/* New alert pulse overlay */}
                 {isNew && (
@@ -351,7 +351,7 @@ export default function Alerts() {
                     initial={{ opacity: 0.6 }}
                     animate={{ opacity: 0 }}
                     transition={{ duration: 2, repeat: 2 }}
-                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#D95F3B]/10 to-transparent pointer-events-none"
+                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#1B84C4]/10 to-transparent pointer-events-none"
                   />
                 )}
 
@@ -385,7 +385,7 @@ export default function Alerts() {
                         <motion.span
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white"
+                          className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-gradient-to-r from-[#00548C] to-[#003152] text-white"
                         >
                           {lang === 'ar' ? 'جديد' : 'New'}
                         </motion.span>
@@ -406,7 +406,7 @@ export default function Alerts() {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-xs font-medium rounded-lg hover:shadow-lg hover:shadow-[#D95F3B]/30 transition-all"
+                        className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-xs font-medium rounded-lg hover:shadow-lg hover:shadow-[#1B84C4]/30 transition-all"
                       >
                         <Zap className="w-3 h-3" />
                         {t('applyNow')}

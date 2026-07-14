@@ -19,13 +19,13 @@ export default function ToolsSection() {
     <section className="py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <FadeIn className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0F1117] border border-[#C8972A]/20 text-[#C8972A] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0B1B2A] border border-[#ADDFF1]/20 text-[#0F6BA8] text-xs font-medium mb-6">
             <Sparkles className="w-3 h-3" />{t('toolsBadge')}
           </div>
-          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0A0B10] mb-6 leading-tight">
+          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#06131F] mb-6 leading-tight">
             {t('toolsTitle')}
           </h2>
-          <p className="text-[#0A0B10]/50 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-[#06131F]/50 text-lg max-w-2xl mx-auto leading-relaxed">
             {t('toolsSubtitle')}
           </p>
         </FadeIn>
@@ -33,12 +33,12 @@ export default function ToolsSection() {
         <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" stagger={0.08}>
           {tools.map((tool) => (
             <StaggerItem key={tool.titleKey}>
-              <div className="group h-full p-7 rounded-3xl bg-[#0F1117] border border-white/[0.06] hover:border-white/15 hover:bg-[#13151C] transition-all duration-500 hover:-translate-y-1">
+              <div className="group h-full p-7 rounded-3xl bg-[#0B1B2A] border border-white/[0.06] hover:border-white/15 hover:bg-[#13151C] transition-all duration-500 hover:-translate-y-1">
                 <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${tool.gradient} border ${tool.border} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500`}>
                   <tool.icon className={`w-5 h-5 ${tool.iconColor}`} />
                 </div>
-                <h3 className="font-heading font-bold text-[#F7F5F0] text-lg mb-3">{t(tool.titleKey)}</h3>
-                <p className="text-[#F7F5F0]/60 text-sm leading-relaxed">{t(tool.descKey)}</p>
+                <h3 className="font-heading font-bold text-[#F2F8FC] text-lg mb-3">{t(tool.titleKey)}</h3>
+                <p className="text-[#F2F8FC]/60 text-sm leading-relaxed">{t(tool.descKey)}</p>
               </div>
             </StaggerItem>
           ))}

@@ -117,16 +117,16 @@ export default function HelpCenter() {
 
   const bgCard = theme === 'dark'
     ? 'bg-white/[0.03] border border-white/[0.06]'
-    : 'bg-[#F2EFE8] border border-[#0A0B10]/10';
+    : 'bg-[#EFF6FA] border border-[#06131F]/10';
 
-  const textColor = theme === 'dark' ? 'text-[#F7F5F0]' : 'text-[#0A0B10]';
-  const textMuted = theme === 'dark' ? 'text-[#F7F5F0]/60' : 'text-[#0A0B10]/60';
+  const textColor = theme === 'dark' ? 'text-[#F2F8FC]' : 'text-[#06131F]';
+  const textMuted = theme === 'dark' ? 'text-[#F2F8FC]/60' : 'text-[#06131F]/60';
 
   return (
     <div className={`min-h-screen ${
       theme === 'dark'
         ? 'bg-background text-foreground'
-        : 'bg-white text-[#0A0B10]'
+        : 'bg-white text-[#06131F]'
     }`}>
       <PublicNavbar />
 
@@ -153,8 +153,8 @@ export default function HelpCenter() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={`w-full ${isRTL ? 'pr-12' : 'pl-12'} px-4 py-3 rounded-lg text-sm transition-all ${
                   theme === 'dark'
-                    ? 'bg-white/[0.04] border border-white/[0.08] text-[#F7F5F0] placeholder-[#F7F5F0]/40 focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50'
-                    : 'bg-[#0A0B10]/5 border border-[#0A0B10]/10 text-[#0A0B10] placeholder-[#0A0B10]/40 focus:ring-2 focus:ring-[#D95F3B]/20 focus:border-[#D95F3B]/50'
+                    ? 'bg-white/[0.04] border border-white/[0.08] text-[#F2F8FC] placeholder-[#F2F8FC]/40 focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50'
+                    : 'bg-[#06131F]/5 border border-[#06131F]/10 text-[#06131F] placeholder-[#06131F]/40 focus:ring-2 focus:ring-[#1B84C4]/20 focus:border-[#1B84C4]/50'
                 }`}
               />
             </div>
@@ -171,10 +171,10 @@ export default function HelpCenter() {
                   <StaggerItem key={article.id}>
                     <button
                       onClick={() => alert(`Article: ${article.title}`)}
-                      className={`p-6 rounded-lg text-left transition-all hover:border-[#D95F3B]/50 ${bgCard}`}
+                      className={`p-6 rounded-lg text-left transition-all hover:border-[#1B84C4]/50 ${bgCard}`}
                     >
                       <div className="flex items-start gap-3 mb-3">
-                        <BookOpen className="w-5 h-5 text-[#D95F3B] flex-shrink-0 mt-0.5" />
+                        <BookOpen className="w-5 h-5 text-[#1B84C4] flex-shrink-0 mt-0.5" />
                         <h3 className={`font-bold ${textColor}`}>
                           {article.title}
                         </h3>
@@ -199,10 +199,10 @@ export default function HelpCenter() {
                 onClick={() => setSelectedCategory('all')}
                 className={`px-4 py-2 text-sm rounded-lg font-medium transition-all ${
                   selectedCategory === 'all'
-                    ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                    ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                     : theme === 'dark'
-                      ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                      : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                      ? 'bg-white/[0.04] text-[#F2F8FC]/70 hover:bg-white/[0.08]'
+                      : 'bg-[#06131F]/5 text-[#06131F]/70 hover:bg-[#06131F]/10'
                 }`}
               >
                 {lang === 'ar' ? 'الكل' : 'All'}
@@ -213,10 +213,10 @@ export default function HelpCenter() {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-4 py-2 text-sm rounded-lg font-medium transition-all ${
                     selectedCategory === cat.id
-                      ? 'bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white'
+                      ? 'bg-gradient-to-r from-[#00548C] to-[#003152] text-white'
                       : theme === 'dark'
-                        ? 'bg-white/[0.04] text-[#F7F5F0]/70 hover:bg-white/[0.08]'
-                        : 'bg-[#0A0B10]/5 text-[#0A0B10]/70 hover:bg-[#0A0B10]/10'
+                        ? 'bg-white/[0.04] text-[#F2F8FC]/70 hover:bg-white/[0.08]'
+                        : 'bg-[#06131F]/5 text-[#06131F]/70 hover:bg-[#06131F]/10'
                   }`}
                 >
                   {cat.label}
@@ -233,7 +233,7 @@ export default function HelpCenter() {
                   <StaggerItem key={article.id}>
                     <button
                       onClick={() => alert(`Article: ${article.title}`)}
-                      className={`w-full p-6 rounded-lg text-left transition-all hover:border-[#D95F3B]/50 ${bgCard}`}
+                      className={`w-full p-6 rounded-lg text-left transition-all hover:border-[#1B84C4]/50 ${bgCard}`}
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
@@ -247,7 +247,7 @@ export default function HelpCenter() {
                             {lang === 'ar' ? 'محدّث:' : 'Updated:'} {new Date(article.updated).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US')}
                           </p>
                         </div>
-                        <Arrow className={`w-5 h-5 text-[#D95F3B] flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`} />
+                        <Arrow className={`w-5 h-5 text-[#1B84C4] flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
                   </StaggerItem>
@@ -263,7 +263,7 @@ export default function HelpCenter() {
                     setSearchQuery('');
                     setSelectedCategory('all');
                   }}
-                  className="text-sm text-[#D95F3B] hover:text-[#C8972A] transition-colors"
+                  className="text-sm text-[#1B84C4] hover:text-[#0F6BA8] transition-colors"
                 >
                   {lang === 'ar' ? 'إعادة تعيين البحث' : 'Reset search'}
                 </button>
@@ -274,7 +274,7 @@ export default function HelpCenter() {
           {/* Contact Support CTA */}
           <FadeIn delay={0.3} className="mt-16">
             <div className={`p-8 rounded-xl text-center ${bgCard}`}>
-              <MessageCircle className="w-12 h-12 mx-auto mb-4 text-[#D95F3B]" />
+              <MessageCircle className="w-12 h-12 mx-auto mb-4 text-[#1B84C4]" />
               <h3 className={`font-heading font-bold text-lg mb-2 ${textColor}`}>
                 {lang === 'ar' ? 'هل لم تجد إجابتك؟' : "Didn't find your answer?"}
               </h3>
@@ -285,7 +285,7 @@ export default function HelpCenter() {
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D95F3B] to-[#C8972A] text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#00548C] to-[#003152] text-white text-sm font-medium rounded-lg hover:shadow-lg transition-all"
               >
                 {lang === 'ar' ? 'اتصل بنا' : 'Contact Support'}
                 <Arrow className="w-4 h-4" />

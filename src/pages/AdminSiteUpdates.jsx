@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Megaphone, Plus, Trash2, Pencil, Eye, EyeOff, Sparkles, Wrench, Bug, X } from 'lucide-react';
 import { UPDATE_TYPES, label, validateSiteUpdate, sortByDateDesc } from '@/lib/siteUpdates';
 
-const CARD = 'rounded-2xl border border-[#0A0B10]/10 bg-white';
+const CARD = 'rounded-2xl border border-[#06131F]/10 bg-white';
 const FieldLabel = ({ children }) => <label className="mb-1 block text-xs font-medium opacity-60">{children}</label>;
 const TYPE_ICON = { feature: Sparkles, improvement: Wrench, fix: Bug, announcement: Megaphone };
 
@@ -112,12 +112,12 @@ export default function AdminSiteUpdates() {
   })), [updates]);
 
   return (
-    <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
+    <div dir="rtl" className="flex min-h-screen bg-[#EFF6FA]">
       <AdminNav admin={{ role: 'admin' }} />
       <main className="flex-1 space-y-6 p-6 lg:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Megaphone className="h-7 w-7 text-[#D95F3B]" />
+            <Megaphone className="h-7 w-7 text-[#1B84C4]" />
             <div>
               <h1 className="font-heading text-3xl font-bold">تحديثات المنصة</h1>
               <p className="text-sm opacity-60">إدارة سجل التغييرات والإعلانات الظاهرة للمستخدمين. المسودات تظهر للمشرفين فقط.</p>
@@ -125,7 +125,7 @@ export default function AdminSiteUpdates() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <ExportButtons baseName="site-updates" rows={exportRows} />
-            <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={openNew}><Plus className="ml-1 h-4 w-4" />إضافة تحديث</Button>
+            <Button className="bg-gradient-to-r from-[#00548C] to-[#003152]" onClick={openNew}><Plus className="ml-1 h-4 w-4" />إضافة تحديث</Button>
           </div>
         </div>
 
@@ -139,19 +139,19 @@ export default function AdminSiteUpdates() {
         {/* List / states */}
         <section className={`${CARD} overflow-hidden`}>
           {loading ? (
-            <div className="space-y-2 p-6">{[...Array(4)].map((_, i) => <div key={i} className="h-14 animate-pulse rounded bg-[#0A0B10]/5" />)}</div>
+            <div className="space-y-2 p-6">{[...Array(4)].map((_, i) => <div key={i} className="h-14 animate-pulse rounded bg-[#06131F]/5" />)}</div>
           ) : updates.length === 0 ? (
             <div className="p-10 text-center opacity-60">لا توجد تحديثات بعد. أضف أول تحديث للمنصة.</div>
           ) : (
-            <ul className="divide-y divide-[#0A0B10]/10">
+            <ul className="divide-y divide-[#06131F]/10">
               {updates.map((item) => {
                 const Icon = TYPE_ICON[item.type] || Sparkles;
                 return (
                   <li key={item.id} className="flex items-start gap-3 p-4">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#0A0B10]/5"><Icon className="h-4 w-4 text-[#D95F3B]" /></div>
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#06131F]/5"><Icon className="h-4 w-4 text-[#1B84C4]" /></div>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-[#0A0B10]/5 px-2 py-0.5 text-[11px]">{label(item.type, 'ar')}</span>
+                        <span className="rounded-full bg-[#06131F]/5 px-2 py-0.5 text-[11px]">{label(item.type, 'ar')}</span>
                         <span className="text-xs opacity-60">{item.date ? new Date(item.date).toLocaleDateString('ar-SA', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</span>
                         <span className={`rounded-full px-2 py-0.5 text-[11px] ${item.is_published ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}>{item.is_published ? 'منشور' : 'مسودة'}</span>
                       </div>
@@ -219,7 +219,7 @@ export default function AdminSiteUpdates() {
             {errors._form && <p className="mt-3 text-sm text-red-600">{errors._form}</p>}
             <div className="mt-4 flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowForm(false)} disabled={saving}>إلغاء</Button>
-              <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={save} disabled={saving}>{saving ? 'جارٍ الحفظ...' : 'حفظ'}</Button>
+              <Button className="bg-gradient-to-r from-[#00548C] to-[#003152]" onClick={save} disabled={saving}>{saving ? 'جارٍ الحفظ...' : 'حفظ'}</Button>
             </div>
           </div>
         </div>

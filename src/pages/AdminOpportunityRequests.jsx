@@ -15,7 +15,7 @@ import {
   label, filterRequests, isFollowUpDue,
 } from '@/lib/opportunityRequests';
 
-const CARD = 'rounded-2xl border border-[#0A0B10]/10 bg-white';
+const CARD = 'rounded-2xl border border-[#06131F]/10 bg-white';
 const FieldLabel = ({ children }) => <label className="mb-1 block text-xs font-medium opacity-60">{children}</label>;
 const CONTACT_ICON = { phone: Phone, whatsapp: MessageCircle, email: Mail };
 
@@ -135,7 +135,7 @@ export default function AdminOpportunityRequests() {
   })), [filtered, cityOf]);
 
   return (
-    <div dir="rtl" className="flex min-h-screen bg-[#F2EFE8]">
+    <div dir="rtl" className="flex min-h-screen bg-[#EFF6FA]">
       <AdminNav admin={{ role: 'admin' }} />
       <main className="flex-1 space-y-6 p-6 lg:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -189,7 +189,7 @@ export default function AdminOpportunityRequests() {
             <div className="flex items-end">
               <Button
                 variant={filters.followUpDue ? 'default' : 'outline'}
-                className={filters.followUpDue ? 'w-full bg-[#D95F3B]' : 'w-full'}
+                className={filters.followUpDue ? 'w-full bg-[#0F6BA8]' : 'w-full'}
                 onClick={() => setFilter('followUpDue', !filters.followUpDue)}
               >
                 <Bell className="ml-1 h-4 w-4" />المتابعات المستحقة فقط
@@ -208,13 +208,13 @@ export default function AdminOpportunityRequests() {
         {/* Table / states */}
         <section className={`${CARD} overflow-hidden`}>
           {loading ? (
-            <div className="space-y-2 p-6">{[...Array(4)].map((_, i) => <div key={i} className="h-10 animate-pulse rounded bg-[#0A0B10]/5" />)}</div>
+            <div className="space-y-2 p-6">{[...Array(4)].map((_, i) => <div key={i} className="h-10 animate-pulse rounded bg-[#06131F]/5" />)}</div>
           ) : filtered.length === 0 ? (
             <div className="p-10 text-center opacity-60">{requests.length === 0 ? 'لا توجد طلبات حتى الآن.' : 'لا توجد طلبات مطابقة للتصفية.'}</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-[#0A0B10]/5">
+                <thead className="bg-[#06131F]/5">
                   <tr>{['التاريخ', 'الفرصة', 'العميل', 'الجوال', 'الحالة', 'الاتفاقية', 'المتابعة', 'تحقق العقار', ''].map((h) => <th key={h} className="p-3 text-right font-medium">{h}</th>)}</tr>
                 </thead>
                 <tbody>
@@ -228,7 +228,7 @@ export default function AdminOpportunityRequests() {
                     // moved to a current one.
                     const statusItems = REQUEST_STATUSES.includes(rowStatus) ? REQUEST_STATUSES : [...REQUEST_STATUSES, rowStatus];
                     return (
-                      <tr key={r.id} className="border-t border-[#0A0B10]/10 hover:bg-[#0A0B10]/[0.03]">
+                      <tr key={r.id} className="border-t border-[#06131F]/10 hover:bg-[#06131F]/[0.03]">
                         <td className="p-3 whitespace-nowrap">{r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '—'}</td>
                         <td className="p-3">{r.opportunityTeaserTitle || r.opportunityId}</td>
                         <td className="p-3 font-semibold">{r.name}</td>
@@ -337,7 +337,7 @@ function RequestDetail({ request, verifications, onClose, onSaved }) {
         </div>
 
         {/* Read-only client + request info */}
-        <div className="grid grid-cols-2 gap-4 rounded-xl bg-[#F2EFE8] p-4 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 rounded-xl bg-[#EFF6FA] p-4 sm:grid-cols-3">
           {info('الفرصة', request.opportunityTeaserTitle || request.opportunityId)}
           {info('الجوال', <span dir="ltr">{request.mobile}</span>)}
           {info('طريقة التواصل المفضلة', <span className="inline-flex items-center gap-1">{ContactIcon && <ContactIcon className="h-3.5 w-3.5" />}{label(request.preferredContactMethod)}</span>)}
@@ -346,14 +346,14 @@ function RequestDetail({ request, verifications, onClose, onSaved }) {
           {info('تاريخ الطلب', request.createdAt ? new Date(request.createdAt).toLocaleString('ar-SA') : '—')}
         </div>
         {request.message && (
-          <div className="mt-3 rounded-xl border border-[#0A0B10]/10 p-3">
+          <div className="mt-3 rounded-xl border border-[#06131F]/10 p-3">
             <div className="mb-1 text-xs opacity-50">رسالة العميل</div>
             <p className="whitespace-pre-wrap text-sm">{request.message}</p>
           </div>
         )}
 
         {/* Linked property verification (Phase 2). Informational only — never blocks. */}
-        <div className="mt-3 rounded-xl border border-[#0A0B10]/10 p-3">
+        <div className="mt-3 rounded-xl border border-[#06131F]/10 p-3">
           <div className="mb-2 flex items-center gap-1 text-xs opacity-50"><ShieldCheck className="h-3.5 w-3.5" />سجلات التحقق من العقار المرتبطة</div>
           {verifications.length === 0 ? (
             <p className="text-xs opacity-50">لا توجد سجلات تحقق مرتبطة بهذه الفرصة. (غير مطلوب لإكمال المتابعة)</p>
@@ -361,7 +361,7 @@ function RequestDetail({ request, verifications, onClose, onSaved }) {
             <ul className="space-y-1 text-sm">
               {verifications.map((v) => (
                 <li key={v.id} className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-[#0A0B10]/5 px-2 py-0.5 text-xs">{pvLabel(v.official_data_status)}</span>
+                  <span className="rounded-full bg-[#06131F]/5 px-2 py-0.5 text-xs">{pvLabel(v.official_data_status)}</span>
                   <span className="text-xs opacity-60">{pvLabel(v.verification_result)}</span>
                   <span className="text-xs opacity-40">{v.created_at ? new Date(v.created_at).toLocaleDateString('ar-SA') : ''}</span>
                 </li>
@@ -414,7 +414,7 @@ function RequestDetail({ request, verifications, onClose, onSaved }) {
         {notice && <p className={`mt-3 text-sm ${notice.ok ? 'text-green-700' : 'text-red-700'}`}>{notice.text}</p>}
         <div className="mt-4 flex justify-end gap-2">
           <Button variant="outline" onClick={onClose} disabled={saving}>إلغاء</Button>
-          <Button className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]" onClick={save} disabled={saving}>{saving ? 'جارٍ الحفظ...' : 'حفظ التحديثات'}</Button>
+          <Button className="bg-gradient-to-r from-[#00548C] to-[#003152]" onClick={save} disabled={saving}>{saving ? 'جارٍ الحفظ...' : 'حفظ التحديثات'}</Button>
         </div>
       </div>
     </div>

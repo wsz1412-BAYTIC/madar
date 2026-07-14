@@ -46,8 +46,8 @@ export default function Opportunities() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const pageClass = theme === 'dark' ? 'bg-background text-foreground' : 'bg-[#F7F5F0] text-[#0A0B10]';
-  const cardClass = theme === 'dark' ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white border-[#0A0B10]/10';
+  const pageClass = theme === 'dark' ? 'bg-background text-foreground' : 'bg-[#F2F8FC] text-[#06131F]';
+  const cardClass = theme === 'dark' ? 'bg-white/[0.04] border-white/[0.08]' : 'bg-white border-[#06131F]/10';
 
   async function loadOpportunities(nextFilters = filters) {
     setLoading(true);
@@ -106,7 +106,7 @@ export default function Opportunities() {
         <PublicNavbar />
         <main className="px-4 pt-32 pb-20">
           <section className={`mx-auto max-w-3xl rounded-3xl border p-10 text-center ${cardClass}`}>
-            <Lock className="mx-auto mb-4 h-12 w-12 text-[#D95F3B]" />
+            <Lock className="mx-auto mb-4 h-12 w-12 text-[#1B84C4]" />
             <h1 className="mb-4 font-heading text-4xl font-bold">فرص مادار العقارية قريباً</h1>
             <p className="text-lg opacity-70">
               نجهز تجربة آمنة تعرض مؤشرات عامة للمستثمرين دون كشف بيانات الصفقات الحساسة.
@@ -126,13 +126,13 @@ export default function Opportunities() {
           <section className={`rounded-3xl border p-8 ${cardClass}`}>
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="mb-2 font-semibold text-[#D95F3B]">منصة الفرص العقارية</p>
+                <p className="mb-2 font-semibold text-[#1B84C4]">منصة الفرص العقارية</p>
                 <h1 className="mb-3 font-heading text-4xl font-bold">فرص منتقاة بمعلومات تمهيدية آمنة</h1>
                 <p className="max-w-3xl opacity-70">
                   تظهر للمشترك المدينة ونطاق رأس المال والعائد ومدة الاحتفاظ فقط. تفاصيل الموقع والسعر والمصادر محفوظة للإدارة العليا.
                 </p>
               </div>
-              <Button onClick={() => setShowFilters(true)} className="bg-gradient-to-r from-[#D95F3B] to-[#C8972A]">
+              <Button onClick={() => setShowFilters(true)} className="bg-gradient-to-r from-[#00548C] to-[#003152]">
                 تعديل التفضيلات
               </Button>
             </div>
@@ -159,7 +159,7 @@ export default function Opportunities() {
             <SelectField labelText="الحد الأعلى للشراء" value={filters.budgetRange} values={BUDGET_RANGES} onChange={(budgetRange) => setFilters({ ...filters, budgetRange })} />
             <Input placeholder="الأحياء المفضلة (اختياري)" value={filters.districts} onChange={(event) => setFilters({ ...filters, districts: event.target.value })} />
             <SelectField labelText="نطاق العائد المستهدف (اختياري)" value={filters.targetReturnRange} values={RETURN_RANGES} onChange={(targetReturnRange) => setFilters({ ...filters, targetReturnRange })} />
-            <Button type="submit" className="w-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]">عرض الفرص</Button>
+            <Button type="submit" className="w-full bg-gradient-to-r from-[#00548C] to-[#003152]">عرض الفرص</Button>
           </form>
         </DialogContent>
       </Dialog>
@@ -183,7 +183,7 @@ export default function Opportunities() {
                 <Checkbox checked={requestForm.agreementAccepted} onCheckedChange={(checked) => setRequestForm({ ...requestForm, agreementAccepted: checked === true })} />
                 <span>أوافق مبدئياً على متطلبات اتفاقية دراسة الفرصة عند التواصل.</span>
               </label>
-              <Button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-[#D95F3B] to-[#C8972A]">إرسال الطلب</Button>
+              <Button disabled={loading} type="submit" className="w-full bg-gradient-to-r from-[#00548C] to-[#003152]">إرسال الطلب</Button>
             </form>
           )}
         </DialogContent>
@@ -195,7 +195,7 @@ export default function Opportunities() {
 function EmptyState({ cardClass }) {
   return (
     <div className={`rounded-2xl border p-10 text-center ${cardClass}`}>
-      <Sparkles className="mx-auto mb-3 h-10 w-10 text-[#C8972A]" />
+      <Sparkles className="mx-auto mb-3 h-10 w-10 text-[#0F6BA8]" />
       <h2 className="mb-2 text-2xl font-bold">لا توجد فرص مطابقة حالياً</h2>
       <p className="opacity-70">غيّر المدينة أو نطاق الميزانية، أو عد لاحقاً عند اعتماد فرص جديدة.</p>
     </div>
@@ -208,13 +208,13 @@ function TeaserCard({ opportunity, cardClass, onRequest }) {
       {opportunity.teaser_image_public ? (
         <img src={opportunity.teaser_image_public} alt="" className="h-44 w-full object-cover" />
       ) : (
-        <div className="flex h-44 items-center justify-center bg-gradient-to-br from-[#D95F3B]/20 to-[#C8972A]/20">
-          <Building2 className="h-12 w-12 text-[#D95F3B]" />
+        <div className="flex h-44 items-center justify-center bg-gradient-to-br from-[#1B84C4]/20 to-[#ADDFF1]/20">
+          <Building2 className="h-12 w-12 text-[#1B84C4]" />
         </div>
       )}
       <div className="space-y-4 p-6">
         <div>
-          <p className="text-sm font-semibold text-[#D95F3B]">{label(opportunity.city)}</p>
+          <p className="text-sm font-semibold text-[#1B84C4]">{label(opportunity.city)}</p>
           <h3 className="text-xl font-bold">{opportunity.public_teaser_title || 'فرصة عقارية مختارة'}</h3>
         </div>
         <dl className="grid grid-cols-2 gap-3 text-sm">
@@ -225,7 +225,7 @@ function TeaserCard({ opportunity, cardClass, onRequest }) {
           <Info labelText="الثقة" value={label(opportunity.confidence_label_public)} />
           <Info labelText="محفز النمو" value={label(opportunity.growth_catalyst_type)} />
         </dl>
-        <Button onClick={() => onRequest(opportunity)} className="w-full bg-[#0A0B10] text-white hover:bg-[#0A0B10]/90">
+        <Button onClick={() => onRequest(opportunity)} className="w-full bg-[#06131F] text-white hover:bg-[#06131F]/90">
           <Send className="ml-2 h-4 w-4" /> طلب دراسة الفرصة
         </Button>
       </div>
