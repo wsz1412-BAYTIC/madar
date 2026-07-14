@@ -79,7 +79,7 @@ export default function DateDetailModal({ dateData, onClose, onApprovePricing })
                 <p className={`text-xs font-medium mb-2 ${
                   theme === 'dark' ? 'text-foreground/50' : 'text-[#06131F]/50'
                 }`}>{lang === 'ar' ? 'السعر الموصى به' : 'Recommended'}</p>
-                <p className="font-heading font-bold text-lg text-[#0F6BA8]">{dateData.recommendedPrice} SAR</p>
+                <p className={`font-heading font-bold text-lg ${theme === 'dark' ? 'text-[#7CC4E8]' : 'text-[#0F6BA8]'}`}>{dateData.recommendedPrice} SAR</p>
               </div>
             </div>
             {dateData.priceAlert && (

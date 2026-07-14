@@ -35,7 +35,8 @@ export default function ForecastAlertCard({
   const getConfidenceColor = (confidence) => {
     switch (confidence) {
       case 'high':
-        return theme === 'dark' ? 'text-[#0F6BA8]' : 'text-[#1B84C4]';
+        // Dark surfaces need the light azure; deep azure sits at ~3:1 there.
+        return theme === 'dark' ? 'text-[#7CC4E8]' : 'text-[#1B84C4]';
       case 'medium':
         return theme === 'dark' ? 'text-[#FFB800]' : 'text-[#FF9900]';
       default:

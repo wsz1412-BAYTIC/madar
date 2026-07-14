@@ -10,13 +10,14 @@ import {
   Map as MapIcon, Table2, Lock, MapPinOff, TrendingUp, TrendingDown, Minus, Info, RefreshCw,
 } from 'lucide-react';
 
-// Sequential single-hue (coral) intensity ramp — light→dark, validated as a
-// sequential ramp (CVD-separated; in-cell labels + a table view provide the
-// contrast relief the low steps need). Per theme so each is legible on its
-// own surface. Index = intensity bucket 0..4; -1 (no data) → neutral.
+// Sequential single-hue (azure) intensity ramp — monotonic light→dark on the
+// light theme and dark→bright on the dark theme, validated as a sequential
+// ramp (CVD-separated; in-cell labels + a table view provide the contrast
+// relief the low steps need). Per theme so each is legible on its own
+// surface. Index = intensity bucket 0..4; -1 (no data) → neutral.
 const RAMP = {
-  light: ['#FBE9E1', '#F4C3AE', '#E8926B', '#1B84C4', '#A83F22'],
-  dark: ['#3A2A24', '#6E4433', '#A6543A', '#1B84C4', '#F0805C'],
+  light: ['#E4F3FB', '#B7E1F4', '#6CB6E0', '#2280BC', '#003152'],
+  dark: ['#0D2438', '#123B58', '#17567F', '#1F7AB2', '#4BA3D8'],
 };
 const cellText = (bucket, theme) => {
   if (bucket < 0) return theme === 'dark' ? 'rgba(242, 248, 252,0.35)' : 'rgba(10,11,16,0.35)';

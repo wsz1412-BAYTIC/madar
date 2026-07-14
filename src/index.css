@@ -210,9 +210,16 @@
   }
 
   .text-gradient-gold {
-    /* Brand heading gradient (legacy class name): Soft Blue sweeping into
-       azure-500 — designed to pop on the dark hero/landing surfaces. */
-    background: linear-gradient(135deg, #ADDFF1 0%, #1B84C4 100%);
+    /* Brand heading gradient (legacy class name). The base stops are dark
+       enough to stay readable on light sections (azure-500 → Dark Azure);
+       the dark theme overrides to Soft Blue so headings pop on near-black. */
+    background: linear-gradient(135deg, #1B84C4 0%, #003152 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .dark .text-gradient-gold {
+    background: linear-gradient(135deg, #ADDFF1 0%, #4BA3D8 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

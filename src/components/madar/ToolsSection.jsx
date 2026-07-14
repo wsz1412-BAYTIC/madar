@@ -19,7 +19,7 @@ export default function ToolsSection() {
     <section className="py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <FadeIn className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0B1B2A] border border-[#ADDFF1]/20 text-[#0F6BA8] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0B1B2A] border border-[#ADDFF1]/20 text-[#ADDFF1] text-xs font-medium mb-6">
             <Sparkles className="w-3 h-3" />{t('toolsBadge')}
           </div>
           <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-[#06131F] mb-6 leading-tight">

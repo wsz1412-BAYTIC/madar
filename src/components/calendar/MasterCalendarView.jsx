@@ -38,7 +38,8 @@ export default function MasterCalendarView({
       case 'high':
         return 'bg-[#1B84C4]/80 text-white shadow-lg shadow-[#1B84C4]/20';
       case 'medium':
-        return 'bg-[#ADDFF1]/60 text-white';
+        // Pale Soft-Blue fill needs dark text — white would vanish on light.
+        return 'bg-[#ADDFF1]/70 text-[#06131F]';
       case 'low':
         return 'bg-[#6B7280]/40 text-white';
       case 'gap':
